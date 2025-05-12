@@ -122,9 +122,9 @@ int is_predicate;
               inverted=!inverted;
             } else {
               *t++=*u;
-            };
-          };
-        };
+            }
+          }
+        }
 
         *t='\0';
 
@@ -808,6 +808,6 @@ makelocks( )
 **
 **    for (i=0; i<count; i++) {
 **     p[i]=value;
-**   };
+**   }
 ** }
 #endif

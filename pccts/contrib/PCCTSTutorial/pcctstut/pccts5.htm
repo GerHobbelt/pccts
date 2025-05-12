@@ -1,0 +1,246 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>Grammar</title>
+<style>
+<!--
+PRE {color: maroon;}
+CODE {color: maroon;}
+-->
+</style>
+
+
+<meta name="Microsoft Theme" content="expeditn 001, default"><meta name="Microsoft Border" content="tb, default"></head>
+
+<body background="../_themes/expeditn/exptextb.jpg" bgcolor="#FFFFFF" text="#000000" link="#006600" vlink="#669966" alink="#990000"><!--mstheme--><font face="book antiqua"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<h1 align="center"><font size="7" color="#800000"><strong>Grammar</strong></font></h1>
+
+<p align="center"><a href="pccts4.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts6.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<p align="center">&nbsp;</p>
+
+<p>Now we'll look at a grammar for XL. Note that we are building just a recognizer at this
+state, and the grammar may (and will!) change.</p>
+
+<p>Let's start at the top, shall we?</p>
+
+<h2><!--mstheme--><font color="#660033">Program Specification<!--mstheme--></font></h2>
+
+<p>XL has one program per file, so this is really our starting rule.</p>
+
+<!--mstheme--></font><pre>program
+  : PROGRAM IDENT EQUALS 
+        subprogramBody 
+    DOT
+    &quot;@&quot; // end-of-file
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Pretty straightforward. Note that so far, we don't care that we are <b>definitely</b>
+declaring that <b>IDENT</b> here. We will later, though...</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Subprogram Bodies<!--mstheme--></font></h2>
+
+<p>A subprogram body is a little (or big) block of code that makes up the &quot;what I
+do&quot; part of a program, procedure, or function. It's not bad to define, but it will
+get a bit tricker later. Well, not too much so.</p>
+
+<!--mstheme--></font><pre>subprogramBody
+  : (basicDecl)*
+    (procedureDecl)*
+    BEGIN
+        (statement)*
+    END IDENT
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>So what is it? Basically, define your local variables, types and constants (<code>basicDecls</code>).
+There can be zero or more of these, hence the use of the ()* closure. Then, define any
+nested procedures or functions. Again, zero or more of these. Finally, we get to the
+definition of what the current program/procedure/function does. This starts with a BEGIN,
+has zero or more statements in it, and is ended by END <b>IDENT</b>. Note that the XL spec
+stated that the identifer that ends a subroutine must match the beginning one. Right now,
+we have no way of doing that, as the name for the subroutine is outside the scope of this
+rule. We'll handle this later, though, and in a pretty neat way I must say. Yacc can't
+hold a candle to it, you'll see!</p>
+
+<p>Note that the XL spec said nothing about &quot;procedures must be declared after vars,
+consts and types.&quot; This was one of the many things that the language designer told us
+during midnight interrogation... Similar to Pascal's definition order (<b>CONST</b> <b>TYPE</b>
+<b>VAR</b> <b>FUNCTION</b>/<b>PROCEDURE</b>) but not quite that rigid.</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Basic Declarations<!--mstheme--></font></h2>
+
+<p>XL has three main declarations: variables, constants, and types:</p>
+
+<!--mstheme--></font><pre>basicDecl
+  : varDecl
+  | constDecl
+  | typeDecl
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Just so this section isn't so short, I'll define <code>varDecl</code> and <code>constDecl</code>
+here.</p>
+
+<p>A variable declaration looks like:</p>
+
+<!--mstheme--></font><pre>varDecl
+  : VAR identList COLON typeName
+    {BECOMES constantValue}
+    SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Unlike Pascal, each declaration must start with <b>VAR</b>; there is no &quot;<b>VAR</b>
+section&quot; that starts with the keyword <b>VAR</b>. The <code>varDecl</code> states
+that you can defined any number of idents at once, and you can optionally initialize the
+variable(s).</p>
+
+<p>A constant declaration is similar to a variable declaration, except that you use the
+keyword <b>CONST</b> and must assign a value:</p>
+
+<!--mstheme--></font><pre>constDecl
+  : CONST identList COLON typeName
+    BECOMES constantValue SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>In the above rules, there subrules <code>identList</code> and <code>constantValue</code>
+are mentioned. These are:</p>
+
+<!--mstheme--></font><pre>identList
+  : IDENT (COMMA IDENT)*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which says &quot;one or more <b>IDENT</b>s separated by <b>COMMA</b>s&quot;, and </p>
+
+<!--mstheme--></font><pre>constantValue
+  : INTLIT
+  | STRING_LITERAL
+  | IDENT
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which is pretty self-explanatory. One thing to note, though, there there is nothing
+right now that prevents us from using a variable <b>IDENT</b> instead of a constant <b>IDENT</b>.
+That's handled later...</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Type Declarations<!--mstheme--></font></h2>
+
+<p>XL defines three user-defined types: arrays, records and enumeration types. In my
+project, I only defined arrays and records, so for now, I'll skip enumeration types. I may
+add them at another time.</p>
+
+<p>A type declaration is either an array declaration or a record declaration:</p>
+
+<!--mstheme--></font><pre>typeDecl
+  : TYPE IDENT EQUALS
+    ( arrayDecl
+    | recordDecl
+    )
+    SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>I got a bit fancier here by using a subrule to say &quot;array or record&quot; instead
+of defining a new rule for it. This is also a bit more efficient than the extra function
+call created by another rule there. Basic rule of thumb -- if a subrule is clear, and not
+deeply nested, feel free to use it. However, watch out for using several nested subrules,
+as the meaning can get hidden quickly.</p>
+
+<p>Arrays are defined as <code>ARRAY [x..y] OF type</code>. Only one-dimensional, pretty
+simple:</p>
+
+<!--mstheme--></font><pre>arrayDecl
+  : ARRAY LBRACKET integerConstant
+      DOTDOT integerConstant RBRACKET
+      OF typeName
+  ;
+
+integerConstant
+  : INTLIT
+  | IDENT // again, a constant...
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Records are defined as <code>RECORD x,y,z:typename; END RECORD. .</code> Again, simple
+until we have to know what it means:</p>
+
+<!--mstheme--></font><pre>recordDecl
+  : RECORD (identList COLON typeName SEMI)+ END RECORD
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>So what is this <code>typeName</code> I keep bringing up? Well, it's either one of the
+predefined types, <b>Integer</b> or <b>Boolean</b>, or it's a user-defined type (which
+means its an <b>IDENT</b>), so:</p>
+
+<!--mstheme--></font><pre>typeName
+  : IDENT
+  | INTEGER
+  | BOOLEAN
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Enough about types, now, on to</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Procedure Declarations<!--mstheme--></font></h2>
+
+<p>A procedure in XL is similar to a program, so basically, it's a small heading followed
+by a <code>subprogramBody</code>:</p>
+
+<!--mstheme--></font><pre>procedureDecl
+  : PROCEDURE IDENT {formalParameters} EQUALS
+        subprogramBody
+    SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>At the time I originally did this project, I only did procedures, not functions.
+Perhaps I'll add them later... (You may think &quot;boy he left a lot out,&quot; but Dr.
+Moore made a large subset of the project required, and I did a few extra point things, but
+not the whole thing. I <i>was</i> working full-time you know...)</p>
+
+<p>Notice that the <code>formalParameters</code> are optional... Let's define what they
+look like:</p>
+
+<!--mstheme--></font><pre>formalParameters
+  : LPAREN parameterSpec (SEMI parameterSpec)* RPAREN
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Again we see the familiar <b>x (COMMA x)*</b> notation -- the ()* closure is very handy
+and efficient for matching lists of things...</p>
+
+<!--mstheme--></font><pre>parameterSpec
+  : {VAR} identList COLON typeName
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>You'll notice that this is quite a bit like a variable declaration, except that <b>VAR</b>
+is optional, and there's no semicolon after it. We'll handle it a bit differently as well,
+once we add action code.</p>
+
+<p>Next, we'll look at <a href="pccts6.htm">statements</a>... </p>
+
+<p align="center">&nbsp; 
+<!--msnavigation--></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<p align="center"><a href="pccts4.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts6.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+
+<p align="center">This page was last updated on 09/08/97.</p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--mstheme--></font></body>
+</html>

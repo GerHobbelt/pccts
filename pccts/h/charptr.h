@@ -39,7 +39,7 @@ typedef char *Attrib;
 #define zzdef0(a)		{*(a)=NULL;}
 /* MR8  Jens Tingleff (jensting@imaginet.fr)                                */
 /*          Set memory pointer to null after free()                         */
-#define zzd_attr(a)		{if ( *(a)!=NULL ) {free(*(a)); *(a)=NULL; }; }
+#define zzd_attr(a)		{if ( *(a)!=NULL ) {free(*(a)); *(a)=NULL; } }
 
 #ifdef __STDC__
 extern zzcr_attr(Attrib *,int,char *);

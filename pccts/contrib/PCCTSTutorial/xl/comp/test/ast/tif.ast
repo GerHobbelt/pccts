@@ -1,0 +1,69 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [testif]
+         ( Body
+            ( Define
+               ( VAR [x] >>  Type: Integer))
+            ( Define
+               ( VAR [y] >>  Type: Integer))
+            ( Assign
+               ( Ref x  >>  Type: Integer)
+               ( INTLIT [3] >>  Type: Integer))
+            ( Assign
+               ( Ref y  >>  Type: Integer)
+               ( INTLIT [4] >>  Type: Integer))
+            ( If
+               ( Op [>] >>  Type: Boolean
+                  ( Value >>  Type: Integer
+                     ( Ref x  >>  Type: Integer))
+                  ( Value >>  Type: Integer
+                     ( Ref y  >>  Type: Integer)))
+               ( ThenPart
+                  ( Put
+                     ( STRINGLIT [x is > y] >>  Type: String)))
+               ( ElsePart
+                  ( If
+                     ( Op [<] >>  Type: Boolean
+                        ( Value >>  Type: Integer
+                           ( Ref x  >>  Type: Integer))
+                        ( Value >>  Type: Integer
+                           ( Ref y  >>  Type: Integer)))
+                     ( ThenPart
+                        ( Put
+                           ( STRINGLIT [x is < y] >>  Type: String)))
+                     ( ElsePart
+                        ( Put
+                           ( STRINGLIT [x is = y] >>  Type: String))))))
+            ( If
+               ( Op [<] >>  Type: Boolean
+                  ( Value >>  Type: Integer
+                     ( Ref x  >>  Type: Integer))
+                  ( Value >>  Type: Integer
+                     ( Ref y  >>  Type: Integer)))
+               ( ThenPart
+                  ( Put
+                     ( STRINGLIT [x is < y] >>  Type: String)))
+               ( ElsePart
+                  ( If
+                     ( Op [=] >>  Type: Boolean
+                        ( Value >>  Type: Integer
+                           ( Ref x  >>  Type: Integer))
+                        ( Value >>  Type: Integer
+                           ( Ref y  >>  Type: Integer)))
+                     ( ThenPart
+                        ( Put
+                           ( STRINGLIT [x is = y] >>  Type: String)))
+                     ( ElsePart
+                        ( Put
+                           ( STRINGLIT [x is > y] >>  Type: String)))))))))
+

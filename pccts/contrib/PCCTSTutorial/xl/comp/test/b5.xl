@@ -1,0 +1,6 @@
+program incorrect5 = 
+   constant i : Integer := 2;
+   var x : Integer;
+begin // incorrect5
+   x := i;
+end incorrect5;  // semicolon instead of .

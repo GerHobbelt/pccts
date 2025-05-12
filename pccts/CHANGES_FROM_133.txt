@@ -994,7 +994,7 @@ List of Implemented Fixes and Changes for Maintenance Releases of PCCTS
     elements Foo and Bar set. The bits can be tested using code similar 
     to the following:
 
-        if (set_el(Foo, &rr_FirstSet)) { ...
+        if (zzset_el(Foo, &rr_FirstSet)) { ...
 
     This can be combined with the C array zztokens[] or the C++ routine
     tokenName() to get the print name of the token in the first set.

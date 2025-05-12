@@ -1,0 +1,34 @@
+
+interp :
+	  ( assign )+
+	;
+
+assign :
+	  ID "=" poly ";"
+	;
+
+poly :
+	  term ( "\+" term )*
+	;
+
+term :
+	  bigterm
+	| reg { EXP exp }
+	;
+
+bigterm :
+	  coefficient ( reg ( EXP exp | ) | )
+	;
+
+coefficient :
+	  FLOAT
+	;
+
+reg :
+	  ID
+	;
+
+exp :
+	  reg
+	| FLOAT
+	;

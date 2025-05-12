@@ -1,0 +1,16 @@
+program correct5 = 
+   // tests that constant decls can be intermixed
+   // with variable decls
+   var a : Integer;
+   constant b: Integer := 5;
+   var c: Integer;
+begin
+   a := 1;
+   c := 3;
+   put(a);
+   newLine;
+   put(b);
+   newLine;
+   put(c);
+   newLine;
+end correct5.

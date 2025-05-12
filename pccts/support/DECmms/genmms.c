@@ -341,7 +341,7 @@ char **argv;
       printf(" -mrhoist on") ;
     } else {
       printf(" -mrhoist off");
-    };
+    }
     printf(" $(AOTHER)");
     printf("\n");
     printf("DFLAGS = -\"C2\" -i");

@@ -76,5 +76,5 @@ Cool.o : Cool.cpp
 	$(CCC) -c $(CFLAGS) Cool.cpp
 
 scrub:
-	(cd ./test4; make scrub)
+	(cd test4; make scrub)
 	rm -rf *.o core $(SPAWN) t t2 t3 t5

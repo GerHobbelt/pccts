@@ -1,0 +1,21 @@
+program gcd =
+   // compute greatest common divisor of a and b
+   var a, b, temp : Integer;
+begin
+   loop
+      get(a);
+      get(b);
+      skipLine;
+      exit when (a <=0) or (b <=0);
+      put(a);
+      put(b);
+      loop
+         temp := a;
+         a    := b;
+         b    := temp mod b;
+         exit when b = 0;
+      end loop;
+      put(a);
+      newLine;
+   end loop;
+end gcd.

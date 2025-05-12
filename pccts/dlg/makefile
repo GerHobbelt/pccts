@@ -118,6 +118,8 @@ CC=cc
 COPT=-O
 ANTLR=../bin/antlr
 DLG=../bin/dlg
+#CFLAGS= -O -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN -DZZLEXBUFSIZE=32000
+CFLAGS= -Wall -pedantic -O2 -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN -DZZLEXBUFSIZE=32000
 CFLAGS= $(COPT) -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN -DZZLEXBUFSIZE=32000
 OBJ_EXT=o
 OUT_OBJ = -o
@@ -136,6 +138,12 @@ SRC = dlg_p.c dlg_a.c main.c err.c $(SET)/set.c support.c output.c \
 
 #dlg_a.c mode.h : parser.dlg
 #	$(DLG) -C2 parser.dlg dlg_a.c
+
+regenerate:
+	$(ANTLR) -gc -pa -e3 -cr -ga -tab 8 -w2 -info ptfmo dlg_p.g > dlg_p.full.dsc
+	$(ANTLR) -gc -p -e3 -cr -ga -tab 8 -w2 dlg_p.g > dlg_p.dsc
+	$(ANTLR) -ga -e3 -gh dlg_p.g
+	$(DLG) -C2 parser.dlg dlg_a.c
 
 dlg_p.$(OBJ_EXT) : dlg_p.c dlg.h tokens.h mode.h
 	$(CC) $(CFLAGS) -c dlg_p.c

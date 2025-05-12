@@ -1,0 +1,148 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [test2]
+         ( Body
+            ( Define
+               ( CONST [a] >>  Type: Integer >>  InitialValue: 1))
+            ( Define
+               ( TYPE [T] >>  Type: Integer
+                  ( Array >>  Type: Integer
+                     ( Lower
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Upper
+                        ( INTLIT [2] >>  Type: Integer)))))
+            ( Define
+               ( CONST [b] >>  Type: Integer >>  InitialValue: 1))
+            ( Define
+               ( TYPE [U]
+                  ( Record
+                     ( Define
+                        ( VAR [f] >>  Type: Integer))
+                     ( Define
+                        ( VAR [g] >>  Type: Integer))
+                     ( Define
+                        ( VAR [h] >>  Type: Boolean)))))
+            ( Define
+               ( TYPE [V]
+                  ( Record
+                     ( Define
+                        ( VAR [f] >>  Type: Integer)))))
+            ( Define
+               ( VAR [x] >>  Type: T))
+            ( Define
+               ( VAR [y] >>  Type: T))
+            ( Define
+               ( VAR [z] >>  Type: U))
+            ( Define
+               ( Procedure [p]
+                  ( Parms
+                     ( Define
+                        ( VAR [x] >>  Type: Integer))
+                     ( Define
+                        ( VAR [y] >>  Type: Boolean)))
+                  ( Body
+                     ( Define
+                        ( CONST [a] >>  Type: Integer >>  InitialValue: 1))
+                     ( Define
+                        ( Procedure [q]
+                           ( Parms
+                              ( Define
+                                 ( VAR [x] >>  Type: Integer)))
+                           ( Body
+                              ( Define
+                                 ( TYPE [T] >>  Type: Integer
+                                    ( Array >>  Type: Integer
+                                       ( Lower
+                                          ( INTLIT [1] >>  Type: Integer))
+                                       ( Upper
+                                          ( INTLIT [2] >>  Type: Integer)))))
+                              ( Assign
+                                 ( Ref x  >>  Type: Integer)
+                                 ( Op [-] >>  Type: Integer
+                                    ( INTLIT [1] >>  Type: Integer)))
+                              ( Assign
+                                 ( Ref x  >>  Type: Integer)
+                                 ( Value >>  Type: Integer
+                                    ( Ref x  >>  Type: Integer)))
+                              ( Assign
+                                 ( Ref x  >>  Type: Integer)
+                                 ( Op [mod] >>  Type: Integer
+                                    ( Op [/] >>  Type: Integer
+                                       ( Op [*] >>  Type: Integer
+                                          ( Op [-] >>  Type: Integer
+                                             ( INTLIT [2] >>  Type: Integer)
+                                             ( INTLIT [1] >>  Type: Integer))
+                                          ( Op [+] >>  Type: Integer
+                                             ( INTLIT [2] >>  Type: Integer)
+                                             ( INTLIT [1] >>  Type: Integer)))
+                                       ( INTLIT [2] >>  Type: Integer))
+                                    ( INTLIT [2] >>  Type: Integer)))
+                              ( If
+                                 ( Op [<] >>  Type: Boolean
+                                    ( Value >>  Type: Integer
+                                       ( Ref x  >>  Type: Integer))
+                                    ( Value >>  Type: Integer
+                                       ( Ref x  >>  Type: Integer)))
+                                 ( ThenPart
+                                    ( Loop
+                                       ( While
+                                          ( Op [=] >>  Type: Boolean
+                                             ( Value >>  Type: Integer
+                                                ( Ref x  >>  Type: Integer))
+                                             ( Value >>  Type: Integer
+                                                ( Ref x  >>  Type: Integer))))
+                                       ( ProcedureCall
+                                          ( Ref q )
+                                          ( Parms
+                                             ( Value >>  Type: Integer
+                                                ( Ref x  >>  Type: Integer))))))
+                                 ( ElsePart
+                                    ( If
+                                       ( Op [not] >>  Type: Boolean
+                                          ( Op [/=] >>  Type: Boolean
+                                             ( Value >>  Type: Integer
+                                                ( Ref x  >>  Type: Integer))
+                                             ( Value >>  Type: Integer
+                                                ( Ref x  >>  Type: Integer))))
+                                       ( ThenPart)
+                                       ( ElsePart)))))))
+                     ( If
+                        ( Op [>=] >>  Type: Boolean
+                           ( Value >>  Type: Integer
+                              ( Value >>  Type: Integer
+                                 ( Ref x  >>  Type: Integer)))
+                           ( Value >>  Type: Integer
+                              ( Value >>  Type: Integer
+                                 ( Ref x  >>  Type: Integer))))
+                        ( ThenPart
+                           ( Assign
+                              ( Ref y  >>  Type: Boolean)
+                              ( INTLIT [1] >>  Type: Boolean)))
+                        ( ElsePart)))))
+            ( Define
+               ( Procedure [r]
+                  ( Parms)
+                  ( Body
+                     ( Define
+                        ( VAR [x] >>  Type: T))
+                     ( Assign
+                        ( Index >>  Type: Integer
+                           ( Ref x  >>  Type: T)
+                           ( INTLIT [1] >>  Type: Integer))
+                        ( INTLIT [5] >>  Type: Integer)))))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Ref z  >>  Type: U)
+                  ( Ref f  >>  Type: Integer))
+               ( INTLIT [6] >>  Type: Integer)))))
+

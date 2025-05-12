@@ -1,0 +1,17 @@
+program correct6 =
+   // tests copy out
+   constant i : Integer := 2;
+   
+   procedure p(var x: Integer) =
+   begin
+      put(x);
+      x := 6;
+      put(i);
+      i := 7;
+   end p;
+   
+begin
+   i := 5;
+   p(i);
+   put(i);
+end correct6.

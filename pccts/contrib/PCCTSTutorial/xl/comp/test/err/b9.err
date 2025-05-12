@@ -1,0 +1,6 @@
+line 4: syntax error at "false" -- undefined variable
+line 4: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Boolean
+	Rvalue was of type <<**Undefined**>>
+	Lvalue was: TRUE
+	Rvalue was: <<**Undefined**>>

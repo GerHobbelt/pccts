@@ -1,0 +1,290 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [testarray]
+         ( Body
+            ( Define
+               ( TYPE [SA] >>  Type: Integer
+                  ( Array >>  Type: Integer
+                     ( Lower
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Upper
+                        ( INTLIT [3] >>  Type: Integer)))))
+            ( Define
+               ( TYPE [A] >>  Type: SA
+                  ( Array >>  Type: SA
+                     ( Lower
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Upper
+                        ( INTLIT [4] >>  Type: Integer)))))
+            ( Define
+               ( VAR [x] >>  Type: A))
+            ( Define
+               ( VAR [y] >>  Type: A))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( INTLIT [1] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( INTLIT [2] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( INTLIT [3] >>  Type: Integer))
+               ( INTLIT [3] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [2] >>  Type: Integer))
+                  ( INTLIT [1] >>  Type: Integer))
+               ( INTLIT [4] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [2] >>  Type: Integer))
+                  ( INTLIT [2] >>  Type: Integer))
+               ( INTLIT [5] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [2] >>  Type: Integer))
+                  ( INTLIT [3] >>  Type: Integer))
+               ( INTLIT [6] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [3] >>  Type: Integer))
+                  ( INTLIT [1] >>  Type: Integer))
+               ( INTLIT [7] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [3] >>  Type: Integer))
+                  ( INTLIT [2] >>  Type: Integer))
+               ( INTLIT [8] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [3] >>  Type: Integer))
+                  ( INTLIT [3] >>  Type: Integer))
+               ( INTLIT [9] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [4] >>  Type: Integer))
+                  ( INTLIT [1] >>  Type: Integer))
+               ( INTLIT [10] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [4] >>  Type: Integer))
+                  ( INTLIT [2] >>  Type: Integer))
+               ( INTLIT [11] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Index >>  Type: SA
+                     ( Ref x  >>  Type: A)
+                     ( INTLIT [4] >>  Type: Integer))
+                  ( INTLIT [3] >>  Type: Integer))
+               ( INTLIT [12] >>  Type: Integer))
+            ( Assign
+               ( Ref y  >>  Type: A)
+               ( Value >>  Type: A
+                  ( Ref x  >>  Type: A)))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [4] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [4] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [4] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [4] >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [4] >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Index >>  Type: Integer
+                     ( Index >>  Type: SA
+                        ( Ref y  >>  Type: A)
+                        ( INTLIT [4] >>  Type: Integer))
+                     ( INTLIT [3] >>  Type: Integer))))
+            ( NewLine))))
+

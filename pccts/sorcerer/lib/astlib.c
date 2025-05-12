@@ -629,7 +629,7 @@ int tok;
 #endif
 {
     ScanAST *p = (ScanAST *) calloc(1, sizeof(ScanAST));
-    if ( p == NULL ) {fprintf(stderr, "out of mem\n"); exit(-1);}
+    if ( p == NULL ) {printf_stderr_continued( "out of mem\n"); exit(-1);}
 	p->token = tok;
 	return p;
 }

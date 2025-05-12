@@ -85,7 +85,7 @@ void xxputc(c)							/* MR1 */
     if (class_stream != NULL) fputc(c,class_stream);		/* MR1 */
   } else {							/* MR1 */
     fputc(c,OUT);						/* MR1 */
-  };								/* MR1 */
+  }								/* MR1 */
 }  								/* MR1 */
 
 #ifdef __USE_PROTOS
@@ -101,7 +101,7 @@ void xxprintf(format,string) 					/* MR1 */
 	 fprintf(class_stream,format,string);			/* MR1 */
   } else {							/* MR1 */
     fprintf(OUT,format,string);					/* MR1 */
-  };								/* MR1 */
+  }								/* MR1 */
 }  								/* MR1 */
 >>
 
@@ -117,7 +117,7 @@ void xxprintf(format,string) 					/* MR1 */
 	          if (firstLexMember != 0) {			/* MR1 */
 	            firstLexMember=0;				/* MR1 */
 	            p_class_def1();				/* MR1 */
-		  };						/* MR1 */
+		  }						/* MR1 */
 	          zzmode(ACT);					/* MR1 */
                 >>						/* MR1 */
 #token LEXACTION	"\<\<\%\%lexaction"			/* MR1 */
@@ -220,7 +220,7 @@ rule_list	: rule <<$$.l=$1.l; $$.r=$1.r;>>
 			>>
 		;
 
-rule	: reg_expr ACTION
+rule		: reg_expr ACTION
 /* MR23 */		<< if ($1.r != NULL) {
 					$$.l=$1.l; $$.r=$1.r; ($1.r)->accept=action_no;
 				   }
@@ -512,9 +512,13 @@ nfa_node *p;
 #endif
 {
 	if (p){
-		fprintf(f, "%x (%d)", p, p->node_no);
+		f == stderr 
+		? printf_stderr_continued("%x (%d)", p, p->node_no)
+		: fprintf(f, "%x (%d)", p, p->node_no);
 	}else{
-		fprintf(f, "(nil)");
+		f == stderr 
+		? printf_stderr_continued("(nil)")
+		: fprintf(f, "(nil)");
 	}
 }
 
@@ -530,17 +534,25 @@ set s;
 {
 	unsigned int *x;
 
-	fprintf(f, "n = %d,", s.n);
+	f == stderr 
+	? printf_stderr_continued( "n = %d,", s.n)
+	: fprintf(f, "n = %d,", s.n);
 	if (s.setword){
-		fprintf(f, "setword = %x,   ", s.setword);
+		f == stderr 
+		? printf_stderr_continued( "setword = %x,   ", s.setword)
+		: fprintf(f, "setword = %x,   ", s.setword);
 		/* print out all the elements in the set */
 		x = set_pdq(s);
 		while (*x!=nil){
-			fprintf(f, "%d ", *x);
+			f == stderr 
+		  ? printf_stderr_continued( "%d ", *x)
+		  : fprintf(f, "%d ", *x);
 			++x;
 		}
 	}else{
-		fprintf(f, "setword = (nil)");
+		f == stderr 
+		? printf_stderr_continued( "setword = (nil)")
+		: fprintf(f, "setword = (nil)");
 	}
 }
 
@@ -563,18 +575,18 @@ int last_node;
 	for (i=first_node; i<=last_node; ++i){
 		t = NFA(i);
 		if (!t) break;
-		fprintf(stderr, "nfa_node %d {\n", t->node_no);
-		fprintf(stderr, "\n\tnfa_set = %d\n", t->nfa_set);
-		fprintf(stderr, "\taccept\t=\t%d\n", t->accept);
-		fprintf(stderr, "\ttrans\t=\t(");
+		printf_stderr_continued("nfa_node %d {\n", t->node_no);
+		printf_stderr_continued("\n\tnfa_set = %d\n", t->nfa_set);
+		printf_stderr_continued("\taccept\t=\t%d\n", t->accept);
+		printf_stderr_continued("\ttrans\t=\t(");
 		fprint_dfa_pair(stderr, t->trans[0]);
-		fprintf(stderr, ",");
+		printf_stderr_continued(",");
 		fprint_dfa_pair(stderr, t->trans[1]);
-		fprintf(stderr, ")\n");
-		fprintf(stderr, "\tlabel\t=\t{ ");
+		printf_stderr_continued(")\n");
+		printf_stderr_continued("\tlabel\t=\t{ ");
 		fprint_set(stderr, t->label);
-		fprintf(stderr, "\t}\n");
-		fprintf(stderr, "}\n\n");
+		printf_stderr_continued("\t}\n");
+		printf_stderr_continued("}\n\n");
 	}
 	return 0;
 }
@@ -597,18 +609,39 @@ int k;
 SetWordType *eset;
 #endif
 {
-	fprintf(stderr, ErrHdr, file_str[0]!=NULL?file_str[0]:"stdin", zzline);
-	fprintf(stderr, " syntax error at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
-	if ( !etok && !eset ) {fprintf(stderr, "\n"); return;}
-	if ( k==1 ) fprintf(stderr, " missing");
+	printf_stderr((file_str[0] != NULL ? file_str[0] : "stdin"), zzline
+	             ," syntax error at \"%s\""
+	             ,((tok==zzEOF_TOKEN) ? "EOF" : text)
+	             );
+	if ( !etok && !eset ) 
+	{
+	  printf_stderr_continued("\n"); 
+	  return;
+	}
+	if ( k==1 )
+	{
+	  printf_stderr_continued(" missing");
+	}
 	else
 	{
-		fprintf(stderr, "; \"%s\" not", bad_text);
-		if ( zzset_deg(eset)>1 ) fprintf(stderr, " in");
+		printf_stderr_continued("; \"%s\" not", bad_text);
+		if ( zzset_deg(eset)>1 )
+		{
+		  printf_stderr_continued(" in");
+		}
 	}
-	if ( zzset_deg(eset)>0 ) zzedecode(eset);
-	else fprintf(stderr, " %s", zztokens[etok]);
-	if ( strlen(egroup) > (size_t)0 ) fprintf(stderr, " in %s", egroup);
-	fprintf(stderr, "\n");
+	if ( zzset_deg(eset)>0 )
+	{
+	  zzedecode(eset);
+	}
+	else
+	{
+	  printf_stderr_continued(" %s", zztokens[etok]);
+	}
+	if ( strlen(egroup) > (size_t)0 )
+	{
+	  printf_stderr_continued(" in %s", egroup);
+	}
+	printf_stderr_continued("\n");
 }
 >>

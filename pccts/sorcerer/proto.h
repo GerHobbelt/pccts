@@ -31,6 +31,8 @@
 
 extern char	*VersionNumber;
 extern char	*VersionText;
+extern int     Save_argc;                                                  
+extern char ** Save_argv;                                                  
 extern char *FileStr[];
 extern int  NumFiles;
 extern int  action_file;
@@ -80,15 +82,30 @@ extern int GenCPP;
 extern int NoCtor; /* MR23 */
 
 #ifdef __VMS
-#define STRICMP strcasecmp
+#define STRICMP strcasecmp /* MR21 */
+#elif defined(_MSC_VER)
+#define STRICMP _stricmp /* [i_a] because __STDC__ has been defined; this one must be used... */
 #else
-#define STRICMP stricmp
+#define STRICMP stricmp /* MR21 */
 #endif
+
+#if defined(_MSC_VER)
+#define STRDUP _strdup /* [i_a] because __STDC__ has been defined; this one must be used... */
+#else
+#define STRDUP strdup 
+#endif
+
                            /* F u n c t i o n s */
 
 #ifdef __USE_PROTOS
+#if !defined(PC)
+/*
+   [i_a] clashes with Microsoft definition (and should be loaded from the system headerfiles
+   anyway, generally speaking ;-(
+ */
 extern int main( int, char *[] );
 extern int STRICMP(const char *, const char *);   /* MR20 */
+#endif
 extern void help( void );
 extern FILE * NextFile( void );
 extern void pushint( int );
@@ -153,8 +170,14 @@ extern void ensure_no_C_file_collisions(char *class_c_file);
 extern void GenCPPClassHeader(void);
 extern void GenCPPClassCode(void);
 #else
+#if !defined(PC)
+/*
+   [i_a] clashes with Microsoft definition (and should be loaded from the system headerfiles
+   anyway, generally speaking ;-(
+ */
 extern int main( );
 extern int STRICMP();   /* MR20 */
+#endif
 extern void help( );
 extern FILE * NextFile( );
 extern void pushint( );

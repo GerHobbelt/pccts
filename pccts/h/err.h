@@ -32,8 +32,8 @@
  * 1989-2000
  */
 
-#ifndef ERR_H
-#define ERR_H
+#ifndef PCCTS_ERR_H
+#define PCCTS_ERR_H
 
 #include "pcctscfg.h"
 #include <stdlib.h>
@@ -49,6 +49,10 @@
 #include "pccts_stdarg.h"
 #else
 #include <varargs.h>
+#endif
+
+#ifndef ERR_H_GENERATE
+#define ERR_H_GENERATE 0
 #endif
 
 #ifdef DUM
@@ -67,6 +71,11 @@
 
 #define	BSETMODWORD(x) ((x) & (BSETWORDSIZE-1))		/* x % BSETWORDSIZE */
 #define	BSETDIVWORD(x) ((x) >> BSETLOGWORDSIZE)		/* x / BSETWORDSIZE */
+
+
+
+
+#if ERR_H_GENERATE
 
 /* This is not put into the global pccts_parser structure because it is
  * hidden and does not need to be saved during a "save state" operation
@@ -88,6 +97,306 @@ int  zzTraceDepth=0;
 int  zzGuessSeq=0;          /* MR10 */
 int  zzSyntaxErrCount=0;    /* MR11 */
 int  zzLexErrCount=0;       /* MR11 */
+
+#else
+
+#ifdef zzTRACE_RULES
+extern int  zzTraceOptionValueDefault;
+extern int  zzTraceOptionValue;
+extern int  zzTraceGuessOptionValue;
+extern char *zzTraceCurrentRuleName;
+extern int  zzTraceDepth;
+#endif
+
+extern int  zzGuessSeq;          /* MR10 */
+extern int  zzSyntaxErrCount;    /* MR11 */
+extern int  zzLexErrCount;       /* MR11 */
+
+#endif
+
+
+
+
+
+#if !ERR_H_GENERATE
+
+void
+#ifdef __USE_PROTOS
+zzresynch(SetWordType *wd,SetWordType mask);
+#else
+zzresynch(wd,mask);
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzconsumeUntil(SetWordType *st);
+#else
+zzconsumeUntil(st);
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzconsumeUntilToken(int t);
+#else
+zzconsumeUntilToken(t);
+#endif
+
+#ifdef PCCTS_USE_STDARG
+void zzFAIL(int k, ...);
+#else
+void zzFAIL(va_alist);
+#endif
+
+#ifdef __USE_PROTOS
+void zzTraceGuessDone(zzantlr_state *state);
+#else
+void zzTraceGuessDone(state);
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzsave_antlr_state(zzantlr_state *buf);
+#else
+zzsave_antlr_state(buf);
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzrestore_antlr_state(zzantlr_state *buf);
+#else
+zzrestore_antlr_state(buf);
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzedecode(SetWordType *a);
+#else
+zzedecode(a);
+#endif
+
+
+#ifndef USER_ZZSYN
+
+void
+#ifdef __USE_PROTOS
+zzsyn(char *text, int tok, char *egroup, SetWordType *eset, int etok, int k, char *bad_text);
+#else
+zzsyn(text, tok, egroup, eset, etok, k, bad_text);
+#endif
+
+#endif
+
+
+int
+#ifdef __USE_PROTOS
+zzset_el(unsigned b, SetWordType *p);
+#else
+zzset_el(b,p);
+#endif
+
+int
+#ifdef __USE_PROTOS
+zzset_deg(SetWordType *a);
+#else
+zzset_deg(a);
+#endif
+
+
+#ifdef DEMAND_LOOK
+
+
+#ifdef LL_K
+
+int
+#ifdef __USE_PROTOS
+_zzmatch(int _t, char **zzBadText, char **zzMissText,
+		int *zzMissTok, int *zzBadTok,
+		SetWordType **zzMissSet);
+#else
+_zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet);
+#endif
+
+int
+#ifdef __USE_PROTOS
+_zzmatch_wsig(int _t);
+#else
+_zzmatch_wsig(_t);
+#endif
+
+
+#else
+
+
+int
+#ifdef __USE_PROTOS
+_zzmatch(int _t, char **zzBadText, char **zzMissText,
+		 int *zzMissTok, int *zzBadTok, SetWordType **zzMissSet);
+#else
+_zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet);
+#endif
+
+int
+#ifdef __USE_PROTOS
+_zzmatch_wsig(int _t);
+#else
+_zzmatch_wsig(_t);
+#endif
+
+
+#endif /*LL_K*/
+
+
+#else
+
+
+int
+#ifdef __USE_PROTOS
+_zzmatch(int _t, char **zzBadText, char **zzMissText,
+		int *zzMissTok, int *zzBadTok,
+		SetWordType **zzMissSet);
+#else
+_zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet);
+#endif
+
+int
+#ifdef __USE_PROTOS
+_zzmatch_wsig(int _t);
+#else
+_zzmatch_wsig(_t);
+#endif
+
+#endif /*DEMAND_LOOK*/
+
+
+#ifdef ZZINF_LOOK
+
+void
+#ifdef __USE_PROTOS
+_inf_zzgettok(void);
+#else
+_inf_zzgettok();
+#endif
+
+#endif
+
+
+#ifdef ZZINF_LOOK
+
+void
+#ifdef __USE_PROTOS
+zzfill_inf_look(void);
+#else
+zzfill_inf_look();
+#endif
+
+#endif
+
+
+int
+#ifdef __USE_PROTOS
+_zzsetmatch(SetWordType *e, char **zzBadText, char **zzMissText,
+			int *zzMissTok, int *zzBadTok,
+			SetWordType **zzMissSet,
+			SetWordType *zzTokclassErrset /* MR23 */);
+#else
+_zzsetmatch(e, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet, zzTokclassErrset /* MR23 */);
+#endif
+
+int
+#ifdef __USE_PROTOS
+_zzmatch_wdfltsig(int tokenWanted, SetWordType *whatFollows);
+#else
+_zzmatch_wdfltsig(tokenWanted, whatFollows);
+#endif
+
+int
+#ifdef __USE_PROTOS
+_zzsetmatch_wdfltsig(SetWordType *tokensWanted,
+					 int tokenTypeOfSet,
+					 SetWordType *whatFollows);
+#else
+_zzsetmatch_wdfltsig(tokensWanted, tokenTypeOfSet, whatFollows);
+#endif
+
+int
+#ifdef __USE_PROTOS
+_zzsetmatch_wsig(SetWordType *e);
+#else
+_zzsetmatch_wsig(e);
+#endif
+
+
+#ifdef USER_ZZMODE_STACK
+
+void
+#ifdef __USE_PROTOS
+zzmpush( int m );
+#else
+zzmpush( m );
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzmpop( void );
+#else
+zzmpop( );
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzsave_mode_stack( int modeStack[], int *modeLevel );
+#else
+zzsave_mode_stack( modeStack, modeLevel );
+#endif
+
+void
+#ifdef __USE_PROTOS
+zzrestore_mode_stack( int modeStack[], int *modeLevel );
+#else
+zzrestore_mode_stack( modeStack, modeLevel );
+#endif
+
+#endif /* USER_ZZMODE_STACK */
+
+
+#ifdef __USE_PROTOS
+void zzTraceReset(void);
+#else
+void zzTraceReset();
+#endif
+
+#ifdef __USE_PROTOS
+void zzTraceGuessFail(void);
+#else
+void zzTraceGuessFail();
+#endif
+
+#ifdef __USE_PROTOS
+void zzTraceIn(char * rule);
+#else
+void zzTraceIn(rule);
+#endif
+
+#ifdef __USE_PROTOS
+void zzTraceOut(char * rule);
+#else
+void zzTraceOut(rule);
+#endif
+
+#ifdef __USE_PROTOS
+int zzTraceOption(int delta);
+#else
+int zzTraceOption(delta);
+#endif
+
+#ifdef __USE_PROTOS
+int zzTraceGuessOption(int delta);
+#else
+int zzTraceGuessOption(delta);
+#endif
+
+
+#else
 
 void
 #ifdef __USE_PROTOS
@@ -242,7 +551,7 @@ void zzTraceGuessDone(state)
     doIt=0;
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     fprintf(stderr,"guess done - returning to rule %s {\"%s\"} at depth %d",
@@ -253,9 +562,9 @@ void zzTraceGuessDone(state)
       fprintf(stderr," (guess mode continues - an enclosing guess is still active)");
     } else {
       fprintf(stderr," (guess mode ends)");
-    };
+    }
     fprintf(stderr,"\n");
-  };
+  }
 #endif
 #endif
 }
@@ -374,12 +683,12 @@ zzantlr_state *buf;
       if (zzTraceOptionValue > 0) {
         fprintf(stderr,"trace enable restored in rule %s depth %d\n",
                         zzTraceCurrentRuleName,zzTraceDepth);
-      };
+      }
       if (zzTraceOptionValue <= 0) {
         fprintf(stderr,"trace disable restored in rule %s depth %d\n",
                         zzTraceCurrentRuleName,zzTraceDepth);
-      };
-    };
+      }
+    }
 
     zzTraceOptionValue=buf->traceOptionValue;            /* MR10 */
     zzTraceGuessOptionValue=buf->traceGuessOptionValue;  /* MR10 */
@@ -1021,11 +1330,11 @@ void zzTraceGuessFail()
     doIt=0;
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     fprintf(stderr,"guess failed\n");
-  };
+  }
 #endif
 #endif
 }
@@ -1056,7 +1365,7 @@ void zzTraceIn(rule)
 #endif
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     fprintf(stderr,"enter rule %s {\"%s\"} depth %d",
@@ -1067,7 +1376,7 @@ void zzTraceIn(rule)
     if (zzguessing) fprintf(stderr," guessing");
 #endif
     fprintf(stderr,"\n");
-  };
+  }
 #endif
   return;
 }
@@ -1092,7 +1401,7 @@ void zzTraceOut(rule)
 #endif
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     fprintf(stderr,"exit rule %s {\"%s\"} depth %d",
@@ -1103,7 +1412,7 @@ void zzTraceOut(rule)
     if (zzguessing) fprintf(stderr," guessing");
 #endif
     fprintf(stderr,"\n");
-  };
+  }
 #endif
 }
 
@@ -1123,12 +1432,12 @@ int zzTraceOption(delta)
       if (prevValue <= 0 && zzTraceOptionValue > 0) {
         fprintf(stderr,"trace enabled in rule %s depth %d\n",
                                             zzTraceCurrentRuleName,zzTraceDepth);
-      };
+      }
       if (prevValue > 0 && zzTraceOptionValue <= 0) {
         fprintf(stderr,"trace disabled in rule %s depth %d\n",
                                             zzTraceCurrentRuleName,zzTraceDepth);
-      };
-    };
+      }
+    }
     return  prevValue;
 #else
     return 0;
@@ -1152,12 +1461,12 @@ int zzTraceGuessOption(delta)
       if (prevValue <= 0 && zzTraceGuessOptionValue > 0) {
         fprintf(stderr,"guess trace enabled in rule %s depth %d\n",
                                                 zzTraceCurrentRuleName,zzTraceDepth);
-      };
+      }
       if (prevValue > 0 && zzTraceGuessOptionValue <= 0) {
         fprintf(stderr,"guess trace disabled in rule %s depth %d\n",
                                                 zzTraceCurrentRuleName,zzTraceDepth);
-      };
-    };
+      }
+    }
     return prevValue;
 #else
     return 0;
@@ -1166,5 +1475,7 @@ int zzTraceGuessOption(delta)
     return 0;
 #endif
 }
+
+#endif
 
 #endif /* ERR_H */

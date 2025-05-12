@@ -1,0 +1,50 @@
+Errata for "Language Translation Using PCCTS and C++" by T.J. Parr
+                ISBN 0-9627488-5-4 Published by Automata Publishing Company
+
+		Errata compiled with assistance of Louis Krupp (lkrupp@netONE.com)
+
+-----------------------------------------------------------------------------
+        Line or
+Page    Paragraph       Description
+
+13	Zero Or More..	Should be "Subrules" (plural)
+13	One Or More..	Should be "Subrules" (plural)
+
+24	This book is..	Should be "manual, not as a textbook ..."
+
+31	front end that
+	constructs..	Comma after "trees"
+
+31	last sentence	Comma after "rule"
+
+48      bottom example  switch in conventions from {x} to (x|) is confusing
+
+84      l 6             Ed Harfmann (ed@mdbs.com)
+
+                        Example of "#parser foo":
+
+                        Old: #define zztokenLA      xyz_zztokenLA
+                             #define AST            xyz_AST
+
+                        New: #define zztokenLA      foo_zztokenLA
+                             #define AST            foo_AST
+                        
+157     table entry $j  Kees van der Bent <kees@translogic.nl>
+
+                        The table entry for $j incorrectly states that
+                        actions are counted in determining the value of
+                        $j.
+
+Appendix        It appears the Appendix is based on PCCTS 1.32, an out-of-date
+                version of the "Notes for New Users".  For instance the
+                ANTLRToken hierarchy is from before the introduction of
+                reference counted tokens and the file name extensions are
+                assumed to be .C rather than .cpp.
+
+235     l 2     comp.compilers.tools.pccts
+
+252     #28     Title of item should read: "The lexical function mode(),
+                skip(), and more() are not complicated".
+
+        
+

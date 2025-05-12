@@ -1,0 +1,37 @@
+#header <<
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include "tokens.h"
+#include "AToken.h"
+typedef ANTLRCommonToken ANTLRToken;
+#include "AST.h"
+typedef AST SORAST;
+>>
+
+class SimplifyPoly {
+
+poly:	#( MULT poly poly )
+	|!	#( a:ADD p:poly q:poly )
+		<<
+		if ( p==NULL ) #poly = q;
+		else if ( q==NULL ) #poly = p;
+		else {
+		int leftIdentity=( p->type()==INT && p->getIConst()==0 );
+		int rightIdentity=( q->type()==INT && q->getIConst()==0 );
+		if ( leftIdentity && !rightIdentity ) #poly = q;				// 0+x
+		else if ( !leftIdentity && rightIdentity ) #poly = p;			// x+0
+		else if ( !leftIdentity && !rightIdentity ) #poly = #(a,p,q);	// x+y
+		else #poly = NULL;												// 0+0
+		}
+		>>
+	|!	#( e:EXP v:poly ex:INT )
+		<<
+		if ( ex->getIConst()==1 ) #poly = v;
+		else #poly = #(e,v,ex);
+		>>
+	|	id:ID
+	|	i:INT
+	;
+
+}

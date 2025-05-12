@@ -1,0 +1,208 @@
+// This file was generated from xl.pccts using the -p option of ANTLR
+// It is a listing of just the grammar of xl.pccts, without any action code
+// Note that the variable rule had to be changed -- the "." used as a wildcard needed to be
+//   commented out when generating this report (ANTLR has a bug in trying to print it...)
+
+program :
+	  "program" def "=" subprogrambody "\." "@"
+	;
+
+subprogrambody :
+	  ( basicdecl )* ( proceduredecl )* "begin" ( statement )* "end" refproc
+	;
+
+basicdecl :
+	  vardecl
+	| constdecl
+	| typedecl
+	;
+
+vardecl :
+	  "var" identifierlist ":" typename { ":=" constantvalue } ";"
+	;
+
+constdecl :
+	  "constant" identifierlist ":" typename ":=" constantvalue ";"
+	;
+
+constantvalue :
+	  INTLIT
+	| STRINGLIT
+	| constant
+	;
+
+identifierlist :
+	  def ( "," def )*
+	;
+
+typedecl :
+	  "type" def "=" typedefn ";"
+	;
+
+typedefn :
+	  recordtypedefn
+	| arraytypedefn
+	;
+
+recordtypedefn :
+	  "record" ( identifierlist ":" typename ";" )+ "end" "record"
+	;
+
+arraytypedefn :
+	  "array" "\[" integerconstant ".." integerconstant "\]" "of" typename
+	;
+
+integerconstant :
+	  INTLIT
+	| refconst
+	;
+
+proceduredecl :
+	  "procedure" def { formalpart } "=" subprogrambody ";"
+	;
+
+formalpart :
+	  "\(" parameterspec ( ";" parameterspec )* "\)"
+	;
+
+parameterspec :
+	  { "var" } identifierlist ":" typename
+	;
+
+statement :
+	  assignmentstmnt
+	| exitstmnt
+	| procedurecallstmnt
+	| returnstmnt
+	| ifstmnt
+	| loopstmnt
+	| iostatement
+	;
+
+iostatement :
+	  "put" "\(" expression "\)" ";"
+	| "get" "\(" variable "\)" ";"
+	| "skipLine" ";"
+	| "newLine" ";"
+	;
+
+assignmentstmnt :
+	  variable ":=" expression ";"
+	| constant ":=" expression ";"
+	;
+
+variable :
+	  refvar ( "\[" expression "\]" | "\." .)*
+	;
+
+exitstmnt :
+	  "exit" { "when" booleanexpression } ";"
+	;
+
+procedurecallstmnt :
+	  proc { actualparameterlist } ";"
+	;
+
+actualparameterlist :
+	  "\(" expression ( "," expression )* "\)"
+	;
+
+returnstmnt :
+	  "return" ";"
+	;
+
+ifstmnt :
+	  "if" ifpart "end" "if" ";"
+	;
+
+ifpart :
+	  booleanexpression "then" ( statement )* { "elsif" ifpart | "else" ( statement )* }
+	;
+
+loopstmnt :
+	  { "while" booleanexpression } "loop" ( statement )* "end" "loop" ";"
+	;
+
+expression :
+	  relation ( ( "and" | "or" ) relation )*
+	;
+
+relation :
+	  simpleexpression { ( "=" | "/=" | "<" | "<=" | ">" | ">=" ) simpleexpression }
+	;
+
+simpleexpression :
+	  { ( "\+" | "\-" ) } simpleexpression2
+	;
+
+simpleexpression2 :
+	  term ( ( "\+" | "\-" ) term )*
+	;
+
+term :
+	  factor ( ( "\*" | "/" | "mod" ) factor )*
+	;
+
+factor :
+	  "not" factor
+	| constantvalue
+	| variable
+	| "\(" expression "\)"
+	;
+
+typename :
+	  type
+	| "Integer"
+	| "Boolean"
+	;
+
+booleanexpression :
+	  expression
+	;
+
+def :
+	  ident
+	| already_defined
+	;
+
+already_defined :
+	  varx
+	| constant
+	| proc
+	| type
+	;
+
+refvar :
+	  ident
+	| varx
+	;
+
+refconst :
+	  ident
+	| constant
+	;
+
+refproc :
+	  ident
+	| proc
+	;
+
+ident :
+	  IDENT
+	;
+
+varx :
+	  VAR
+	;
+
+constant :
+	  CONST
+	;
+
+proc :
+	  PROC
+	;
+
+type :
+	  TYPE
+	;

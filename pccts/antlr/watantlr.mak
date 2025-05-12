@@ -51,4 +51,3 @@ clean:
 scrub:
 	del $(PCCTS_GEN) 
 	del *.$(OBJ_EXT)
-EOF_watantlr.mak

@@ -1,0 +1,5 @@
+line 4: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Integer
+	Rvalue was of type Boolean
+	Lvalue was: x
+	Rvalue was: TRUE

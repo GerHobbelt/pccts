@@ -32,9 +32,18 @@
 /* To set a breakpoint for fatal error look for "fatal_intern" */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
 
 #include "pcctscfg.h"
 #include "stdpccts.h"
+
+#ifdef PCCTS_USE_STDARG
+#include <stdarg.h>
+#else
+#include <varargs.h>
+#endif
 
 #define MAX_INT_STACK 50
 static int istack[MAX_INT_STACK];		/* Int stack */
@@ -280,8 +289,8 @@ static void pInfo(s,t)                                      /* MR10 */
       InfoF=1;
     } else {
       warnNoFL(eMsgd("unrecognized -info option \"%c\"",(int)*p));
-    };
-  };
+    }
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -379,6 +388,196 @@ static void pW2() { WarningLevel = 2; }
 static void pCC() { GenCC = TRUE; }
 #endif
 
+
+
+void 
+#ifdef __USE_PROTOS
+p_errors_borland_style(void)
+#else
+p_errors_borland_style()
+char *s;
+char *t;
+#endif
+{                     
+  printf_stderr_cfg(ERR_DIAG_FMT_BCC, NULL, -1, NULL);
+}
+
+void 
+#ifdef __USE_PROTOS
+p_errors_msvc_style(void)
+#else
+p_errors_msvc_style()
+char *s;
+char *t;
+#endif
+{                     
+  printf_stderr_cfg(ERR_DIAG_FMT_MSVC, NULL, -1, NULL);
+}
+
+void 
+#ifdef __USE_PROTOS
+p_errors_mpw_style(void)
+#else
+p_errors_mpw_style()
+char *s;
+char *t;
+#endif
+{                     
+  printf_stderr_cfg(ERR_DIAG_FMT_MPW, NULL, -1, NULL);
+}
+
+
+
+
+/* extern void fatal(char *message, int line_no); */
+void 
+#ifdef __USE_PROTOS
+p_response_file(int *argc_ptr, char ***argv_ptr, char *s, char *t)
+#else
+p_response_file(argc_ptr, argv_ptr, s, t)
+int *argc_ptr;
+char ***argv_ptr;
+char *s;
+char *t;
+#endif
+{
+  FILE *f;
+  char *buf;
+  long int len;
+  char **newargv;
+  int newargc;
+  char *dst;
+  char *src;
+  int i;
+  int j;
+               
+  if (!t)
+  {
+    fatal("-rsp requires a filename as argument...");
+  }
+  f = fopen(t, "r");
+  if (!f)
+  {
+    fatal("Cannot open -rsp response file...");
+  }
+  fseek(f, 0, SEEK_END);
+  len = ftell(f) + 2;
+  fseek(f, 0, SEEK_SET);
+  buf = (char *)malloc(len);
+  if (!buf)
+  {
+    fatal("Cannot allocate response file processing buffer...");
+  }
+  len = fread(buf, 1, len, f);      
+  if (len < 0)
+  {
+    fatal("Cannot read response file...");
+  }
+  /* double sentinel! */
+  buf[len++] = 0;
+  buf[len++] = 0;
+
+  /* decode buf[] into argv list... */
+  for (newargc = 0, src = dst = buf; *src; )
+  {
+    switch (*src)
+    {
+    case '\"':
+      /* boudble-quoted string applies only if double-quote found at start of argv element */
+      if (src == buf || dst == buf || dst[-1] == 0)
+      {
+        /* quoted argument: skip/convert 'escaped' doublequotes, find next doublequote as terminator */
+        for ( ; *src; )
+        {
+          switch (*src)
+          {
+          case '\\':
+            if (src[1] == '\"')
+            {
+              *dst++ = '\"';
+              src += 2;
+              continue;
+            }
+            *dst++ = *src++;
+            continue;
+
+          case '\"':
+            /* terminating quote */
+            *dst++ = 0;
+            newargc++;
+            src++;
+            break;
+
+          /* accept \r and \n within string; you might consider this a bug though ;-) */
+          default:
+            *dst++ = *src++;
+            continue;
+          }
+          break;
+        }
+        /* yes, "" is an _empty_ argument! it's allowed this way! */
+        break;
+      }
+      /* fall through */
+
+    case '\r':
+    case '\n':
+    case ' ':
+    case '\t':
+    default:
+      if (isspace(*src))
+      {
+        if (dst > buf && dst[-1] != 0)
+        {
+          *dst++ = 0;
+          newargc++;
+        }
+        src++;
+        continue;
+      }
+      /* else: non-whitespace: part of an argv[] element! */
+      *dst++ = *src++;
+      continue;
+    }
+  }
+  *dst++ = 0; /* write extra NUL sentinel at end of list */
+    
+  /* now merge new/old argv elems */
+  newargv = (char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
+  if (!newargv)
+  {
+    fatal("Cannot allocate response file processing buffer...");
+  }
+
+  /* merge response file argv[] elems at location of -rsp option: front of list! */
+  newargv[0] = "###"; /* dummy entry */
+  for(i = 1, src = buf; i < newargc+1; i++)
+  { 
+    newargv[i] = src;
+    src = strchr(src, 0);
+    if (src == NULL)
+    {
+      fatal("assert: src!=NULL");
+    }
+    src++;
+  }
+
+  /* now add remaining argv[] elems: argv_ptr[0][2] and beyond! */
+  for (j = 2; j < argc_ptr[0]; j++, i++)
+  {
+    newargv[i] = argv_ptr[0][j];
+  }
+
+  /* add terminator */
+  newargv[i] = NULL;
+
+  /* patch pointers! */
+  argc_ptr[0] = i;
+  argv_ptr[0] = newargv;
+
+  return;
+}
+
 static void
 #ifdef __USE_PROTOS
 pPre( char *s, char *t )
@@ -449,11 +648,11 @@ char *t;
 	if ( ci_strequ(t,"on")) MRhoisting = 1;
 	else if ( ci_strequ(t,"off")==0 ) MRhoisting = 0;
     if (MRhoisting) {
-        fprintf(stderr,"Maintenance Release style hoisting enabled for predicates with lookahead depth = 1\n");
-        fprintf(stderr,"  No longer considered experimental\n");
-        fprintf(stderr,"  Can't consider suppression for predicates with lookahead depth > 1\n");
-        fprintf(stderr,"  Implies -prc on but does *not* imply -mrhoistk for k>1 predicates\n");
-        fprintf(stderr,"  This is a reminder, not a warning or error.\n");
+        printf_stderr_continued("Maintenance Release style hoisting enabled for predicates with lookahead depth = 1\n");
+        printf_stderr_continued("  No longer considered experimental\n");
+        printf_stderr_continued("  Can't consider suppression for predicates with lookahead depth > 1\n");
+        printf_stderr_continued("  Implies -prc on but does *not* imply -mrhoistk for k>1 predicates\n");
+        printf_stderr_continued("  This is a reminder, not a warning or error.\n");
     };
 }
 
@@ -469,9 +668,9 @@ char *t;
 	if ( ci_strequ(t,"on")) MRhoistingk = 1;
 	else if ( ci_strequ(t,"off")==0 ) MRhoistingk = 0;
     if (MRhoistingk) {
-        fprintf(stderr,"EXPERIMENTAL Maintenance Release style hoisting enabled\n");
-        fprintf(stderr,"  Applies to predicates with lookahead depth > 1\n");
-        fprintf(stderr,"  Implies -prc on and -mrhoist on\n");
+        printf_stderr_continued("EXPERIMENTAL Maintenance Release style hoisting enabled\n");
+        printf_stderr_continued("  Applies to predicates with lookahead depth > 1\n");
+        printf_stderr_continued("  Implies -prc on and -mrhoist on\n");
     };
 }
 
@@ -500,7 +699,7 @@ Opt options[] = {
     { "-e1", 0, (void (*)(...)) pE1,	"Ambiguities/errors shown in low detail (default)"},
     { "-e2", 0, (void (*)(...)) pE2,	"Ambiguities/errors shown in more detail"},
     { "-e3", 0, (void (*)(...)) pE3,
-    	"Ambiguities for k>1 grammars shown with exact tuples (not lookahead sets)"},
+                                	"Ambiguities for k>1 grammars shown with exact tuples (not lookahead sets)"},
     { "-f",  1, (void (*)(...)) pFileList,"Read names of grammar files from specified file"}, /* MR14 */
     { "-fe", 1, (void (*)(...)) pFe,	"Rename err.c"},
     { "-fh", 1, (void (*)(...)) pFHdr,	"Rename stdpccts.h header (turns on -gh)"},
@@ -527,31 +726,35 @@ Opt options[] = {
     { "-pa", 0, (void (*)(...)) pPrtA,	"Print out the grammar w/o actions & w/FIRST sets (default=no)"},
     { "-pr",0, (void (*)(...)) pPred,	"no longer used; predicates employed if present"},
     { "-prc", 1, (void (*)(...)) pPredCtx,"Turn on/off computation of context for hoisted predicates"},
-   	{ "-rl", 1, (void (*)(...)) pTRes,	"Limit max # of tree nodes used by grammar analysis"},
+    { "-rl", 1, (void (*)(...)) pTRes,	"Limit max # of tree nodes used by grammar analysis"},
     { "-stdout",0,  (void (*)(...)) pStdout,"Send grammar.c/grammar.cpp to stdout"},           /* MR6 */
-	{ "-tab", 1, (void (*)(...)) pTab,	"Width of tabs (1 to 8) for grammar.c/grammar.cpp files"}, /* MR6 */
-	{ "-w1", 0, (void (*)(...)) pW1,	"Set the warning level to 1 (default)"},
-	{ "-w2", 0, (void (*)(...)) pW2,	"Ambiguities yield warnings even if predicates or (...)? block"},
-	{ "-",   0, (void (*)(...)) pStdin,	"Read grammar from stdin" },
+    { "-tab", 1, (void (*)(...)) pTab,	"Width of tabs (1 to 8) for grammar.c/grammar.cpp files"}, /* MR6 */
+    { "-w1", 0, (void (*)(...)) pW1,	"Set the warning level to 1 (default)"},
+    { "-w2", 0, (void (*)(...)) pW2,	"Ambiguities yield warnings even if predicates or (...)? block"},
+    { "-",   0, (void (*)(...)) pStdin,	"Read grammar from stdin" },
     { "-mrhoist",1, (void (*)(...)) pMRhoist,                                                  /* MR9 */
                                         "Turn on/off k=1 Maintenance Release style hoisting"},  /* MR9 */
     { "-mrhoistk",1, (void (*)(...)) pMRhoistk,                                                  /* MR9 */
                                         "Turn on/off EXPERIMENTAL k>1 Maintenance Release style hoisting"},  /* MR13 */
     { "-aa"  , 1, (void (*)(...)) pAA,  "Ambiguity aid for a rule (rule name or line number)"},          /* MR11 */
     { "-aam" , 0, (void (*)(...)) pAAm,
-                                         "Lookahead token may appear multiple times in -aa listing"},    /* MR11 */
+                                        "Lookahead token may appear multiple times in -aa listing"},    /* MR11 */
     { "-aad" , 1, (void (*)(...)) pAAd,
-                                         "Limits exp growth of -aa listing - default=1 (max=ck value)"}, /* MR11 */
+                                        "Limits exp growth of -aa listing - default=1 (max=ck value)"}, /* MR11 */
 	{ "-info", 1, (void (*)(...)) pInfo,
-      "Extra info: p=pred t=tnodes f=first/follow m=monitor o=orphans 0=noop"},                          /* MR12 */
+                                        "Extra info: p=pred t=tnodes f=first/follow m=monitor o=orphans 0=noop"},  /* MR12 */
     { "-treport",1,(void (*)(...)) pTreport,
-                        "Report when tnode usage exceeds value during ambiguity resolution"},            /* MR11 */
-	{ "-newAST", 0, (void (*)(...)) pNewAST,
-                 "In C++ mode use \"newAST(...)\" rather than \"new AST(...)\""},                        /* MR13 */
+                                        "Report when tnode usage exceeds value during ambiguity resolution"}, /* MR11 */
+    { "-newAST", 0, (void (*)(...)) pNewAST,
+                                        "In C++ mode use \"newAST(...)\" rather than \"new AST(...)\""},  /* MR13 */
 	{ "-tmake", 0, (void (*)(...)) ptmakeInParser,
                  "In C++ mode use parser's tmake method rather than \"ASTBase::tmake(...)\""},			 /* MR23 */
     { "-alpha",0,(void (*)(...)) pAlpha,
                  "Provide additional information for \"(alpha)? beta\" error messages"},                 /* MR14 */
+    { "-rsp", 2, (void (*)(...))p_response_file, "Specify 'response file' which contains additional commandline parameters"},
+    { "-ebcc", 0, (void (*)(...))p_errors_borland_style, "Output errors in Borland C/C++ IDE compatible format to stdout"},
+    { "-emsvc", 0, (void (*)(...))p_errors_msvc_style, "Output errors in Microsoft Visual C/C++ compatible format to stderr"},
+    { "-empw", 0, (void (*)(...))p_errors_mpw_style, "Output errors in Macintosh Programmers Workshop compatible format to stderr"},
     { "-mrblkerr",0,(void (*)(...)) pMR_BlkErr,                                        /* MR21 */
                  "EXPERIMENTAL change to (...)* and (...)+ syntax error sets"},        /* MR21 */
 	{ "-nopurify",0,(void (*)(...)) pNOPURIFY,
@@ -614,6 +817,10 @@ Opt options[] = {
                  "In C++ mode use parser's tmake method rather than \"ASTBase::tmake(...)\""},   /* MR23 */
     { "-alpha",0, pAlpha,
                  "Provide additional information for \"(alpha)? beta\" error messages"},  /* MR14 */
+	{ "-rsp", 2, p_response_file, "Specify 'response file' which contains additional commandline parameters"},
+	{ "-ebcc", 0, p_errors_borland_style, "Output errors in Borland C/C++ IDE compatible format to stdout"},
+	{ "-emsvc", 0, p_errors_msvc_style, "Output errors in Microsoft Visual C/C++ compatible format to stderr"},
+	{ "-empw", 0, p_errors_mpw_style, "Output errors in Macintosh Programmers Workshop compatible format to stderr"},
     { "-mrblkerr",0,pMR_BlkErr,                                                           /* MR21 */
                  "EXPERIMENTAL change to (...)* and (...)+ syntax error sets"},           /* MR21 */
 	{ "-nopurify",0,pNOPURIFY,
@@ -624,8 +831,8 @@ Opt options[] = {
 	{ NULL,  0, NULL }
  };
 
-void readDescr();
-void cleanUp();
+static void readDescr();
+static void cleanUp();
 
 #ifdef __USE_PROTOS
 static void buildRulePtr( void );
@@ -655,6 +862,9 @@ ActionNode *a;
             FileStr[a->file],a->line);                                      /* MR10 */
 }                                                                           /* MR10 */
 
+
+
+
 								/* M a i n */
 
 int
@@ -677,7 +887,7 @@ char *argv[];
 #ifdef SPECIAL_INITS
     special_inits();                                                 /* MR1 */
 #endif
-	fprintf(stderr, "Antlr parser generator   Version %s   1989-2001\n", Version);
+	printf_stderr_continued( "Antlr parser generator   Version %s   1989-2001\n", Version);
 	if ( argc == 1 ) { help(); zzDIE; }
 	ProcessArgs(argc-1, &(argv[1]), options);
 
@@ -688,11 +898,11 @@ char *argv[];
     if (MRhoistingk) {              /* MR13 */
       HoistPredicateContext=1;      /* MR13 */
       MRhoisting=1;                 /* MR13 */
-    };                              /* MR13 */
+    }                              /* MR13 */
     if (MRhoisting && ! HoistPredicateContext) {
 /***      warnNoFL("Using \"-mrhoist\" forces \"-prc on\"");    ***/
       HoistPredicateContext=1;
-    };
+    }
     if (HoistPredicateContext && ! MRhoisting) {
         warnNoFL("When using predicate context (-prc on) -mrhoist on is recommended");
     }
@@ -709,14 +919,14 @@ char *argv[];
 		int n;
 		for(n=1; n<CLL_k; n<<=1) {;}
 		OutputLL_k = n;
-	};
+	}
 
 	if (MR_BlkErr) {
 		warnNoFL("The -mrblkerr option is EXPERIMENTAL");
         if (LL_k > 1) {
     		warnNoFL("The -mrblkerr option is designed only for k=1 ck=1 grammars");
         }
-	};
+	}
 
     if ( ! ambAidDepthSpecified) {
       MR_AmbAidDepth=1;
@@ -725,11 +935,11 @@ char *argv[];
         warnNoFL(eMsgd(
             "Ambiguity aid depth (\"-aad ...\") must be a number between 1 and max(k,ck)=%d",CLL_k));
         MR_AmbAidDepth=1;
-      };
+      }
       if (MR_AmbAidDepth == 0) {
         MR_AmbAidDepth=2;
-      };
-    };
+      }
+    }
 
     if (MR_AmbAidRule != NULL) MR_AmbAidLine=atoi(MR_AmbAidRule);
 
@@ -747,7 +957,7 @@ char *argv[];
 	   warnNoFL("no #header action was found");
 	if ( FoundAtOperator && ! FoundExceptionGroup) {
 	   warnNoFL("found the exception operator '@' - but no exception group was found");
-	};
+	}
 	EpToken = addTname(EPSTR);		/* add imaginary token epsilon */
 	set_orel(EpToken, &imag_tokens);
 
@@ -791,7 +1001,7 @@ char *argv[];
  	  	      genStdPCCTSIncludeFile(f,NULL);                        /* MR10 */
             } else {                                                 /* MR10 */
  	  	      genStdPCCTSIncludeFile(f,pcctsBaseName(stdpccts));     /* MR32 */
-            };
+            }
 			fclose(f);
 		}
 	}
@@ -865,11 +1075,13 @@ char *argv[];
 				}
 			}
 			DumpRemainingTokSets();
-			fprintf(Parser_h, "};\n");
+            fprintf(Parser_h, "};\n");
 			fprintf(Parser_h, "\n#endif /* %s_h */\n", CurrentClassName);
 			fclose( Parser_h );
 			fclose( Parser_c );
 		}
+        	
+        genEndOfDefFile();	/* [i_a] */
 	}
 
     MR_orphanRules(stderr);
@@ -899,7 +1111,7 @@ char *argv[];
 /* MR10 */      list_apply(NumericPredLabels,report_numericPredLabels);
 #endif
 #endif
-/* MR10 */    };
+/* MR10 */    }
 
     if (InfoT && TnodesAllocated > 0) {
       if (TnodesPeak > 10000) {
@@ -912,19 +1124,19 @@ char *argv[];
                         TnodesPeak,
                         TnodesAllocated,
                         TnodesInUse-tnodes_used_in_guard_predicates_etc);
-       };
-    };
+       }
+    }
     if (InfoF) {
       DumpFcache();
-    };
+    }
     if (MR_skipped_e3_report) {
-      fprintf(stderr,"note: use -e3 to get exact information on ambiguous tuples\n");
-    };
+      printf_stderr_continued("note: use -e3 to get exact information on ambiguous tuples\n");
+    }
     if (MR_BadExprSets != 0) {
-      fprintf(stderr,"note: Unreachable C or C++ code was generated for empty expression sets,\n");
-      fprintf(stderr,"        probably due to undefined rules or infinite left recursion.\n");
-      fprintf(stderr,"      To locate: search the generated code for \"empty set expression\"\n");
-    };
+      printf_stderr_continued("note: Unreachable C or C++ code was generated for empty expression sets,\n");
+      printf_stderr_continued("        probably due to undefined rules or infinite left recursion.\n");
+      printf_stderr_continued("      To locate: search the generated code for \"empty set expression\"\n");
+    }
     if (MR_AmbAidRule != NULL && MR_matched_AmbAidRule==0) {
       RuleEntry *q = (RuleEntry *) hash_get(Rname,MR_AmbAidRule);
       if (MR_AmbAidLine == 0 && q == NULL) {
@@ -932,30 +1144,29 @@ char *argv[];
                                                         MR_AmbAidRule,MR_AmbAidRule));
       } else {
         warnNoFL(eMsg1("there was no ambiguity that matched \"-aa %s\"",MR_AmbAidRule));
-      };
-    };
+      }
+    }
     if (AlphaBetaTrace) {
 
       if (MR_AlphaBetaMessageCount == 0) {
-         fprintf(stderr,"note: there were no messages about \"(alpha)? beta\" blocks added to the generated code\n");
+         printf_stderr_continued("note: there were no messages about \"(alpha)? beta\" blocks added to the generated code\n");
       } else {
-         fprintf(stderr,"note: there were %d messages about \"(alpha)? beta\" blocks added to the generated code\n",
+         printf_stderr_continued("note: there were %d messages about \"(alpha)? beta\" blocks added to the generated code\n",
                     MR_AlphaBetaMessageCount);
       }
 
       if (set_null(MR_CompromisedRules)) {
-         fprintf(stderr,"note: the list of rules with compromised follow sets is empty\n");
+         printf_stderr_continued("note: the list of rules with compromised follow sets is empty\n");
       } else {
-         fprintf(stderr,"note: the following is a list of rules which *may* have incorrect\n");
-         fprintf(stderr,"      follow sets computed as a result of an \"(alpha)? beta\" block\n");
-         fprintf(stderr,"\n");
+         printf_stderr_continued("note: the following is a list of rules which *may* have incorrect\n");
+         printf_stderr_continued("      follow sets computed as a result of an \"(alpha)? beta\" block\n");
+         printf_stderr_continued("\n");
          MR_dumpRuleSet(MR_CompromisedRules);
-         fprintf(stderr,"\n");
+         printf_stderr_continued("\n");
       }
     }
 	cleanUp();
-	exit(PCCTS_EXIT_SUCCESS);
-    return 0;           /* MR11 make compilers happy */ 
+	return PCCTS_EXIT_SUCCESS;
 }
 
 static void 
@@ -1014,10 +1225,10 @@ help( )
 #endif
 {
 	Opt *p = options;
-	fprintf(stderr, "antlr [options] f1 f2 ... fn\n");
+	printf_stderr_continued( "antlr [options] f1 f2 ... fn\n");
 	while ( *(p->option) != '*' )
 	{
-		fprintf(stderr, "    %-9s%s   %s\n",
+		printf_stderr_continued( "    %-9s%s   %s\n",
 						p->option,
 						(p->arg)?"___":"   ",
 						p->descr);
@@ -1058,12 +1269,12 @@ dlgerror(s)
 char *s;
 #endif
 {
-	fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);
-	fprintf(stderr, " lexical error: %s (text was '%s')\n",
+	printf_stderr(FileStr[CurFile], zzline
+	             ," lexical error: %s (text was '%s')\n",
 					((s == NULL) ? "Lexical error" : s), zzlextext);
 }
 
-void
+static void
 #ifdef __USE_PROTOS
 readDescr( void )
 #else
@@ -1137,7 +1348,7 @@ char *fs;
       return outnameX(fs,CPP_FILE_SUFFIX);
     } else {
       return outnameX(fs,".c");
-    };
+    }
 }
 
 char *
@@ -1173,8 +1384,7 @@ char *f;
 int l;
 #endif
 {
-	fprintf(stderr, ErrHdr, f, l);
-	fprintf(stderr,	" %s\n", err_);
+	printf_stderr(f, l, " %s\n", err_);
 	cleanUp();
 	exit(PCCTS_EXIT_FAILURE);
 }
@@ -1189,26 +1399,22 @@ char *f;
 int l;
 #endif
 {
-	fprintf(stderr, ErrHdr, f, l);
-	fprintf(stderr,	" #$%%*&@# internal error: %s\n", err_);
-	fprintf(stderr, ErrHdr, f, l);
-	fprintf(stderr, " [complain to nearest government official\n");
-	fprintf(stderr, ErrHdr, f, l);
-	fprintf(stderr, "  or send hate-mail to parrt@parr-research.com;\n");
-	fprintf(stderr, ErrHdr, f, l);
-	fprintf(stderr, "  please pray to the ``bug'' gods that there is a trival fix.]\n");
+	printf_stderr(f, l, " #$%%*&@# internal error: %s\n", err_);
+	printf_stderr(f, l, " [complain to nearest government official\n");
+	printf_stderr(f, l, "  or send hate-mail to parrt@parr-research.com;\n");
+	printf_stderr(f, l, "  please pray to the ``bug'' gods that there is a trival fix.]\n");
 	cleanUp();
 	exit(PCCTS_EXIT_FAILURE);
 }
 
-void
+static void
 #ifdef __USE_PROTOS
 cleanUp( void )
 #else
 cleanUp( )
 #endif
 {
-	if ( DefFile != NULL) fclose( DefFile );
+	if ( DefFile != NULL ) fclose( DefFile );
 }
 
 /* sprintf up to 3 strings */
@@ -1275,13 +1481,19 @@ set e;
 
 	if ( set_nil(e) ) return;
 	if ( (q=p=set_pdq(e)) == NULL ) fatal_internal("Can't alloc space for set_pdq");
-	fprintf(f, "{");
+	f == stderr 
+	? printf_stderr_continued( "{") 
+	: fprintf(f, "{");
 	while ( *p != nil )
 	{
-		fprintf(f, " %s", TerminalString(*p));
+		f == stderr 
+		? printf_stderr_continued( " %s", TerminalString(*p)) 
+		: fprintf(f, " %s", TerminalString(*p));
 		p++;
 	}
-	fprintf(f, " }");
+	f == stderr 
+	? printf_stderr_continued( " }") 
+	: fprintf(f, " }");
 	free((char *)q);
 }
 
@@ -1295,7 +1507,7 @@ int token;
 #endif
 {
 	int     j;
-        static    char    imag_name[20];
+    static char imag_name[20];
 
 	/* look in all lexclasses for the token */
 	if ( TokenString(token) != NULL ) return TokenString(token);
@@ -1305,13 +1517,8 @@ int token;
 		if ( ExprString(token) != NULL ) return ExprString(token);
 	}
 
-    if (1) {
-      sprintf(imag_name,"UnknownToken#%d",token);           /* MR13 */
-      return imag_name;                                     /* MR13 */
-    }
-
-	require(j<NumLexClasses, eMsgd("No label or expr for token %d",token));
-	return "invalid";
+    sprintf(imag_name,"UnknownToken#%d",token);           /* MR13 */
+    return imag_name;                                     /* MR13 */
 }
 
                     /* S i m p l e  I n t  S t a c k */
@@ -1401,20 +1608,39 @@ Opt *options;
 			if ( strcmp(p->option, "*") == 0 ||
 				 ci_strequ(p->option, *argv) == 1 )
 			{
-				if ( p->arg )
+				switch( p->arg )
 				{
+        case 2:
+          if (argc > 0) {
+            (*p->process)( &argc, &argv, *argv, *(argv+1) );
+            argc--;
+          }
+          else
+          {
+            printf_stderr_continued("error: required argument for option %s omitted\n",*argv);
+            exit(PCCTS_EXIT_FAILURE);
+          }
+          break;
+
+        case 1:
 /* MR9  26-Sep-97   Check for argv valid                */
-                    if (argc-- > 0) {
-  				     	(*p->process)( *argv, *(argv+1) );
-					    argv++;
-                    } else {
-fprintf(stderr,"error: required argument for option %s omitted\n",*argv);
-exit(PCCTS_EXIT_FAILURE);
-                    };
-				}
-				else
-					(*p->process)( *argv );
-				break;
+          if (argc-- > 0) {
+            (*p->process)( *argv, *(argv+1) );
+            argv++;
+          }
+          else
+          {
+            printf_stderr_continued("error: required argument for option %s omitted\n",*argv);
+            exit(PCCTS_EXIT_FAILURE);
+          }
+          break;
+
+        default:
+        case 0:
+				  (*p->process)( *argv );
+          break;
+        }
+  			break;
 			}
 			p++;
 		}
@@ -1529,7 +1755,9 @@ char *n;
 	if (newname[strlen(newname)-1] != *dir_sym) {
 		strcat(newname, dir_sym);
 	}
+	/* concatenate FILE NAME ONLY to new output directory */
 	strcat(newname, p);
+
 	return newname;
 }
 
@@ -1594,7 +1822,7 @@ warnNoFL(err)
 char *err;
 #endif
 {
-	fprintf(stderr, "warning: %s\n", err);
+	printf_stderr_continued( "warning: %s\n", err);
 }
 
 void
@@ -1607,8 +1835,7 @@ int l;
 char *err;
 #endif
 {
-	fprintf(stderr, ErrHdr, f, l);						
-	fprintf(stderr, " warning: %s\n", err);
+	printf_stderr(f, l, " warning: %s\n", err);
 }
 
 void
@@ -1621,8 +1848,7 @@ char *err;
 {
 	/* back up the file number if we hit an error at the end of the last file */
 	if ( CurFile >= NumFiles && CurFile >= 1 ) CurFile--;
-	fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);
-	fprintf(stderr, " warning: %s\n", err);
+	printf_stderr(FileStr[CurFile], zzline, " warning: %s\n", err);
 }
 
 void
@@ -1635,8 +1861,7 @@ char *err;
 {
 	/* back up the file number if we hit an error at the end of the last file */
 	if ( CurFile >= NumFiles && CurFile >= 1 ) CurFile--;
-	fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);
-	fprintf(stderr, " warning: %s", err);
+	printf_stderr(FileStr[CurFile], zzline, " warning: %s", err);
 }
 
 void
@@ -1647,7 +1872,7 @@ errNoFL(err)
 char *err;
 #endif
 {
-	fprintf(stderr, "error: %s\n", err);
+	printf_stderr_continued( "error: %s\n", err);
 }
 
 void
@@ -1660,8 +1885,7 @@ char *f;
 int l;
 #endif
 {
-	fprintf(stderr, ErrHdr, f, l);						
-	fprintf(stderr, " error: %s\n", err);
+	printf_stderr(f, l, " error: %s\n", err);
 }
 
 void
@@ -1674,8 +1898,7 @@ char *err;
 {
 	/* back up the file number if we hit an error at the end of the last file */
 	if ( CurFile >= NumFiles && CurFile >= 1 ) CurFile--;
-	fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);
-	fprintf(stderr, " error: %s\n", err);
+	printf_stderr(FileStr[CurFile], zzline, " error: %s\n", err);
 }
 
 void
@@ -1688,8 +1911,7 @@ char *err;
 {
 	/* back up the file number if we hit an error at the end of the last file */
 	if ( CurFile >= NumFiles && CurFile >= 1 ) CurFile--;
-	fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);
-	fprintf(stderr, " error: %s", err);
+	printf_stderr(FileStr[CurFile], zzline, " error: %s", err);
 }
 
 UserAction *
@@ -1745,3 +1967,377 @@ int altnum;
 	strcpy(p, buf);
 	return p;
 }
+
+
+/* [i_a] introduced generic routine from writing error diagnostics to console/IDE */
+static struct
+{
+  printf_stderr_format_t fmt_type;
+  char *srcfile_for_report;
+  int srcline_for_report;
+  FILE *output_file;
+  char *msgbuf;
+  int msgbufsize;
+  int line_started;  /* !0 if header has been written */
+  int is_initialized;
+} printf_stderr_cfgdata =
+{
+  ERR_DIAG_FMT_UNKNOWN,
+  NULL,
+  0,
+  NULL,
+  NULL,
+  0
+};
+
+void printf_stderr_cfg(printf_stderr_format_t type, const char *srcfile_for_report, int srcline_for_report, FILE *output)
+{
+  if (type != ERR_DIAG_FMT_UNCHANGED)
+  {
+    printf_stderr_cfgdata.fmt_type = type;
+  }
+  if (srcfile_for_report != NULL)
+  {
+    if (printf_stderr_cfgdata.srcfile_for_report != NULL)
+    {                                           
+      if (0 != strcmp(printf_stderr_cfgdata.srcfile_for_report, srcfile_for_report))
+      {
+        free(printf_stderr_cfgdata.srcfile_for_report);
+      }
+      printf_stderr_cfgdata.srcfile_for_report = STRDUP(srcfile_for_report);
+    }
+    else
+    {
+      printf_stderr_cfgdata.srcfile_for_report = STRDUP(srcfile_for_report);
+    }
+  }
+  if (srcline_for_report >= 0)
+  {
+    printf_stderr_cfgdata.srcline_for_report = srcline_for_report;
+  }
+  if (output != NULL)
+  {
+    printf_stderr_cfgdata.output_file = output;
+  }
+
+  if (printf_stderr_cfgdata.msgbuf == NULL)
+  {
+    printf_stderr_cfgdata.msgbufsize = 4096; /* this'll be large enough for a single line... */
+    printf_stderr_cfgdata.msgbuf = (char *)malloc(printf_stderr_cfgdata.msgbufsize);
+    if (NULL == printf_stderr_cfgdata.msgbuf)
+    {
+      printf_stderr_continued( "Cannot allocate error diagnostic scratch buffer.\n");
+      exit(EXIT_FAILURE);
+    }
+    printf_stderr_cfgdata.msgbuf[0] = 0;
+  }
+  printf_stderr_cfgdata.is_initialized = !0;
+}
+
+static void printf_stderr_header(void)
+{
+  FILE *out;
+  const char *srcname;
+  const char *srcfile;
+  int srcline;
+
+  out = printf_stderr_file();
+
+  srcfile = printf_stderr_cfgdata.srcfile_for_report;
+  if (srcfile == NULL)
+  {
+    /* don't print a header (yet) */
+    printf_stderr_cfgdata.line_started = !0;
+    return;
+  }
+  srcname = strrchr(srcfile, '/');
+  if (!srcname) srcname = strrchr(srcfile, '\\');
+  if (!srcname) srcname = strrchr(srcfile, ':');
+  if (!srcname) srcname = strrchr(srcfile, ']');
+  if (!srcname) srcname = srcfile-1;
+  srcname++;
+
+  srcline = printf_stderr_cfgdata.srcline_for_report;
+
+  switch (printf_stderr_cfgdata.fmt_type)
+  {
+  default:
+  case ERR_DIAG_FMT_UNKNOWN:
+    /* default: "%s, line %d:" */
+    fprintf(out, "%s, line %d:", srcfile, srcline);
+    break;
+
+  case ERR_DIAG_FMT_MPW:
+    /* Macintosh Programmer's Workshop */
+    fprintf(out, "File \"%s\"; Line %d #", srcfile, srcline);
+    break;
+
+  case ERR_DIAG_FMT_MSVC:
+    /* Microsoft Visual C++ environment */
+    {
+#if defined PC
+      /*
+         generate the 'full path' from this for MSVC6+7; 
+         not absolutely necessary unless you have multiple identically 
+         named sources in several different directories.
+       */
+      char buf[_MAX_PATH];
+      char *p = _fullpath(buf, srcfile, sizeof(buf));
+      if (p)
+        srcfile = p;
+#endif
+      fprintf(out, "%s(%d) :", srcfile, srcline);
+    }
+    break;
+
+  case ERR_DIAG_FMT_BCC:
+    /* Borland C/C++ IDE */
+    //
+    // Handle messages of the form:
+    //    Type Filename ####: MessageText
+    // where:
+    //    Type is one of: "Error", "Warning", "Fatal"
+    //    Filename is the name of the source module
+    //    #### is a number representing the line in the source module
+    //
+    // Messages with this format are generated by most Borland Tools
+    //
+    fprintf(out, "Warning %s %d: ", srcfile, srcline);
+    break;
+  }
+
+  printf_stderr_cfgdata.line_started = !0;
+}
+
+#ifdef PCCTS_USE_STDARG
+void printf_stderr(const char *srcfile, int srcline, const char *fmt, ...)
+#else
+void printf_stderr(va_alist)
+va_dcl
+#endif
+{
+  va_list args;
+#ifndef PCCTS_USE_STDARG			/* MR20 */
+	char *srcfile;
+	int srcline;
+	const char *fmt;
+#endif
+  FILE *out;
+  char *p;
+  char *str;
+
+#ifdef PCCTS_USE_STDARG         /* MR20 */
+	va_start(args, fmt);
+#else
+	va_start(ap);
+	srcfile = va_arg(ap, char *);
+	srcline = va_arg(ap, int);
+	fmt = va_arg(ap, char *);
+#endif
+
+  if (!printf_stderr_cfgdata.is_initialized)
+  {
+    printf_stderr_cfg(ERR_DIAG_FMT_UNCHANGED, NULL, -1, NULL);
+  }
+
+  out = printf_stderr_file();
+
+  /* copy old data out first! */
+  str = printf_stderr_cfgdata.msgbuf;
+  while (str[0] != 0)
+  {                                 
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    p = strchr(str, '\n');
+    if (!p)
+    {
+      p = str + strlen(str);
+      p[1] = 0;
+    }
+    *p++ = 0;
+    fputs(str, out);
+    fputs("\n", out);
+    printf_stderr_cfgdata.line_started = 0;
+    str = p;
+  }
+  printf_stderr_cfgdata.msgbuf[0] = 0;
+  
+  /* keep 'defaults' up to date... */
+  printf_stderr_cfg(ERR_DIAG_FMT_UNCHANGED, srcfile, srcline, NULL);
+
+  vsprintf(printf_stderr_cfgdata.msgbuf, fmt, args);
+  va_end(args);
+
+  /* copy new data out now 'till first newline! */
+  str = printf_stderr_cfgdata.msgbuf;
+  for (;;)
+  {                                 
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    p = strchr(str, '\n');
+    if (!p)
+    {
+      /* move remaining data to front: */
+      p = str;
+      for (str = printf_stderr_cfgdata.msgbuf; *str++ = *p++; )
+        ;
+      *str = 0;
+      break;
+    }
+    *p++ = 0;
+    fputs(str, out);
+    fputs("\n", out);
+    printf_stderr_cfgdata.line_started = 0;
+    str = p;
+    if (str[0] == 0)
+    {
+      printf_stderr_cfgdata.msgbuf[0] = 0;
+      break;
+    }
+  }
+  /*
+     flush everything so these calls can cooperate with the left-over fprintf(stderr, ...) in err.h :-( 
+     [backwards compatibily prevents me from replacing that part of the code too]
+   */
+  str = printf_stderr_cfgdata.msgbuf;
+  if (*str)
+  {                                 
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    fputs(str, out);
+    printf_stderr_cfgdata.msgbuf[0] = 0;
+  }
+}
+
+#ifdef PCCTS_USE_STDARG
+int printf_stderr_continued(const char *fmt, ...)
+#else
+int printf_stderr_continued(va_alist)
+va_dcl
+#endif
+{
+  va_list args;
+#ifndef PCCTS_USE_STDARG			/* MR20 */
+	const char *fmt;
+#endif
+  FILE *out;
+  char *str;
+  char *p;
+
+#ifdef PCCTS_USE_STDARG         /* MR20 */
+	va_start(args, fmt);
+#else
+	va_start(ap);
+	fmt = va_arg(ap, char *);
+#endif
+
+  if (!printf_stderr_cfgdata.is_initialized)
+  {
+    printf_stderr_cfg(ERR_DIAG_FMT_UNCHANGED, NULL, -1, NULL);
+  }
+
+  out = printf_stderr_file();
+
+  str = printf_stderr_cfgdata.msgbuf;
+  vsprintf(str += strlen(str), fmt, args);
+  va_end(args);
+
+  /* copy new data out now 'till first newline! */
+  str = printf_stderr_cfgdata.msgbuf;
+  for (;;)
+  {
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    p = strchr(str, '\n');
+    if (!p)
+    {
+      /* move remaining data to front: */
+      if (str != printf_stderr_cfgdata.msgbuf)
+      {
+        p = str;
+        for (str = printf_stderr_cfgdata.msgbuf; *str++ = *p++; )
+          ;
+        *str = 0;
+      }
+      else
+      {
+        str += strlen(str);
+      }
+
+      /* to prevent buffer overflow: copy line out anyway if fill > 2/3 */
+      if ((size_t)printf_stderr_cfgdata.msgbufsize * 2 < strlen(printf_stderr_cfgdata.msgbuf) * 3)
+      {
+        /* copy out anyway... */
+        str[1] = 0;
+        p = str;
+        str = printf_stderr_cfgdata.msgbuf;
+      }
+      else
+      {
+        break;
+      }
+    }
+    *p++ = 0;
+    fputs(str, out);
+    fputs("\n", out);
+    printf_stderr_cfgdata.line_started = 0;
+    str = p;
+    if (str[0] == 0)
+    {
+      printf_stderr_cfgdata.msgbuf[0] = 0;
+      break;
+    }
+  }
+  /*
+     flush everything so these calls can cooperate with the left-over fprintf(stderr, ...) in err.h :-( 
+     [backwards compatibily prevents me from replacing that part of the code too]
+   */
+  str = printf_stderr_cfgdata.msgbuf;
+  if (*str)
+  {                                 
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    fputs(str, out);
+    printf_stderr_cfgdata.msgbuf[0] = 0;
+  }
+  return 0;
+}
+
+
+FILE *printf_stderr_file(void)
+{
+  if (printf_stderr_cfgdata.output_file != NULL)
+  {
+    return printf_stderr_cfgdata.output_file;
+  }
+  switch (printf_stderr_cfgdata.fmt_type)
+  {                         
+  case ERR_DIAG_FMT_UNKNOWN:
+    /* default: "%s, line %d:" */
+    return stderr;
+    
+  case ERR_DIAG_FMT_MPW:
+    /* Macintosh Programmer's Workshop */
+    return stderr;
+    
+  case ERR_DIAG_FMT_MSVC:
+    /* Microsoft Visual C++ environment */
+    return stderr;
+    
+  case ERR_DIAG_FMT_BCC:
+    /* Borland C/C++ IDE */
+    return stdout;
+  }
+  return stderr;
+}
+

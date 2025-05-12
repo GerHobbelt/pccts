@@ -467,6 +467,9 @@ PointerStack MR_BackTraceStack={0,0,NULL};            /* MR10 */
 PointerStack MR_PredRuleRefStack={0,0,NULL};          /* MR10 */
 PointerStack MR_RuleBlkWithHaltStack={0,0,NULL};      /* MR10 */
 
+/* PointerStack GuessNodeStack = {0,0,NULL};  -- codegen test */        /* [i_a]: keep track of guess block being generated for proper jumping - preparation or longjmp-less guess-mode in C/C++ */
+
+
 /* DontCopyTokens and Pragma_DupLabeledTokens were a bad idea.  I've just
    turned them off rather than backpatching the code.  Who knows?  We
    may need them in the future.

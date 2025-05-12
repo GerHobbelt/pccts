@@ -1,0 +1,41 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [testbool]
+         ( Body
+            ( Define
+               ( VAR [b1] >>  Type: Boolean >>  InitialValue: 1))
+            ( Define
+               ( VAR [b2] >>  Type: Boolean))
+            ( If
+               ( Value >>  Type: Boolean
+                  ( Ref b1  >>  Type: Boolean))
+               ( ThenPart
+                  ( Put
+                     ( STRINGLIT [ok ] >>  Type: String)))
+               ( ElsePart
+                  ( Put
+                     ( STRINGLIT [error in b1 ] >>  Type: String))))
+            ( Assign
+               ( Ref b2  >>  Type: Boolean)
+               ( INTLIT [0] >>  Type: Boolean))
+            ( If
+               ( Op [not] >>  Type: Boolean
+                  ( Value >>  Type: Boolean
+                     ( Ref b2  >>  Type: Boolean)))
+               ( ThenPart
+                  ( Put
+                     ( STRINGLIT [ok ] >>  Type: String)))
+               ( ElsePart
+                  ( Put
+                     ( STRINGLIT [error in b2 ] >>  Type: String)))))))
+

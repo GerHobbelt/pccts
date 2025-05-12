@@ -1,3 +1,17 @@
+/*
+ * D L G tables
+ *
+ * Generated from: parser.dlg
+ *
+ * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz
+ * Purdue University Electrical Engineering
+ * DLG Version 1.33MR33
+ *
+ *   ..\bin\dlg -emsvc -C2 parser.dlg scan.c
+ *
+ */
+
+
 
 /* parser.dlg -- DLG Description of scanner
  *
@@ -7,6 +21,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc -gh -ga -e3 antlr.g
+ *
  */
 
 #define ANTLR_VERSION	13333
@@ -36,15 +53,6 @@ zzerraction()
 	zzadvance();
 	zzskip();
 }
-/*
- * D L G tables
- *
- * Generated from: parser.dlg
- *
- * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz
- * Purdue University Electrical Engineering
- * DLG Version 1.33MR33
- */
 
 #include "mode.h"
 
@@ -68,7 +76,6 @@ char *inline_set();
 
 int tokenActionActive=0;                                            /* MR1 */
 
-  
 
 
 
@@ -81,61 +88,60 @@ char *toStr, *fromStr;
 #endif
 {
   int i, j, k;
-  
+
   if (!fromStr || !toStr) return toStr;
-  
+
   /* find the first " */
-  
+
   for (i=0;
   (i<MaxFileName) &&
   (fromStr[i] != '\n') &&
   (fromStr[i] != '\r') &&
   (fromStr[i] != '\"');
   i++) /* nothing */ ;
-  
+
   if ( (i == MaxFileName) ||
   (fromStr[i] == '\n') ||
   (fromStr[i] == '\r') ) {
-  return toStr;
-}
+    return toStr;
+  }
 
   /* find the second " */
 
   for (j=i+1;
-(j<MaxFileName) &&
-(fromStr[j] != '\n') &&
-(fromStr[j] != '\r') &&
-(fromStr[j] != '\"');
-j++) /* nothing */ ;
+  (j<MaxFileName) &&
+  (fromStr[j] != '\n') &&
+  (fromStr[j] != '\r') &&
+  (fromStr[j] != '\"');
+  j++) /* nothing */ ;
 
   if ((j == MaxFileName) ||
-(fromStr[j] == '\n') ||
-(fromStr[j] == '\r') ) {
-  return toStr;
-}
+  (fromStr[j] == '\n') ||
+  (fromStr[j] == '\r') ) {
+    return toStr;
+  }
 
   /* go back until the last / or \ */
 
   for (k=j-1;
-(fromStr[k] != '\"') &&
-(fromStr[k] != '/') &&
-(fromStr[k] != '\\');
-k--) /* nothing */ ;
+  (fromStr[k] != '\"') &&
+  (fromStr[k] != '/') &&
+  (fromStr[k] != '\\');
+  k--) /* nothing */ ;
 
   /* copy the string after " / or \ into toStr */
 
   for (i=k+1; fromStr[i] != '\"'; i++) {
-toStr[i-k-1] = fromStr[i];
-}
+  toStr[i-k-1] = fromStr[i];
+  }
 
   toStr[i-k-1] = '\0';
 
   return toStr;
-}
+  }
 
-/* MR14 end of a block to support #line in antlr source code */
+  /* MR14 end of a block to support #line in antlr source code */
 
-  
 
 
 #ifdef __USE_PROTOS
@@ -234,7 +240,7 @@ static void act9()
 static void act10()
 { 
 		NLA = 84;
-    
+
     zzline = atoi(zzbegexpr+5) - 1; zzline++; zzmore();
     getFileNameFromTheLineInfo(FileStr[CurFile], zzbegexpr);
 	}
@@ -243,7 +249,7 @@ static void act10()
 static void act11()
 { 
 		NLA = 85;
-    
+
     zzline++; zzmore();
 	}
 
@@ -524,7 +530,7 @@ static void act56()
 static void act57()
 { 
 		NLA = NonTerminal;
-    
+
     while ( zzchar==' ' || zzchar=='\t' ) {
       zzadvance();
     }
@@ -535,7 +541,7 @@ static void act57()
 static void act58()
 { 
 		NLA = TokenTerm;
-    
+
     while ( zzchar==' ' || zzchar=='\t' ) {
       zzadvance();
     }
@@ -595,7 +601,7 @@ static void act61()
 static void act62()
 { 
 		NLA = 3;
-    
+
     zzline++;
     warn("eoln found in string");
     zzskip();
@@ -668,7 +674,7 @@ static void act67()
 static void act68()
 { 
 		NLA = 8;
-    
+
     zzline++;
     warn("eoln found in string (in user action)");
     zzskip();
@@ -741,7 +747,7 @@ static void act73()
 static void act74()
 { 
 		NLA = 13;
-    
+
     zzline++;
     warn("eoln found in char literal (in user action)");
     zzskip();
@@ -1146,12 +1152,12 @@ static void act102()
     if ( zzbufovf ) {
       err( eMsgd("action buffer overflow; size %d",ZZLEXBUFSIZE));
     }
-    
-/* MR1	10-Apr-97  MR1  Previously unable to put right shift operator	*/
+
+    /* MR1	10-Apr-97  MR1  Previously unable to put right shift operator	*/
     /* MR1					in DLG action			*/
     /* MR1			Doesn't matter what kind of action it is - reset*/
-    
-			      tokenActionActive=0;		 /* MR1 */
+
+    tokenActionActive=0;		 /* MR1 */
 	}
 
 
@@ -1165,7 +1171,7 @@ static void act103()
     zzbegexpr[0] = '\0';
     if ( zzbufovf ) {
       err( eMsgd("predicate buffer overflow; size %d",ZZLEXBUFSIZE));
-    };
+    }
 #ifdef __cplusplus__
     /* MR10 */                    list_apply(CurActionLabels, (void (*)(void *))mark_label_used_in_sem_pred);
 #else
@@ -1214,7 +1220,7 @@ static void act104()
 static void act105()
 { 
 		NLA = 37;
-    
+
     zzmore();
     zzreplstr(inline_set(zzbegexpr+
     strlen("consumeUntil(")));
@@ -1268,7 +1274,7 @@ static void act111()
 static void act112()
 { 
 		NLA = 44;
-    
+
     pushint(']');
     if ( !GenCC ) zzreplstr("zzconstr_attr(");
     else err("$[..] use invalid in C++ mode");
@@ -1376,34 +1382,34 @@ static void act116()
       }
       else if ( CurParmDef != NULL &&
       strmember(CurParmDef, &zzbegexpr[1])) {
-      ;
+        ;
+      }
+      else if ( Elabel==NULL ) {
+        { err("$-variables in actions outside of rules are not allowed"); }
+      } else if ( (el=(LabelEntry *)hash_get(Elabel, &zzbegexpr[1]))!=NULL ) {
+        /* MR10 */
+        /* MR10 */                      /* element labels might exist without an elem when */
+        /* MR10 */                      /*  it is a forward reference (to a rule)          */
+        /* MR10 */
+        /* MR10 */						if ( GenCC && (el->elem == NULL || el->elem->ntype==nRuleRef) )
+        /* MR10 */							{ err(eMsg1("There are no token ptrs for rule references: '$%s'",&zzbegexpr[1])); }
+        /* MR10 */
+        /* MR10 */						if ( !GenCC && (el->elem == NULL || el->elem->ntype==nRuleRef) && GenAST) {
+          /* MR10 */                          err("You can no longer use attributes returned by rules when also using ASTs");
+          /* MR10 */                          err("   Use upward inheritance (\"rule >[Attrib a] : ... <<$a=...>>\")");
+          /* MR10 */                      }
+        /* MR10 */
+        /* MR10 */                      /* keep track of <<... $label ...>> for semantic predicates in guess mode */
+        /* MR10 */                      /* element labels contain pointer to the owners node                      */
+        /* MR10 */
+        /* MR10 */                      if (el->elem != NULL && el->elem->ntype == nToken) {
+          /* MR10 */                        list_add(&CurActionLabels,el);
+          /* MR10 */                      }
+      }
+      else
+      warn(eMsg1("$%s not parameter, return value, (defined) element label",&zzbegexpr[1]));
     }
-    else if ( Elabel==NULL ) {
-    { err("$-variables in actions outside of rules are not allowed"); }
-  } else if ( (el=(LabelEntry *)hash_get(Elabel, &zzbegexpr[1]))!=NULL ) {
-  /* MR10 */
-  /* MR10 */                      /* element labels might exist without an elem when */
-  /* MR10 */                      /*  it is a forward reference (to a rule)          */
-  /* MR10 */
-  /* MR10 */						if ( GenCC && (el->elem == NULL || el->elem->ntype==nRuleRef) )
-  /* MR10 */							{ err(eMsg1("There are no token ptrs for rule references: '$%s'",&zzbegexpr[1])); }
-  /* MR10 */
-  /* MR10 */						if ( !GenCC && (el->elem == NULL || el->elem->ntype==nRuleRef) && GenAST) {
-  /* MR10 */                          err("You can no longer use attributes returned by rules when also using ASTs");
-  /* MR10 */                          err("   Use upward inheritance (\"rule >[Attrib a] : ... <<$a=...>>\")");
-  /* MR10 */                      };
-  /* MR10 */
-  /* MR10 */                      /* keep track of <<... $label ...>> for semantic predicates in guess mode */
-  /* MR10 */                      /* element labels contain pointer to the owners node                      */
-  /* MR10 */
-  /* MR10 */                      if (el->elem != NULL && el->elem->ntype == nToken) {
-  /* MR10 */                        list_add(&CurActionLabels,el);
-  /* MR10 */                      };
-}
-else
-warn(eMsg1("$%s not parameter, return value, (defined) element label",&zzbegexpr[1]));
-}
-zzmore();
+    zzmore();
 	}
 
 
@@ -1452,7 +1458,7 @@ static void act120()
 static void act121()
 { 
 		NLA = 53;
-    
+
     zzline = atoi(zzbegexpr+5) - 1; zzline++; zzmore();
     getFileNameFromTheLineInfo(FileStr[CurFile], zzbegexpr);
 	}
@@ -1461,7 +1467,7 @@ static void act121()
 static void act122()
 { 
 		NLA = 54;
-    
+
     zzline++; zzmore();
 	}
 
@@ -1469,7 +1475,7 @@ static void act122()
 static void act123()
 { 
 		NLA = 55;
-    
+
     if ( !(strcmp(zzbegexpr, "#ifdef")==0 ||
     strcmp(zzbegexpr, "#if")==0 ||
     strcmp(zzbegexpr, "#else")==0 ||
@@ -1496,7 +1502,7 @@ static void act123()
 static void act124()
 { 
 		NLA = 56;
-    
+
     pushint(']');
     if ( GenCC ) {
       if (NewAST) zzreplstr("(newAST(");
@@ -1510,7 +1516,7 @@ static void act124()
 static void act125()
 { 
 		NLA = 57;
-    
+
     pushint('}');
     if ( GenCC ) {
       if (tmakeInParser) {
@@ -1538,7 +1544,7 @@ static void act126()
 static void act127()
 { 
 		NLA = 59;
-    
+
     if ( istackempty() )
     zzmore();
     else if ( topint()==')' ) {
@@ -1556,7 +1562,7 @@ static void act127()
 static void act128()
 { 
 		NLA = 60;
-    
+
     pushint('|');	/* look for '|' to terminate simple [...] */
     zzmore();
 	}
@@ -1565,7 +1571,7 @@ static void act128()
 static void act129()
 { 
 		NLA = 61;
-    
+
     pushint(')');
     zzmore();
 	}

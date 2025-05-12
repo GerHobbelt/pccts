@@ -1,0 +1,71 @@
+#
+# PCCTS makefile for: xl.g
+#
+# Created from: ./genmk -CC -class XLParser -project xl xl.g
+#
+# PCCTS release 1.32
+# Project: xl
+# C++ output
+# DLG scanner
+# ANTLR-defined token types
+#
+TOKENS = tokens.h
+#
+# The following filenames must be consistent with ANTLR/DLG flags
+DLG_FILE = parser.dlg
+ERR = err
+HDR_FILE =
+SCAN = DLGLexer
+PCCTS = # <<< add your PCCTS directory here >>>
+ANTLR_H = $(PCCTS)/h
+BIN = $(PCCTS)/bin
+ANTLR = $(BIN)/antlr
+DLG = $(BIN)/dlg
+CFLAGS = -I. -I$(ANTLR_H)
+AFLAGS = -CC
+DFLAGS = -C2 -i -CC
+GRM = xl.g
+SRC = xl.cpp \
+      XLParser.cpp \
+      $(ANTLR_H)/AParser.cpp $(ANTLR_H)/DLexerBase.cpp $(ANTLR_H)/ATokenBuffer.cpp $(SCAN).cpp
+OBJ = xl.o \
+      XLParser.o \
+       AParser.o DLexerBase.o ATokenBuffer.o $(SCAN).o
+ANTLR_SPAWN = xl.cpp XLParser.cpp \
+              XLParser.h $(DLG_FILE) $(TOKENS)
+DLG_SPAWN = $(SCAN).cpp $(SCAN).h
+#CCC=g++
+CC=$(CCC)
+
+xl : $(OBJ) $(SRC)
+	$(CCC) -o xl $(CFLAGS) $(OBJ)
+
+xl.o : $(TOKENS) $(SCAN).h xl.cpp
+	$(CCC) -c $(CFLAGS) -o xl.o xl.cpp
+
+XLParser.o : $(TOKENS) $(SCAN).h XLParser.cpp XLParser.h
+	$(CCC) -c $(CFLAGS) -o XLParser.o XLParser.cpp
+
+$(SCAN).o : $(SCAN).cpp $(TOKENS)
+	$(CCC) -c $(CFLAGS) -o $(SCAN).o $(SCAN).cpp
+
+$(ANTLR_SPAWN) : $(GRM)
+	$(ANTLR) $(AFLAGS) $(GRM)
+
+$(DLG_SPAWN) : $(DLG_FILE)
+	$(DLG) $(DFLAGS) $(DLG_FILE)
+
+AParser.o : $(ANTLR_H)/AParser.cpp
+	$(CCC) -c $(CFLAGS) -o AParser.o $(ANTLR_H)/AParser.cpp
+
+ATokenBuffer.o : $(ANTLR_H)/ATokenBuffer.cpp
+	$(CCC) -c $(CFLAGS) -o ATokenBuffer.o $(ANTLR_H)/ATokenBuffer.cpp
+
+DLexerBase.o : $(ANTLR_H)/DLexerBase.cpp
+	$(CCC) -c $(CFLAGS) -o DLexerBase.o $(ANTLR_H)/DLexerBase.cpp
+
+clean:
+	rm -f *.o core xl
+
+scrub:
+	rm -f *.o core xl $(ANTLR_SPAWN) $(DLG_SPAWN)

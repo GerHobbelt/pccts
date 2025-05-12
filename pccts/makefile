@@ -45,23 +45,23 @@ pccts:
 #
 	@if [ ! -d $(BINDIR) ] ; then mkdir $(BINDIR) ; fi
 	@echo Making executables...
-	(cd ./antlr; $(MAKE) CC="$(CC)" COPT="$(COPT)")
+	(cd antlr; $(MAKE) CC="$(CC)" COPT="$(COPT)")
 	@echo antlr executable now in $(BINDIR)
-	(cd ./dlg; $(MAKE) CC="$(CC)" COPT="$(COPT)")
+	(cd dlg; $(MAKE) CC="$(CC)" COPT="$(COPT)")
 	@echo dlg executable now in $(BINDIR)
-	(cd ./sorcerer; $(MAKE) CC="$(CC)" COPT="$(COPT)")
+	(cd sorcerer; $(MAKE) CC="$(CC)" COPT="$(COPT)")
 	@echo sorcerer executable now in $(BINDIR)
-	(cd ./support/genmk; $(MAKE) CC="$(CC)" COPT="$(COPT)"; mv genmk ../../$(BINDIR))
+	(cd support/genmk; $(MAKE) CC="$(CC)" COPT="$(COPT)"; mv genmk ../../$(BINDIR))
 	@echo genmk executable now in $(BINDIR)
 	@echo
 	@echo "       PCCTS 1.33MR33 installation complete"  # MRXXX
 
 clean:
-	(cd ./antlr; $(MAKE) -s clean)
-	(cd ./dlg; $(MAKE) -s clean)
-	(cd ./sorcerer; $(MAKE) -s clean)
-	(cd ./sorcerer/lib; $(MAKE) -s clean)
-	(cd ./support/genmk; $(MAKE) -s clean)
+	(cd antlr; $(MAKE) -s clean)
+	(cd dlg; $(MAKE) -s clean)
+	(cd sorcerer; $(MAKE) -s clean)
+	(cd sorcerer/lib; $(MAKE) -s clean)
+	(cd support/genmk; $(MAKE) -s clean)
 
 
 manpages:

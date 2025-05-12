@@ -1,0 +1,355 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: xl.pccts
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-1994
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.20
+ */
+
+#include <stdio.h>
+#define ANTLR_VERSION	120
+#include "xl.pccts.h"   
+#include "antlr.h"
+#include "ast.h"
+#include "tokens.h"
+#include "dlgdef.h"
+LOOKAHEAD
+void zzerraction()
+{
+	(*zzerr)("invalid token");
+	zzadvance();
+	zzskip();
+}
+>>
+
+
+%%START
+
+@
+	<<
+		NLA = 1;
+	>>
+
+[\ \t\0]
+	<<
+		NLA = 8;
+		zzskip();   
+	>>
+
+\n
+	<<
+		NLA = 9;
+		zzline++; zzskip();   
+	>>
+
+//~[\n]*\n
+	<<
+		NLA = 10;
+		zzline++; zzskip();   
+	>>
+
+[0-9]+
+	<<
+		NLA = INTLIT;
+	>>
+
+\'~[]\'
+	<<
+		NLA = CHARLIT;
+	>>
+
+\"(~[\"\n]|\"\")*\"
+	<<
+		NLA = STRINGLIT;
+		strip_quotes();   
+	>>
+
+\"(~[\"\n]|\"\")*\n
+	<<
+		NLA = 14;
+		
+		// non-terminated string -- assume terminated at EOLN and put up error message
+		strip_quotes(); zzline++;
+		syntax_error(zzline, "end-of-line", "String not terminated"); 
+	>>
+
+program
+	<<
+		NLA = 51;
+	>>
+
+=
+	<<
+		NLA = 52;
+	>>
+
+\.
+	<<
+		NLA = 53;
+	>>
+
+begin
+	<<
+		NLA = 54;
+	>>
+
+end
+	<<
+		NLA = 55;
+	>>
+
+var
+	<<
+		NLA = 56;
+	>>
+
+:
+	<<
+		NLA = 57;
+	>>
+
+:=
+	<<
+		NLA = 58;
+	>>
+
+;
+	<<
+		NLA = 59;
+	>>
+
+constant
+	<<
+		NLA = 60;
+	>>
+
+,
+	<<
+		NLA = 61;
+	>>
+
+type
+	<<
+		NLA = 62;
+	>>
+
+record
+	<<
+		NLA = 63;
+	>>
+
+array
+	<<
+		NLA = 64;
+	>>
+
+\[
+	<<
+		NLA = 65;
+	>>
+
+..
+	<<
+		NLA = 66;
+	>>
+
+\]
+	<<
+		NLA = 67;
+	>>
+
+of
+	<<
+		NLA = 68;
+	>>
+
+procedure
+	<<
+		NLA = 69;
+	>>
+
+\(
+	<<
+		NLA = 70;
+	>>
+
+\)
+	<<
+		NLA = 71;
+	>>
+
+put
+	<<
+		NLA = 72;
+	>>
+
+get
+	<<
+		NLA = 73;
+	>>
+
+skipLine
+	<<
+		NLA = 74;
+	>>
+
+newLine
+	<<
+		NLA = 75;
+	>>
+
+exit
+	<<
+		NLA = 76;
+	>>
+
+when
+	<<
+		NLA = 77;
+	>>
+
+return
+	<<
+		NLA = 78;
+	>>
+
+if
+	<<
+		NLA = 79;
+	>>
+
+then
+	<<
+		NLA = 80;
+	>>
+
+elsif
+	<<
+		NLA = 81;
+	>>
+
+else
+	<<
+		NLA = 82;
+	>>
+
+while
+	<<
+		NLA = 83;
+	>>
+
+loop
+	<<
+		NLA = 84;
+	>>
+
+and
+	<<
+		NLA = 85;
+	>>
+
+or
+	<<
+		NLA = 86;
+	>>
+
+/=
+	<<
+		NLA = 87;
+	>>
+
+<
+	<<
+		NLA = 88;
+	>>
+
+<=
+	<<
+		NLA = 89;
+	>>
+
+>
+	<<
+		NLA = 90;
+	>>
+
+>=
+	<<
+		NLA = 91;
+	>>
+
+\+
+	<<
+		NLA = 92;
+	>>
+
+\-
+	<<
+		NLA = 93;
+	>>
+
+\*
+	<<
+		NLA = 94;
+	>>
+
+/
+	<<
+		NLA = 95;
+	>>
+
+mod
+	<<
+		NLA = 96;
+	>>
+
+not
+	<<
+		NLA = 97;
+	>>
+
+Integer
+	<<
+		NLA = 98;
+	>>
+
+Boolean
+	<<
+		NLA = 99;
+	>>
+
+[A-YZa-yz]([A-YZa-yz]|[0-9])*
+	<<
+		NLA = IDENT;
+		
+		{
+			Sym *currsym;
+			// If the name is > 100 chars, trim it to 100
+			if (strlen(NLATEXT) > 100)
+			NLATEXT[100] = '\0';
+			
+                                       // Try to find it in the symbol table
+			currsym = zzs_get(NLATEXT);
+			
+                                       // If it was found, change the token to the token in the symbol table
+			if (currsym != NULL) NLA = TokenOf(currsym);
+			
+                                       // If user wanted definition show, show it
+			if (show_definition)
+			{
+				printf("%s is next token -- ",NLATEXT);
+				if (currsym!=NULL) printf("defined as %s\n",zztokens[NLA]);
+				else printf("undefined\n");
+			}                                    }
+	>>
+
+[0-9]+[A-YZa-yz]+[A-YZa-yz0-9]*
+	<<
+		NLA = BADIDENT;
+		zzskip(); syntax_error(zzline, NLATEXT, "illegal identifier");   
+	>>
+
+%%

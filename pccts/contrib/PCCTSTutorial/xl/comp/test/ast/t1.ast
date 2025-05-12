@@ -1,0 +1,146 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [correct1]
+         ( Body
+            ( Define
+               ( CONST [one] >>  Type: Integer >>  InitialValue: 1))
+            ( Define
+               ( CONST [two] >>  Type: Integer >>  InitialValue: 2))
+            ( Define
+               ( VAR [y] >>  Type: Integer))
+            ( Define
+               ( VAR [x1] >>  Type: Integer))
+            ( Define
+               ( VAR [x2] >>  Type: Integer))
+            ( Define
+               ( VAR [x3] >>  Type: Integer))
+            ( Define
+               ( VAR [x4] >>  Type: Integer))
+            ( Define
+               ( VAR [x5] >>  Type: Integer))
+            ( Define
+               ( VAR [x6] >>  Type: Integer))
+            ( Define
+               ( VAR [x7] >>  Type: Integer))
+            ( Define
+               ( VAR [x8] >>  Type: Integer))
+            ( Define
+               ( VAR [x9] >>  Type: Integer))
+            ( Define
+               ( VAR [x10] >>  Type: Integer))
+            ( Define
+               ( VAR [x11] >>  Type: Integer))
+            ( Define
+               ( VAR [x12] >>  Type: Integer))
+            ( Define
+               ( VAR [x13] >>  Type: Integer))
+            ( Define
+               ( VAR [x14] >>  Type: Integer))
+            ( Assign
+               ( Ref x1  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x2  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref x3  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x4  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref x5  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x6  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref x7  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x8  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref x9  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x10  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref x11  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x12  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref x13  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref x14  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref y  >>  Type: Integer)
+               ( Op [*] >>  Type: Integer
+                  ( Op [+] >>  Type: Integer
+                     ( Value >>  Type: Integer
+                        ( Ref x1  >>  Type: Integer))
+                     ( Value >>  Type: Integer
+                        ( Ref x2  >>  Type: Integer)))
+                  ( Op [*] >>  Type: Integer
+                     ( Op [+] >>  Type: Integer
+                        ( Value >>  Type: Integer
+                           ( Ref x3  >>  Type: Integer))
+                        ( Value >>  Type: Integer
+                           ( Ref x4  >>  Type: Integer)))
+                     ( Op [*] >>  Type: Integer
+                        ( Op [+] >>  Type: Integer
+                           ( Value >>  Type: Integer
+                              ( Ref x5  >>  Type: Integer))
+                           ( Value >>  Type: Integer
+                              ( Ref x6  >>  Type: Integer)))
+                        ( Op [*] >>  Type: Integer
+                           ( Op [+] >>  Type: Integer
+                              ( Value >>  Type: Integer
+                                 ( Ref x7  >>  Type: Integer))
+                              ( Value >>  Type: Integer
+                                 ( Ref x8  >>  Type: Integer)))
+                           ( Op [*] >>  Type: Integer
+                              ( Op [+] >>  Type: Integer
+                                 ( Value >>  Type: Integer
+                                    ( Ref x9  >>  Type: Integer))
+                                 ( Value >>  Type: Integer
+                                    ( Ref x10  >>  Type: Integer)))
+                              ( Op [*] >>  Type: Integer
+                                 ( Op [+] >>  Type: Integer
+                                    ( Value >>  Type: Integer
+                                       ( Ref x11  >>  Type: Integer))
+                                    ( Value >>  Type: Integer
+                                       ( Ref x12  >>  Type: Integer)))
+                                 ( Op [+] >>  Type: Integer
+                                    ( Value >>  Type: Integer
+                                       ( Ref x13  >>  Type: Integer))
+                                    ( Value >>  Type: Integer
+                                       ( Ref x14  >>  Type: Integer))))))))))
+            ( Put
+               ( Op [+] >>  Type: Integer
+                  ( INTLIT [1] >>  Type: Integer)
+                  ( INTLIT [2] >>  Type: Integer)))
+            ( Put
+               ( Op [-] >>  Type: Integer
+                  ( INTLIT [1] >>  Type: Integer)))
+            ( NewLine)
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref y  >>  Type: Integer)))
+            ( NewLine))))
+

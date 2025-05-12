@@ -212,9 +212,13 @@ FILE *f;
 			p = p->next;
 		}
 		total+=j;
-		fprintf(f,"bin[%d] has %d\n",i,j);
+		f == stderr 
+		? printf_stderr_continued("bin[%d] has %d\n",i,j)
+		: fprintf(f,"bin[%d] has %d\n",i,j);
 	}
-	fprintf(f,"total = %d\n",total);
+	f == stderr 
+		? printf_stderr_continued("total = %d\n",total)
+		: fprintf(f,"total = %d\n",total);
 }
 #endif
 

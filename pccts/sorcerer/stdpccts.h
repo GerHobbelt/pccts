@@ -7,6 +7,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc -gh -k 2 -gt sor.g
+ *
  */
 
 #ifndef ANTLR_VERSION
@@ -45,6 +48,7 @@ extern int define_num;
 #define LL_K 2
 #define GENAST
 #define zzSET_SIZE 16
+#define zzTOKEN_COUNT 118
 #include "antlr.h"
 #include "ast.h"
 #include "tokens.h"

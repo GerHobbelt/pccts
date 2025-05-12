@@ -551,13 +551,13 @@ AST *rules;
 	SymEntry *s;
 	require(rules!=NULL, "dump_GLAs: NULL rules pointer");
 
-	fprintf(stderr,"\n");
+	printf_stderr_continued("\n");
 	for (r=rules; r!=NULL; r=r->right)
 	{
 		s = (SymEntry *) hash_get(symbols, r->text);
 		require(s!=NULL, "build_GLA: sym tab broken");
 		dump_GLA( s->start_state );
-		fprintf(stderr,"\n");
+		printf_stderr_continued("\n");
 	}
 }
 
@@ -572,10 +572,10 @@ GLA *q;
 {
     GLA *prod, *p;
 
-    fprintf(stderr,"o-->");
+    printf_stderr_continued("o-->");
     for (prod=q->p1; prod!=NULL; prod=prod->p2)
     {
-        fprintf(stderr,"o");
+        printf_stderr_continued("o");
 
         for (p = prod; p->p1!=NULL;)
         {
@@ -584,24 +584,24 @@ GLA *q;
 
             if ( p->label1 > 0 && p->label1!=epsilon )
             {
-                fprintf(stderr,"--%s-->o", token_dict[p->label1]);
+                printf_stderr_continued("--%s-->o", token_dict[p->label1]);
                 p = p->p1;
                 if ( p->label1 == end_of_input ) break;
 			}
             else if ( p->next!=NULL )
             {
-                /*fprintf(stderr,"-%d-^  o", p->context); */
-                fprintf(stderr,"---^  o");
+                /*printf_stderr_continued("-%d-^  o", p->context); */
+                printf_stderr_continued("---^  o");
                 p = p->next;
 			}
             else
             {
-                fprintf(stderr,"----->o");
+                printf_stderr_continued("----->o");
                 p = p->p1;
 			}
 		}
-        fprintf(stderr,"\n");
-        if ( prod->p2!=NULL ) fprintf(stderr,"    |\n    ");
+        printf_stderr_continued("\n");
+        if ( prod->p2!=NULL ) printf_stderr_continued("    |\n    ");
 	}
 }
 
@@ -640,11 +640,11 @@ int block_type;
 			in_common = set_and(alt1->lookahead, alt2->lookahead);
 			if ( !set_nil(in_common) )
 			{
-				fprintf(stderr, ErrHdr, FileStr[t->file], t->line);
-				fprintf(stderr, " warning: alts %d and %d of (...) nondeterministic upon ",
+				printf_stderr(FileStr[t->file], t->line
+				             ," warning: alts %d and %d of (...) nondeterministic upon ",
 						i1, i2);
 				set_fprint(stderr, in_common);
-				fprintf(stderr, "\n");
+				printf_stderr_continued("\n");
 			}
 			set_free(in_common);
 		}
@@ -659,11 +659,11 @@ int block_type;
 			in_common = set_and(alt1->lookahead, blk->start_state->lookahead);
 			if ( !set_nil(in_common) )
 			{
-				fprintf(stderr, ErrHdr, FileStr[t->file], t->line);
-				fprintf(stderr, " warning: alt %d and optional branch of %s nondeterministic upon ",
+				printf_stderr(FileStr[t->file], t->line
+				             ," warning: alt %d and optional branch of %s nondeterministic upon ",
 						i1, block_type==OPT?"{...}":"(...)*");
 				set_fprint(stderr, in_common);
-				fprintf(stderr, "\n");
+				printf_stderr_continued("\n");
 			}
 			set_free(in_common);
 		}

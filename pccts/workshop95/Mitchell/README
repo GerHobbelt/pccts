@@ -1,0 +1,22 @@
+This directory contains a wacko little thing I whipped up.
+
+If you just run 'make' you'll get a normal, command line parser that is
+basically a slightly improved version of my contribution to Tom Moog's
+Notes for PCCTS Users distribution.
+
+If, on the other hand, you type 'make parserd' you will get a Tcl/Tk shell
+application which has the aforementioned parser as one of it's built in
+commands.  This parser command may be run in the local with or, as an added
+bonus, remotely via an RPC call.
+
+No big whup, I just wanted to show how a PCCTS parser could be integrated
+into a Tcl/Tk application.
+
+Note that the only really painful part of this entire process is getting
+all of the Tcl/Tk extensions built and then linked in together with the
+parser.  All of the Tcl/Tk related cruft is at the bottom of the makefile.
+
+Feel free to email if things don't make sense. :-)
+
+Take care,
+	John

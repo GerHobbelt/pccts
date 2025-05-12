@@ -1,0 +1,38 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [correct5]
+         ( Body
+            ( Define
+               ( VAR [a] >>  Type: Integer))
+            ( Define
+               ( CONST [b] >>  Type: Integer >>  InitialValue: 5))
+            ( Define
+               ( VAR [c] >>  Type: Integer))
+            ( Assign
+               ( Ref a  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref c  >>  Type: Integer)
+               ( INTLIT [3] >>  Type: Integer))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref a  >>  Type: Integer)))
+            ( NewLine)
+            ( Put
+               ( INTLIT [5] >>  Type: Integer))
+            ( NewLine)
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref c  >>  Type: Integer)))
+            ( NewLine))))
+

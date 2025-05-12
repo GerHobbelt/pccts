@@ -81,12 +81,12 @@ Tree *tree;
 #endif
 {
 	if ( tree == NULL ) return;
-	if ( tree->down != NULL ) fprintf(stderr, " (");
-	if ( tree->token == ALT ) fprintf(stderr, " ALT");
-	else fprintf(stderr, " %s", TerminalString(tree->token));
-	if ( tree->token==EpToken ) fprintf(stderr, "(%d)", tree->v.rk);
+	if ( tree->down != NULL ) printf_stderr_continued(" (");
+	if ( tree->token == ALT ) printf_stderr_continued(" ALT");
+	else printf_stderr_continued(" %s", TerminalString(tree->token));
+	if ( tree->token==EpToken ) printf_stderr_continued("(%d)", tree->v.rk);
 	preorder(tree->down);
-	if ( tree->down != NULL ) fprintf(stderr, " )");
+	if ( tree->down != NULL ) printf_stderr_continued(" )");
 	preorder(tree->right);
 }
 
@@ -120,8 +120,8 @@ int MR_tree_matches_constraints(k,constrain,t)
   for (u=t->down; u != NULL; u=u->right) {
     if (MR_tree_matches_constraints(k-1,&constrain[1],u)) {
        return 1;
-    };
-  };
+    }
+  }
   return 0;
 }
 
@@ -155,15 +155,15 @@ int k;
     if (pruneCount > prunePeak+100) {
       prunePeak=pruneCount;
 #if 0
-***   fprintf(stderr,"pruneCount=%d\n",pruneCount);
+***   printf_stderr_continued("pruneCount=%d\n",pruneCount);
 /***  preorder(t);   ***/
-***   fprintf(stderr,"\n",pruneCount);
+***   printf_stderr_continued("\n",pruneCount);
 #endif
-    };
+    }
     if ( t == NULL ) {
         pruneCount--;
         return NULL;
-    };
+    }
     if ( t->token == ALT ) fatal_internal("prune: ALT node in FIRST tree");
     if ( t->right!=NULL ) t->right = prune(t->right, k);
     if ( k>1 )
@@ -239,13 +239,13 @@ int tok;
 	
 	if ( FreeList == NULL )
 	{
-		/*fprintf(stderr, "tnode: %d more nodes\n", TreeBlockAllocSize);*/
+		/*printf_stderr_continued( "tnode: %d more nodes\n", TreeBlockAllocSize);*/
 		if ( TreeResourceLimit > 0 )
 		{
 			if ( (n+TreeBlockAllocSize) >= TreeResourceLimit )
 			{
-				fprintf(stderr, ErrHdr, FileStr[CurAmbigfile], CurAmbigline);
-				fprintf(stderr, " hit analysis resource limit while analyzing alts %d and %d %s\n",
+				printf_stderr(FileStr[CurAmbigfile], CurAmbigline
+				             ," error: hit analysis resource limit while analyzing alts %d and %d %s\n",
 								CurAmbigAlt1,
 								CurAmbigAlt2,
 								CurAmbigbtype);
@@ -255,8 +255,8 @@ int tok;
 		newblk = (Tree *)calloc(TreeBlockAllocSize, sizeof(Tree));
 		if ( newblk == NULL )
 		{
-			fprintf(stderr, ErrHdr, FileStr[CurAmbigfile], CurAmbigline);
-			fprintf(stderr, " out of memory while analyzing alts %d and %d %s\n",
+			printf_stderr(FileStr[CurAmbigfile], CurAmbigline
+			             ," error: out of memory while analyzing alts %d and %d %s\n",
 							CurAmbigAlt1,
 							CurAmbigAlt2,
 							CurAmbigbtype);
@@ -285,9 +285,9 @@ int tok;
     p->seq=TnodesAllocated;
     set_orel( (unsigned) TnodesAllocated,&set_of_tnodes_in_use);
     if (stop_on_tnode_seq_number == p->seq) {
-      fprintf(stderr,"\n*** just allocated tnode #%d ***\n",
+      printf_stderr_continued("\n*** just allocated tnode #%d ***\n",
             stop_on_tnode_seq_number);
-    };
+    }
 #endif
 	return p;
 }
@@ -324,8 +324,8 @@ Tree *t;
 	{
 #ifdef TREE_DEBUG
         if (t->seq == stop_on_tnode_seq_number) {
-           fprintf(stderr,"\n*** just freed tnode #%d ***\n",t->seq);
-        };
+           printf_stderr_continued("\n*** just freed tnode #%d ***\n",t->seq);
+        }
 		require(t->in_use, "_Tfree: node not in use!");
 		t->in_use = 0;
         set_rm( (unsigned) t->seq,set_of_tnodes_in_use);
@@ -384,9 +384,9 @@ Tree *u;
 {
 	Tree *w;
 
-/*** fprintf(stderr, "tappend(");
- *** preorder(t); fprintf(stderr, ",");
- *** preorder(u); fprintf(stderr, " )\n");
+/*** printf_stderr_continued( "tappend(");
+ *** preorder(t); printf_stderr_continued( ",");
+ *** preorder(u); printf_stderr_continued( " )\n");
 */
 	if ( t == NULL ) return u;
 	if ( t->token == ALT && t->right == NULL ) return tappend(t->down, u);
@@ -440,7 +440,7 @@ int remaining_k;
 	require(remaining_k!=0, "tlink: bad tree");
 
 	if ( t==NULL ) return NULL;
-	/*fprintf(stderr, "tlink: u is:"); preorder(u); fprintf(stderr, "\n");*/
+	/*printf_stderr_continued( "tlink: u is:"); preorder(u); printf_stderr_continued( "\n");*/
 	if ( t->token == EpToken && t->v.rk == remaining_k )
 	{
 		require(t->down==NULL, "tlink: invalid tree");
@@ -448,7 +448,7 @@ int remaining_k;
 /* MR10 */  Tree  *tt=t->right;
 /* MR10 */  _Tfree(t);
 /* MR10 */  return tt;
-        };
+        }
 		p = tdup( u );
 		p->right = t->right;
 		_Tfree( t );
@@ -542,7 +542,7 @@ set *rk;
 	Tree *tail=NULL, *r;
 
 #ifdef DBG_TRAV
-	fprintf(stderr, "tJunc(%d): %s in rule %s\n", k,
+	printf_stderr_continued( "tJunc(%d): %s in rule %s\n", k,
 			decodeJType[p->jtype], ((Junction *)p)->rname);
 #endif
 
@@ -551,7 +551,7 @@ set *rk;
 /* MR14 */           "not possible to compute follow set for alpha in an \"(alpha)? beta\" block.  ",
 /* MR14 */                 FileStr[p->file],p->line);
 /* MR14 */         MR_alphaBetaTraceReport();
-/* MR14 */    };
+/* MR14 */    }
 
 /* MR14 */    if (p->alpha_beta_guess_end) {
 /* MR14 */      return NULL;
@@ -568,13 +568,13 @@ set *rk;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPush(&MR_BackTraceStack,p);
-/* MR10 */    };
+/* MR10 */    }
 
 		TRAV(p->p1, k, rk, tail);
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPop(&MR_BackTraceStack);
-/* MR10 */    };
+/* MR10 */    }
 
 		if ( p->jtype==RuleBlk ) {p->lock[k] = FALSE; return tail;}
 		r = tmake(tnode(ALT), tail, NULL);
@@ -588,19 +588,19 @@ set *rk;
 			{
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPush(&MR_BackTraceStack,p);
-/* MR10 */    };
+/* MR10 */    }
 
 				TRAV(alt->p1, k, rk, tail->right);
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPop(&MR_BackTraceStack);
-/* MR10 */    };
+/* MR10 */    }
 				if ( tail->right != NULL ) tail = tail->right;
 			}
 		}
 		if ( p->jtype!=aSubBlk && p->jtype!=aOptBlk ) p->lock[k] = FALSE;
 #ifdef DBG_TREES
-		fprintf(stderr, "blk(%s) returns:",((Junction *)p)->rname); preorder(r); fprintf(stderr, "\n");
+		printf_stderr_continued( "blk(%s) returns:",((Junction *)p)->rname); preorder(r); printf_stderr_continued( "\n");
 #endif
 		if ( r->down == NULL ) {_Tfree(r); return NULL;}
 		return r;
@@ -637,7 +637,7 @@ set *rk;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPush(&MR_BackTraceStack,p);
-/* MR10 */    };
+/* MR10 */    }
 
 /* M14 */        if (p->guess_analysis_point != NULL) {
 /* M14 */ 		   TRAV(p->guess_analysis_point, k, rk,t);
@@ -647,7 +647,7 @@ set *rk;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPop(&MR_BackTraceStack);
-/* MR10 */    };
+/* MR10 */    }
 
 		if ( p->jtype==EndRule ) p->lock[k]=FALSE;
 		return t;
@@ -655,7 +655,7 @@ set *rk;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPush(&MR_BackTraceStack,p);
-/* MR10 */    };
+/* MR10 */    }
 
 /* M14 */        if (p->guess_analysis_point != NULL) {
 /* M14 */ 		   TRAV(p->guess_analysis_point, k, rk,t);
@@ -665,7 +665,7 @@ set *rk;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (p->jtype != Generic) MR_pointerStackPop(&MR_BackTraceStack);
-/* MR10 */    };
+/* MR10 */    }
 
 	if ( p->jtype!=RuleBlk && /* MR14 */ !p->guess) TRAV(p->p2, k, rk, u);
 
@@ -693,7 +693,7 @@ set *rk_out;
 	RuleEntry *q = (RuleEntry *) hash_get(Rname, p->text);
 	
 #ifdef DBG_TRAV
-	fprintf(stderr, "tRuleRef: %s\n", p->text);
+	printf_stderr_continued( "tRuleRef: %s\n", p->text);
 #endif
 	if ( q == NULL )
 	{
@@ -709,17 +709,17 @@ set *rk_out;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      MR_pointerStackPush(&MR_BackTraceStack,p);
-/* MR10 */    };
+/* MR10 */    }
 
 	TRAV(r, k, &rk, t);
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      MR_pointerStackPop(&MR_BackTraceStack);
-/* MR10 */    };
+/* MR10 */    }
 
 	r->end->halt = save_halt;
 #ifdef DBG_TREES
-	fprintf(stderr, "after ruleref, t is:"); preorder(t); fprintf(stderr, "\n");
+	printf_stderr_continued( "after ruleref, t is:"); preorder(t); printf_stderr_continued( "\n");
 #endif
 	t = tshrink( t );
 	while ( !set_nil(rk) ) {	/* any k left to do? if so, link onto tree */
@@ -728,13 +728,13 @@ set *rk_out;
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      MR_pointerStackPush(&MR_BackTraceStack,p);
-/* MR10 */    };
+/* MR10 */    }
 
 		TRAV(p->next, k2, &rk2, u);
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      MR_pointerStackPop(&MR_BackTraceStack);
-/* MR10 */    };
+/* MR10 */    }
 
 		t = tlink(t, u, k2);	/* any alts missing k2 toks, add u onto end */
         Tfree(u);               /* MR10 */
@@ -762,14 +762,14 @@ set *rk;
 		require(constrain>=fset&&constrain<=&(fset[CLL_k]),"tToken: constrain is not a valid set");
       } else {
 		require(constrain>=fset&&constrain<=&(fset[LL_k]),"tToken: constrain is not a valid set");
-      };
+      }
       constrain = &fset[maxk-k+1];
 	}
 
 #ifdef DBG_TRAV
-        	fprintf(stderr, "tToken(%d): %s\n", k, TerminalString(p->token));
+        	printf_stderr_continued( "tToken(%d): %s\n", k, TerminalString(p->token));
         	if ( ConstrainSearch ) {
-        		fprintf(stderr, "constrain is:"); s_fprT(stderr, *constrain); fprintf(stderr, "\n");
+        		printf_stderr_continued( "constrain is:"); s_fprT(stderr, *constrain); printf_stderr_continued( "\n");
         	}
 #endif
 
@@ -786,10 +786,10 @@ set *rk;
           if (set_nil(a)) {         /* MR10 */
             set_free(a);            /* MR11 */
             return NULL;            /* MR10 */
-          };                        /* MR10 */
+          }                        /* MR10 */
 		} else {
           a = set_dup(p->tset);
-        };
+        }
 
 		for (; !set_nil(a); set_rm(e, a))
 		{
@@ -802,13 +802,13 @@ set *rk;
 	}
 	else if ( ConstrainSearch && !set_el(p->token, *constrain) )
     {
-/*      fprintf(stderr, "ignoring token %s(%d)\n", TerminalString(p->token),
+/*      printf_stderr_continued( "ignoring token %s(%d)\n", TerminalString(p->token),
                 k);*/
         return NULL;
     }
 	else {
         tset = tnode( p->token );
-    };
+    }
 
 /* MR10 */    if (MR_MaintainBackTrace) {
 /* MR10 */      if (k == 1) {
@@ -817,18 +817,18 @@ set *rk;
 /* MR13 */          MR_suppressSearchReport();
 /* MR13 */        } else {
 /* MR10 */          MR_backTraceReport();
-/* MR13 */        };
+/* MR13 */        }
 /* MR10 */        MR_pointerStackPop(&MR_BackTraceStack);
 /* MR11 */        Tfree(tset);
 /* MR11 */        return NULL;
-/* MR10 */      };
-/* MR10 */    };
+/* MR10 */      }
+/* MR10 */    }
 
 	if ( k == 1 ) return tset;
 
     if (MR_MaintainBackTrace) {
       MR_pointerStackPush(&MR_BackTraceStack,p);
-    };
+    }
 
 	TRAV(p->next, k-1, rk, t);
 
@@ -837,7 +837,7 @@ set *rk;
       Tfree(tset);
       MR_pointerStackPop(&MR_BackTraceStack);
       return NULL;
-    };
+    }
 
 	/* here, we are positive that, at least, this tree will not contribute
 	 * to the LL(2) tree since it will be too shallow, IF t==NULL.
@@ -849,7 +849,7 @@ set *rk;
 		return NULL;
 	}
 #ifdef DBG_TREES
-	fprintf(stderr, "tToken(%d)->next:",k); preorder(t); fprintf(stderr, "\n");
+	printf_stderr_continued( "tToken(%d)->next:",k); preorder(t); printf_stderr_continued( "\n");
 #endif
 
 	/* if single token root, then just make new tree and return */
@@ -867,7 +867,7 @@ set *rk;
 	}
 	Tfree( t );
 #ifdef DBG_TREES
-	fprintf(stderr, "range is:"); preorder(tset); fprintf(stderr, "\n");
+	printf_stderr_continued( "range is:"); preorder(tset); printf_stderr_continued( "\n");
 #endif
 	return tset;
 }
@@ -886,7 +886,7 @@ set *rk;
     set         *save_fset=NULL;
     int         i;
 
-	/* fprintf(stderr, "tAction\n"); */
+	/* printf_stderr_continued( "tAction\n"); */
 
 /*  An MR_SuppressSearch is looking for things that can be
       reached even when the predicate is false.
@@ -910,7 +910,7 @@ set *rk;
       if (pred == NULL) {
         t=NULL;
         goto EXIT;
-      };
+      }
       constrain = &fset[maxk-k+1];
       if (pred->k == 1) {
         set     dif;
@@ -919,15 +919,15 @@ set *rk;
           set_free(dif);
           t=NULL;
           goto EXIT;
-        };
+        }
         set_free(dif);
       } else {
         if (MR_tree_matches_constraints(k,constrain,pred->tcontext)) {
           t=NULL;
           goto EXIT;
-        };
+        }
       }
-    };
+    }
 
     /* The ampersand predicate differs from the
          other predicates because its first set
@@ -960,28 +960,28 @@ set *rk;
           } else {
     		require(constrain>=fset&&constrain<=&(fset[LL_k]),
                                 "tToken: constrain is not a valid set");
-          };
+          }
           save_fset=(set *) calloc (CLL_k+1,sizeof(set));
           require (save_fset != NULL,"tAction save_fset alloc");
           for (i=1; i <= CLL_k ; i++) {
             save_fset[i]=set_dup(fset[i]);
-          };
+          }
           if (pred->k == 1) {
             constrain = &fset[maxk-k+1];
             set_andin(constrain,pred->scontext[1]);
             if (set_nil(*constrain)) {
               t=NULL;
               goto EXIT;
-            };
+            }
           } else {
             constrain = &fset[maxk-k+1];
             if (! MR_tree_matches_constraints(pred->k,constrain,pred->tcontext)) {
                t=NULL;
                goto EXIT;
-            };  /* end loop on i          */
-          }; /* end loop on pred scontext/tcontext */
-        }; /* end if on k > pred->k     */
-      }; /* end if on constrain search  */
+            }  /* end loop on i          */
+          } /* end loop on pred scontext/tcontext */
+        } /* end if on k > pred->k     */
+      } /* end if on constrain search  */
 
       TRAV(p->next,k,rk,t);
 
@@ -995,13 +995,13 @@ set *rk;
           tset=MR_make_tree_from_set(pred->scontext[1]);
           tAND=MR_computeTreeAND(t,tset);
           Tfree(tset);
-        };
+        }
         Tfree(t);
         t=tAND;
-      };
+      }
       goto EXIT;
 
-    }; /* end if on ampersand predicate */
+    } /* end if on ampersand predicate */
 
     TRAV(p->next,k,rk,t);
 
@@ -1010,9 +1010,9 @@ EXIT:
       for (i=1 ; i <= CLL_k ; i++) {
         set_free(fset[i]);
         fset[i]=save_fset[i];
-      };
+      }
       free ( (char *) save_fset);
-    };
+    }
 	return t;
 }
 
@@ -1028,9 +1028,9 @@ Tree *s;
 #endif
 {
 	if ( e==NULL||s==NULL ) return 0;
-/** fprintf(stderr, "tmember(");
-***	preorder(e); fprintf(stderr, ",");
-***	preorder(s); fprintf(stderr, " )\n");
+/** printf_stderr_continued( "tmember(");
+***	preorder(e); printf_stderr_continued( ",");
+***	preorder(s); printf_stderr_continued( " )\n");
 */
 	if ( s->token == ALT && s->right == NULL ) return tmember(e, s->down);
 	if ( e->token!=s->token )
@@ -1058,9 +1058,9 @@ Tree *s;
 #endif
 {
 	if ( e==NULL||s==NULL ) return 0;
-/**	fprintf(stderr, "tmember_constrained(");
-***	preorder(e); fprintf(stderr, ",");
-***	preorder(s); fprintf(stderr, " )\n");
+/**	printf_stderr_continued( "tmember_constrained(");
+***	preorder(e); printf_stderr_continued( ",");
+***	preorder(s); printf_stderr_continued( " )\n");
 **/
 	if ( s->token == ALT && s->right == NULL )
 		return tmember_constrained(e, s->down);
@@ -1125,9 +1125,9 @@ Tree *p;
 #endif
 {
 	/*
-	fprintf(stderr, "trm_perm(");
-	preorder(t); fprintf(stderr, ",");
-	preorder(p); fprintf(stderr, " )\n");
+	printf_stderr_continued( "trm_perm(");
+	preorder(t); printf_stderr_continued( ",");
+	preorder(p); printf_stderr_continued( " )\n");
 	*/
 	if ( t == NULL || p == NULL ) return NULL;
 	if ( t->token == ALT )
@@ -1243,8 +1243,8 @@ int *numAmbig;
 	findex = (int *) calloc(LL_k+1, sizeof(int));
 	if ( findex == NULL )
 	{
-		fprintf(stderr, ErrHdr, FileStr[CurAmbigfile], CurAmbigline);
-		fprintf(stderr, " out of memory while analyzing alts %d and %d of %s\n",
+		printf_stderr(FileStr[CurAmbigfile], CurAmbigline
+		             ," out of memory while analyzing alts %d and %d of %s\n",
 						CurAmbigAlt1,
 						CurAmbigAlt2,
 						CurAmbigbtype);
@@ -1263,10 +1263,10 @@ int *numAmbig;
 	*t = prune(*t, LL_k);
 	*t = tleft_factor( *t );
 
-/***	fprintf(stderr, "after shrink&flatten&prune&left_factor:"); preorder(*t); fprintf(stderr, "\n");*/
+/***	printf_stderr_continued( "after shrink&flatten&prune&left_factor:"); preorder(*t); printf_stderr_continued( "\n");*/
 	if ( *t == NULL )
 	{
-/***	fprintf(stderr, "TreeIncomplete --> no LL(%d) ambiguity\n", LL_k);*/
+/***	printf_stderr_continued( "TreeIncomplete --> no LL(%d) ambiguity\n", LL_k);*/
 		Tfree( *t );	/* kill if impossible to have ambig */
 		*t = NULL;
 	}
@@ -1279,10 +1279,10 @@ int *numAmbig;
 	*t = tleft_factor( *t );    /* MR10 */
 	*u = prune(*u, LL_k);
 	*u = tleft_factor( *u );
-/*	fprintf(stderr, "after shrink&flatten&prune&lfactor:"); preorder(*u); fprintf(stderr, "\n");*/
+/*	printf_stderr_continued( "after shrink&flatten&prune&lfactor:"); preorder(*u); printf_stderr_continued( "\n");*/
 	if ( *u == NULL )
 	{
-/*		fprintf(stderr, "TreeIncomplete --> no LL(%d) ambiguity\n", LL_k);*/
+/*		printf_stderr_continued( "TreeIncomplete --> no LL(%d) ambiguity\n", LL_k);*/
 		Tfree( *u );
 		*u = NULL;
 	}
@@ -1295,10 +1295,10 @@ int *numAmbig;
 	{
 		while ( (perm=permute(1,LL_k))!=NULL )
 		{
-/*			fprintf(stderr, "chk perm:"); preorder(perm); fprintf(stderr, "\n");*/
+/*			printf_stderr_continued( "chk perm:"); preorder(perm); printf_stderr_continued( "\n");*/
 			if ( tmember(perm, *t) && tmember(perm, *u) )
 			{
-/*				fprintf(stderr, "ambig upon"); preorder(perm); fprintf(stderr, "\n");*/
+/*				printf_stderr_continued( "ambig upon"); preorder(perm); printf_stderr_continued( "\n");*/
 
 				k++;
 				perm->right = ambig->down;
@@ -1325,14 +1325,14 @@ int *numAmbig;
       for (j=1; j <= CLL_k ; j++) {
         fprintf(stdout,"\n    Intersection of lookahead[%d] sets:\n",j);
         MR_dumpTokenSet(stdout,2,fs[j]);
-      };
+      }
       fprintf(stdout,"\n");
-    };
+    }
 
 	*numAmbig = k;
 	if ( ambig->down == NULL ) {_Tfree(ambig); ambig = NULL;}
 	free( (char *)findex );
-/*	fprintf(stderr, "final ambig:"); preorder(ambig); fprintf(stderr, "\n");*/
+/*	printf_stderr_continued( "final ambig:"); preorder(ambig); printf_stderr_continued( "\n");*/
 	return ambig;
 }
 
@@ -1435,24 +1435,24 @@ set *fset2;
 	for (k=1; k<=LL_k; k++) findex[k] = 0;
 
 #ifdef DBG_TRAV
-	fprintf(stderr, "tdif_%d[", p->k);
+	printf_stderr_continued( "tdif_%d[", p->k);
 	preorder(ambig_tuples);
-	fprintf(stderr, ",");
+	printf_stderr_continued( ",");
 	preorder(p->tcontext);
-	fprintf(stderr, "] =");
+	printf_stderr_continued( "] =");
 #endif
 
 	ftbl = ft;
 	while ( (perm=permute(1,p->k))!=NULL )
 	{
 #ifdef DBG_TRAV
-		fprintf(stderr, "test perm:"); preorder(perm); fprintf(stderr, "\n");
+		printf_stderr_continued( "test perm:"); preorder(perm); printf_stderr_continued( "\n");
 #endif
 		if ( tmember_constrained(perm, ambig_tuples) &&
 			 !tmember_of_context(perm, p) )
 		{
 #ifdef DBG_TRAV
-			fprintf(stderr, "satisfied upon"); preorder(perm); fprintf(stderr, "\n");
+			printf_stderr_continued( "satisfied upon"); preorder(perm); printf_stderr_continued( "\n");
 #endif
 			k++;
 			if ( dif==NULL ) dif = perm;
@@ -1467,7 +1467,7 @@ set *fset2;
 
 #ifdef DBG_TRAV
 	preorder(dif);
-	fprintf(stderr, "\n");
+	printf_stderr_continued( "\n");
 #endif
 
 	for (i=1; i<=CLL_k; i++) free( (char *)ft[i] );
@@ -1537,7 +1537,7 @@ int contextGuardOK(p,h,hmax)
       if (tn->el_label != NULL) {
         warnFL(eMsg1("a label (\"%s\") for a context guard element is meaningless",tn->el_label),
                              FileStr[p->file],p->line);
-      };
+      }
       return contextGuardOK( ( (TokNode *) p)->next,h,hmax);
     } else if (p->ntype == nAction) {
       goto Fail;
@@ -1554,10 +1554,10 @@ int contextGuardOK(p,h,hmax)
                   FileStr[p->file],p->line);
         contextGuardOK(j->p1,h,hmax);
         return 0;
-      };
+      }
       /* do both p1 and p2 so use | rather than ||  */
       return contextGuardOK(j->p2,h,hmax) | contextGuardOK(j->p1,h,hmax);
-    };
+    }
 Fail:
     errFL("A context guard may contain only Token references - guard will be ignored",
                              FileStr[p->file],p->line);
@@ -1600,19 +1600,19 @@ computePredFromContextGuard(blk,msgDone)               /* MR10 */
     if (! ok) {                                             /* MR10 */
       *msgDone=1;                                           /* MR10 */
       return NULL;                                          /* MR10 */
-    };                                                      /* MR10 */
+    }                                                      /* MR10 */
     if (hmax == 0) {
 errFL("guard is 0 tokens long",FileStr[junc->file],junc->line);          /* MR11 */
       *msgDone=1;
       return NULL;
-    };
+    }
     if (hmax > CLL_k) {                                     /* MR10 */
 errFL(eMsgd2("guard is %d tokens long - lookahead is limited to max(k,ck)==%d", /* MR10 */
         hmax,CLL_k),                                        /* MR10 */
         FileStr[junc->file],junc->line);                    /* MR10 */
       *msgDone=1;                                           /* MR10 */
       return NULL;                                          /* MR10 */
-    };                                                      /* MR10 */
+    }                                                      /* MR10 */
 
 	rk = empty;
 	p = junc;
@@ -1629,9 +1629,9 @@ errFL(eMsgd2("guard is %d tokens long - lookahead is limited to max(k,ck)==%d", 
 		t = tflatten( t );
 		t = tleft_factor( t );
 /*
-		fprintf(stderr, "ctx guard:");
+		printf_stderr_continued( "ctx guard:");
 		preorder(t);
-		fprintf(stderr, "\n");
+		printf_stderr_continued( "\n");
 */
 		pred->tcontext = t;
 	}
@@ -1641,9 +1641,9 @@ errFL(eMsgd2("guard is %d tokens long - lookahead is limited to max(k,ck)==%d", 
 		require(set_nil(rk), "rk != nil");
 		set_free(rk);
 /*
-		fprintf(stderr, "LL(1) ctx guard is:");
+		printf_stderr_continued( "LL(1) ctx guard is:");
 		s_fprT(stderr, scontext);
-		fprintf(stderr, "\n");
+		printf_stderr_continued( "\n");
 */
 		pred->scontext[1] = scontext;
 	}
@@ -1726,7 +1726,7 @@ void MR_traceAmbSourceKclient()
     require (matchSets[0] != NULL,"matchSets[0] alloc");
     matchSets[1]=(set *) calloc (CLL_k+1,sizeof(set));
     require (matchSets[1] != NULL,"matchSets[1] alloc");
-  };
+  }
 
   for (i=1 ; i <= MR_AmbSourceSearchLimit ; i++) {
     set_clr(matchSets[0][i]);
@@ -1735,7 +1735,7 @@ void MR_traceAmbSourceKclient()
     set_clr(matchSets[1][i]);
     set_orel( (unsigned) tokensInChain[i],
                               &matchSets[1][i]);
-  };
+  }
 
   save_fset=fset;
   save_ConstrainSearch=ConstrainSearch;
@@ -1750,7 +1750,7 @@ void MR_traceAmbSourceKclient()
 **    for (j=1 ; j <= MR_AmbSourceSearchLimit ; j++) {
 **      if (j != 1) fprintf(stdout," ");
 **      fprintf(stdout,"%s",TerminalString(tokensInChain[j]));
-**    };
+**    }
 **    fprintf(stdout,")\n\n");
 #endif
 
@@ -1777,7 +1777,7 @@ void MR_traceAmbSourceKclient()
     require (MR_BackTraceStack.count == 0,"K: MR_BackTraceStack.count != 0");
 
     set_free(incomplete);
-  };
+  }
 
   ConstrainSearch=save_ConstrainSearch;
   fset=save_fset;
@@ -1804,7 +1804,7 @@ Tree *tTrunc(t,depth)
     } else {
       u=tnode(t->token);
       u->down=tTrunc(t->down,depth-1);
-    };
+    }
     if (t->right != NULL) u->right=tTrunc(t->right,depth);
     return u;
 }
@@ -1823,7 +1823,7 @@ void MR_iterateOverTree(t,chain)
     MR_iterateOverTree(t->down,&chain[1]);
   } else {
     MR_traceAmbSourceKclient();
-  };
+  }
   MR_iterateOverTree(t->right,&chain[0]);
   chain[0]=0;
 }
@@ -1862,7 +1862,7 @@ void MR_traceAmbSourceK(t,alt1,alt2)
     if (tokensInChain == NULL) {
       tokensInChain=(int *) calloc (CLL_k+1,sizeof(int));
       require (tokensInChain != NULL,"tokensInChain alloc");
-    };
+    }
 
     MR_AmbSourceSearchGroup=0;
 
@@ -1883,7 +1883,7 @@ void MR_traceAmbSourceK(t,alt1,alt2)
                   MR_ruleNamePlusOffset( (Node *) MR_AmbSourceSearchJ[i]),
                   MR_AmbSourceSearchJ[i]->line,
                   FileStr[MR_AmbSourceSearchJ[i]->file]);
-    };
+    }
 
     fprintf(stdout,"\n");
 
@@ -1891,7 +1891,7 @@ void MR_traceAmbSourceK(t,alt1,alt2)
       maxDepth=MR_AmbAidDepth;
     } else {
       maxDepth=LL_k;
-    };
+    }
 
     for (depth=1 ; depth <= maxDepth; depth++) {
       MR_AmbSourceSearchLimit=depth;
@@ -1902,10 +1902,10 @@ void MR_traceAmbSourceK(t,alt1,alt2)
         Tfree(truncatedTree);
       } else {
         MR_iterateOverTree(t,tokensInChain);                /* <===== */
-      };
+      }
       fflush(stdout);
       fflush(stderr);
-    };
+    }
 
     fprintf(stdout,"\n");
     MR_AmbSourceSearch=0;
@@ -1979,14 +1979,14 @@ void MR_traceAmbSource(matchSets,alt1,alt2)
                             (i+1),
                             MR_ruleNamePlusOffset( (Node *) p[i]),
                             p[i]->line,FileStr[p[i]->file]);
-    };
+    }
 
     for (j=1; j <= CLL_k ; j++) {
       fprintf(stdout,"\n    Intersection of lookahead[%d] sets:\n",j);
       intersection=set_and(alt1->fset[j],alt2->fset[j]);
       MR_dumpTokenSet(stdout,2,intersection);
       set_free(intersection);
-    };
+    }
 
     fprintf(stdout,"\n");
 
@@ -2000,7 +2000,7 @@ void MR_traceAmbSource(matchSets,alt1,alt2)
 
 /***        fprintf(stdout,"  Choice:%d  Depth:%d\n\n",i+1,depth);  ***/
 
-            for (j=0 ; j <= CLL_k ; j++) { dup_matchSets[j]=set_dup(matchSets[j]); };
+            for (j=0 ; j <= CLL_k ; j++) { dup_matchSets[j]=set_dup(matchSets[j]); }
             fset=dup_matchSets;
 
             fflush(output);
@@ -2028,9 +2028,9 @@ void MR_traceAmbSource(matchSets,alt1,alt2)
             set_free(incomplete);
             set_free(tokensUsed);
 
-            for (j=0 ; j <= CLL_k ; j++) { set_free(dup_matchSets[j]); };
-        };
-    };
+            for (j=0 ; j <= CLL_k ; j++) { set_free(dup_matchSets[j]); }
+        }
+    }
 
     fprintf(stdout,"\n");
 
@@ -2072,7 +2072,7 @@ void MR_backTraceDumpItem(f,skip,n)
           fprintf(f,"  %2d #token %-23s",itemCount,TerminalString(tn->token));
         } else {
           fprintf(f,"  %2d #tokclass %-20s",itemCount,TerminalString(tn->token));
-        };
+        }
         break;
     case nRuleRef:
         itemCount++; if (skip) goto EXIT;
@@ -2092,7 +2092,7 @@ void MR_backTraceDumpItem(f,skip,n)
               itemCount++; if (skip) goto EXIT;
               fprintf(f,"  %2d %-30s",itemCount,"in (...)? block at");
               break;
-            };
+            }
 /******     fprintf(f,"  %2d %-32s",itemCount,"in (...) block at");  *******/
 /******     break;                                                          *******/
             goto EXIT;
@@ -2109,7 +2109,7 @@ void MR_backTraceDumpItem(f,skip,n)
               itemCount++; if (skip) goto EXIT;
               fprintf(f,"  %2d %-30s",itemCount,"end (...)? block at");
               break;
-            };
+            }
             goto EXIT;
 /******     fprintf(f,"  %2d %-32s",itemCount,"end of a block at");     *****/
 /******     break;                                                             *****/
@@ -2129,9 +2129,9 @@ void MR_backTraceDumpItem(f,skip,n)
             break;
         case aLoopBegin:
             goto EXIT;
-      };
+      }
       break;
-  };
+  }
   fprintf(f," %-23s line %-4d  %s\n",MR_ruleNamePlusOffset(n),n->line,FileStr[n->file]);
 EXIT:
   return;
@@ -2167,7 +2167,7 @@ void MR_backTraceReport()
   for (i=0; i < MR_BackTraceStack.count ; i++) {
     p=(Node *) MR_BackTraceStack.data[i];
     if (p->ntype == nToken) depth++;
-  };
+  }
 
 /* MR14 */  if (MR_AmbSourceSearch) {
 /* MR14 */     require (depth <= MR_AmbSourceSearchLimit,"depth > MR_AmbSourceSearchLimit");
@@ -2178,21 +2178,21 @@ void MR_backTraceReport()
 
   if (MR_AmbSourceSearchLimit == 0 || depth < MR_AmbSourceSearchLimit) {
     return;
-  };
+  }
 
   MR_backTraceDumpItemReset();
 
   limitMatch=MR_BackTraceStack.count;
   if (limitMatch > previousBackTrace.count) {
     limitMatch=previousBackTrace.count;
-  };
+  }
 
   for (match=0; match < limitMatch; match++) {
     if (MR_BackTraceStack.data[match] !=
         previousBackTrace.data[match]) {
       break;
-    };
-  };
+    }
+  }
 
   /* not sure at the moment why there would be duplicates */
 
@@ -2219,14 +2219,14 @@ void MR_backTraceReport()
           remainder=set_dif(fset[depth],tn->tset);
           set_free(fset[depth]);
           fset[depth]=remainder;
-        };
-      };
-    };
+        }
+      }
+    }
     fprintf(stdout,")\n");
 
     for (i=0; i < MR_BackTraceStack.count ; i++) {
       MR_backTraceDumpItem(stdout, (i<match) ,(Node *) MR_BackTraceStack.data[i]);
-    };
+    }
     fprintf(stdout,"\n");
     fflush(stdout);
 
@@ -2234,9 +2234,9 @@ void MR_backTraceReport()
 
     for (i=0; i < MR_BackTraceStack.count ; i++) {
       MR_pointerStackPush(&previousBackTrace,MR_BackTraceStack.data[i]);
-    };
+    }
 
-  };
+  }
 }
 
 #ifdef __USE_PROTOS

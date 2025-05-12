@@ -1,0 +1,131 @@
+%{
+/*
+-VpotTD -e@ -j1 -k1,3,4,5,7,$ -aCdgH decode_keyword -N in_reserved_keyword_set .\scripting\i_a_script.gperf .\scripting\keywords.c
+*/
+/* Command-line: gperf -VpotT -lj1 -k1,3,$ -aCdgH decode_keyword -N in_reserved_keyword_set i_a_script.gperf .\keywords.c  */
+
+#include "stdpccts.h"
+
+struct reserved_word { char *name; short int token_id; };
+
+/* prototype */
+#ifdef __GNUC__
+  inline
+#endif
+const struct reserved_word *
+in_reserved_keyword_set (register const char *str, register int len);
+
+
+/* return 0 if no valid keyword was matched. */
+short int get_reserved_keyword(const char *str, register int len)
+{
+  const struct reserved_word *p = NULL;
+
+  if (!*str) return 0;
+  p = in_reserved_keyword_set(str, len);   
+  
+  return (short int)(p ? p->token_id : 0);
+}
+
+
+%}
+struct reserved_word { char *name; short int token_id; };
+%%
+#----------------------------------------------------
+#--- All keywords have first character in caps!!! ---
+#----- This helps Gperf to create small tables! -----
+#----------------------------------------------------
+And@ BOOLEAN_AND
+Any@ ANY
+Array@ ARRAY
+As@ AS
+Begin@ BEGIN
+Boolean@ BOOLEAN
+Break@ BREAK
+Code@ IMPLEMENTATION
+Const@ CONST
+Continue@ CONTINUE
+Define@ DEFINE
+Declarations@ DECLARATIONS
+Definitions@ DEFINITIONS
+Do@ DO
+Done@ DONE
+Elif@ ELIF
+Else@ ELSE
+End@ END
+Endif@ ENDIF
+Endscript@ ENDSCRIPT
+Endstruct@ ENDSTRUCT
+Endsub@ ENDSUB
+False@ BOOLEAN_FALSE
+Goto@ GOTO
+Halt@ HALT
+If@ IF
+Implementation@ IMPLEMENTATION
+Integer@ INTEGER
+Not@ BOOLEAN_NOT
+Of@ OF
+Or@ BOOLEAN_OR
+Real@ REAL
+Repeat@ REPEAT
+Reset@ RESET
+Return@ RETURN
+Script@ SCRIPT
+String@ STRING
+Struct@ STRUCT
+Subroutine@ SUBROUTINE
+True@ BOOLEAN_TRUE
+Until@ UNTIL
+Var@ DECLARATIONS
+Void@ VOID
+While@ WHILE
+##---------------------------------------
+#}@ END
+#{@ BEGIN
+##---------------------------------------
+##++@ PLUSPLUS
+##--@ MINUSMINUS
+##---------------------------------------
+#+=@ ASSIGN_PLUS
+#-=@ ASSIGN_MINUS
+#*=@ ASSIGN_MULTIPLY
+#/=@ ASSIGN_DIVIDE
+#%=@ ASSIGN_MODULO
+#**=@ ASSIGN_POWER
+#<<=@ ASSIGN_LSHIFT
+#>>=@ ASSIGN_RSHIFT
+#&=@ ASSIGN_BITWISE_AND
+#|=@ ASSIGN_BITWISE_OR
+#^=@ ASSIGN_BITWISE_XOR
+#&&=@ ASSIGN_BOOLEAN_AND
+#||=@ ASSIGN_BOOLEAN_OR
+##---------------------------------------
+#>=@ GE
+#>@ GT
+#==@ EQ
+#<=@ LE
+#<@ LT
+#:=@ ASSIGN
+#/@ DIVIDE
+#%@ MODULO
+#!=@ NE
+#**@ POWER
+#~@ BITWISE_NOT
+#-@ MINUS
+#+@ PLUS
+#*@ MULTIPLY
+#!@ BOOLEAN_NOT
+#>>@ RSHIFT
+#<<@ LSHIFT
+##---------------------------------------
+#...@ TRIPLE_DOT
+##---------------------------------------
+#(@ LPARENS
+#)@ RPARENS
+#[@ LBRACKET
+#]@ RBRACKET
+#,@ COMMA
+#.@ DOT
+#;@ SEMICOLON
+#:@ COLON
+##---------------------------------------

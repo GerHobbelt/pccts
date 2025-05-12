@@ -72,7 +72,7 @@ int MR_secondPredicateUnreachable(first,second)
       return 1; /* look identical - will never reach alt2 */
     } else {
       return 0; /* look different */
-    };
+    }
   } else if (first->down == NULL && second->down != NULL) {
 
     if (second->expr == PRED_AND_LIST) {
@@ -82,8 +82,8 @@ int MR_secondPredicateUnreachable(first,second)
       for (s=second->down; s != NULL; s=s->right) {
         if (MR_secondPredicateUnreachable(first,s)) {
           return 1;
-        };
-      };
+        }
+      }
       return 0;
     } else if (second->expr == PRED_OR_LIST) {
 
@@ -92,13 +92,13 @@ int MR_secondPredicateUnreachable(first,second)
       for (s=second->down; s != NULL; s=s->right) {
         if (!MR_secondPredicateUnreachable(first,s)) {
           return 0;
-        };
-      };
+        }
+      }
       return 1;
     } else {
       require (0,"Illegal pred->expr");
-      return 0; /* MR20 Make compiler happy */
-    };
+      /* return 0; */ /* MR20 Make compiler happy */
+    }
   } else if (first->down != NULL && second->down == NULL) {
     if (first->expr == PRED_AND_LIST) {
 
@@ -107,8 +107,8 @@ int MR_secondPredicateUnreachable(first,second)
       for (f=first->down; f != NULL; f=f->right) {
         if (!MR_secondPredicateUnreachable(f,second)) {
           return 0;
-        };
-      };
+        }
+      }
       return 1;
     } else if (first->expr == PRED_OR_LIST) {
 
@@ -117,13 +117,13 @@ int MR_secondPredicateUnreachable(first,second)
       for (f=first->down; f != NULL; f=f->right) {
         if (MR_secondPredicateUnreachable(f,second)) {
           return 1;
-        };
-      };
+        }
+      }
       return 0;
     } else {
       require (0,"Illegal predicate->expr");
-      return 0; /* MR20 Make compiler happy */
-    };
+      /* return 0; */ /* MR20 Make compiler happy */
+    }
   } else {
 
     if (first->expr == PRED_AND_LIST && second->expr == PRED_AND_LIST) {
@@ -133,11 +133,11 @@ int MR_secondPredicateUnreachable(first,second)
       for (f=first->down; f != NULL ; f=f->right) {
         for (s=second->down; s != NULL ; s=s->right) {
           if (MR_secondPredicateUnreachable(f,s)) goto A_next_f;
-        };
+        }
         return 0;
 A_next_f:
         continue;
-      };
+      }
       return 1;
 
     } else if (first->expr == PRED_AND_LIST && second->expr == PRED_OR_LIST) {
@@ -147,8 +147,8 @@ A_next_f:
       for (f=first->down; f != NULL ; f=f->right) {
         for (s=second->down; s != NULL ; s=s->right) {
           if (!MR_secondPredicateUnreachable(f,s)) return 0;
-        };
-      };
+        }
+      }
       return 1;
 
     } else if (first->expr == PRED_OR_LIST && second->expr == PRED_AND_LIST) {
@@ -158,8 +158,8 @@ A_next_f:
       for (f=first->down; f != NULL ; f=f->right) {
         for (s=second->down; s != NULL ; s=s->right) {
           if (MR_secondPredicateUnreachable(f,s)) return 1;
-        };
-      };
+        }
+      }
       return 0;
 
     } else if (first->expr == PRED_OR_LIST && second->expr == PRED_OR_LIST) {
@@ -169,18 +169,18 @@ A_next_f:
       for (f=first->down; f != NULL ; f=f->right) {
         for (s=second->down; s != NULL ; s=s->right) {
           if (MR_secondPredicateUnreachable(f,s)) goto B_next_f;
-        };
+        }
         return 0;
 B_next_f:
        continue;
-      };
+      }
       return 1;
 
     } else {
       require (0,"Illegal predicate->expr");
-      return 0; /* MR20 Make compiler happy */
-    };
-  };
+      /* return 0; */ /* MR20 Make compiler happy */
+    }
+  }
   return 0; /* MR20 MSVC 5.0 complains about missing return statement */
 }
 
@@ -195,7 +195,9 @@ void MR_xxxIndent(f,depth)
   int   i;
 
   for (i=0; i<depth ; i++) {
-    fprintf(f,"  ");
+    f == stderr
+    ? printf_stderr_continued("  ")
+    : fprintf(f,"  ");
   };
 }
 
@@ -247,19 +249,19 @@ void MR_dumpPredRuleRefStack(iounit,indent)
     if (count == 0) {
       fprintf(iounit,"empty\n");
       return;
-    };
+    }
     for (i=0; i < count; i++) {
       rrn=(RuleRefNode *) MR_PredRuleRefStack.data[i];
       for (j=0; j<indent; j++) fprintf(iounit," ");
       fprintf(iounit,"#%-2d in rule %s (line %d %s) to rule %s\n",
             i,rrn->rname,rrn->line,FileStr[rrn->file],rrn->text);
-    };
+    }
     lastOne=MR_ruleReferenced(rrn);
     if (lastOne != NULL) {
       for (j=0; j<indent; j++) fprintf(iounit," ");
       fprintf(iounit,"#%-2d in rule %s (line %d %s)\n",
         count,lastOne->rname,lastOne->line,FileStr[lastOne->file]);
-    };
+    }
 }
 
 #ifdef __USE_PROTOS
@@ -276,31 +278,49 @@ void MR_dumpTreeF(f,depth,tree,across)
 
 	if (tree == NULL ) return;
 	if (tree->down != NULL ) {
-      fprintf(output,"\n");
-      MR_outputIndent(depth);
-      fprintf(output, "(root =");
-    };
+      f == stderr
+      ? printf_stderr_continued("\n")
+      : fprintf(f,"\n");
+      MR_xxxIndent(f, depth);
+      f == stderr
+      ? printf_stderr_continued( "(root =")
+      : fprintf(f, "(root =");
+    }
 	if (tree->token == ALT ) {
-      fprintf(output," %-16s","Alt");
+      f == stderr
+      ? printf_stderr_continued(" %-16s","Alt")
+      : fprintf(f," %-16s","Alt");
 	} else if (tree->token==EpToken ) {
-      fprintf(output,"(%d)%13s",tree->v.rk," ");
+      f == stderr
+      ? printf_stderr_continued("(%d)%13s",tree->v.rk," ")
+      : fprintf(f,"(%d)%13s",tree->v.rk," ");
 	} else {
-      fprintf(output," %-16s",TerminalString(tree->token));
-    };
+      f == stderr
+      ? printf_stderr_continued(" %-16s",TerminalString(tree->token))
+      : fprintf(f," %-16s",TerminalString(tree->token));
+    }
     if (tree->down != NULL) {
-      fprintf(output,"\n");
-      MR_outputIndent(depth+1);
+      f == stderr
+      ? printf_stderr_continued("\n")
+      : fprintf(f,"\n");
+      MR_xxxIndent(f, depth+1);
       MR_dumpTreeF(f,depth+1,tree->down,1);
       newAcross=0;
-      fprintf(output,"\n");
-      MR_outputIndent(depth);
-      fprintf(output,")");
-    };
+      f == stderr
+      ? printf_stderr_continued("\n")
+      : fprintf(f,"\n");
+      MR_xxxIndent(f, depth);
+      f == stderr
+      ? printf_stderr_continued(")")
+      : fprintf(f,")");
+    }
     if (newAcross > 3) {
-      fprintf(output,"\n");
-      MR_outputIndent(depth);
+      f == stderr
+      ? printf_stderr_continued("\n")
+      : fprintf(f,"\n");
+      MR_xxxIndent(f, depth);
       newAcross=0;
-    };
+    }
     MR_dumpTreeF(f,depth,tree->right,newAcross+1);
 }
 
@@ -335,7 +355,7 @@ void MR_dumpTokenSet(f,depth,s)
       MR_xxxIndent(f,depth+1);
       fprintf(f,"nil\n");
       return;
-    };
+    }
 
     pdq=set_pdq(s);
     require(pdq != NULL,"set_pdq failed");
@@ -346,9 +366,9 @@ void MR_dumpTokenSet(f,depth,s)
       for (j=0; j < 4 ; j++) {
         if (pdq[i+j] == nil) break;
         fprintf(f," %-16s",TerminalString(pdq[i+j]));
-      };
+      }
       if (pdq[i+j] == nil) break;
-    };
+    }
     fprintf(f,"\n");
     free( (char *) pdq);
 }
@@ -368,7 +388,7 @@ void MR_dumpPred1(depth,p,withContext)
     MR_outputIndent(depth);
     fprintf(output,"The predicate is empty (or always true)\n\n");
     return;
-  };
+  }
   if (p->down != NULL) {
     MR_outputIndent(depth);
     if (p->inverted) {
@@ -381,7 +401,7 @@ void MR_dumpPred1(depth,p,withContext)
       if (p->expr == PRED_OR_LIST) fprintf(output,"%s NOR (not OR) expr\n\n",p->expr);
     } else {
       fprintf(output,"%s expr\n\n",p->expr);
-    };
+    }
   } else {
     MR_outputIndent(depth);
     fprintf(output,"pred %s <<%s>>?\n",
@@ -395,19 +415,19 @@ void MR_dumpPred1(depth,p,withContext)
     }
     if (p->source != NULL && p->source->ampersandPred != NULL) {
       fprintf(output,"  (\"&&\" guard)");
-    };
+    }
     k=set_int(p->completionSet);
     if (k != nil) {
       fprintf(output," Incomplete Set at k=%d !",k);
-    };
+    }
     k=set_int(p->completionTree);
     if (k != nil) {
       fprintf(output," Incomplete Tree at k=%d !",k);
-    };
+    }
     if (p->source != NULL) {
       fprintf(output,"  rule %s  line %d  %s",
                     p->source->rname,p->source->line,FileStr[p->source->file]);
-    };
+    }
     fprintf(output,"\n");
     if (withContext &&
             (HoistPredicateContext ||
@@ -425,18 +445,18 @@ void MR_dumpPred1(depth,p,withContext)
           fprintf(output," null");
         } else {
           MR_dumpTreeX(depth+2,p->tcontext,0);
-        };
+        }
         fprintf(output,"\n");
-      };
-    };
+      }
+    }
     fprintf(output,"\n");
-  };
+  }
   if (p->down != NULL) {
     MR_dumpPred1(depth+1,p->down,withContext);
-  };
+  }
   if (p->right != NULL) {
     MR_dumpPred1(depth,p->right,withContext);
-  };
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -469,10 +489,10 @@ Tree * MR_make_tree_from_set(s)
       node=tnode( (int) pdq[i]);
       *tp=node;
       tp=&(node->right);
-    };
+    }
     *tp=NULL;
     free ( (char *) pdq);
-  };
+  }
   return t;
 }
 
@@ -491,8 +511,8 @@ void MR_check_pred_too_long(p,completion)
       p->source->predTooLong=1;
 warnFL("It is unusual (but ok) for a semantic predicate to test context past the end of its own rule",
                                 FileStr[p->source->file],p->source->line);
-    };
-  };
+    }
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -507,7 +527,7 @@ int MR_predicate_context_completed(p)
       p->expr != PRED_OR_LIST) {
     if ( ! set_nil(p->completionSet)) return 0;
     if ( ! set_nil(p->completionTree)) return 0;
-  };
+  }
   return MR_predicate_context_completed(p->down) &
          MR_predicate_context_completed(p->right);
 }
@@ -525,8 +545,8 @@ Node * MR_advance(n)
       case nToken:      return ((TokNode *)n)->next;
       case nRuleRef:    return ((RuleRefNode *)n)->next;
       case nAction:     return ((ActionNode *)n)->next;
-      default:          return NULL;
-    };
+      default:          /* return NULL; */ break;
+    }
   return NULL; /* MSVC 5.0 complains about missing return statement */
 }
 
@@ -543,8 +563,8 @@ Junction * MR_find_endRule(n)
       if (next->ntype == nJunction &&
             ( (Junction *) next)->jtype == EndRule) {
         break;
-      };
-    };
+      }
+    }
     return (Junction *)next;
 }
 
@@ -575,11 +595,11 @@ Tree *MR_computeTreeIntersection(l,r)
     for (p=l; p != NULL; p=p->right) {
       require(p->token != EpToken,"MR_computeTreeIntersection: p->EpToken unexpected\n");
       require (p->token != ALT,"MR_computeTreeIntersection: p->ALT unexpected\n");
-    };
+    }
     for (q=r; q != NULL; q=q->right) {
       require(q->token != EpToken,"MR_computeTreeIntersection: q->EpToken unexpected\n");
       require(q->token != ALT,"MR_computeTreeIntersection: q->ALT unexpected\n");
-    };
+    }
 
     result=tnode(ALT);
     tail=&(result->down);
@@ -591,9 +611,9 @@ Tree *MR_computeTreeIntersection(l,r)
           match->down=MR_computeTreeIntersection(p->down,q->down);
           *tail=match;
           tail=&(match->right);
-        };
-      };
-    };
+        }
+      }
+    }
 
     *tail=NULL;
     result=tshrink(result);
@@ -638,11 +658,11 @@ Tree *MR_computeTreeAND(l,r)
     for (p=l; p != NULL; p=p->right) {
 /**** require(p->token != EpToken,"MR_computeTreeAND: p->EpToken unexpected\n"); ****/
       require (p->token != ALT,"MR_computeTreeAND: p->ALT unexpected\n");
-    };
+    }
     for (q=r; q != NULL; q=q->right) {
 /**** require(q->token != EpToken,"MR_computeTreeAND: q->EpToken unexpected\n"); ****/
       require(q->token != ALT,"MR_computeTreeAND: q->ALT unexpected\n");
-    };
+    }
 
     result=tnode(ALT);
     tail=&(result->down);
@@ -654,9 +674,9 @@ Tree *MR_computeTreeAND(l,r)
           match->down=MR_computeTreeAND(p->down,q->down);
           *tail=match;
           tail=&(match->right);
-        };
-      };
-    };
+        }
+      }
+    }
 
     *tail=NULL;
     result=tshrink(result);
@@ -730,7 +750,7 @@ Tree *MR_compute_pred_tree_ctxXX(p)
         t=MR_compute_pred_tree_ctxXX(q);
         result=tappend(result,t);
         t=NULL;
-      };
+      }
 
       result=tshrink(result);
       result=tflatten( result );
@@ -742,7 +762,7 @@ Tree *MR_compute_pred_tree_ctxXX(p)
 
 /**** result=tleft_factor( result ); ****/
       return result;
-    };
+    }
 
 #if 0
 **    if (p->expr == PRED_AND_LIST) {
@@ -765,7 +785,7 @@ Tree *MR_compute_pred_tree_ctxXX(p)
 **        l1=MR_computeTreeAND(l1,r1);
 **        Tfree(r1);
 **        Tfree(prevl1);
-**      };
+**      }
 **
 **/* result from computeTreeAND should be in "canonical" format */
 **
@@ -774,7 +794,7 @@ Tree *MR_compute_pred_tree_ctxXX(p)
 **/* result of MR_computeTreeAND should be in "canonical" format */
 **
 **      return result;
-**    };
+**    }
 #endif
 
     if (p->k == 1) {
@@ -785,7 +805,7 @@ Tree *MR_compute_pred_tree_ctxXX(p)
       result=tshrink(result);
       result=tflatten(result);
       result=tleft_factor(result);
-    };
+    }
     return result;
 }
 
@@ -801,7 +821,7 @@ void MR_pred_depth(p,maxDepth)
   if (p->expr != PRED_OR_LIST &&
       p->expr != PRED_AND_LIST) {
     if (p->k > *maxDepth) *maxDepth=p->k;
-  };
+  }
   MR_pred_depth(p->down,maxDepth);
   MR_pred_depth(p->right,maxDepth);
 }
@@ -835,13 +855,13 @@ set MR_compute_pred_set(p)
         t=MR_compute_pred_set(q);
         set_orin(&result,t);
         set_free(t);
-      };
+      }
       return result;
     } else if (p->k > 1) {
       return empty;
     } else {
       return set_dup(p->scontext[1]);
-    };
+    }
 }
 
 #ifdef __USE_PROTOS
@@ -884,7 +904,7 @@ void MR_cleanup_pred_trees(p)
     t=tflatten(t);
     t=tleft_factor(t);
     p->tcontext=t;
-  };
+  }
   MR_cleanup_pred_trees(p->down);
   MR_cleanup_pred_trees(p->right);
 }
@@ -912,7 +932,7 @@ Tree * MR_remove_epsilon_from_tree(t)
     t->right=NULL;
     Tfree(t);
     return u;
-  };
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -933,7 +953,7 @@ void MR_complete_set(predDepth,tokensUsed,incomplete)
 
     if (set_int(*incomplete) > (unsigned) predDepth) {
       return;
-    };
+    }
 
     require(MR_PredRuleRefStack.count == MR_RuleBlkWithHaltStack.count,
                 "RuleRefStack and RuleBlkWithHaltStack not same size");
@@ -946,7 +966,7 @@ void MR_complete_set(predDepth,tokensUsed,incomplete)
 
     if (MR_RuleBlkWithHalt != NULL) {
       MR_RuleBlkWithHalt->end->halt=FALSE;
-    };
+    }
 
     for (i=MR_PredRuleRefStack.count-1; i >= 0 ; i--) {
       ruleRef=(RuleRefNode *)MR_PredRuleRefStack.data[i];
@@ -965,19 +985,19 @@ void MR_complete_set(predDepth,tokensUsed,incomplete)
         REACH(ruleRef->next,k2,&rk2,b);
 		set_orin(tokensUsed,b);
 		set_free(b);
-      };
+      }
 
       if (MR_RuleBlkWithHalt != NULL) MR_RuleBlkWithHalt->end->halt=FALSE;
 
 	  set_orin(incomplete,rk2);                       /* remember what we couldn't do */
       set_free(rk2);
 	  if (set_int(*incomplete) > (unsigned) predDepth) break;    /* <=== another exit from loop */
-    };
+    }
 
     MR_RuleBlkWithHalt=save_MR_RuleBlkWithHalt;
     if (MR_RuleBlkWithHalt != NULL) {
       MR_RuleBlkWithHalt->end->halt=TRUE;
-    };
+    }
 }
 
 #ifdef __USE_PROTOS
@@ -999,7 +1019,7 @@ void MR_complete_tree(predDepth,t,incomplete)
 
     if (set_int(*incomplete) > (unsigned) predDepth) {
       return;
-    };
+    }
 
     require(MR_PredRuleRefStack.count == MR_RuleBlkWithHaltStack.count,
                 "RuleRefStack and RuleBlkWithHaltStack not same size");
@@ -1014,7 +1034,7 @@ void MR_complete_tree(predDepth,t,incomplete)
 
     if (MR_RuleBlkWithHalt != NULL) {
       MR_RuleBlkWithHalt->end->halt=FALSE;
-    };
+    }
 
     for (i=MR_PredRuleRefStack.count-1; i >= 0 ; i--) {
       ruleRef=(RuleRefNode *)MR_PredRuleRefStack.data[i];
@@ -1046,13 +1066,13 @@ void MR_complete_tree(predDepth,t,incomplete)
       if (MR_RuleBlkWithHalt != NULL) MR_RuleBlkWithHalt->end->halt=FALSE;
 
 	  if (set_int(*incomplete) > (unsigned) predDepth) break;    /* <=== another exit from loop */
-    };
+    }
 
     MR_RuleBlkWithHalt=save_MR_RuleBlkWithHalt;
 
     if (MR_RuleBlkWithHalt != NULL) {
       MR_RuleBlkWithHalt->end->halt=TRUE;
-    };
+    }
     ConstrainSearch=saveConstrainSearch;
 }
 
@@ -1069,7 +1089,7 @@ void MR_complete_predicates(predDepth,pred)
       pred->expr != PRED_OR_LIST) {
     MR_complete_set(predDepth,&(pred->scontext[1]),&(pred->completionSet));
     MR_complete_tree(predDepth,&(pred->tcontext),&(pred->completionTree));
-  };
+  }
   MR_complete_predicates(predDepth,pred->down);
   MR_complete_predicates(predDepth,pred->right);
 }
@@ -1098,8 +1118,8 @@ Junction * MR_junctionWithoutP2(j)
       thisAlt->file=j->file;
       thisAlt->line=j->line;
       j->p1=(Node *)thisAlt;
-    };
-  };
+    }
+  }
   return thisAlt;
 }
 
@@ -1125,20 +1145,20 @@ int MR_tree_equ(big,small)
     require(small->right == NULL,
                 "MR_tree_equ: small: ALT node has siblings");
     return MR_tree_equ(big,small->down);
-  };
+  }
   if (big->token == ALT) {
     require(big->right == NULL,
                 "MR_tree_equ: big: ALT node has siblings");
     return MR_tree_equ(big->down,small);
-  };
+  }
   for (s=small; s != NULL; s=s->right) {
     scount++;
     require(s->token != EpToken,"MR_tree_equ: s->EpToken unexpected\n");
-  };
+  }
   for (b=big; b != NULL; b=b->right) {
     bcount++;
     require(b->token != EpToken,"MR_tree_equ: b->EpToken unexpected\n");
-  };
+  }
 
   if (bcount != scount) return 0;
 
@@ -1146,12 +1166,12 @@ int MR_tree_equ(big,small)
     for (b=big; b!= NULL; b=b->right) {
       if (s->token == b->token) {
         if (MR_tree_equ(b->down,s->down)) goto next_s;
-      };
-    };
+      }
+    }
     return 0;
 next_s:
     continue;
-  };
+  }
   return 1;
 }
 
@@ -1172,7 +1192,7 @@ int MR_identicalContext(p,q)
     return set_equ(p->scontext[1],q->scontext[1]);
   } else {
     return MR_tree_equ(p->tcontext,q->tcontext);
-  };
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -1197,11 +1217,11 @@ void MR_reportSetSuppression(predDepth,predSet,plainSet,jPred,jPlain,p)
       fprintf(output,"   WITHOUT predicate: line %d  %s\n",jPlain->line,FileStr[jPlain->file]);
     } else {
       fprintf(output,"   WITHOUT predicate: all alternatives without predicates (combined)\n");
-    };
+    }
     if (predDepth == 1) {
       fprintf(output,"\nThe context set for the predicate:\n");
       MR_dumpTokenSet(output,1,predSet);
-    };
+    }
     fprintf(output,"\nThe lookahead set for the alt WITHOUT the semantic predicate:\n");
     MR_dumpTokenSet(output,1,plainSet);
     fprintf(output,"\nThe predicate:\n\n");
@@ -1209,7 +1229,7 @@ void MR_reportSetSuppression(predDepth,predSet,plainSet,jPred,jPlain,p)
     fprintf(output,"Chain of referenced rules:\n\n");
     MR_dumpPredRuleRefStack(output,4);
     fprintf(output,"\n#endif\n");
-  };
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -1243,11 +1263,11 @@ void MR_reportSetRestriction(predDepth,predSet,plainSet,jPred,jPlain,origPred,ne
     fprintf(output,"   WITHOUT predicate: line %d  %s\n",jPlain->line,FileStr[jPlain->file]);
   } else {
     fprintf(output,"   WITHOUT predicate: all alternatives without predicates (combined)\n");
-  };
+  }
   if (predDepth == 1) {
     fprintf(output,"\nThe original context set for the predicate:\n");
     MR_dumpTokenSet(output,1,predSet);
-  };
+  }
   fprintf(output,"\nThe lookahead set for the alt WITHOUT the semantic predicate:\n");
   MR_dumpTokenSet(output,1,plainSet);
   if (predDepth == 1) {
@@ -1255,7 +1275,7 @@ void MR_reportSetRestriction(predDepth,predSet,plainSet,jPred,jPlain,origPred,ne
     intersect=set_and(predSet,plainSet);
     MR_dumpTokenSet(output,1,intersect);
     set_free(intersect);
-  };
+  }
   fprintf(output,"\nThe original predicate:\n\n");
   MR_dumpPred1(1,origPred,1);
   fprintf(output,"The new (modified) form of the predicate:\n\n");
@@ -1282,7 +1302,7 @@ Predicate * MR_removeRedundantPredPass3(p)
     p->right=NULL;
     predicate_free(p);
     return q;
-  };
+  }
   if (p->expr == PRED_AND_LIST ||
       p->expr == PRED_OR_LIST) {
     if (p->down == NULL) {
@@ -1290,15 +1310,15 @@ Predicate * MR_removeRedundantPredPass3(p)
       p->right=NULL;
       predicate_free(p);
       return q;
-    };
+    }
     if (p->down != NULL && p->down->right == NULL) {
       q=p->down;
       q->right=p->right;
       p->right=NULL;
       p->down=NULL;
       return q;
-    };
-  };
+    }
+  }
   return p;
 }
 
@@ -1323,10 +1343,10 @@ void MR_removeRedundantPredPass2(p)
           return;
         } else {
           q->redundant=1;
-        };
-      };
-    };
-  };
+        }
+      }
+    }
+  }
 
   if (p->expr == PRED_OR_LIST) {
     for (q=p->down ; q != NULL ; q=q->right) {
@@ -1338,10 +1358,10 @@ void MR_removeRedundantPredPass2(p)
           p->isConst=1;
           p->constValue=1;
           return;
-        };
-      };
-    };
-  };
+        }
+      }
+    }
+  }
 
   return;
 }
@@ -1378,14 +1398,14 @@ void MR_apply_restriction1(pred,plainSet,changed)
       if (*changed == 0 &&
           !set_equ(t,pred->scontext[1])) {
         *changed=1;
-      };
+      }
       if (set_nil(t)) {
         pred->redundant=1;
-      };
+      }
       set_free(pred->scontext[1]);
       pred->scontext[1]=t;
-    };
-  };
+    }
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -1446,7 +1466,7 @@ Predicate * MR_find_in_aSubBlk(alt)
     if (PRED_SUPPRESS == NULL) {
       PRED_SUPPRESS=new_pred();
       PRED_SUPPRESS->expr="Predicate Suppressed";
-    };
+    }
 
     /* this section just counts the number of "interesting" alternatives  */
     /*   in order to allocate arrays                                      */
@@ -1456,8 +1476,8 @@ Predicate * MR_find_in_aSubBlk(alt)
 	  if ( p->p1->ntype != nJunction ||
 	        ((Junction *)p->p1)->jtype != EndBlk )	{
         nAlts++;
-      };
-    };
+      }
+    }
 
     /* if this is a (...)+ block then don't count the last alt because
        it can't be taken until at least one time through the block.
@@ -1468,7 +1488,7 @@ Predicate * MR_find_in_aSubBlk(alt)
 
     if (alt->jtype == aPlusBlk) {
       nAlts--;
-    };
+    }
 
     jList=(Junction **)calloc(nAlts,sizeof(Junction *));
     require(jList!=NULL,"cannot allocate MR_find_in_aSubBlk jList");
@@ -1510,14 +1530,14 @@ Predicate * MR_find_in_aSubBlk(alt)
           require(set_nil(incomplete),"couldn't complete k=1");
           plainContext[i]=plainSet;
           plainSet=empty;
-        };
+        }
         set_orin(&union_plainSet,plainContext[i]);
-      };
-    };
+      }
+    }
 
     if (nAlts == 1) {
       goto EXIT_SIMPLE;
-    };
+    }
 
 /*
  *  Looking for cases where alt i has a semantic pred and alt j does not.
@@ -1570,7 +1590,7 @@ Predicate * MR_find_in_aSubBlk(alt)
 
       if (predList[i] != NULL) {
         MR_cleanup_pred_trees(predList[i]);    /* flatten & left factor */
-      };
+      }
 
       /* If the predicate depth is 1 then it is possible to suppress
            a predicate completely using a single plain alt.  Check for suppression
@@ -1595,9 +1615,9 @@ Predicate * MR_find_in_aSubBlk(alt)
             predicate_free(predList[i]);
             predList[i]=PRED_SUPPRESS;
             goto next_i;
-          };
+          }
 
-        }; /* end loop on j */
+        } /* end loop on j */
 
         changed=0;
 
@@ -1621,11 +1641,11 @@ Predicate * MR_find_in_aSubBlk(alt)
             MR_reportSetRestriction(predDepth,predSet,union_plainSet,jList[i],
                                                     NULL,origPred,newPred);
             predList[i]=newPred;
-          };
-        };
+          }
+        }
         predicate_free(origPred);
         origPred=NULL;
-      };
+      }
 
       /*
          If the predicate depth is > 1 then it can't be suppressed completely
@@ -1654,14 +1674,14 @@ Predicate * MR_find_in_aSubBlk(alt)
             MR_reportSetRestriction(predDepth,predSet,union_plainSet,jList[i],
                                                     NULL,origPred,newPred);
             predList[i]=newPred;
-          };
-        };
+          }
+        }
         predicate_free(origPred);
         origPred=NULL;
-      };
+      }
 next_i:
       continue;
-    };
+    }
 
 EXIT_SIMPLE:
 
@@ -1677,15 +1697,15 @@ EXIT_SIMPLE:
       } else if ( (matchList[i] & 1) != 0) {
         if (predList[i] != PRED_SUPPRESS) {
           predicate_free(predList[i]);
-        };
+        }
         continue;
-      };
+      }
 
       /* make an OR list of predicates */
 
       *tail=predList[i];
       tail=&(predList[i]->right);
-    };
+    }
 
 	/* if just one pred, remove OR root */
 
@@ -1737,8 +1757,8 @@ void MR_predContextPresent(p,allHaveContext,noneHaveContext)
       *noneHaveContext=0;
     } else {
       *allHaveContext=0;
-    };
-  };
+    }
+  }
   MR_predContextPresent(p->down,allHaveContext,noneHaveContext);
 }
 
@@ -1760,11 +1780,11 @@ int MR_pointerStackPush(ps,dataPointer)
     require (newStack != NULL,"cannot allocate PointerStack");
     for (i=0; i < ps->size; i++) {
       newStack[i]=ps->data[i];
-    };
+    }
     if (ps->data != NULL) free( (char *) ps->data);
     ps->data=newStack;
     ps->size=newSize;
-  };
+  }
   ps->data[ps->count]=dataPointer;
   ps->count++;
   return ps->count-1;
@@ -1809,8 +1829,8 @@ void MR_pointerStackReset(ps)
   if (ps->data != NULL) {
     for (i=0; i < ps->count ; i++) {
        ps->data[i]=NULL;
-    };
-  };
+    }
+  }
   ps->count=0;
 }
 
@@ -1833,7 +1853,7 @@ Junction *MR_nameToRuleBlk(name)
       return NULL;
     } else {
       return RulePtr[q->rulenum];
-    };
+    }
 }
 
 #ifdef __USE_PROTOS
@@ -1897,9 +1917,9 @@ void MR_comparePredLeaves(me,myParent,him,hisParent)
               myParent->redundant=1;
             } else {
               require (0,"MR_comparePredLeaves: not both PRED_LIST");
-            };
-          };
-        };  /* end same source or same predEntrr with same invert sense */
+            }
+          }
+        }  /* end same source or same predEntrr with same invert sense */
 
         /* same predEntry but opposite invert sense */
 
@@ -1922,14 +1942,14 @@ void MR_comparePredLeaves(me,myParent,him,hisParent)
               me->redundant=1;
             } else {
               require (0,"MR_comparePredLeaves: not both PRED_LIST");
-            };
-          };
-        };  /* end same predEntry with opposite invert sense */
-      };
+            }
+          }
+        }  /* end same predEntry with opposite invert sense */
+      }
 
       MR_comparePredLeaves(me->right,myParent,him,hisParent);
       return;
-    };
+    }
 }
 
 #ifdef __USE_PROTOS
@@ -1944,7 +1964,7 @@ void MR_removeRedundantPredPass1(me,myParent)
     if (me->redundant) {
       MR_removeRedundantPredPass1(me->right,myParent);
       return;
-    };
+    }
     if (me->expr == PRED_AND_LIST ||
         me->expr == PRED_OR_LIST) {
       MR_removeRedundantPredPass1(me->down,me);
@@ -1953,9 +1973,9 @@ void MR_removeRedundantPredPass1(me,myParent)
       require (me->source != NULL,"me->source == NULL");
       if (myParent != NULL) {
         MR_comparePredLeaves(myParent->down,myParent,me,myParent);
-      };
+      }
       MR_removeRedundantPredPass1(me->right,myParent);
-    };
+    }
 }
 
 /* pretty much ignores things with the inverted bit set */
@@ -1990,7 +2010,7 @@ Predicate *MR_predFlatten(p)
         if (p->inverted) child->inverted=!child->inverted;
         predicate_free(p);
         return child;
-      };
+      }
 
       /* make a single list of all children and grandchildren */
 
@@ -2008,19 +2028,19 @@ Predicate *MR_predFlatten(p)
                gchild=gchild->right) {
             *tail=gchild;
             tail=&(gchild->right);
-          };
+          }
           next=child->right;
           child->right=NULL;
           child->down=NULL;
           predicate_free(child);
-        };
-      };
+        }
+      }
       *tail=NULL;
       return p;
     } else {
       p->right=MR_predFlatten(p->right);
       return p;
-    };
+    }
 }
 
 static char *alwaysFalseWarning=NULL;
@@ -2043,7 +2063,7 @@ Predicate *checkPredicateConflict(p)
         fprintf(output,"The following predicate expression will always be false:\n\n");
         MR_dumpPred1(1,p,1);
         fprintf(output,"\n#endif\n");
-      };
+      }
 
       if (alwaysFalseWarning != CurRule) {
         alwaysFalseWarning=CurRule;
@@ -2053,10 +2073,10 @@ Predicate *checkPredicateConflict(p)
         } else {
           warnNoFL(eMsg1("one (or more) predicate expressions hoisted into rule \"%s\" are always false \
 - use \"-info p\" for more information",CurRule));
-        };
-      };
-    };
-  };
+        }
+      }
+    }
+  }
   return p;
 }
 
@@ -2096,7 +2116,7 @@ Predicate *MR_predSimplifyALLX(p,skipPass3)
       if (! skipPass3) {
         p=checkPredicateConflict(p);
         p=MR_removeRedundantPredPass3(p);
-      };
+      }
       countAfter=MR_countPredNodes(p);
   } while (countBefore != countAfter);
 
@@ -2131,22 +2151,22 @@ void MR_releaseResourcesUsedInRule(n)
      if (j->predicate != NULL) {
        predicate_free(j->predicate);
        j->predicate=NULL;
-     };
+     }
      for (i=0; i< CLL_k; i++) {
        set_free(j->fset[i]);
        j->fset[i]=empty;
-     };
+     }
      if (j->ftree != NULL) {
        Tfree(j->ftree);
        j->ftree=NULL;
-     };
+     }
      if (j->jtype == EndRule) return;
      if (j->jtype != RuleBlk && j->jtype != EndBlk) {
        if (j->p2 != NULL && !j->ignore) {   /* MR11 */
           MR_releaseResourcesUsedInRule(j->p2);
-       };
-     };
-   };
+       }
+     }
+   }
    next=MR_advance(n);
    MR_releaseResourcesUsedInRule(next);
 }
@@ -2164,7 +2184,7 @@ int MR_allPredLeaves(p)
 
   for (q=p; q != NULL; q=q->right) {
    if (q->down != NULL) return 0;
-  };
+  }
   return 1;
 }
 
@@ -2186,16 +2206,16 @@ int MR_offsetFromRule(n)
 
     if (n->file < j->file) {
       return offset;
-    };
+    }
     if (n->file == j->file) {
       if (n->line < j->line) {
         return (offset < 0) ? 0 : offset;
       } else {
         offset=n->line - j->line;
         if (offset == 0) return 0;
-      };
-    };
-  };
+      }
+    }
+  }
   return offset;
 }
 
@@ -2218,7 +2238,7 @@ char * MR_ruleNamePlusOffset(n)
       sprintf(ruleNameStatic2,"%s/?",ruleNameStatic1);
     } else {
       sprintf(ruleNameStatic2,"%s/%d",ruleNameStatic1,offset+1);
-    };
+    }
     return ruleNameStatic2;
 }
 
@@ -2240,7 +2260,7 @@ int MR_max_height_of_tree(t)
   for (u=t; u != NULL; u=u->right) {
     h=MR_max_height_of_tree(u->down)+1;
     if (h > height) height=h;
-  };
+  }
   return height;
 }
 
@@ -2254,7 +2274,7 @@ int MR_all_leaves_same_height(t,depth)
 {
   if (t == NULL) {
     return (depth==0);
-  };
+  }
 
   require (t->token != ALT && t->token != EpToken,"MR_all_leaves_same_height ALT or EpToken");
 
@@ -2263,13 +2283,13 @@ int MR_all_leaves_same_height(t,depth)
   } else {
     if ( ! MR_all_leaves_same_height(t->down,depth-1)) {
       return 0;
-    };
+    }
     if (t->right == NULL) {
       return 1;
     } else {
       return MR_all_leaves_same_height(t->right,depth);
-    };
-  };
+    }
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -2293,8 +2313,8 @@ void MR_projectTreeOntoSet(tree,ck,ckset)
         MR_projectTreeOntoSet(tree->down,ck-1,ckset);
       } else {
         set_orel(tree->token,ckset);
-      };
-    };
+      }
+    }
 }
 
 #ifdef __USE_PROTOS
@@ -2324,21 +2344,21 @@ int MR_comparePredicates(a,b)
     if (sameInvert && (sameSource || samePredEntry)) {
       if (MR_identicalContext(a,b)) {
          return 1;
-      };
-    };
+      }
+    }
     return 0;
-  };
+  }
   if (a->down == NULL || b->down == NULL) return 0;
   if (a->expr != b->expr) return 0;
 
   for (p=a->down; p != NULL; p=p->right) {
     for (q=b->down; q != NULL; q=q->right) {
       if (MR_comparePredicates(p,q)) goto NEXT_P;
-    };
+    }
     return 0;
 NEXT_P:
     continue;
-  };
+  }
   return 1;
 }
 
@@ -2407,22 +2427,22 @@ Predicate *MR_unfold(pred)
         result=predicate_dup_without_context(pred->source->predEntry->pred);
         if (pred->inverted) {
           result->inverted=!result->inverted;
-        };
+        }
         if (pred->source->inverted) {
           result->inverted=!result->inverted;
-        };
+        }
         result->right=pred->right;
         pred->right=NULL;
         predicate_free(pred);
 /***    result=MR_unfold(result); *** not necessary */    /* recursive expansion */
         return result;
-      };
+      }
     } else {
       ; /* do nothing */ /* an inline literal predicate */
-    };
+    }
   } else {
     pred->down=MR_unfold(pred->down);
-  };
+  }
   return pred;
 }
 
@@ -2454,11 +2474,11 @@ void MR_simplifyInverted(pred,inverted)
         pred->expr=PRED_OR_LIST;
       } else {
         pred->expr=PRED_AND_LIST;
-      };
-    };
+      }
+    }
     pred->inverted=0;
     MR_simplifyInverted(pred->down,newInverted);
-  };
+  }
 }
 
 /* only remove it from AND and OR nodes, not leaves */
@@ -2506,9 +2526,9 @@ void MR_orphanRules(f)
       for (; !set_nil(a); set_rm(e,a)) {
         e=set_int(a);
         fprintf(f," %s",RulePtr[e]->rname);
-      };
+      }
       fprintf(f," }\n");
-    };
+    }
 	set_free( a );
 }
 
@@ -2534,7 +2554,7 @@ Tree *MR_merge_tree_contexts_client(t,chain)
   }
   if (chain[0] == t->token) {
     t->down=MR_merge_tree_contexts_client(t->down,&chain[1]);
-  };
+  }
   t->right=MR_merge_tree_contexts_client(t->right,&chain[0]);
   return t;
 }
@@ -2553,7 +2573,7 @@ void MR_iterateOverTreeContexts(t,chain)
     MR_iterateOverTreeContexts(t->down,&chain[1]);
   } else {
     MR_merge_tree_contexts_client(mergeTree,mergeChain);
-  };
+  }
   MR_iterateOverTreeContexts(t->right,&chain[0]);
   chain[0]=0;
 }
@@ -2695,11 +2715,11 @@ int MR_suppressK_client(tree,tokensInChain)
   if (suppressSets == NULL) {
     suppressSets=(set *) calloc (CLL_k+1,sizeof(set));
     require (suppressSets != NULL,"MR_suppressK_client: suppressSets alloc");
-  };
+  }
 
   for (suppressChainLength=1;
        tokensInChain[suppressChainLength+1] != 0;
-       suppressChainLength++) {};
+       suppressChainLength++) {}
 
   require (suppressChainLength != 0,"MR_suppressK_client: chain empty");
 
@@ -2707,7 +2727,7 @@ int MR_suppressK_client(tree,tokensInChain)
     set_clr(suppressSets[i]);
     set_orel( (unsigned) tokensInChain[i],
                               &suppressSets[i]);
-  };
+  }
 
   save_fset=fset;
   save_ConstrainSearch=ConstrainSearch;
@@ -2767,7 +2787,7 @@ Tree * MR_iterateOverTreeSuppressK(t,chain)
       Tfree(t);
       chain[0]=0;
       return u;
-    };
+    }
   } else {
     MR_suppressK_client(suppressTree,suppressChain);
     if (suppressSucceeded) {
@@ -2776,8 +2796,8 @@ Tree * MR_iterateOverTreeSuppressK(t,chain)
       Tfree(t);
       chain[0]=0;
       return u;
-    };
-  };
+    }
+  }
   chain[0]=0;
   return t;
 }
@@ -2815,18 +2835,18 @@ Predicate * MR_suppressK(j,p)
     nodePrime=(Node *) MR_junctionWithoutP2( (Junction *) j);
   } else {
     nodePrime=j;
-  };
+  }
 
   p->down=MR_suppressK(j,p->down);
   p->right=MR_suppressK(j,p->right);
   if (p->down != NULL) {
     result=p;
     goto EXIT;
-  };
+  }
   if (p->k == 1) {
     result=p;
     goto EXIT;
-  };
+  }
 
   if (p->source != NULL) {
     if (p->source->guardpred != NULL) guardPred=1;
@@ -2844,7 +2864,7 @@ Predicate * MR_suppressK(j,p)
       predicate_free(p);
       result=NULL;
       goto EXIT;
-    };
+    }
   } else {
     if (MR_isChain(p->tcontext)) {
       p->tcontext=MR_iterateOverTreeSuppressK(suppressTree,&suppressChain[1]);
@@ -2852,7 +2872,7 @@ Predicate * MR_suppressK(j,p)
         predicate_free(p);
         result=NULL;
         goto EXIT;
-      };
+      }
     }
   }
   result=p;
@@ -2878,7 +2898,7 @@ void MR_suppressSearchReport()
   for (i=0; i < MR_BackTraceStack.count ; i++) {
     p=(Node *) MR_BackTraceStack.data[i];
     if (p->ntype == nToken) depth++;
-  };
+  }
 
   require (depth == suppressChainLength,"depth > suppressChainLength");
 
@@ -2898,8 +2918,8 @@ void MR_suppressSearchReport()
       require(!set_nil(setAnd),
         "MR_suppressSearchReport: no match to #token set in chain");
       set_free(setAnd);
-    };
-  };
+    }
+  }
 
   /* have a match - now remove it from the predicate */
 
@@ -2916,7 +2936,7 @@ void MR_suppressSearchReport()
     fprintf(output," (");
     for (i=1; i <= suppressChainLength; i++) {
       fprintf(output," %s",TerminalString(suppressChain[i]));
-    };
+    }
     fprintf(output," )\n");
     fprintf(output,"The sequence of references which generate that sequence of tokens:\n\n");
 
@@ -2924,7 +2944,7 @@ void MR_suppressSearchReport()
 
     for (i=0; i < MR_BackTraceStack.count ; i++) {
        MR_backTraceDumpItem(output,0,(Node *) MR_BackTraceStack.data[i]);
-    };
+    }
     fprintf(output,"\n");
     fprintf(output,"#endif\n");
   }
@@ -2958,7 +2978,7 @@ void MR_markCompromisedRule(n)
         break;
       default:
         break;
-    };
+    }
   }
 
   if (mark == NULL) return;
@@ -2999,8 +3019,8 @@ void MR_alphaBetaTraceReport()
      MR_backTraceDumpItem(output,0,(Node *) MR_BackTraceStack.data[i]);
      if (i < MR_BackTraceStack.count-1) {
         MR_markCompromisedRule( (Node *) MR_BackTraceStack.data[i]);
-     };
-  };
+     }
+  }
   fprintf(output,"\n");
   fprintf(output,"#endif\n");
 }
@@ -3018,13 +3038,13 @@ void MR_dumpRuleSet(s)
     require(origin != NULL,"set_pdq failed");
 
     if (RulePtr == NULL) {
-      fprintf(stderr,"RulePtr[] not yet initialized");
+      printf_stderr_continued("RulePtr[] not yet initialized");
     } else {
       for (cursor=origin; *cursor != nil ; cursor++) {
-/****   if (cursor != origin) fprintf(stderr,","); ****/
-        fprintf(stderr,"    %s",RulePtr[*cursor]->rname);
-        fprintf(stderr,"\n");
-      };
+/****   if (cursor != origin) printf_stderr_continued(","); ****/
+        printf_stderr_continued("    %s",RulePtr[*cursor]->rname);
+        printf_stderr_continued("\n");
+      }
       free( (char *) origin);
-    };
+    }
 }

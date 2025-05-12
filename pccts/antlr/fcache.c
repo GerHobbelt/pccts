@@ -63,11 +63,11 @@ CacheEntry *dumpFcache1(prev)
               } else {
                 if (strcmp(q->str,least->str) < 0) {
                   least=q;
-                };
-              };
-            };
+                }
+              }
+            }
 			q = q->next;
-		};
+		}
 
 		if ( *p != NULL ) hi = p-table;
 	}
@@ -86,7 +86,7 @@ void reportFcache(q)
     fprintf(stdout,"\nrule ");
     for (qstr=q->str; *qstr != '*' ; qstr++) {
       fprintf(stdout,"%c",*qstr);
-    };
+    }
 
     qstr++;
     if (*qstr == 'i') fprintf(stdout," First[");
@@ -118,6 +118,6 @@ DumpFcache()
       reportFcache(next);
       ++n;
       prev=next->str;
-    };
+    }
     fprintf(stdout,"\nEnd dump of First/Follow Cache\n");
 }

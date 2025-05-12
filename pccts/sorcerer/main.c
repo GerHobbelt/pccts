@@ -26,8 +26,18 @@
  * AHPCRC, University of Minnesota
  * 1992-2001
  */
+
+#include <stdio.h>
+
 #include "pcctscfg.h"
 #include "stdpccts.h"
+
+#ifdef PCCTS_USE_STDARG
+#include <stdarg.h>
+#else
+#include <varargs.h>
+#endif
+
 #include "sym.h"
 #include "proto.h"
 #include <ctype.h>
@@ -204,6 +214,198 @@ char *s, *t;
 	}
 }
 
+
+
+void 
+#ifdef __USE_PROTOS
+p_errors_borland_style(void)
+#else
+p_errors_borland_style()
+char *s;
+char *t;
+#endif
+{                     
+  printf_stderr_cfg(ERR_DIAG_FMT_BCC, NULL, -1, NULL);
+}
+
+void 
+#ifdef __USE_PROTOS
+p_errors_msvc_style(void)
+#else
+p_errors_msvc_style()
+char *s;
+char *t;
+#endif
+{                     
+  printf_stderr_cfg(ERR_DIAG_FMT_MSVC, NULL, -1, NULL);
+}
+
+void 
+#ifdef __USE_PROTOS
+p_errors_mpw_style(void)
+#else
+p_errors_mpw_style()
+char *s;
+char *t;
+#endif
+{                     
+  printf_stderr_cfg(ERR_DIAG_FMT_MPW, NULL, -1, NULL);
+}
+
+
+
+
+
+/* extern void fatal(char *message, int line_no); */
+void 
+#ifdef __USE_PROTOS
+p_response_file(int *argc_ptr, char ***argv_ptr, char *s, char *t)
+#else
+p_response_file(argc_ptr, argv_ptr, s, t)
+int *argc_ptr;
+char ***argv_ptr;
+char *s;
+char *t;
+#endif
+{
+  FILE *f;
+  char *buf;
+  long int len;
+  char **newargv;
+  int newargc;
+  char *dst;
+  char *src;
+  int i;
+  int j;
+               
+  if (!t)
+  {
+    fatal("-rsp requires a filename as argument...");
+  }
+  f = fopen(t, "r");
+  if (!f)
+  {
+    fatal("Cannot open -rsp response file...");
+  }
+  fseek(f, 0, SEEK_END);
+  len = ftell(f) + 2;
+  fseek(f, 0, SEEK_SET);
+  buf = (char *)malloc(len);
+  if (!buf)
+  {
+    fatal("Cannot allocate response file processing buffer...");
+  }
+  len = fread(buf, 1, len, f);      
+  if (len < 0)
+  {
+    fatal("Cannot read response file...");
+  }
+  /* double sentinel! */
+  buf[len++] = 0;
+  buf[len++] = 0;
+
+  /* decode buf[] into argv list... */
+  for (newargc = 0, src = dst = buf; *src; )
+  {
+    switch (*src)
+    {
+    case '\"':
+      /* boudble-quoted string applies only if double-quote found at start of argv element */
+      if (src == buf || dst == buf || dst[-1] == 0)
+      {
+        /* quoted argument: skip/convert 'escaped' doublequotes, find next doublequote as terminator */
+        for ( ; *src; )
+        {
+          switch (*src)
+          {
+          case '\\':
+            if (src[1] == '\"')
+            {
+              *dst++ = '\"';
+              src += 2;
+              continue;
+            }
+            *dst++ = *src++;
+            continue;
+
+          case '\"':
+            /* terminating quote */
+            *dst++ = 0;
+            newargc++;
+            src++;
+            break;
+
+          /* accept \r and \n within string; you might consider this a bug though ;-) */
+          default:
+            *dst++ = *src++;
+            continue;
+          }
+          break;
+        }
+        /* yes, "" is an _empty_ argument! it's allowed this way! */
+        break;
+      }
+      /* fall through */
+
+    case '\r':
+    case '\n':
+    case ' ':
+    case '\t':
+    default:
+      if (isspace(*src))
+      {
+        if (dst > buf && dst[-1] != 0)
+        {
+          *dst++ = 0;
+          newargc++;
+        }
+        src++;
+        continue;
+      }
+      /* else: non-whitespace: part of an argv[] element! */
+      *dst++ = *src++;
+      continue;
+    }
+  }
+  *dst++ = 0; /* write extra NUL sentinel at end of list */
+    
+  /* now merge new/old argv elems */
+  newargv = (char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
+  if (!newargv)
+  {
+    fatal("Cannot allocate response file processing buffer...");
+  }
+
+  /* merge response file argv[] elems at location of -rsp option: front of list! */
+  newargv[0] = "###"; /* dummy entry */
+  for(i = 1, src = buf; i < newargc+1; i++)
+  { 
+    newargv[i] = src;
+    src = strchr(src, 0);
+    if (src == NULL)
+    {
+      fatal("assert: src!=NULL");
+    }
+    src++;
+  }
+
+  /* now add remaining argv[] elems: argv_ptr[0][2] and beyond! */
+  for (j = 2; j < argc_ptr[0]; j++, i++)
+  {
+    newargv[i] = argv_ptr[0][j];
+  }
+
+  /* add terminator */
+  newargv[i] = NULL;
+
+  /* patch pointers! */
+  argc_ptr[0] = i;
+  argv_ptr[0] = newargv;
+
+  return;
+}
+
+
 static void
 pstdin()
 {
@@ -275,6 +477,10 @@ Opt options[] = {
     { "-proto-file", 1, (void (*)(...)) pProtoFile, "Put all prototypes for rule functions in this file"},
     { "-out-dir", 1,	(void (*)(...)) pOut,	"Directory where all output files go (default=\".\")"},
     { "-transform", 0,	(void (*)(...)) pTrans, "Transformation mode; read/write to different pointers"},
+	{ "-rsp", 2, 		(void (*)(...)) p_response_file, "Specify 'response file' which contains additional commandline parameters"},
+	{ "-ebcc", 0, 		(void (*)(...)) p_errors_borland_style, "Output errors in Borland C/C++ IDE compatible format to stdout"},
+	{ "-emsvc", 0, 		(void (*)(...)) p_errors_msvc_style, "Output errors in Microsoft Visual C/C++ compatible format to stderr"},
+	{ "-empw", 0, 		(void (*)(...)) p_errors_mpw_style, "Output errors in Macintosh Programmers Workshop compatible format to stderr"},
     { "-",	0,			(void (*)(...)) pstdin,	"take input from stdin"},
 	{ "*",  0,			(void (*)(...)) pFile, 	"" },	/* anything else is a file */
 #else
@@ -289,6 +495,10 @@ Opt options[] = {
     { "-proto-file", 1, pProtoFile, "Put all prototypes for rule functions in this file"},
     { "-out-dir", 1,	pOut,	"Directory where all output files go (default=\".\")"},
     { "-transform", 0,	pTrans, "Transformation mode; read/write to different pointers"},
+	{ "-rsp", 2, 		p_response_file, "Specify 'response file' which contains additional commandline parameters"},
+	{ "-ebcc", 0, 		p_errors_borland_style, "Output errors in Borland C/C++ IDE compatible format to stdout"},
+	{ "-emsvc", 0, 		p_errors_msvc_style, "Output errors in Microsoft Visual C/C++ compatible format to stderr"},
+	{ "-empw", 0, 		p_errors_mpw_style, "Output errors in Macintosh Programmers Workshop compatible format to stderr"},
     { "-",	0,			pstdin,	"take input from stdin"},
 	{ "*",  0,			pFile, 	"" },	/* anything else is a file */
 #endif
@@ -298,7 +508,6 @@ Opt options[] = {
 int
 #ifdef __USE_PROTOS
 main(int argc, char *argv[])
-
 #else
 main(argc, argv)
 int argc;
@@ -311,8 +520,11 @@ char *argv[];
 	argc = ccommand (&argv);
 #endif
 
-	fprintf(stderr,
-		"Sorcerer -  A simple tree-parser generator  Version %s  1992-2001\n",
+    Save_argc=argc;                                                  
+    Save_argv=argv;                                                  
+
+	printf_stderr_continued(
+		"Sorcerer -  A simple tree-parser generator  Version %s  1992-1999\n",
 		VersionText);
 
 	if ( argc == 1 ) { help(); zzDONE; }
@@ -331,7 +543,7 @@ char *argv[];
 		
 	if ( found_error )
 	{
-		fprintf(stderr, "no parser generated due to parsing errors; exiting...\n");
+		printf_stderr_continued( "no parser generated due to parsing errors; exiting...\n");
 		zzDIE;
 	}
 
@@ -375,13 +587,13 @@ help()
 	Opt *p = options;
 	static char buf[MaxRuleName+1];
 
-	fprintf(stderr, "sor [options] f1.sor ... fn.sor\n");
+	printf_stderr_continued( "sor [options] f1.sor ... fn.sor\n");
 	while ( p->option!=NULL && *(p->option) != '*' )
 	{
 		buf[0]='\0';
 		if ( p->arg ) sprintf(buf, "%s ___", p->option);
 		else strcpy(buf, p->option);
-		fprintf(stderr, "    %-20s   %s\n", buf, p->descr);
+		printf_stderr_continued( "    %-20s   %s\n", buf, p->descr);
 		p++;
 	}
 }
@@ -519,8 +731,7 @@ char *f;
 int l;
 #endif
 {
-    fprintf(stderr, ErrHdr, f, l);
-    fprintf(stderr, " %s\n", err_);
+    printf_stderr(f, l, " %s\n", err_);
     exit(1);
 }
 
@@ -583,14 +794,39 @@ Opt *options;
 			if ( strcmp(p->option, "*") == 0 ||
 				 cistrequ(p->option, *argv))
 			{
-				if ( p->arg )
+				switch ( p->arg )
 				{
-					(*p->process)( *argv, *(argv+1) );
-					argv++;
-					argc--;
-				}
-				else
+				case 2:
+          if (argc > 0) 
+          {
+            (*p->process)(&argc, &argv, *argv, *(argv+1) );
+            argc--;
+          }
+          else
+          {
+            printf_stderr_continued("error: required argument for option %s omitted\n",*argv);
+            exit(PCCTS_EXIT_FAILURE);
+          }
+					break;
+				
+				case 1:
+				  if (argc-- > 0) 
+  				{
+	  				(*p->process)( *argv, *(argv+1) );
+		  			argv++;
+			  	}
+          else
+          {
+            printf_stderr_continued("error: required argument for option %s omitted\n",*argv);
+            exit(PCCTS_EXIT_FAILURE);
+          }
+					break;
+				
+				default:
+				case 0:
 					(*p->process)( *argv );
+					break;
+			  }
 				break;
 			}
 			p++;
@@ -766,14 +1002,20 @@ set e;
 	int t;
 
 	if ( set_nil(e) ) return;
-	fprintf(f, "{");
+	f == stderr
+	? printf_stderr_continued("{")
+	: fprintf(f, "{");
 	while ( !set_nil(e) )
 	{
 		t = set_int(e);
 		set_rm(t, e);
-		fprintf(f, " %s", token_dict[t]);
+		f == stderr
+		? printf_stderr_continued(" %s", token_dict[t])
+		: fprintf(f, " %s", token_dict[t]);
 	}
-	fprintf(f, " }");
+	f == stderr
+	? printf_stderr_continued(" }")
+	: fprintf(f, " }");
 }
 
 /* Given a list of ANSI-style parameter declarations, print out a
@@ -1112,3 +1354,305 @@ done:
 /*	printf("cvt: result is '%s'\n", call);*/
 	return call;
 }
+
+
+
+/* [i_a] introduced generic routine from writing error diagnostics to console/IDE */
+static struct
+{
+  printf_stderr_format_t fmt_type;
+  char *srcfile_for_report;
+  int srcline_for_report;
+  FILE *output_file;
+  char *msgbuf;
+  int msgbufsize;
+  int line_started;  /* !0 if header has been written */
+  int is_initialized;
+} printf_stderr_cfgdata =
+{
+  ERR_DIAG_FMT_UNKNOWN,
+  NULL,
+  0,
+  NULL,
+  NULL,
+  0
+};
+
+void printf_stderr_cfg(printf_stderr_format_t type, const char *srcfile_for_report, int srcline_for_report, FILE *output)
+{
+  if (type != ERR_DIAG_FMT_UNCHANGED)
+  {
+    printf_stderr_cfgdata.fmt_type = type;
+  }
+  if (srcfile_for_report != NULL)
+  {
+    if (printf_stderr_cfgdata.srcfile_for_report != NULL)
+    {                                           
+      if (0 != strcmp(printf_stderr_cfgdata.srcfile_for_report, srcfile_for_report))
+      {
+        free(printf_stderr_cfgdata.srcfile_for_report);
+      }
+      printf_stderr_cfgdata.srcfile_for_report = STRDUP(srcfile_for_report);
+    }
+    else
+    {
+      printf_stderr_cfgdata.srcfile_for_report = STRDUP(srcfile_for_report);
+    }
+  }
+  if (srcline_for_report >= 0)
+  {
+    printf_stderr_cfgdata.srcline_for_report = srcline_for_report;
+  }
+  if (output != NULL)
+  {
+    printf_stderr_cfgdata.output_file = output;
+  }
+
+  if (printf_stderr_cfgdata.msgbuf == NULL)
+  {
+    printf_stderr_cfgdata.msgbufsize = 4096; /* this'll be large enough for a single line... */
+    printf_stderr_cfgdata.msgbuf = (char *)malloc(printf_stderr_cfgdata.msgbufsize);
+    if (NULL == printf_stderr_cfgdata.msgbuf)
+    {
+      printf_stderr_continued( "Cannot allocate error diagnostic scratch buffer.\n");
+      exit(EXIT_FAILURE);
+    }
+    printf_stderr_cfgdata.msgbuf[0] = 0;
+  }
+  printf_stderr_cfgdata.is_initialized = !0;
+}
+
+static void printf_stderr_header(void)
+{
+  FILE *out;
+  const char *srcname;
+  const char *srcfile;
+  int srcline;
+
+  out = printf_stderr_file();
+
+  srcfile = printf_stderr_cfgdata.srcfile_for_report;
+  if (srcfile == NULL)
+  {
+    /* don't print a header (yet) */
+    printf_stderr_cfgdata.line_started = !0;
+    return;
+  }
+  srcname = strrchr(srcfile, '/');
+  if (!srcname) srcname = strrchr(srcfile, '\\');
+  if (!srcname) srcname = strrchr(srcfile, ':');
+  if (!srcname) srcname = strrchr(srcfile, ']');
+  if (!srcname) srcname = srcfile-1;
+  srcname++;
+
+  srcline = printf_stderr_cfgdata.srcline_for_report;
+
+  switch (printf_stderr_cfgdata.fmt_type)
+  {
+  default:
+  case ERR_DIAG_FMT_UNKNOWN:
+    /* default: "%s, line %d:" */
+    fprintf(out, "%s, line %d:", srcfile, srcline);
+    break;
+
+  case ERR_DIAG_FMT_MPW:
+    /* Macintosh Programmer's Workshop */
+    fprintf(out, "File \"%s\"; Line %d #", srcfile, srcline);
+    break;
+
+  case ERR_DIAG_FMT_MSVC:
+    /* Microsoft Visual C++ environment */
+    fprintf(out, "%s(%d) :", srcfile, srcline);
+    break;
+
+  case ERR_DIAG_FMT_BCC:
+    /* Borland C/C++ IDE */
+    //
+    // Handle messages of the form:
+    //    Type Filename ####: MessageText
+    // where:
+    //    Type is one of: "Error", "Warning", "Fatal"
+    //    Filename is the name of the source module
+    //    #### is a number representing the line in the source module
+    //
+    // Messages with this format are generated by most Borland Tools
+    //
+    fprintf(out, "Warning %s %d: ", srcfile, srcline);
+    break;
+  }
+
+  printf_stderr_cfgdata.line_started = !0;
+}
+
+void printf_stderr(const char *srcfile, int srcline, const char *fmt, ...)
+{
+  va_list args;
+  FILE *out;
+  char *p;
+  char *str;
+
+  if (!printf_stderr_cfgdata.is_initialized)
+  {
+    printf_stderr_cfg(ERR_DIAG_FMT_UNCHANGED, NULL, -1, NULL);
+  }
+
+  out = printf_stderr_file();
+
+  /* copy old data out first! */
+  str = printf_stderr_cfgdata.msgbuf;
+  while (str[0] != 0)
+  {                                 
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    p = strchr(str, '\n');
+    if (!p)
+    {
+      p = str + strlen(str);
+      p[1] = 0;
+    }
+    *p++ = 0;
+    fputs(str, out);
+    fputs("\n", out);
+    printf_stderr_cfgdata.line_started = 0;
+    str = p;
+  }
+  printf_stderr_cfgdata.msgbuf[0] = 0;
+  
+  /* keep 'defaults' up to date... */
+  printf_stderr_cfg(ERR_DIAG_FMT_UNCHANGED, srcfile, srcline, NULL);
+
+  va_start(args, fmt);
+  vsprintf(printf_stderr_cfgdata.msgbuf, fmt, args);
+  va_end(args);
+
+  /* copy new data out now 'till first newline! */
+  str = printf_stderr_cfgdata.msgbuf;
+  for (;;)
+  {                                 
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    p = strchr(str, '\n');
+    if (!p)
+    {
+      /* move remaining data to front: */
+      p = str;
+      for (str = printf_stderr_cfgdata.msgbuf; *str++ = *p++; )
+        ;
+      *str = 0;
+      break;
+    }
+    *p++ = 0;
+    fputs(str, out);
+    fputs("\n", out);
+    printf_stderr_cfgdata.line_started = 0;
+    str = p;
+    if (str[0] == 0)
+    {
+      printf_stderr_cfgdata.msgbuf[0] = 0;
+      break;
+    }
+  }
+}
+
+int printf_stderr_continued(const char *fmt, ...)
+{
+  va_list args;
+  FILE *out;
+  char *str;
+  char *p;
+
+  if (!printf_stderr_cfgdata.is_initialized)
+  {
+    printf_stderr_cfg(ERR_DIAG_FMT_UNCHANGED, NULL, -1, NULL);
+  }
+
+  out = printf_stderr_file();
+
+  va_start(args, fmt);
+  str = printf_stderr_cfgdata.msgbuf;
+  vsprintf(str += strlen(str), fmt, args);
+  va_end(args);
+
+  /* copy new data out now 'till first newline! */
+  str = printf_stderr_cfgdata.msgbuf;
+  for (;;)
+  {
+    if (!printf_stderr_cfgdata.line_started)
+    {
+      printf_stderr_header();
+    }
+    p = strchr(str, '\n');
+    if (!p)
+    {
+      /* move remaining data to front: */
+      if (str != printf_stderr_cfgdata.msgbuf)
+      {
+        p = str;
+        for (str = printf_stderr_cfgdata.msgbuf; *str++ = *p++; )
+          ;
+        *str = 0;
+      }
+      else
+      {
+        str += strlen(str);
+      }
+
+      /* to prevent buffer overflow: copy line out anyway if fill > 2/3 */
+      if (printf_stderr_cfgdata.msgbufsize * 2 < strlen(printf_stderr_cfgdata.msgbuf) * 3)
+      {
+        /* copy out anyway... */
+        str[1] = 0;
+        p = str;
+        str = printf_stderr_cfgdata.msgbuf;
+      }
+      else
+      {
+        break;
+      }
+    }
+    *p++ = 0;
+    fputs(str, out);
+    fputs("\n", out);
+    printf_stderr_cfgdata.line_started = 0;
+    str = p;
+    if (str[0] == 0)
+    {
+      printf_stderr_cfgdata.msgbuf[0] = 0;
+      break;
+    }
+  }
+  return 0;
+}
+
+
+FILE *printf_stderr_file(void)
+{
+  if (printf_stderr_cfgdata.output_file != NULL)
+  {
+    return printf_stderr_cfgdata.output_file;
+  }
+  switch (printf_stderr_cfgdata.fmt_type)
+  {                         
+  case ERR_DIAG_FMT_UNKNOWN:
+    /* default: "%s, line %d:" */
+    return stderr;
+    
+  case ERR_DIAG_FMT_MPW:
+    /* Macintosh Programmer's Workshop */
+    return stderr;
+    
+  case ERR_DIAG_FMT_MSVC:
+    /* Microsoft Visual C++ environment */
+    return stderr;
+    
+  case ERR_DIAG_FMT_BCC:
+    /* Borland C/C++ IDE */
+    return stdout;
+  }
+  return stderr;
+}
+

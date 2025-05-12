@@ -7,6 +7,9 @@
  * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
  * Purdue University Electrical Engineering
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc -gh -ga -e3 antlr.g
+ *
  */
 #define zzEOF_TOKEN 1
 #define Eof 1
@@ -22,6 +25,12 @@
 #define TokenTerm 101
 #define ID 148
 #define INT 150
+
+
+#define zzSET_SIZE 20
+#define zzTOKEN_COUNT 157
+
+
 
 #ifdef __USE_PROTOS
 void grammar(void);
@@ -167,80 +176,84 @@ void enum_def(char * fname);
 extern void enum_def();
 #endif
 
-#endif
-extern SetWordType zzerr1[];
-extern SetWordType zzerr2[];
-extern SetWordType zzerr3[];
-extern SetWordType zzerr4[];
-extern SetWordType setwd1[];
-extern SetWordType zzerr5[];
-extern SetWordType zzerr6[];
-extern SetWordType zzerr7[];
-extern SetWordType zzerr8[];
-extern SetWordType zzerr9[];
-extern SetWordType setwd2[];
-extern SetWordType zzerr10[];
-extern SetWordType zzerr11[];
-extern SetWordType zzerr12[];
-extern SetWordType zzerr13[];
-extern SetWordType setwd3[];
-extern SetWordType zzerr14[];
-extern SetWordType zzerr15[];
-extern SetWordType zzerr16[];
-extern SetWordType zzerr17[];
-extern SetWordType zzerr18[];
-extern SetWordType zzerr19[];
-extern SetWordType zzerr20[];
-extern SetWordType zzerr21[];
-extern SetWordType setwd4[];
-extern SetWordType zzerr22[];
-extern SetWordType zzerr23[];
-extern SetWordType zzerr24[];
-extern SetWordType zzerr25[];
-extern SetWordType zzerr26[];
-extern SetWordType setwd5[];
-extern SetWordType zzerr27[];
-extern SetWordType zzerr28[];
-extern SetWordType zzerr29[];
-extern SetWordType zzerr30[];
-extern SetWordType zzerr31[];
-extern SetWordType zzerr32[];
-extern SetWordType zzerr33[];
-extern SetWordType setwd6[];
-extern SetWordType zzerr34[];
-extern SetWordType zzerr35[];
-extern SetWordType zzerr36[];
-extern SetWordType zzerr37[];
-extern SetWordType zzerr38[];
-extern SetWordType zzerr39[];
-extern SetWordType zzerr40[];
-extern SetWordType zzerr41[];
-extern SetWordType zzerr42[];
-extern SetWordType setwd7[];
-extern SetWordType zzerr43[];
-extern SetWordType zzerr44[];
-extern SetWordType zzerr45[];
-extern SetWordType zzerr46[];
-extern SetWordType zzerr47[];
-extern SetWordType zzerr48[];
-extern SetWordType zzerr49[];
-extern SetWordType zzerr50[];
-extern SetWordType zzerr51[];
-extern SetWordType zzerr52[];
-extern SetWordType zzerr53[];
-extern SetWordType setwd8[];
-extern SetWordType zzerr54[];
-extern SetWordType zzerr55[];
-extern SetWordType zzerr56[];
-extern SetWordType zzerr57[];
-extern SetWordType setwd9[];
-extern SetWordType zzerr58[];
-extern SetWordType zzerr59[];
-extern SetWordType zzerr60[];
-extern SetWordType zzerr61[];
-extern SetWordType zzerr62[];
-extern SetWordType zzerr63[];
-extern SetWordType zzerr64[];
-extern SetWordType zzerr65[];
-extern SetWordType setwd10[];
-extern SetWordType setwd11[];
+extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 157 */];
+extern SetWordType zzerr1[zzSET_SIZE];
+extern SetWordType zzerr2[zzSET_SIZE];
+extern SetWordType zzerr3[zzSET_SIZE];
+extern SetWordType zzerr4[zzSET_SIZE];
+extern SetWordType setwd1[zzTOKEN_COUNT];
+extern SetWordType zzerr5[zzSET_SIZE];
+extern SetWordType zzerr6[zzSET_SIZE];
+extern SetWordType zzerr7[zzSET_SIZE];
+extern SetWordType zzerr8[zzSET_SIZE];
+extern SetWordType zzerr9[zzSET_SIZE];
+extern SetWordType setwd2[zzTOKEN_COUNT];
+extern SetWordType zzerr10[zzSET_SIZE];
+extern SetWordType zzerr11[zzSET_SIZE];
+extern SetWordType zzerr12[zzSET_SIZE];
+extern SetWordType zzerr13[zzSET_SIZE];
+extern SetWordType setwd3[zzTOKEN_COUNT];
+extern SetWordType zzerr14[zzSET_SIZE];
+extern SetWordType zzerr15[zzSET_SIZE];
+extern SetWordType zzerr16[zzSET_SIZE];
+extern SetWordType zzerr17[zzSET_SIZE];
+extern SetWordType zzerr18[zzSET_SIZE];
+extern SetWordType zzerr19[zzSET_SIZE];
+extern SetWordType zzerr20[zzSET_SIZE];
+extern SetWordType zzerr21[zzSET_SIZE];
+extern SetWordType setwd4[zzTOKEN_COUNT];
+extern SetWordType zzerr22[zzSET_SIZE];
+extern SetWordType zzerr23[zzSET_SIZE];
+extern SetWordType zzerr24[zzSET_SIZE];
+extern SetWordType zzerr25[zzSET_SIZE];
+extern SetWordType zzerr26[zzSET_SIZE];
+extern SetWordType setwd5[zzTOKEN_COUNT];
+extern SetWordType zzerr27[zzSET_SIZE];
+extern SetWordType zzerr28[zzSET_SIZE];
+extern SetWordType zzerr29[zzSET_SIZE];
+extern SetWordType zzerr30[zzSET_SIZE];
+extern SetWordType zzerr31[zzSET_SIZE];
+extern SetWordType zzerr32[zzSET_SIZE];
+extern SetWordType zzerr33[zzSET_SIZE];
+extern SetWordType setwd6[zzTOKEN_COUNT];
+extern SetWordType zzerr34[zzSET_SIZE];
+extern SetWordType zzerr35[zzSET_SIZE];
+extern SetWordType zzerr36[zzSET_SIZE];
+extern SetWordType zzerr37[zzSET_SIZE];
+extern SetWordType zzerr38[zzSET_SIZE];
+extern SetWordType zzerr39[zzSET_SIZE];
+extern SetWordType zzerr40[zzSET_SIZE];
+extern SetWordType zzerr41[zzSET_SIZE];
+extern SetWordType zzerr42[zzSET_SIZE];
+extern SetWordType setwd7[zzTOKEN_COUNT];
+extern SetWordType zzerr43[zzSET_SIZE];
+extern SetWordType zzerr44[zzSET_SIZE];
+extern SetWordType zzerr45[zzSET_SIZE];
+extern SetWordType zzerr46[zzSET_SIZE];
+extern SetWordType zzerr47[zzSET_SIZE];
+extern SetWordType zzerr48[zzSET_SIZE];
+extern SetWordType zzerr49[zzSET_SIZE];
+extern SetWordType zzerr50[zzSET_SIZE];
+extern SetWordType zzerr51[zzSET_SIZE];
+extern SetWordType zzerr52[zzSET_SIZE];
+extern SetWordType zzerr53[zzSET_SIZE];
+extern SetWordType setwd8[zzTOKEN_COUNT];
+extern SetWordType zzerr54[zzSET_SIZE];
+extern SetWordType zzerr55[zzSET_SIZE];
+extern SetWordType zzerr56[zzSET_SIZE];
+extern SetWordType zzerr57[zzSET_SIZE];
+extern SetWordType setwd9[zzTOKEN_COUNT];
+extern SetWordType zzerr58[zzSET_SIZE];
+extern SetWordType zzerr59[zzSET_SIZE];
+extern SetWordType zzerr60[zzSET_SIZE];
+extern SetWordType zzerr61[zzSET_SIZE];
+extern SetWordType zzerr62[zzSET_SIZE];
+extern SetWordType zzerr63[zzSET_SIZE];
+extern SetWordType zzerr64[zzSET_SIZE];
+extern SetWordType zzerr65[zzSET_SIZE];
+extern SetWordType setwd10[zzTOKEN_COUNT];
+extern SetWordType zzerr66[zzSET_SIZE];
+extern SetWordType setwd11[zzTOKEN_COUNT];
+
+
+#endif /* tokens_h */

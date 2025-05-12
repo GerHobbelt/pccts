@@ -95,6 +95,6 @@ sorcerer_panic(err)
 char *err;
 #endif
 {
-	fprintf(stderr, "panic: %s\n", err);
+	printf_stderr_continued( "panic: %s\n", err);
 	exit(-1);
 }

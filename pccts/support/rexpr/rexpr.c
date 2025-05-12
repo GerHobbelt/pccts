@@ -62,15 +62,18 @@
  */
 
 #include <stdio.h>
+#include "pcctscfg.h"
 #include <ctype.h>
 #ifdef __STDC__
 #include <stdlib.h>
 #else
+#include <stdlib.h> /* exit() */
 #include <malloc.h>
 #endif
 #include "rexpr.h"
 
 #ifdef __USE_PROTOS
+static int match(NodePtr automaton,char *s);
 static int regExpr( GraphPtr g );
 static int andExpr( GraphPtr g );
 static int expr( GraphPtr g );
@@ -88,6 +91,7 @@ static Graph BuildNFA_Astar( Graph A );
 static Graph BuildNFA_Aplus( Graph A );
 static Graph BuildNFA_Aoptional( Graph A );
 #else
+static int match();
 static int regExpr();
 static int andExpr();
 static int expr();
@@ -117,9 +121,9 @@ static NodePtr freelist = NULL;
  *       -1 if expr is an invalid regular expression
  */
 #ifdef __USE_PROTOS
-static int rexpr(char *expr,char *s)
+int rexpr(char *expr,char *s)
 #else
-static int rexpr(expr, s)
+int rexpr(expr, s)
 char *expr, *s;
 #endif
 {
@@ -429,7 +433,7 @@ static ArcPtr newGraphArc()
 {
 	ArcPtr p;
 	p = (ArcPtr) calloc(1, sizeof(Arc));
-	if ( p==NULL ) {fprintf(stderr,"rexpr: out of memory\n"); exit(-1);}
+	if ( p==NULL ) {fprintf(stderr,"rexpr: out of memory\n"); exit(EXIT_FAILURE);}
 	if ( freelist != NULL ) p->track = (ArcPtr) freelist;
 	freelist = (NodePtr) p;
 	return p;
@@ -443,7 +447,7 @@ static NodePtr newNode()
 {
 	NodePtr p;
 	p = (NodePtr) calloc(1, sizeof(Node));
-	if ( p==NULL ) {fprintf(stderr,"rexpr: out of memory\n"); exit(-1);}
+	if ( p==NULL ) {fprintf(stderr,"rexpr: out of memory\n"); exit(EXIT_FAILURE);}
 	if ( freelist != NULL ) p->track = freelist;
 	freelist = p;
 	return p;
@@ -521,7 +525,7 @@ static Graph BuildNFA_set( s )
 char *s;
 #endif
 {
-	Graph g;
+  Graph g = {0};
 	
 	if ( s == NULL ) return g;
 	

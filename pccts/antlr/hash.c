@@ -55,8 +55,8 @@
 #define StrSame		0
 
 #define fatal(err)															\
-			{fprintf(stderr, "%s(%d):", __FILE__, __LINE__);				\
-			fprintf(stderr, " %s\n", err); exit(PCCTS_EXIT_FAILURE);}
+			{printf_stderr_continued( "%s(%d):", __FILE__, __LINE__);				\
+			printf_stderr_continued( " %s\n", err); exit(PCCTS_EXIT_FAILURE);}
 #define require(expr, err) {if ( !(expr) ) fatal(err);}
 
 static unsigned size = HashTableSize;
@@ -164,34 +164,34 @@ Entry **table;
 		
 		if ( q != NULL && low==0 ) low = p-table;
 		len = 0;
-		if ( q != NULL ) fprintf(stderr, "[%d]", p-table);
+		if ( q != NULL ) printf_stderr_continued( "[%d]", p-table);
 		while ( q != NULL )
 		{
 			len++;
 			n++;
-			fprintf(stderr, " %s", q->str);
+			printf_stderr_continued( " %s", q->str);
 			q = q->next;
-			if ( q == NULL ) fprintf(stderr, "\n");
+			if ( q == NULL ) printf_stderr_continued( "\n");
 		}
 		count[len]++;
 		if ( *p != NULL ) hi = p-table;
 	}
 
-	fprintf(stderr, "Storing %d recs used %d hash positions out of %d\n",
+	printf_stderr_continued( "Storing %d recs used %d hash positions out of %d\n",
 					n, size-count[0], size);
-	fprintf(stderr, "%f %% utilization\n",
+	printf_stderr_continued( "%f %% utilization\n",
 					((float)(size-count[0]))/((float)size));
 	for (i=0; i<20; i++)
 	{
 		if ( count[i] != 0 )
 		{
 			avg += (((float)(i*count[i]))/((float)n)) * i;
-			fprintf(stderr, "Bucket len %d == %d (%f %% of recs)\n",
+			printf_stderr_continued( "Bucket len %d == %d (%f %% of recs)\n",
 							i, count[i], ((float)(i*count[i]))/((float)n));
 		}
 	}
-	fprintf(stderr, "Avg bucket length %f\n", avg);
-	fprintf(stderr, "Range of hash function: %d..%d\n", low, hi);
+	printf_stderr_continued( "Avg bucket length %f\n", avg);
+	printf_stderr_continued( "Range of hash function: %d..%d\n", low, hi);
 }
 #endif
 

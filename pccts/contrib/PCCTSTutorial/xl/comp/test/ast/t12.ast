@@ -1,0 +1,223 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [test10]
+         ( Body
+            ( Define
+               ( CONST [max] >>  Type: Integer >>  InitialValue: 10))
+            ( Define
+               ( TYPE [T] >>  Type: Integer
+                  ( Array >>  Type: Integer
+                     ( Lower
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Upper
+                        ( INTLIT [10] >>  Type: Integer)))))
+            ( Define
+               ( VAR [a] >>  Type: T))
+            ( Define
+               ( VAR [k] >>  Type: Integer))
+            ( Define
+               ( Procedure [quicksort]
+                  ( Parms
+                     ( Define
+                        ( VAR [m] >>  Type: Integer))
+                     ( Define
+                        ( VAR [n] >>  Type: Integer)))
+                  ( Body
+                     ( Define
+                        ( VAR [i] >>  Type: Integer))
+                     ( Define
+                        ( VAR [j] >>  Type: Integer))
+                     ( Define
+                        ( Procedure [partition]
+                           ( Parms)
+                           ( Body
+                              ( Define
+                                 ( VAR [r] >>  Type: Integer))
+                              ( Define
+                                 ( VAR [w] >>  Type: Integer))
+                              ( Assign
+                                 ( Ref r  >>  Type: Integer)
+                                 ( Value >>  Type: Integer
+                                    ( Index >>  Type: Integer
+                                       ( Ref a  >>  Type: T)
+                                       ( Op [/] >>  Type: Integer
+                                          ( Op [+] >>  Type: Integer
+                                             ( Value >>  Type: Integer
+                                                ( Ref m  >>  Type: Integer))
+                                             ( Value >>  Type: Integer
+                                                ( Ref n  >>  Type: Integer)))
+                                          ( INTLIT [2] >>  Type: Integer)))))
+                              ( Assign
+                                 ( Ref i  >>  Type: Integer)
+                                 ( Value >>  Type: Integer
+                                    ( Ref m  >>  Type: Integer)))
+                              ( Assign
+                                 ( Ref j  >>  Type: Integer)
+                                 ( Value >>  Type: Integer
+                                    ( Ref n  >>  Type: Integer)))
+                              ( Loop
+                                 ( While
+                                    ( Op [<=] >>  Type: Boolean
+                                       ( Value >>  Type: Integer
+                                          ( Ref i  >>  Type: Integer))
+                                       ( Value >>  Type: Integer
+                                          ( Ref j  >>  Type: Integer))))
+                                 ( Loop
+                                    ( While
+                                       ( Op [<] >>  Type: Boolean
+                                          ( Value >>  Type: Integer
+                                             ( Index >>  Type: Integer
+                                                ( Ref a  >>  Type: T)
+                                                ( Value >>  Type: Integer
+                                                   ( Ref i  >>  Type: Integer))))
+                                          ( Value >>  Type: Integer
+                                             ( Ref r  >>  Type: Integer))))
+                                    ( Assign
+                                       ( Ref i  >>  Type: Integer)
+                                       ( Op [+] >>  Type: Integer
+                                          ( Value >>  Type: Integer
+                                             ( Ref i  >>  Type: Integer))
+                                          ( INTLIT [1] >>  Type: Integer))))
+                                 ( Loop
+                                    ( While
+                                       ( Op [<] >>  Type: Boolean
+                                          ( Value >>  Type: Integer
+                                             ( Ref r  >>  Type: Integer))
+                                          ( Value >>  Type: Integer
+                                             ( Index >>  Type: Integer
+                                                ( Ref a  >>  Type: T)
+                                                ( Value >>  Type: Integer
+                                                   ( Ref j  >>  Type: Integer))))))
+                                    ( Assign
+                                       ( Ref j  >>  Type: Integer)
+                                       ( Op [-] >>  Type: Integer
+                                          ( Value >>  Type: Integer
+                                             ( Ref j  >>  Type: Integer))
+                                          ( INTLIT [1] >>  Type: Integer))))
+                                 ( If
+                                    ( Op [<=] >>  Type: Boolean
+                                       ( Value >>  Type: Integer
+                                          ( Ref i  >>  Type: Integer))
+                                       ( Value >>  Type: Integer
+                                          ( Ref j  >>  Type: Integer)))
+                                    ( ThenPart
+                                       ( Assign
+                                          ( Ref w  >>  Type: Integer)
+                                          ( Value >>  Type: Integer
+                                             ( Index >>  Type: Integer
+                                                ( Ref a  >>  Type: T)
+                                                ( Value >>  Type: Integer
+                                                   ( Ref i  >>  Type: Integer)))))
+                                       ( Assign
+                                          ( Index >>  Type: Integer
+                                             ( Ref a  >>  Type: T)
+                                             ( Value >>  Type: Integer
+                                                ( Ref i  >>  Type: Integer)))
+                                          ( Value >>  Type: Integer
+                                             ( Index >>  Type: Integer
+                                                ( Ref a  >>  Type: T)
+                                                ( Value >>  Type: Integer
+                                                   ( Ref j  >>  Type: Integer)))))
+                                       ( Assign
+                                          ( Index >>  Type: Integer
+                                             ( Ref a  >>  Type: T)
+                                             ( Value >>  Type: Integer
+                                                ( Ref j  >>  Type: Integer)))
+                                          ( Value >>  Type: Integer
+                                             ( Ref w  >>  Type: Integer)))
+                                       ( Assign
+                                          ( Ref i  >>  Type: Integer)
+                                          ( Op [+] >>  Type: Integer
+                                             ( Value >>  Type: Integer
+                                                ( Ref i  >>  Type: Integer))
+                                             ( INTLIT [1] >>  Type: Integer)))
+                                       ( Assign
+                                          ( Ref j  >>  Type: Integer)
+                                          ( Op [-] >>  Type: Integer
+                                             ( Value >>  Type: Integer
+                                                ( Ref j  >>  Type: Integer))
+                                             ( INTLIT [1] >>  Type: Integer))))
+                                    ( ElsePart))))))
+                     ( If
+                        ( Op [<] >>  Type: Boolean
+                           ( Value >>  Type: Integer
+                              ( Ref m  >>  Type: Integer))
+                           ( Value >>  Type: Integer
+                              ( Ref n  >>  Type: Integer)))
+                        ( ThenPart
+                           ( ProcedureCall
+                              ( Ref partition )
+                              ( Parms))
+                           ( ProcedureCall
+                              ( Ref quicksort )
+                              ( Parms
+                                 ( Value >>  Type: Integer
+                                    ( Ref m  >>  Type: Integer))
+                                 ( Value >>  Type: Integer
+                                    ( Ref j  >>  Type: Integer))))
+                           ( ProcedureCall
+                              ( Ref quicksort )
+                              ( Parms
+                                 ( Value >>  Type: Integer
+                                    ( Ref i  >>  Type: Integer))
+                                 ( Value >>  Type: Integer
+                                    ( Ref n  >>  Type: Integer)))))
+                        ( ElsePart)))))
+            ( Assign
+               ( Ref k  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Loop
+               ( While
+                  ( Op [<=] >>  Type: Boolean
+                     ( Value >>  Type: Integer
+                        ( Ref k  >>  Type: Integer))
+                     ( INTLIT [10] >>  Type: Integer)))
+               ( Get
+                  ( Index >>  Type: Integer
+                     ( Ref a  >>  Type: T)
+                     ( Value >>  Type: Integer
+                        ( Ref k  >>  Type: Integer))))
+               ( Assign
+                  ( Ref k  >>  Type: Integer)
+                  ( Op [+] >>  Type: Integer
+                     ( Value >>  Type: Integer
+                        ( Ref k  >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))))
+            ( ProcedureCall
+               ( Ref quicksort )
+               ( Parms
+                  ( INTLIT [1] >>  Type: Integer)
+                  ( INTLIT [10] >>  Type: Integer)))
+            ( Assign
+               ( Ref k  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Loop
+               ( While
+                  ( Op [<=] >>  Type: Boolean
+                     ( Value >>  Type: Integer
+                        ( Ref k  >>  Type: Integer))
+                     ( INTLIT [10] >>  Type: Integer)))
+               ( Put
+                  ( Value >>  Type: Integer
+                     ( Index >>  Type: Integer
+                        ( Ref a  >>  Type: T)
+                        ( Value >>  Type: Integer
+                           ( Ref k  >>  Type: Integer)))))
+               ( NewLine)
+               ( Assign
+                  ( Ref k  >>  Type: Integer)
+                  ( Op [+] >>  Type: Integer
+                     ( Value >>  Type: Integer
+                        ( Ref k  >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer)))))))
+

@@ -7,6 +7,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc -gh -ga -e3 antlr.g
+ *
  */
 
 #ifndef ANTLR_VERSION
@@ -24,6 +27,7 @@
 #include "generic.h"
 #define zzcr_attr(attr,tok,t)
 #define zzSET_SIZE 20
+#define zzTOKEN_COUNT 157
 #include "antlr.h"
 #include "tokens.h"
 #include "dlgdef.h"

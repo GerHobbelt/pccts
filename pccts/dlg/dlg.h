@@ -116,6 +116,8 @@ typedef struct {
 /******************** Variable ******************************/
 extern char	program[];	/* tells what program this is */
 extern char	version[];	/* tells what version this is */
+extern int  Save_argc;          
+extern char **Save_argv; 
 extern char	*file_str[];	/* file names being used */
 extern int	err_found;	/* flag to indicate error occured */
 extern int	action_no;	/* last action function printed */
@@ -169,6 +171,7 @@ extern char *ClassName(char *);
 extern char *OutMetaName(char *);
 extern void error(char*, int);
 extern void warning(char*, int);
+extern void p_top_head(FILE *out);               /* [i_a] */
 extern void p_head(void);
 extern void p_class_hdr(void);
 extern void p_includes(void);
@@ -217,6 +220,7 @@ extern char *ClassName();
 extern char *OutMetaName();
 extern void error();
 extern void warning();
+extern void p_top_head();                   /* [i_a] */
 extern void p_head();                   /* MR9 */
 extern void p_class_hdr();              /* MR9 */
 extern void p_includes();               /* MR9 */

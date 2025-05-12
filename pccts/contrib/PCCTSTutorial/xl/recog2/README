@@ -1,0 +1,24 @@
+recog2.zip, recog2.tgz
+======================
+This is the final recognizer grammar file.
+
+You are free to do whatever you wish with this software.
+However, I do not take responsibility for any damage done
+to your software or hardware by using it.  Not that I think
+this stuff will harm you, but I guess I gotta say this anyway.
+
+Files included in this distribution:
+    xl.mdp   -- Visual C++ 4.2 project file
+    xl.mak   -- Visual C++ 4.2 makefile
+    xl.g     -- the PCCTS grammar file
+    makefile -- a UNIX makefile for building the recognizer
+    readme   -- this file
+
+Note that the VC++ project file assumes there is a
+   c:\pccts\h
+directory that contains the contents of the h directory
+of the PCCTS distribution.
+
+If you want to use the UNIX makefile, you will need to
+edit it to tell it the name of your compiler and where you
+keep your PCCTS base directory.

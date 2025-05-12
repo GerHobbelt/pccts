@@ -48,7 +48,7 @@ char *s,*file;
 int line;
 #endif
 {
-	fprintf(stderr,s,file,line);
+	printf_stderr_continued(s,file,line);
 	exit(PCCTS_EXIT_FAILURE);
 }
 
@@ -105,13 +105,13 @@ char *name;
 
 	if (name){
 		if (name[0] == '-') {
-			fprintf(stderr, "dlg: invalid option: '%s'\n", name);
+			printf_stderr_continued("dlg: invalid option: '%s'\n", name);
 			f = NULL;
 		}else{
 			f = fopen(name, "r");
 			if (f == NULL){
 				/* couldn't open file */
-				fprintf(stderr,
+				printf_stderr_continued(
 					"dlg: Warning: Can't read file %s.\n",
 					name);
 			}
@@ -134,13 +134,13 @@ char *name;
 
 	if (name){
 		if (name[0] == '-') {
-			fprintf(stderr, "dlg: invalid option: '%s'\n", name);
+			printf_stderr_continued("dlg: invalid option: '%s'\n", name);
 			f = NULL;
 		}else{
 			f = fopen(OutMetaName(name), "w");
 			if (f == NULL){
 				/* couldn't open file */
-				fprintf(stderr,
+				printf_stderr_continued(
 					"dlg: Warning: Can't write to file %s.\n",
 					name);
 			}
@@ -167,9 +167,7 @@ char *message;
 int line_no;
 #endif
 {
-	fprintf(stderr,ErrHdr,
-		(file_str[0] ? file_str[0] : "stdin"), line_no);
-	fprintf(stderr, " Fatal: %s\n", message);
+	printf_stderr((file_str[0] ? file_str[0] : "stdin"), line_no, " Fatal: %s\n", message);
 	exit(PCCTS_EXIT_FAILURE);
 }
 
@@ -181,9 +179,7 @@ char *message;
 int line_no;
 #endif
 {
-	fprintf(stderr,ErrHdr,
-		(file_str[0] ? file_str[0] : "stdin"), line_no);
-	fprintf(stderr, " Error: %s\n", message);
+	printf_stderr((file_str[0] ? file_str[0] : "stdin"), line_no, " Error: %s\n", message);
 	err_found = 1;
 }
 
@@ -195,9 +191,7 @@ char *message;
 int line_no;
 #endif
 {
-	fprintf(stderr,ErrHdr,
-		(file_str[0] ? file_str[0] : "stdin"), line_no);
-	fprintf(stderr, " Warning: %s\n", message);
+	printf_stderr((file_str[0] ? file_str[0] : "stdin"), line_no, " Warning: %s\n", message);
 }
 
 /* MR10: Jeff Vincent

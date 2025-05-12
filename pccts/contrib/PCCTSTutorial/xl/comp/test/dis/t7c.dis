@@ -1,0 +1,27 @@
+     0 i_program               1
+     2 i_goto                 23(        27)
+     4 i_procedure             0
+     6 i_localvar             -1
+     8 i_simple_value 
+     9 i_put_int      
+    10 i_localvar             -1
+    12 i_constant              6
+    14 i_simple_assign
+    15 i_variable              1         0
+    18 i_simple_value 
+    19 i_put_int      
+    20 i_variable              1         0
+    23 i_constant              7
+    25 i_simple_assign
+    26 i_return       
+    27 i_localvar              0
+    29 i_constant              5
+    31 i_simple_assign
+    32 i_localvar              0
+    34 i_simple_value 
+    35 i_proc_call             0       -34(         4)
+    38 i_pop                   1
+    40 i_localvar              0
+    42 i_simple_value 
+    43 i_put_int      
+    44 i_halt         

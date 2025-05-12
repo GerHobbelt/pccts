@@ -94,7 +94,7 @@ typedef struct _zzjmp_buf {
             if ( zzasp <= 0 )                                           \
             {                                                           \
                 fprintf(stderr, zzStackOvfMsg, __FILE__, __LINE__);		\
-                exit(PCCTS_EXIT_FAILURE);                                               \
+                exit(PCCTS_EXIT_FAILURE);                               \
             }
 
 #ifndef ZZA_STACKSIZE
@@ -284,6 +284,7 @@ extern int zzLexErrCount;                   /* MR11 */
 #endif
 
 #if ZZLEXBUFSIZE > ZZINF_BUFFER_TEXT_CHUNK_SIZE
+#undef  ZZINF_BUFFER_TEXT_CHUNK_SIZE    /* [i_a] */
 #define ZZINF_BUFFER_TEXT_CHUNK_SIZE	ZZLEXBUFSIZE+5
 #endif
 
@@ -298,6 +299,8 @@ extern int zzLexErrCount;                   /* MR11 */
 #define ZZINF_LA_VALID(i)	(((zzinf_labase+i-1)) <= zzinf_last)
 #define ZZINF_LA(i)			zzinf_tokens[(zzinf_labase+i-1)]
 #define ZZINF_LATEXT(i)		zzinf_text[(zzinf_labase+i-1)]
+/* [i_a 11/oct/99: ZZINF_LINE() missing here... */
+#define ZZINF_LINE(i)       zzinf_line[(zzinf_labase+i-1)]
 #endif
 
 #define inf_zzgettok _inf_zzgettok()
@@ -310,9 +313,9 @@ extern void _inf_zzgettok();
 
 #ifdef __USE_PROTOS
 #define ANTLR_INFO	\
-	Attrib zzempty_attr(void) {static Attrib a; return a;} \
+	Attrib zzempty_attr(void) {static Attrib a = {0}; return a;} \
 	Attrib zzconstr_attr(int _tok, char *_text) \
-		{Attrib a; zzcr_attr((&a),_tok,_text); return a;} \
+	{Attrib a = {0}; zzcr_attr((&a),_tok,_text); return a;} \
 	int zzasp=ZZA_STACKSIZE; \
 	char zzStackOvfMsg[]="fatal: attrib/AST stack overflow %s(%d)!\n"; \
 	Attrib zzaStack[ZZA_STACKSIZE]; DemandLookData \
@@ -320,9 +323,9 @@ extern void _inf_zzgettok();
     zzGuessData
 #else
 #define ANTLR_INFO												\
-	Attrib zzempty_attr() {static Attrib a; return a;}		    \
+	Attrib zzempty_attr() {static Attrib a = {0}; return a;}		    \
 	Attrib zzconstr_attr(_tok, _text) int _tok; char *_text;    \
-		{Attrib a; zzcr_attr((&a),_tok,_text); return a;}	    \
+	{Attrib a = {0}; zzcr_attr((&a),_tok,_text); return a;}	    \
 	int zzasp=ZZA_STACKSIZE;					    \
 	char zzStackOvfMsg[]="fatal: attrib/AST stack overflow %s(%d)!\n";  \
 	Attrib zzaStack[ZZA_STACKSIZE]; DemandLookData			    \
@@ -334,9 +337,9 @@ extern void _inf_zzgettok();
 
 #ifdef __USE_PROTOS
 #define ANTLR_INFO												\
-	Attrib zzempty_attr(void) {static Attrib a; return a;}			\
+	Attrib zzempty_attr(void) {static Attrib a = {0}; return a;}			\
 	Attrib zzconstr_attr(int _tok, char *_text)				\
-		{Attrib a; zzcr_attr((&a),_tok,_text); return a;}		\
+	{Attrib a = {0}; zzcr_attr((&a),_tok,_text); return a;}		\
 	int zzasp=ZZA_STACKSIZE;						\
 	char zzStackOvfMsg[]="fatal: attrib/AST stack overflow %s(%d)!\n";      \
 	Attrib zzaStack[ZZA_STACKSIZE]; DemandLookData				\
@@ -344,9 +347,9 @@ extern void _inf_zzgettok();
     zzGuessData
 #else
 #define ANTLR_INFO												\
-	Attrib zzempty_attr() {static Attrib a; return a;}			\
+	Attrib zzempty_attr() {static Attrib a = {0}; return a;}			\
 	Attrib zzconstr_attr(_tok, _text) int _tok; char *_text;                \
-		{Attrib a; zzcr_attr((&a),_tok,_text); return a;}		\
+	{Attrib a = {0}; zzcr_attr((&a),_tok,_text); return a;}		\
 	int zzasp=ZZA_STACKSIZE;						\
 	char zzStackOvfMsg[]="fatal: attrib/AST stack overflow %s(%d)!\n";      \
 	Attrib zzaStack[ZZA_STACKSIZE]; DemandLookData				\

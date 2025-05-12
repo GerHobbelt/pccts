@@ -3,7 +3,7 @@
  *
  * Doubly-linked lists are used for fast removal of entries.
  *
- * 'sym.h' must have a definition for typedef "Sym".  Sym must include at
+ * 'template.h' must have a definition for typedef "Sym".  Sym must include at
  * minimum the following fields:
  *
  *		...
@@ -65,7 +65,7 @@
  * Example:
  *
  *	#include <stdio.h>
- *	#include "sym.h"
+ *	#include "template.h"
  *
  *	main()
  *	{
@@ -108,13 +108,14 @@
  */
 
 #include <stdio.h>
+#include "pcctscfg.h"
 #if defined(__STDC__) || defined(__USE_PROTOS)
 #include <string.h>
 #include <stdlib.h>
 #else
 #include <malloc.h>
 #endif
-#include "sym.h"
+#include "template.h"
 
 #define StrSame		0
 
@@ -161,7 +162,7 @@ void zzs_done()
 }
 
 #ifdef __USE_PROTOS
-void zzs_add(char *key,Sym rec)
+void zzs_add(char *key,Sym *rec)
 #else
 void zzs_add(key, rec)
 char *key;

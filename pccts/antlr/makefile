@@ -170,6 +170,8 @@ ANTLR=../bin/antlr
 DLG=../bin/dlg
 OBJ_EXT=o
 OUT_OBJ = -o
+#CFLAGS= -O -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN $(COTHER) -DZZLEXBUFSIZE=32000
+CFLAGS= -Wall -pedantic -O2 -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN $(COTHER) -DZZLEXBUFSIZE=32000
 CFLAGS= $(COPT) -I. -I$(SET) -I$(PCCTS_H) -DUSER_ZZSYN $(COTHER) -DZZLEXBUFSIZE=32000
 #
 # SGI Users, use this CFLAGS
@@ -194,6 +196,15 @@ SRC=antlr.c scan.c err.c bits.c build.c fset2.c fset.c gen.c globals.c \
 #
 #antlr.c stdpccts.h parser.dlg tokens.h err.c : antlr.g
 #	$(ANTLR) -gh antlr.g
+
+#
+# generate grammar description files (dsc) as a 'side-effect'
+#
+regenerate:
+	$(ANTLR) -gc -pa -e3 -cr -ga -w2 -info ptfmo antlr.g > antlr.full.dsc
+	$(ANTLR) -gc -p -e3 -cr -ga -w2 antlr.g > antlr.dsc
+	$(ANTLR) -e3 -ga -gh antlr.g
+	$(DLG) -C2 parser.dlg scan.c
 
 antlr.o : antlr.c mode.h tokens.h
 

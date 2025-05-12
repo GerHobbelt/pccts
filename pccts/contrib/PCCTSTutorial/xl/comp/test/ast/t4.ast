@@ -1,0 +1,68 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [gcd]
+         ( Body
+            ( Define
+               ( VAR [a] >>  Type: Integer))
+            ( Define
+               ( VAR [b] >>  Type: Integer))
+            ( Define
+               ( VAR [temp] >>  Type: Integer))
+            ( Loop
+               ( Get
+                  ( Ref a  >>  Type: Integer))
+               ( Get
+                  ( Ref b  >>  Type: Integer))
+               ( SkipLine)
+               ( Exit
+                  ( Op [or] >>  Type: Boolean
+                     ( Op [<=] >>  Type: Boolean
+                        ( Value >>  Type: Integer
+                           ( Ref a  >>  Type: Integer))
+                        ( INTLIT [0] >>  Type: Integer))
+                     ( Op [<=] >>  Type: Boolean
+                        ( Value >>  Type: Integer
+                           ( Ref b  >>  Type: Integer))
+                        ( INTLIT [0] >>  Type: Integer))))
+               ( Put
+                  ( Value >>  Type: Integer
+                     ( Ref a  >>  Type: Integer)))
+               ( Put
+                  ( Value >>  Type: Integer
+                     ( Ref b  >>  Type: Integer)))
+               ( Loop
+                  ( Assign
+                     ( Ref temp  >>  Type: Integer)
+                     ( Value >>  Type: Integer
+                        ( Ref a  >>  Type: Integer)))
+                  ( Assign
+                     ( Ref a  >>  Type: Integer)
+                     ( Value >>  Type: Integer
+                        ( Ref b  >>  Type: Integer)))
+                  ( Assign
+                     ( Ref b  >>  Type: Integer)
+                     ( Op [mod] >>  Type: Integer
+                        ( Value >>  Type: Integer
+                           ( Ref temp  >>  Type: Integer))
+                        ( Value >>  Type: Integer
+                           ( Ref b  >>  Type: Integer))))
+                  ( Exit
+                     ( Op [=] >>  Type: Boolean
+                        ( Value >>  Type: Integer
+                           ( Ref b  >>  Type: Integer))
+                        ( INTLIT [0] >>  Type: Integer))))
+               ( Put
+                  ( Value >>  Type: Integer
+                     ( Ref a  >>  Type: Integer)))
+               ( NewLine)))))
+

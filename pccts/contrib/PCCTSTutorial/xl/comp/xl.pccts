@@ -1,0 +1,1249 @@
+// xl.pccts -- ANTLR source for xl compiler
+#header << #include "xl.pccts.h" >>
+       
+// define error classes for more readable error messages
+#errclass "constant value"    { CONST INTLIT STRINGLIT }
+#errclass "identifier"        { PROC TYPE VAR CONST IDENT }
+
+// define global stuff for the compiler
+<<
+   // define symbol table size
+   #define HashTableSize    999
+   #define StringTableSize 5000
+   
+   // define the global scope for the symbol table
+   static Sym *globals = NULL;
+   
+   // initialize flags in the program
+   int indent,level,walk_indent =0;
+   int walk_tree       = 0;
+   int show_definition = 0;
+   int list_variables  = 0;
+   int trace           = 0;
+   int error_occurred  = 0;
+   int loop_count      = 0;
+   
+   // define pointers in the AST to represent the types
+   AST *integer_type, *string_type, *boolean_type, *undefined_type;
+   
+   // define pointers in the AST to represent TRUE and FALSE
+   AST *def_true, *def_false;
+   
+   // the name of the object file
+   char *file_name;
+   
+   // change the way AST nodes are referred to, for readability
+   #define AST_Tok(token)                    #[token, NULL]
+   #define AST_Node(token, str)              #[token, str]
+   #define AST_List1(root, c1)               #(root, c1)
+   #define AST_List2(root, c1, c2)           #(root, c1, c2)
+   #define AST_List3(root, c1, c2, c3)       #(root, c1, c2, c3)
+
+   #include "xl.support.c"    // include support routines
+   #include "xl.ast_defs.h"   // include AST definitions
+   
+// routine to initialize compiler types and constants in the AST
+AST *init_tree()   
+{
+   AST *def;
+   
+   // Define Built-in atype tree nodes
+   integer_type = AST_Type("Integer");
+   SizeOf(integer_type) = 1;
+   string_type  = AST_Type("String");
+   boolean_type = AST_Type("Boolean");
+   SizeOf(boolean_type) = 1;
+   undefined_type = AST_Type("<<**Undefined**>>");
+   
+   // Make AST nodes for TRUE and FALSE
+   def_true           = AST_Constant("TRUE");
+   TypeOf(def_true)   = boolean_type;
+   DispOf(def_true)   = 0;
+   LevelOf(def_true)  = 1;
+   SizeOf(def_true)   = 1;
+   Init(def_true)     = AST_IntLiteral("1");
+   TypeOf(Init(def_true)) = boolean_type;
+   def_false          = AST_Constant("FALSE");
+   TypeOf(def_false)  = boolean_type;
+   DispOf(def_false)  = 1;
+   LevelOf(def_false) = 1;
+   SizeOf(def_false)  = 1;
+   Init(def_false)    = AST_IntLiteral("0");
+   TypeOf(Init(def_false)) = boolean_type;
+   
+   // Create a tree (list) of all external defs so far
+   def   =  #(AST_All_Are_Siblings,
+              AST_Define(integer_type),
+              AST_Define(string_type),
+              AST_Define(boolean_type),
+              AST_Define(def_true),
+              AST_Define(def_false));
+                     
+   return(def);         
+}                       
+
+>>
+
+// Define tokens for identifiers that already exist in the symbol table
+#token PROC
+#token TYPE
+#token VAR
+#token CONST
+
+// Skip whitespace
+#token                           "[\ \t\0]"              << zzskip(); >>
+
+// Skip newlines, but increment the line counter
+#token                           "\n"                    << zzline++; zzskip(); >>
+
+// skip comments (again, increment the line counter)
+#token                           "//~[\n]*\n"            << zzline++; zzskip(); >>
+
+// define literals
+#token   INTLIT                  "[0-9]+" 
+#token   CHARLIT                 "\'~[]\'"               
+#token   STRINGLIT               "\"(~[\"\n]|\"\")*\""   << strip_quotes(); >>
+#token                           "\"(~[\"\n]|\"\")*\n"   
+                                 << 
+                                    // non-terminated string -- assume terminated at EOLN and put up error message
+                                    strip_quotes(); zzline++;
+                                    syntax_error(zzline, "end-of-line", "String not terminated"); 
+                                 >>
+
+// Psuedo-Tokens used for AST generation                                 
+#token Name
+#token Op
+#token File
+#token Define
+#token Undefined
+#token Parms
+#token Value
+#token ThenPart
+#token ElsePart
+#token While
+#token Ref
+#token Index
+#token Field
+#token Program
+#token Array
+#token Record
+#token Exit
+#token ProcedureCall
+#token Return
+#token If
+#token Loop
+#token And
+#token Or
+#token Not
+#token Mod
+#token Body
+#token Lower
+#token Upper
+#token Procedure
+#token Type
+#token Get
+#token Put
+#token SkipLine
+#token NewLine
+#token Assign
+#token PassAddr
+                                 
+// ============================================================================================================
+// =================================== Start of Rule Definitions ==============================================
+// ============================================================================================================
+
+// To see a listing of the grammar without imbedded actions, look at xl.grammar.  It was generated from this
+//    file using the -p option of ANTLR.  Note that the variable rule had to have the "." which was used as
+//    an "any token" wildcard commented out when running ANTLR -p;  ANTLR has a bug in printing it...
+
+
+// Program definition
+program! "program definition"    :  << 
+                                       // Initialize the compiler here
+                                       Sym *p;                  // temporary, used when adding things to symbol table
+                                       AST *extdefs,            // external definitions, used just by compiler
+                                           *tree;               // the overall AST for the user's program
+                                       int size;                // keeps track of global variable space
+
+                                       indent = level = 0;      // base level, no indenting so far...
+
+                                       extdefs = init_tree();   // initialize the tree
+                                       
+                                       zzs_scope(&globals);     // set up the global-level scope
+                                       
+                                       // add TRUE and FALSE to the symbol table
+                                       define_symbol(p, "TRUE",     0, CONST, def_true);
+                                       define_symbol(p, "FALSE",    0, CONST, def_false);
+                                    >> 
+                                    "program" def[&globals,0,PROC] "="
+                                       subprogrambody[&globals,1,$2.text,NULL] "\." 
+                                    << 
+                                       // create a Program AST node -- make its size be the size of the subprogram 
+                                       //   (that was set to the size of all global vars)
+                                       size = SizeOf(#4);
+                                       tree = AST_Program(AST_Name($2.text), AST_Body(#4));
+                                       SizeOf(tree) = size;
+                                       
+                                       tree =   AST_File(extdefs, tree);  // Make the overall File node in the tree
+                                       
+                                       // If user requested a tree walk, walk the AST
+                                       if (walk_tree)
+                                       {
+                                          walk(tree);
+                                          printf("\\n\\n");
+                                        }
+                                        
+                                       p = zzs_rmscope(&globals);  // Remove the global variable scope
+                                       
+                                       // If user requested that we list all vars after a proc def, list globals
+                                       if (list_variables)
+                                       {
+                                          printf("Globals:\\n");
+                                          if (p != NULL) pScope(p);
+                                       }
+                                       
+                                       // if everything parsed fine, generate code
+                                       if (!error_occurred)
+                                          generate_code(tree);
+                                    >>
+                                    "@"      // end of file
+                                 ;
+                        
+                        
+// Body of a program or procedure                        
+// Note that automatic AST creation is used here to make a list of definitions and statements
+//   (Automatic definition takes place when there is no "!" after the rule name.  Any terminals or
+//    non-terminals in the rule definition that are followed by a "!" are not added to the created subtree)
+subprogrambody[Sym **locals,
+               int   level, 
+               char *name,
+               AST *type] "subprogram definition" 
+                                 :  << int size=0; >>
+                                    (basicdecl[$locals, $level] << size += SizeOf(#1); >> )*
+                                    (proceduredecl[$locals, $level])*
+                                    "begin"!
+                                       (statement)*
+                                    "end"! refproc!
+                                    << 
+                                       // compare the name on the "end" statement to the name that the 
+                                       //    program/procedure was declared under
+                                       if (strcmp(name,$6.text) != 0) 
+                                       {
+                                          syntax_error(zzline, $6.text, "name referenced after end does not match subprogram declaration");
+                                          printf("\\tSubprogram was declared with name %s\\n", $name);
+                                       }
+                                       // set the size of the subprog definition to be the sum of the variable sizes
+                                       SizeOf(#0) = size;  
+                                    >>
+                                 ;
+                        
+// Basic declarations -- variables, constants or types (AST node just passes through here)
+basicdecl[Sym **locals,
+          int    level]          :  vardecl  [$locals, $level]
+                                 |  constdecl[$locals, $level]
+                                 |  typedecl [$locals, $level]
+                                 ;
+                     
+// Variable declarations                     
+vardecl![Sym **locals,                                 
+         int   level] "variable declaration"
+                                 :  << 
+                                       AST *t, *ivalue=NULL;    // Used to assign type and init values to variables
+                                       int size = 0;            // Used to track total size of identifier list
+                                    >>
+                                    "var" identifierlist[$locals,$level,VAR] ":" typename
+                                    { ":=" constantvalue << ivalue = find_val(#2); >> } ";" 
+                                    <<
+                                       // If there is an initializer, check that the variables' type is scalar
+                                       if (ivalue)
+                                       {
+                                          if (#4 != integer_type && #4 != boolean_type)
+                                          {
+                                             syntax_error(zzline, ":=", "only scalar variables can be initialized");
+                                             printf("\\tVariables were defined as type %s\\n", NameOf(#4));
+                                          } 
+                                          
+                                          // Now check if the type of the initializer matches the type of the vars
+                                          if (TypeOf(ivalue) != #4)                                    
+                                          {
+                                             syntax_error(zzline, NameOf(ivalue), "type conflict in attempted initialization");
+                                             printf("\\tType of variables being declared: %s", NameOf(#4));
+                                             printf("\\n\\tType of initializer: %s\\n", TypeNameOf(ivalue));
+                                          }
+                                       }
+                                       
+                                       // Assign the type and initial value (if present) to all variables in the list
+                                       for(t=#2; t!=NULL; t=zzsibling(t))       // for each var in the list
+                                       {
+                                          TypeOf(zzchild(t)) = #4;              //      set its type
+                                          Init(zzchild(t)) = ivalue;            //      set its initial value
+                                          SizeOf(zzchild(t)) = SizeOf(#4);      //      set its size
+                                          size += SizeOf(#4);                   //      add its size to the total
+                                       }
+                                       #0 = #2;                                 // we'll return the list
+                                       SizeOf(#0) = size;                       // set its total size
+                                    >>
+                                 ;
+
+
+// Constant declarations
+constdecl![Sym **locals,
+           int level]  "constant declaration"
+                                 :  <<
+                                       AST *t; int size=0; 
+                                    >>
+                                    "constant" identifierlist[$locals,$level,CONST] 
+                                    ":" typename 
+                                    ":=" constantvalue ";" 
+                                    <<
+                                       // Check that the constants' type is scalar
+                                       if (#4 != integer_type && #4 != boolean_type)
+                                       {
+                                          syntax_error(zzline, NameOf(#4), "constants must be scalar");
+                                          printf("\\tConstants were initialized as type %s\\n", NameOf(#6));
+                                       }
+                                       
+                                       // check that the type of the initializer matches the type of the constants
+                                       if (TypeOf(#6) != #4)                                    
+                                       {
+                                          syntax_error(zzline, NameOf(#6), "type conflict in attempted initialization");
+                                          printf("\\tType of variables being declared: %s", NameOf(#4));
+                                          printf("\\n\\tType of initializer: %s\\n", TypeNameOf(#6));
+                                       }
+                                       
+                                       // Assign the type and initializer to all constants
+                                       for(t=#2; t!=NULL; t=zzsibling(t))       // for each constant in the list
+                                       {
+                                          TypeOf(zzchild(t)) = #4;              //      set its type
+                                          Init(zzchild(t)) = find_val(#6);      //      find its value
+                                          SizeOf(zzchild(t)) = SizeOf(#4);      //      set its size
+                                          size += SizeOf(#4);                   //      add its size to the total
+                                       }
+                                       #0 = #2;                                 // return the list
+                                       SizeOf(#0) = size;                       // set the list's total size
+                                    >>
+                                 ;
+
+
+// A constant value being used for some evil purpose
+constantvalue!                   :  INTLIT    
+                                    << 
+                                       // An integer literal == make a node for it
+                                       #0 = AST_IntLiteral($1.text);    TypeOf(#0)=integer_type;   SizeOf(#0) = 1; 
+                                       $0=$1; 
+                                    >>
+                                 |  STRINGLIT    
+                                    << 
+                                       // A string literal -- make a node for it
+                                       #0 = AST_StringLiteral($1.text);    TypeOf(#0)=string_type;   SizeOf(#0) = strlen($1.text); 
+                                       $0=$1; 
+                                    >>                                    
+                                 |  constant  
+                                    << 
+                                       // a constant -- it's already got a node -- just return it
+                                       #0 = #1; 
+                                    >>
+                                 ;
+                           
+                           
+// A list of identifiers                           
+identifierlist![Sym **locals,
+                int    level,
+                int    token] "identifier list"
+                                 :  << AST *t; #0 = NULL; >>
+                                    def[$locals,$level,$token] 
+                                    << 
+                                       if (#1 != NULL)   // If this is a valid NEW definition
+                                       {
+                                          #0 =  AST_Define(#1);         // set up a Define node for it
+                                          SizeOf(#0) = SizeOf(#1);      // Copy the size and type
+                                          TypeOf(#0) = TypeOf(#1);
+                                       }
+                                    >>
+                                    (
+                                       "," def[$locals,$level,$token] 
+                                       << 
+                                          if (#2 != NULL)                       // If it's a valid NEW ident
+                                          {
+                                             t = AST_Define(#2);                // Set up a Define node for it
+                                             SizeOf(t) = SizeOf(#2);            // Copy the size and type
+                                             TypeOf(t) = TypeOf(#2);
+                                             if (#0 != NULL)                    // Attach it to the list so far...
+                                                AST_Make_Siblings(#0, t);
+                                             else
+                                                #0 = t;
+                                          }
+                                       >>
+                                    )*
+                                 ;
+
+
+// Declaration of a user type
+typedecl![Sym **locals,
+          int    level] "type declaration"
+                                 :  << Sym *p; >>
+                                    "type" def[$locals,$level,TYPE] "=" 
+                                       typedefn[$locals,$level] ";"
+                                    << 
+                                       // If the declaration was a NEW one
+                                       if (#2)
+                                       {
+                                          p = zzs_get($2.text);                 // get its symbol table info
+                                          TypeOf(p) = AST_List1(#2, #4);        // Attach a Type node to its sym tab info
+                                          #0 = AST_Define(TypeOf(p));           // Create a Define node for it
+                                          SizeOf(#2) = SizeOf(#4);              // Copy the size and type
+                                          TypeOf(#2) = TypeOf(#4);
+                                          SizeOf(#0) = 0;                     
+                                       }
+                                       else
+                                          #0 = NULL;
+                                    >>
+                                 ;
+                                 
+                                 
+// User type definition -- only arrays and records allowed (AST node just passes through this)
+typedefn[Sym **locals,
+         int    level] "type definition"
+                                 :  recordtypedefn[$level] 
+                                 |  arraytypedefn [$locals,$level] 
+                                 ;
+                                    
+// Definition of a user record                                    
+recordtypedefn![int level] "record type definition"
+                                 :  << Sym *fields=NULL,*p; AST *t; int size=0; #0=NULL;>>
+                                    "record" 
+                                       (
+                                          identifierlist[&fields,$level,VAR] ":" typename ";"
+                                          << 
+                                             // Assign the type and initial value to each field in the list
+                                             for(t=#1; t!=NULL; t=zzsibling(t))
+                                             {
+                                                TypeOf(zzchild(t)) = #3;
+                                                DispOf(zzchild(t)) = size;
+                                                SizeOf(zzchild(t)) = SizeOf(#3);
+                                                size = size + SizeOf(#3); // keep running total of size for record
+                                             }
+                                             if (!#0)           // If there is no list of fields yet
+                                                #0 = #1;        //      this list becomes the field list
+                                             else               // otherwise, add this list to the field list
+                                                AST_Make_Siblings(#0, #1);
+                                          >>
+                                       )+     
+                                    "end" "record"
+                                    <<
+                                       p = zzs_rmscope(&fields);        // remove the field scope
+                                       if (list_variables)              // if user wants variable list, print field
+                                       {
+                                          printf("Fields for record\\n");
+                                          if (p != NULL) pScope(p);
+                                       }
+                                       #0 = AST_Record(#0);             // Create a new Record node from the list
+                                       SizeOf(#0) = size;               // keep track of the record's total size
+                                    >>
+                                 ;
+                                 
+                                 
+// Definition of an array                                 
+arraytypedefn![Sym **locals,
+               int    level] "array type definition"     
+                                 :  << AST *lower, *upper;  int upper_val, lower_val; >>
+                                    "array"
+                                       "\[" integerconstant[$locals,$level] 
+                                          ".." integerconstant[$locals,$level] "\]"
+                                       "of" typename       
+                                    << 
+                                       // Make sure that the lower and upprt bounds are integers
+                                       if (TypeOf(#3) != integer_type)
+                                       {
+                                          syntax_error(zzline, NameOf(zzchild(#3)), "array bounds must be of type Integer");
+                                          printf("\\tLower bound is of type %s\\n", TypeNameOf(#3));
+                                       }
+                                       if (TypeOf(#5) != integer_type)
+                                       {
+                                          syntax_error(zzline, NameOf(zzchild(#5)), "array bounds must be of type Integer");
+                                          printf("\\tUpper bound is of type %s\\n", TypeNameOf(#5));
+                                       }
+                                       if (!error_occurred)
+                                       {
+                                          lower = find_val(#3);                 // get the values of the bounds
+                                          upper = find_val(#5);
+                                          lower_val = atoi(NameOf(lower));
+                                          upper_val = atoi(NameOf(upper));
+                                          if (lower_val > upper_val)            // make sure they are in the right order
+                                          {
+                                             syntax_error(zzline, NameOf(#5), "lower bound is higher than upper bound");
+                                             printf("\\tLower bound has value %d", lower_val);
+                                             printf("\\n\\tUpper bound has value %d\\n", upper_val);
+                                          }
+                                       }
+                                       #0 =  AST_Array(lower, upper);   // create a new array node in the AST
+                                       TypeOf(#0) = #8;                 // Set the type of the elements
+                                       SizeOf(#0) = (upper_val - lower_val + 1) * SizeOf(#8);   // Set overall array size
+                                    >>
+                                 ;
+
+// Definition of a constant with an integer value
+integerconstant![Sym **locals,
+                 int    level] "integer constant reference"
+                                 :  INTLIT   << #0 = AST_IntLiteral($1.text); TypeOf(#0) = integer_type; SizeOf(#0) = 1; $0=$1;>>
+                                 |  refconst << #0 = #1; $0=$1; >>
+                                 ;
+                        
+// a procedure declaration                        
+proceduredecl![Sym **locals,
+               int    level] "procedure declaration"
+                                 :  << Sym *new_locals=NULL, *p, *s; AST *parms=NULL; #0= NULL; >>
+                                    "procedure" def[$locals,$level,PROC]
+                                       {formalpart[&new_locals,$level+1] << parms = #1; >> } "="
+                                    << 
+                                       // Start an AST definition so recursive calls are possible
+                                       //   (Statements will be added later as a sibling of the parameters)
+                                       if (#2)
+                                       {
+                                          p = zzs_get($2.text);         // Get symbol table record
+                                          if (!parms)                   // if no parms, create a dummy parms record
+                                             parms = AST_Parms(NULL);   
+                                             
+                                          // Create the new Procedure AST node
+                                          TypeOf(p) = AST_StartProcedure(AST_Name($2.text), 
+                                                                         parms);
+
+                                          #0 = AST_Define(TypeOf(p));   // point the symbol table reference at the node
+                                       }
+                                    >>
+                                       subprogrambody[&new_locals,$level+1,$2.text,NULL] ";"
+                                    << 
+                                       // Remove the scope for this procedure
+                                       s = zzs_rmscope(&new_locals);
+                                       
+                                       // If user wants a variable list, give it to them
+                                       if (list_variables)
+                                       {
+                                          printf("Locals for %s\\n",$2.text);
+                                          if (s != NULL) pScope(s);
+                                       }
+                                       
+                                       // Set the size of the procedure's local variables and add statements after parms
+                                       if (#0)  
+                                       {
+                                          SizeOf(TypeOf(p)) = SizeOf(#5);
+                                          AST_Make_Siblings(parms, AST_Body(#5));
+                                       }
+                                    >>
+                                 ;
+                                 
+                                 
+// Formal parameter declaration                                 
+formalpart![Sym **locals,
+            int    level] "formal parameter declaration"
+                                 :  << AST *parms = NULL; int size = 0;>>  
+                                    "\("
+                                       parameterspec[$locals,$level]
+                                       << 
+                                          parms = #2;           // make this parm spec the whole parm list so far
+                                          size += SizeOf(#2);   // keep track of total size
+                                       >>
+                                       (
+                                          ";" parameterspec[$locals,$level]
+                                          << 
+                                             AST_Make_Siblings(parms, #2);      // add the new parms to the parm list
+                                             size += SizeOf(#2);                // keep track of total size
+                                          >>
+                                       )* 
+                                    "\)"
+                                    << 
+                                       #0 = AST_Parms(parms);   // Make a new parms node
+                                       SizeOf(#0) = size;       // Copy the size
+                                    >>
+                                 ;
+
+// specification of a set of parameters in the formal parameter list
+parameterspec![Sym **locals,
+               int    level] "formal parameter specification"
+                                 :  << int ref = 0;  AST *t; >>
+                                    {"var" << ref = 1; >> }    // if "var" parms, flag it!
+                                    identifierlist[$locals,$level,VAR]  ":" typename
+                                    << 
+                                       #0 = #2;                                         // we'll return the whole list
+                                       SizeOf(#0) = 0;                                  // start running size total
+                                       // Assign the type and initial value
+                                       for(t=#2; t!=NULL; t=zzsibling(t))               // for each parm in the list
+                                       {
+                                          TypeOf(zzchild(t)) = #4;                      //      add a type
+                                          IsVarRef(zzchild(t))  = ref;                  //      set if "var" or not
+                                          SizeOf(zzchild(t)) = SizeOf(#4);              //      set its size
+                                          SizeOf(#2) += SizeOf(#4);                     //      keep running size total
+                                       }
+                                    >>
+                                 ;
+                                 
+// Statements -- assignment, exit, call, return, if, loop, i/o (AST node just passes through...)
+statement "statement"
+                                 :  assignmentstmnt      
+                                 |  exitstmnt            
+                                 |  procedurecallstmnt   
+                                 |  returnstmnt
+                                 |  ifstmnt
+                                 |  loopstmnt
+                                 |  iostatement
+                                 ;
+                                 
+// I/O statements -- get and put                                 
+iostatement! "i/o statement"     :  << AST *ref; >>
+                                    "put" "\(" expression "\)" ";"  
+                                    << 
+                                       // Make sure we are putting either integers or strings
+                                       if (TypeOf(#3) != integer_type && TypeOf(#3) != string_type)
+                                       {
+                                          syntax_error(zzline, ")", "cannot perform put on a value of this type");
+                                          printf("\\tExpression was of type %s", TypeNameOf(#3));
+                                          printf("\\n\\tExpression in error was: ");
+                                          print_expression(#3);
+                                          printf("\\n");
+                                       }
+                                       #0 = AST_Put(#3); // Create a "put" node
+                                    >>
+                                 |  "get" "\(" variable "\)" ";" 
+                                    << 
+                                       // Make sure we only get integers
+                                       if (TypeOf(#3) != integer_type)
+                                       {
+                                          syntax_error(zzline, ")", "cannot perform get to a variable of this type");
+                                          printf("\\tVariable was of type %s", TypeNameOf(#3));
+                                          printf("\\n\\tVariable in error was: ");
+                                          print_expression(#3);
+                                          printf("\\n");
+                                       }
+                                       // Cannot "get" to a constant...
+                                       if (TokenOf(#3) == CONST)
+                                       {
+                                          syntax_error(zzline, ")", "cannot perform get to a constant");
+                                          printf("\\tConstant was of type %s", TypeNameOf(#3));
+                                          printf("\\n\\tConstant in error was: ");
+                                          print_expression(#3);
+                                          printf("\\n");
+                                       }
+                                       #0 = AST_Get(#3);    // Create a "get" node
+                                    >>
+                                 |  "skipLine" ";"              << #0 = AST_SkipLine; >>  // Create a SkipLine node
+                                 |  "newLine" ";"               << #0 = AST_NewLine;  >>  // Create a NewLine node
+                                 ;
+                                 
+// Assignment statement                                 
+assignmentstmnt!  "assignment"
+                                 :  variable ":=" expression ";"
+                                    << 
+                                       // Make sure lvalue and rvalue types are the same
+                                       if (TypeOf(#1) != TypeOf(#3))
+                                       {
+                                          syntax_error(zzline, ";", "type mismatch during assignment");
+                                          printf("\\tLvalue was of type %s", TypeNameOf(#1));
+                                          printf("\\n\\tRvalue was of type %s", TypeNameOf(#3));
+                                          printf("\\n\\tLvalue was: ");
+                                          print_expression(#1);
+                                          printf("\\n\\tRvalue was: ");
+                                          print_expression(#3);
+                                          printf("\\n");
+                                       }
+                                       #0 = AST_Assignment(#1, #3);     // Set up the assignment node
+                                    >>
+                                 |  constant ":=" expression ";" 
+                                    << 
+                                       // If user is trying to assign to a constant, tell them "NO!"
+                                       syntax_error(zzline, $1.text, "cannot assign to constant"); 
+                                       #0 = AST_Assignment(#1, #3); 
+                                    >>
+                                 ;
+                                 
+// Set up a reference to a variable                                 
+variable! "variable reference"   
+                                 :  << AST *type, *t, *field; >>
+                                    refvar    << #0 = #1; $0=$1;>>
+                                    (  "\[" expression "\]"
+                                       << 
+                                          // Make sure the variable is an array...
+                                          if (zzchild(TypeOf(#0)) == NULL || TokenOf(zzchild(TypeOf(#0))) != Array)
+                                          {
+                                             syntax_error(zzline, "[", "attempt to index a non-array");
+                                             printf("\\tType of base variable: %s", TypeNameOf(#0));
+                                             printf("\\n\\tBase variable was ");
+                                             print_expression(#0);
+                                             printf("\\n");
+                                          }
+                                          else
+                                          {
+                                             // Make sure the index is an integer
+                                             if (TypeOf(#2) != integer_type)
+                                             {
+                                                syntax_error(zzline, "]", "illegal array index; must be an Integer value");
+                                                printf("\\tType of array index: %s", TypeNameOf(#2));
+                                                printf("\\n\\tIndex expression was ");
+                                                print_expression(#2);
+                                                printf("\\n");
+                                             }
+                                          }
+                                          type = TypeOf(TypeOf(#0));            // Type of the index is the type of array element
+                                          #0 = AST_Index(AST_Name(#0),          // Create an index node
+                                                         AST_Selector(#2)); 
+                                          TypeOf(#0) = type;                    // copy the type and the size of element
+                                          SizeOf(#0) = SizeOf(type);
+                                       >>
+                                    |  "\." .
+                                       << field = NULL;
+                                          // Make sure we are accessing a record 
+                                          if (zzchild(TypeOf(#0)) == NULL || TokenOf(zzchild(TypeOf(#0))) != Record)
+                                          {
+                                             syntax_error(zzline, $2.text, "field reference to a non-record type");
+                                             printf("\\tBase variable type was %s", TypeNameOf(#0));
+                                             printf("\\n\\tBase variable was ");
+                                             print_expression(#0);
+                                             printf("\\n");
+                                          }
+                                          else
+                                          {
+                                             // Check if the identifier is a valid field in the record
+                                             for (t = zzchild(zzchild(TypeOf(#0))); t!=NULL; t=zzsibling(t))
+                                                if (strcmp(NameOf(zzchild(t)), $2.text) == 0) 
+                                                {
+                                                   field = zzchild(t);
+                                                   t = NULL;
+                                                }
+                                             if (!type)
+                                             {
+                                                syntax_error(zzline, $2.text, "undefined field");
+                                                printf("\\tType of base variable record was %s\\n", TypeNameOf(#0));
+                                             }
+                                          }
+                                          t = AST_Ref(field);                   // Create a reference to the field
+                                          TypeOf(t) = TypeOf(field);            // Copy the type and size
+                                          SizeOf(t) = SizeOf(field);            
+                                          #0 = AST_Field(AST_Name(#0),          // Create a field node
+                                                         AST_Selector(t)); 
+                                          TypeOf(#0) = TypeOf(field);           // Copy the type and size
+                                          SizeOf(#0) = SizeOf(field);
+                                       >>
+                                    )*
+                                 ;
+                                 
+                                 
+// exit statement                                 
+exitstmnt! "exit statement"
+                                 :  << AST *when_expr=NULL; >>
+                                    "exit" 
+                                    << 
+                                       // If we are not currently in a loop, it's a problem...
+                                       if (loop_count == 0)
+                                          syntax_error(zzline, "exit", "exit allowed only from inside a loop");
+                                    >>
+                                    {  
+                                       "when" expression 
+                                       << 
+                                          // If there was an expression, make sure it's boolean
+                                          if (TypeOf(#2) != boolean_type)
+                                          {
+                                             syntax_error(zzline, "when expression", "when expression not Boolean");
+                                             printf("\\tWhen condition type was %s", TypeNameOf(#2));
+                                             printf("\\n\\tWhen condition was ");
+                                             print_expression(#2);
+                                             printf("\\n");
+                                          }
+                                          when_expr = #2; 
+                                       >> 
+                                    } 
+                                    ";"
+                                    << #0 = AST_Exit(when_expr); >>  // Create an Exit node
+                                 ;
+                                 
+                                 
+// Create a procedure call -- this one's fun...                                 
+procedurecallstmnt! "procedure call statement"
+                                 :  << Sym *p; AST *parms=NULL, *f, *a; >>
+                                    proc 
+                                    {actualparameterlist <<parms=#1;>> } 
+                                    ";"
+                                    << 
+                                       f = zzchild(zzchild(#1));                        // find formal parms of proc
+                                       // find the actual parameters used during the call
+                                       a = parms;
+                                       while(f || a)  // while we have formals or actuals left...
+                                       {
+                                          if (!f)        // if no more formals
+                                          {
+                                             syntax_error(zzline, $1.text, "too many parameters in procedure call");
+                                             a = NULL;   // so we can get out of loop
+                                          }
+                                          else if (!a)   // if no more actuals
+                                          {
+                                             syntax_error(zzline, $1.text, "Too few parameters in procedure call");
+                                             f = NULL;   // so we can get out of loop
+                                          }
+                                          else if (TypeOf(zzchild(f)) != TypeOf(a))     // actual & formal type mismatch
+                                          {
+                                             syntax_error(zzline, $1.text, "type mismatch between actual and formal parameters");
+                                             printf("\\tFormal parameter type was %s", TypeNameOf(zzchild(f)));
+                                             printf("\\n\\tActual parameter type was %s", TypeNameOf(a));
+                                             printf("\\n\\tFormal parameter was  %s", NameOf(zzchild(f)));
+                                             printf("\\n\\tActual parameter was ");
+                                             print_expression(a);
+                                             printf("\\n");
+                                          }
+                                          else if (IsVarRef(zzchild(f))) // non-modifiable value used in place of "var" formal
+                                             if (!is_modifiable(a))
+                                             {
+                                                syntax_error(zzline, $1.text, "only a variable can be used in place of a pass-by-reference formal parameter");
+                                                printf("\\tFormal parameter type was %s", TypeNameOf(zzchild(f)));
+                                                printf("\\n\\tActual parameter type was %s", TypeNameOf(a));
+                                                printf("\\n\\tFormal parameter was %s", NameOf(zzchild(f)));
+                                                printf("\\n\\tActual parameter was ");
+                                                print_expression(a);
+                                                printf("\\n");
+                                             }
+                                             else // actual is pass-by-reference -- Change Value to PassAddr (a dummy token)
+                                                TokenOf(a) = PassAddr;
+                                          if (f)   // if any formals left, move to next one
+                                             f = zzsibling(f);
+                                          if (a)   // if any actuals left, move to next one
+                                             a = zzsibling(a);
+                                       }
+                                       #0 =  AST_ProcCall(AST_Ref(#1) , AST_Parms(parms));      // Set up procedure call node
+                                    >>
+                                 ;
+                                 
+// List of actual parameters (automatic AST generation used here -- it creates list of expressions and passes it out)
+actualparameterlist "actual parameter list"
+                                 :  "\("!
+                                       expression
+                                       ( ","! expression)*
+                                    "\)"!
+                                 ;
+                                 
+// Return statement                                 
+returnstmnt! "return statement"  :  "return" ";"
+                                    << #0 = AST_Return; >>  // Create a "return" node
+                                 ;
+                                 
+// If statement                                 
+ifstmnt! "if statement"
+                                 :  
+                                    "if" ifpart
+                                    "end" "if" ";"
+                                    << #0 = #2; >>  // Just pass back the "if part"
+                                 ;  
+                           
+// The meat of an If statement                          
+ifpart! "if statement"
+                                 :  << AST *then_part=NULL, *else_part=NULL; >>
+                                    expression "then" 
+                                    << 
+                                       // Make sure the expression was boolean
+                                       if (TypeOf(#1) != boolean_type)
+                                       {
+                                          syntax_error(zzline, "then", "type of condition on if statement is not Boolean");
+                                          printf("\\tType of condition was %s", TypeNameOf(#1));
+                                          printf("\\n\\tExpression was ");
+                                          print_expression(#1);
+                                          printf("\\n");
+                                       }
+                                    >>
+                                    (
+                                       statement
+                                       << 
+                                          if (then_part == NULL)        // If no statements in "then" yet
+                                             then_part = #1;            //      make this the first
+                                          else                          // otherwise, tack it on
+                                             then_part = AST_Make_Siblings(then_part, #1); 
+                                       >> 
+                                    )*
+                                    {  "elsif" ifpart   << else_part = #2; >>   // Go through a new "if"
+                                    |  "else" 
+                                       (
+                                          statement
+                                          << 
+                                             if (else_part == NULL)     // if no statements in "else" so far
+                                                else_part = #1;         //      make this the first
+                                             else                       // otherwise, tack it on
+                                                else_part = AST_Make_Siblings(else_part, #1); 
+                                          >> 
+                                       )*
+                                    } 
+                                    << // Create the If node
+                                       #0 = AST_If(#1, 
+                                                   AST_Then(then_part), 
+                                                   AST_Else(else_part)); >>
+                                 ;  
+                           
+// Loop statement                           
+loopstmnt! "loop statement"
+                                 :  << #0 = NULL; >>
+                                    {
+                                       "while" expression 
+                                       <<
+                                          // Make sure the "while" expression is boolean
+                                          if (TypeOf(#2) != boolean_type)
+                                          {
+                                             syntax_error(zzline, "while expression", "while expression type not Boolean");
+                                             printf("\\tWhile condition type was %s", TypeNameOf(#2));
+                                             printf("\\n\\tWhile condition was ");
+                                             print_expression(#2);
+                                             printf("\\n");
+                                          }
+                                          #0 = AST_While(#2);   // Create a "while" node
+                                       >> 
+                                    } 
+                                    "loop"
+                                    << loop_count++; >>  // Keep track so we can check location of "exit" statement
+                                       (  statement
+                                          << if (#0 == NULL)    // If there was no "while"
+                                                #0 = #1;        //      keep just the statements
+                                             else               // otherwise, tack statements after while part
+                                                #0 = AST_Make_Siblings(#0, #1);
+                                          >>
+                                       )*
+                                    "end" "loop" ";"
+                                    << 
+                                       loop_count--;        // so we can catch bad exit placement
+                                       #0 = AST_Loop(#0);   // make a new loop node
+                                    >>
+                                 ;
+                                 
+// Expressions                                 
+expression! "expression"
+                                 :  
+                                    relation << #0 = #1; >>
+                                    (
+                                       (  "and" << $0=$1; >>
+                                       |  "or"  << $0=$1; >>
+                                       ) 
+                                       relation  
+                                       <<
+                                          // "and" and "or" require boolean ops
+                                          if (TypeOf(#0) != boolean_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "left side is not Boolean");
+                                             printf("\\tType of left side was %s", TypeNameOf(#0));
+                                             printf("\\n\\tLeft side was ");
+                                             print_expression(#0);
+                                             printf("\\n");
+                                          }
+                                          if (TypeOf(#2) != boolean_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "right side is not Boolean");
+                                             printf("\\tType of right side was %s", TypeNameOf(#2));
+                                             printf("\\n\\tRight side was ");
+                                             print_expression(#2);
+                                             printf("\\n");
+                                          }
+                                          // Create a new binary expression node
+                                          #0 = AST_BinaryOp(AST_Operand($1.text), 
+                                                            AST_Left(#0), 
+                                                            AST_Right(#2));     
+                                          TypeOf(#0) = boolean_type;    // Assume it ends up with correct type
+                                          SizeOf(#0) = 1;               // With correct size
+                                       >>
+                                    )*
+                                 ;
+                                 
+// Relational expressions                                 
+relation! "expression"           :  
+                                    simpleexpression << #0 = #1; >>
+                                    { 
+                                       (  "="   <<$0=$1;>>
+                                       |  "/="  <<$0=$1;>>
+                                       |  "<"   <<$0=$1;>>
+                                       |  "<="  <<$0=$1;>>
+                                       |  ">"   <<$0=$1;>>
+                                       |  ">="  <<$0=$1;>>
+                                       ) 
+                                       simpleexpression
+                                       <<
+                                          // These are arithmetic operators and require integers
+                                          if (TypeOf(#0) != integer_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "left side is not Integer");
+                                             printf("\\tType of left side was %s", TypeNameOf(#0));
+                                             printf("\\n\\tLeft side was ");
+                                             print_expression(#0);
+                                             printf("\\n");
+                                          }
+                                          if (TypeOf(#2) != integer_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "right side is not Integer");
+                                             printf("\\tType of right side was %s", TypeNameOf(#2));
+                                             printf("\\n\\tRight side was ");
+                                             print_expression(#2);
+                                             printf("\\n");
+                                          }
+                                          // Create a new binary expression node
+                                          #0 = AST_BinaryOp(AST_Operand($1.text), 
+                                                            AST_Left(#0), 
+                                                            AST_Right(#2));
+                                          TypeOf(#0) = boolean_type;    // Assume the end-type is correct
+                                          SizeOf(#0) = 1;               // Assume size is right
+                                       >>
+                                    }
+                                 ;
+                                 
+// Unary + and - expressions                                 
+simpleexpression! "expression"   :  << int must_be_int=0; >>
+                                 {
+                                    // Check for unary + and -
+                                    (  "\+"  << must_be_int=1; $0=$1; >>
+                                    |  "\-"  << must_be_int=2; $0=$1; >>
+                                    )
+                                    << $0=$1;>>
+                                 } 
+                                 simpleexpression2
+                                 <<
+                                    if (must_be_int)  // If it has a unary + or -
+                                    {
+                                       if (TypeOf(#2) != integer_type)  // make sure first op is an integer
+                                       {
+                                          syntax_error(zzline, $1.text, "right side is not Integer");
+                                          printf("\\tType of right side was %s", TypeNameOf(#2));
+                                          printf("\\n\\tRight side was ");
+                                          print_expression(#2);
+                                          printf("\\n");
+                                       }
+                                       if (must_be_int == 2) // Don't bother putting in "+" op
+                                       {
+                                          #0 = AST_UnaryOp(AST_Operand($1.text), 
+                                                           AST_Right(#2));
+                                          TypeOf(#0) = integer_type;
+                                          SizeOf(#0) = 1;
+                                       }
+                                       else  // For unary "+" just pass through the operand
+                                          #0 = #2;
+                                    }  
+                                    else
+                                       #0 = #2;
+                                 >>
+                                 ;
+                                 
+// Binary + and - expressions 
+simpleexpression2! "expression"  : term << #0=#1;>>
+                                    (
+                                       (  "\+" <<$0=$1;>>
+                                       |  "\-" <<$0=$1;>>
+                                       ) 
+                                       term
+                                       <<
+                                          // + and - require integer operands
+                                          if (TypeOf(#0) != integer_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "Left side is not Integer");
+                                             printf("\\tType of left side was %s", TypeNameOf(#0));
+                                             printf("\\n\\tLeft side was ");
+                                             print_expression(#0);
+                                             printf("\\n");
+                                          }
+                                          if (TypeOf(#2) != integer_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "right side is not Integer");
+                                             printf("\\tType of right side was %s", TypeNameOf(#2));
+                                             printf("\\n\\tRight side was ");
+                                             print_expression(#2);
+                                             printf("\\n");
+                                          }
+                                          // Create a new bvinary expression node
+                                          #0 = AST_BinaryOp(AST_Operand($1.text), 
+                                                            AST_Left(#0), 
+                                                            AST_Right(#2));
+                                          TypeOf(#0) = integer_type;    // assume output is correct type
+                                          SizeOf(#0) = 1;               // assume size if correct
+                                       >>
+                                    )*                    
+                                 ;
+                                 
+// * and / expressions                                 
+term! "expression"               :  factor << #0=#1;>>
+                                    (
+                                       (  "\*"  <<$0=$1;>>
+                                       |  "/"   <<$0=$1;>>
+                                       |  "mod" <<$0=$1;>>
+                                       ) 
+                                       factor                     
+                                       <<
+                                          // * and / need integer operands
+                                          if (TypeOf(#0) != integer_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "left side is not Integer");
+                                             printf("\\tType of left side was %s", TypeNameOf(#0));
+                                             printf("\\n\\tLeft side was ");
+                                             print_expression(#0);
+                                             printf("\\n");
+                                          }
+                                          if (TypeOf(#2) != integer_type)
+                                          {
+                                             syntax_error(zzline, $1.text, "right side is not Integer");
+                                             printf("\\tType of right side was %s", TypeNameOf(#2));
+                                             printf("\\n\\tRight side was ");
+                                             print_expression(#2);
+                                             printf("\\n");
+                                          }
+                                          // Create a new binary expression
+                                          #0 = AST_BinaryOp(AST_Operand($1.text), 
+                                                            AST_Left(#0), 
+                                                            AST_Right(#2));
+                                          TypeOf(#0) = integer_type;    // Assume output is correct size and type
+                                          SizeOf(#0) = 1;
+                                       >>
+                                    )*
+                                 ;
+                                 
+// Base units of expressions                                 
+factor! "expression"             :  "not" factor
+                                    << 
+                                       // "not" only applies to booleans
+                                       if (TypeOf(#2) != boolean_type)
+                                       {
+                                          syntax_error(zzline, $1.text, "right side is not Boolean");
+                                          printf("\\tType of right side was %s", TypeNameOf(#2));
+                                          printf("\\n\\tRight side was ");
+                                          print_expression(#2);
+                                          printf("\\n");
+                                       }
+                                       // Create a new unary expression node
+                                       #0=AST_UnaryOp(AST_Operand("not"), 
+                                                      #2);
+                                       TypeOf(#0) = boolean_type;       // assume type and size are correct
+                                       SizeOf(#0) = 1;
+                                    >>
+                                 |  constantvalue         << #0=#1; >>  // just passing through...
+                                 |  variable    
+                                    << 
+                                       // Create a node to get the VALUE of the variable
+                                       #0 = AST_Value(#1); TypeOf(#0)=TypeOf(#1); SizeOf(#0) = SizeOf(#1); 
+                                       $0 = $1;
+                                    >>
+                                 |  "\(" expression "\)"  << #0=#2; >>  // just pass it through
+                                 ;
+                                 
+// Valid names of types that can be referenced by the user
+typename! "type reference"       :  type       << #0 = #1; >>                   // User type
+                                 |  "Integer"  << #0 = integer_type; >>         // Integers
+                                 |  "Boolean"  << #0 = boolean_type; >>         // Boolean
+                                 ;
+                                 
+// Define a new (hopefully) symbol                                 
+def![Sym **scope,        
+     int    level,
+     int    token]               :  <<Sym *var;>>
+                                    ident
+                                    <<
+                                       // If we get back "ident" as symbol, it's not defined yet
+                                       // Define the symbol under the current scope
+                                       zzs_scope($scope);   
+                                       define_symbol(var, $1.text, $level, $token, NULL);
+                                       
+                                       // Create a node for the symbol
+                                       #0 = AST_Node($token,$1.text); 
+                                       
+                                       // Keep a pointer to the AST node in the symbol table
+                                       var->type = #0;
+                                       
+                                       // If user wants dynamic definition tracing, show it
+                                       if (show_definition)
+                                          printf("     defining %s\\n",$1.text);
+                                       $0=$1;
+                                    >>
+                                 |  already_defined 
+                                    << 
+                                       // If we get here, symbol is already defined
+                                       var = zzs_get($1.text);  // Get it's symbol table info
+                                       
+                                       // If it's already defined at the current level, it's an error
+                                       if ($level == var->level)
+                                       {
+                                          syntax_error(zzline, $1.text, "identifier redeclared");
+                                          #0 = NULL;
+                                       }
+                                       
+                                       // otherwise, go ahead and define it at this scope
+                                       else
+                                       {
+                                          zzs_scope($scope);
+                                          define_symbol(var, $1.text, $level, $token, NULL);
+                                          #0 = AST_Node($token,$1.text); 
+                                          var->type = #0;
+                                          if (show_definition)
+                                             printf("     defining %s at new scope\\n",$1.text);
+                                       }
+                                       $0=$1;
+                                    >>
+                                 ;
+                                 
+// Types of things that are previously defined                               
+already_defined                  :  varx     <<$0=$1;>>
+                                 |  constant <<$0=$1;>>
+                                 |  proc     <<$0=$1;>>
+                                 |  type     <<$0=$1;>>
+                                 ;                                 
+                                       
+// Define a refrence to a variable                                       
+refvar!                          :  
+                                    ident 
+                                    << syntax_error(zzline, $1.text, "undefined variable"); $0=$1; #0=AST_Undefined; TypeOf(#0) = undefined_type; Init(#0) = NULL; >>
+                                 |  varx << $0=$1; #0 = AST_Ref(#1); TypeOf(#0) = TypeOf(#1); SizeOf(#0) = SizeOf(#1); 
+                                            if (IsVarRef(#1))  // if it's a "var" parm, de-ref it once more to get real addr
+                                               { #0 = AST_Value(#0); TypeOf(#0) = TypeOf(#1); SizeOf(#0) = SizeOf(#1); }
+                                          >>
+                                 ;
+                                       
+// Reference a constant                                       
+refconst!                        :  ident 
+                                    << syntax_error(zzline, $1.text, "undefined constant"); $0=$1; #0=AST_Undefined; TypeOf(#0) = undefined_type; Init(#0) = NULL; >>
+                                 |  constant << $0=$1; #0=#1; >>
+                                 ;
+                                       
+// Reference a procedure                                       
+refproc                          :  ident
+                                    << syntax_error(zzline, $1.text, "undefined subprogram"); $0=$1; #0=AST_Undefined; TypeOf(#0) = undefined_type; Init(#0) = NULL; >>
+                                 |  proc << $0=$1; >>
+                                 ;
+                                 
+// Undefined identifier (if it is already defined, IDENT below will change the token type)                                 
+ident!                           : IDENT  <<$0=$1; #0 = AST_Node(Undefined, $1.text); >>;
+
+// Get the AST node from the symbol table reference for the variable
+varx!                            : VAR    <<$0=$1; #0 = TypeOf(zzs_get($1.text)); >> ;
+
+// Find the value of the constant (an AST node)
+constant!                        : CONST  <<$0=$1; #0 = zzdup_ast(find_val(TypeOf(zzs_get($1.text)))); 
+                                             if (#0)
+                                                { #0->down = NULL; #0->right = NULL; } 
+                                          >>;
+                                             
+// Get the AST node for the proc from the symbol table entry for the proc                                             
+proc!                            : PROC   <<$0=$1; #0 = TypeOf(zzs_get($1.text)); >>;
+
+// Get the AST node for the type from the symbol table entry for the type
+type!                            : TYPE   <<$0=$1; #0 = TypeOf(zzs_get($1.text)); >>;
+                                       
+// This is a scanner routine to parse identifiers (all other words, such as keywords, have scanner routines 
+//    generated automatically from their appearance in rules)
+#token   IDENT                   "[A-YZa-yz]([A-YZa-yz]|[0-9])*" 
+                                 << 
+                                    {
+                                       Sym *currsym;
+                                       // If the name is > 100 chars, trim it to 100
+                                       if (strlen(NLATEXT) > 100)
+                                          NLATEXT[100] = '\\0';
+                                          
+                                       // Try to find it in the symbol table
+                                       currsym = zzs_get(NLATEXT);
+   
+                                       // If it was found, change the token to the token in the symbol table
+                                       if (currsym != NULL) NLA = TokenOf(currsym);
+                                       
+                                       // If user wanted definition show, show it
+                                       if (show_definition)
+                                       {
+                                          printf("%s is next token -- ",NLATEXT);
+                                          if (currsym!=NULL) printf("defined as %s\\n",zztokens[NLA]);
+                                          else printf("undefined\\n");
+                                       }
+                                    }
+                                 >>
+                                 
+#token   BADIDENT                "[0-9]+[A-YZa-yz]+[A-YZa-yz0-9]*"     
+                                 << zzskip(); syntax_error(zzline, NLATEXT, "illegal identifier"); >>

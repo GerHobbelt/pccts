@@ -75,7 +75,7 @@ public:
 				return c;
 			}
 	}
-    void DLGFileReset(FILE *f) {input=f; found_eof = 0; };              // MR11
+    void DLGFileReset(FILE *f) {input=f; found_eof = 0; }              // MR11
 };
 
 // MR9  Suggested by Bruce Guenter (bruceg@qcc.sk.ca)
@@ -94,7 +94,7 @@ public:
 			else return EOF;
 		}
 
-    void DLGStringReset(const DLGChar *s) {input=s; p= &input[0]; }; // MR11 // MR16
+    void DLGStringReset(const DLGChar *s) {input=s; p= &input[0]; } // MR11 // MR16
 };
 
 class DllExportPCCTS DLGState {
@@ -161,7 +161,7 @@ public:
         virtual int err_in();						// MR1
 	virtual void errstd(const char *);				// MR1  MR20 const
 	int		line()		{ return _line; }
-	void	set_line(int newValue)	{ _line=newValue; };		// MR1
+	void	set_line(int newValue)	{ _line=newValue; }		// MR1
 	virtual void newline()	{ _line++; }
 	DLGChar	*lextext()	{ return _lextext; }
 
@@ -187,7 +187,7 @@ public:
 				track_columns = 1;
 				this->_begcol = 0;
 				this->_endcol = 0;
-			};
+			}
 	virtual ANTLRParser *setParser(ANTLRParser *p);			// MR1
 	virtual ANTLRParser *getParser();				// MR1
 	virtual int debugLexer(int value);				// MR1

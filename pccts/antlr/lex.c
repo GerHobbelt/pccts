@@ -51,6 +51,8 @@ genLexDescr( )
 {
 	ListNode *p;
 	FILE *dlgFile = fopen(OutMetaName(DlgFileName), "w");
+    int i;
+
 	require(dlgFile!=NULL, eMsg1("genLexFile: cannot open %s", OutMetaName(DlgFileName)) );
 #ifdef SPECIAL_FOPEN
 	special_fopen_actions(OutMetaName(DlgFileName));	             /* MR1 */
@@ -66,13 +68,22 @@ genLexDescr( )
 	fprintf(dlgFile, " * Purdue University Electrical Engineering\n");
 	fprintf(dlgFile, " * With AHPCRC, University of Minnesota\n");
 	fprintf(dlgFile, " * ANTLR Version %s\n", Version);
+	fprintf(dlgFile, " *\n");
+    fprintf(dlgFile, " *  ");
+    for (i=0 ; i < Save_argc ; i++) {
+      fprintf(dlgFile, " %s", Save_argv[i]);
+    }
+	fprintf(dlgFile, "\n");
+	fprintf(dlgFile, " *\n");
 	fprintf(dlgFile, " */\n\n");
     if (FirstAction != NULL ) dumpAction( FirstAction, dlgFile, 0, -1, 0, 1 );  /* MR11 MR15b */
     fprintf(dlgFile, "#define ANTLR_VERSION	%s\n", VersionDef);
 	if ( GenCC )
 	{
-		if ( !UserDefdTokens ) fprintf(dlgFile, "#include \"%s\"\n", DefFileName);
-		else fprintf(dlgFile, "#include %s\n", UserTokenDefsFile);
+		if ( UserDefdTokens ) 
+            fprintf(dlgFile, "#include %s\n", UserTokenDefsFile);
+		/* [i_a] always include the standard headerfile too! -- misc definitions */
+        fprintf(dlgFile, "#include \"%s\"\n", DefFileName);
 		fprintf(dlgFile, "#include \"%s\"\n", ATOKEN_H);
 		if ( GenAST ) fprintf(dlgFile, "#include \"%s\"\n", ASTBASE_H);
 		if ( HdrAction != NULL ) dumpAction( HdrAction, dlgFile, 0, -1, 0, 1 );
@@ -97,14 +108,14 @@ genLexDescr( )
           fprintf(dlgFile,"#ifndef zzTRACE_RULES\n");  /* MR20 */
           fprintf(dlgFile,"#define zzTRACE_RULES\n");  /* MR20 */
           fprintf(dlgFile,"#endif\n");  /* MR22 */
-        };
+        }
 		fprintf(dlgFile, "#include \"antlr.h\"\n");
 		if ( GenAST ) {
 			fprintf(dlgFile, "#include \"ast.h\"\n");
 		}
 		if ( UserDefdTokens )
 			fprintf(dlgFile, "#include %s\n", UserTokenDefsFile);
-		/* still need this one as it has the func prototypes */
+		/* still need this one as it has the func prototypes -- [i_a] and misc definitions */
 		fprintf(dlgFile, "#include \"%s\"\n", DefFileName);
 		fprintf(dlgFile, "#include \"dlgdef.h\"\n");
 		fprintf(dlgFile, "LOOKAHEAD\n");
@@ -136,11 +147,11 @@ genLexDescr( )
 			dumpAction( (char *)p->elem, dlgFile, 0, -1, 0, 1 );
 			fprintf(dlgFile, ">>\n\n");
 		}
-	  };
+	  }
 
 /* MR1 */ if (GenCC) {
 /* MR1 */   fprintf(dlgFile,"<<%%%%parserclass %s>>\n\n",CurrentClassName);
-/* MR1 */ };
+/* MR1 */ }
 
 /* MR1 */ if (LexPrefixActions != NULL) {
 /* MR1 */   for (p = LexPrefixActions->next; p!=NULL; p=p->next)
@@ -149,7 +160,7 @@ genLexDescr( )
 /* MR1 */               dumpAction( (char *)p->elem, dlgFile, 0, -1, 0, 1 );
 /* MR1 */               fprintf(dlgFile, ">>\n\n");
 /* MR1 */       }
-/* MR1 */ };
+/* MR1 */ }
 
 /* MR1 */ if (LexMemberActions != NULL) {
 /* MR1 */   for (p = LexMemberActions->next; p!=NULL; p=p->next)
@@ -158,7 +169,7 @@ genLexDescr( )
 /* MR1 */               dumpAction( (char *)p->elem, dlgFile, 0, -1, 0, 1 );
 /* MR1 */               fprintf(dlgFile, ">>\n\n");
 /* MR1 */       }
-/* MR1 */ };
+/* MR1 */ }
 
 	/* dump all regular expression rules/actions (skip sentinel node) */
 	if ( ExprOrder == NULL ) {
@@ -273,6 +284,13 @@ genDefFile( )
 	fprintf(DefFile, " * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001\n");
 	fprintf(DefFile, " * Purdue University Electrical Engineering\n");
 	fprintf(DefFile, " * ANTLR Version %s\n", Version);
+	fprintf(DefFile, " *\n");
+    fprintf(DefFile, " *  ");
+    for (i=0 ; i < Save_argc ; i++) {
+      fprintf(DefFile, " %s", Save_argv[i]);
+    }
+	fprintf(DefFile, "\n");
+	fprintf(DefFile, " *\n");
 	fprintf(DefFile, " */\n");
 
 	if ( !GenCC && LexGen ) {
@@ -311,21 +329,33 @@ genDefFile( )
     					}
     					if ( j>=NumLexClasses )
     					{
-    						warnNoFL(eMsg1("token label has no associated rexpr: %s",TokenString(i)));
+                            RuleEntry *r = (RuleEntry *)hash_get(Rname, TokenString(i));
+                            /* [i_a] and not a rule but an actual token? */
+                            if (!r)
+                            {
+    						    warnNoFL(eMsg1("token label has no associated rexpr: %s",TokenString(i)));
+                            }
     					}
-                    };
+                    }
 				}
 				require((p=(TermEntry *)hash_get(Tname, TokenString(i))) != NULL,
 						"token not in sym tab when it should be");
 				if ( !p->classname )
 				{
+                    char *tok = mystrdup(TokenString(i));
+                    /* [i_a] trick to prevent rule-'tokens' from overwriting the rule functions in C mode: upcase char[0].
+                       was located elsewhere before, but that was done while storing the token, thus preventing us from checking 
+                       the token through the hash-table because the hash would never match: lower vs uppercase *and* ambiguity
+                       between token A and rule 'a'. */
+                    tok[0] = toupper(tok[0]);
 					if ( GenCC ) {
 						if ( !first ) fprintf(DefFile, ",\n");
 						first = 0;
-						fprintf(DefFile, "\t%s=%d", TokenString(i), i);
+						fprintf(DefFile, "\t%s=%d", tok, i);
 					}
-					else
-						fprintf(DefFile, "#define %s %d\n", TokenString(i), i);
+					else {
+						fprintf(DefFile, "#define %s %d\n", tok, i);
+                    }
 				}
 			}
 		}
@@ -334,15 +364,37 @@ genDefFile( )
 /* MR1				for the enum ANTLRTokenType                             */
 /* MR1								           */
 		if ( GenCC ) {				                                 /* MR1 */
- 		 	 if ( !first ) fprintf(DefFile, ",\n");                  /* MR14 */
-		     fprintf(DefFile, "\tDLGminToken=0");                 /* MR1 */
-		     fprintf(DefFile, ",\n\tDLGmaxToken=9999};\n");          /* MR1 */
-                };						                             /* MR1 */
+ 		 	if ( !first ) fprintf(DefFile, ",\n");                   /* MR14 */
+		    fprintf(DefFile, "\tDLGminToken=0");                     /* MR1 */
+		    fprintf(DefFile, ",\n\tDLGmaxToken=9999};\n");           /* MR1 */
+        }	        					                             /* MR1 */
 	}
 
-	if ( !GenCC ) GenRulePrototypes(DefFile, SynDiag);
+    fprintf(DefFile, "\n\n");
+	fprintf(DefFile, "#define zzSET_SIZE %d\n", NumWords(TokenNum-1)*sizeof(unsigned));
+    fprintf(DefFile, "#define zzTOKEN_COUNT %d\n", TokenNum-1);  /* [i_a] */
+    fprintf(DefFile, "\n\n");
 
-	fprintf(DefFile, "\n#endif\n");
+    if ( !GenCC ) GenRulePrototypes(DefFile, SynDiag);
+
+    fprintf(DefFile, "\n");
+
+#if 0 /* [i_a] -- wait with terminating #endif till all externals have been dumped in here */
+    fprintf(DefFile, "\n#endif /* %s */\n", StripPath(gate_symbol(DefFileName)));
+#endif
+}
+
+/* Generate last section of tokens.h -- done seperately so DumpSet calls dump their external ref's inside the #ifndef/#define/#endif block. */
+void
+#ifdef __USE_PROTOS
+genEndOfDefFile( void )
+#else
+genEndOfDefFile( )
+#endif
+{
+	if ( !DefFile ) return;
+
+	fprintf(DefFile, "\n\n#endif /* %s */\n", StripPath(gate_symbol(DefFileName)));
 }
 
 void

@@ -1,0 +1,6 @@
+program badloop =
+begin //
+   exit when(TRUE);
+   loop
+   end loop;
+end badloop.

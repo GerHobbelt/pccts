@@ -83,9 +83,9 @@ ExceptionGroup *eg;
       nextEG=innerEG->pendingLink;
       innerEG->pendingLink=NULL;
       innerEG->outerEG=eg;
-    };
+    }
     egArray[i]=NULL;
-  };
+  }
 
   /*
    *  for patching up the LabelEntry you might use an EG for the
@@ -105,11 +105,11 @@ ExceptionGroup *eg;
         innerLE->curAltNum == CurAltNum_array[BlkLevel]) {
         if (innerLE->outerEG == NULL) {
           innerLE->outerEG=eg;
-        };
-      };
-    };
+        }
+      }
+    }
     if (BlkLevel != i) leArray[i]=NULL;
-  };
+  }
 
 /*
  * For the start of alternatives it is necessary to make a
@@ -163,8 +163,8 @@ ExceptionGroup *eg;
           innerAlt->curAltNum == CurAltNum_array[BlkLevel]) {
         if (innerAlt->exception_label == NULL) {
           innerAlt->exception_label=eg->altID;
-        };
-      };
+        }
+      }
 
       /*  ocurs at a later pass then for the exception_label       */
       /*  if an outerEG has been found then fill in the outer EG   */
@@ -173,11 +173,11 @@ ExceptionGroup *eg;
       if (BlkLevel != i) {
         if (innerAlt->outerEG == NULL) {
           innerAlt->outerEG=eg;
-        };
-      };
-    };
+        }
+      }
+    }
     if (BlkLevel != i) altArray[i]=NULL;
-  };
+  }
 }
 
 #ifdef __USE_PROTOS
@@ -239,7 +239,7 @@ arrayCheck()
       egArrayNew[i]=egArray[i];
       leArrayNew[i]=leArray[i];
       altArrayNew[i]=altArray[i];
-    };
+    }
     arraySize=arraySizeNew;
     if (egArray != NULL) free( (char *) egArray);
     if (leArray != NULL) free( (char *) leArray);
@@ -247,7 +247,7 @@ arrayCheck()
     egArray=egArrayNew;
     leArray=leArrayNew;
     altArray=altArrayNew;
-  };
+  }
 }
 
 /* always call leFixup() BEFORE egFixup() */
@@ -267,9 +267,9 @@ egFixup()
     for (innerEG=egArray[i]; innerEG != NULL ; innerEG=nextEG) {
       nextEG=innerEG->pendingLink;
       innerEG->pendingLink=NULL;
-    };
+    }
     egArray[i]=NULL;
-  };
+  }
   lastEG=NULL;
   lastBlkLevel=0;
 }
@@ -291,9 +291,9 @@ void leFixup()
     for (innerLE=leArray[i]; innerLE != NULL ; innerLE=nextLE) {
       nextLE=innerLE->pendingLink;
       innerLE->pendingLink=NULL;
-    };
+    }
     leArray[i]=NULL;
-  };
+  }
 }
 
 /* always call altFixup() BEFORE egFixup() */
@@ -317,12 +317,12 @@ void altFixup()
       if (lastBlkLevel <= i) {
         if (innerAlt->outerEG == NULL) {
           innerAlt->outerEG=lastEG;
-        };
-      };
+        }
+      }
       nextAlt=innerAlt->pendingLink;
       innerAlt->pendingLink=NULL;
-    };
+    }
     altArray[i]=NULL;
-  };
+  }
 }
 

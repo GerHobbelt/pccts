@@ -53,6 +53,7 @@ typedef char ANTLRChar;
 
 //#include ATOKPTR_H   not tested yet, leave out
 class ANTLRAbstractToken;
+enum ANTLRTokenType; /* [i_a] added */
 typedef ANTLRAbstractToken *_ANTLRTokenPtr;
 
 class ANTLRAbstractToken {
@@ -207,8 +208,8 @@ public:
             _text = new ANTLRChar[1];
             if (_text == NULL) panic("ANTLRCommonNoRefCountToken::setText new failed");
             strcpy(_text,"");
-          };
-        };
+          }
+        }
 	}
 
 	virtual ANTLRAbstractToken *makeToken(ANTLRTokenType tt,
@@ -228,7 +229,7 @@ public:
 	 setLine(from._line);
      _text=NULL;
      setText(from._text);
-  };
+  }
 
 // MR9 THM operator =() required when heap allocated string is used with copy semantics
 
@@ -243,7 +244,7 @@ public:
  	 setLine(rhs._line);
      setText(rhs._text);
      return *this;
-   };
+   }
 };
 
 class ANTLRCommonToken : public ANTLRRefCountToken {
@@ -280,8 +281,8 @@ public:
             _text = new ANTLRChar[1];
             if (_text == NULL) panic("ANTLRCommonToken::setText new failed");
             strcpy(_text,"");
-          };
-        };
+          }
+        }
 	}
 
 	virtual ANTLRAbstractToken *makeToken(ANTLRTokenType tt,
@@ -301,7 +302,7 @@ public:
 	 setLine(from._line);
      _text=NULL;
      setText(from._text);
-  };
+  }
 
 // MR9 THM operator =() required when heap allocated string is used with copy semantics
 
@@ -316,7 +317,7 @@ public:
  	 setLine(rhs._line);
      setText(rhs._text);
      return *this;
-   };
+   }
 };
 
 // used for backward compatibility

@@ -1,0 +1,21 @@
+#header <<
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include "tokens.h"
+#include "AToken.h"
+typedef ANTLRCommonToken ANTLRToken;
+#include "AST.h"
+typedef AST SORAST;
+>>
+
+class PrintPoly {
+
+poly:	#( MULT poly poly )
+	|	#( ADD poly <<printf("+");>> poly )
+	|	#( EXP poly <<printf("^");>> poly )
+	|	id:ID	<<printf("%s",id->getText());>>
+	|	i:INT	<<printf("%d",i->getIConst());>>
+	;
+
+}

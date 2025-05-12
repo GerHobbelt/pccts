@@ -1,0 +1,122 @@
+Microsoft Developer Studio Workspace File, Format Version 5.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "ANTLR"=.\antlr\AntlrMSVC50.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/PRJ_VC/Projects/pccts/antlr", XCGBAAAA
+    .\antlr
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name DLG
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "DLG"=.\dlg\DlgMSVC50.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/PRJ_VC/Projects/pccts/dlg", YCGBAAAA
+    .\dlg
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "Sorcerer"=.\sorcerer\SorcererMSVC50.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/PRJ_VC/Projects/pccts/sorcerer", ZCGBAAAA
+    .\sorcerer
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ANTLR
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DLG
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "cperfMSVC50"="..\cperf-2.1a\cperfMSVC50.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/prj_vc/projects/cperf-2.1a", EAAAAAAA
+    ..\cperf-2.1a
+    end source code control
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "script"=..\scripting\script.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+    begin source code control
+    "$/prj_vc/projects/scripting", IAAAAAAA
+    ..\scripting
+    end source code control
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ANTLR
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DLG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Sorcerer
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cperfMSVC50
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+    begin source code control
+    "$/prj_vc/projects/pccts", FAAAAAAA
+    .
+    end source code control
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

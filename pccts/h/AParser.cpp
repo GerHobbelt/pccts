@@ -88,7 +88,7 @@ ANTLRParser(ANTLRTokenBuffer *_inputTokens,
 /* MR14 */    if (dlook != 0) {
 /* MR14 */      panic("ANTLRParser::ANTLRParser - Demand lookahead not supported in C++ mode");
 /* MR14 */
-/* MR14 */    };
+/* MR14 */    }
     demand_look = 0;    /* demand_look = dlook; */
     bsetsize = ssize;
 	guessing = 0;
@@ -194,15 +194,15 @@ restoreState(ANTLRParserState *buf)
                    "trace enable restored in rule %s depth %d\n",
                    traceCurrentRuleName,
                    traceDepth);
-          };
+          }
           if (traceOptionValue <= 0) {
             /* MR23 */ printMessage(stderr,
             "trace disable restored in rule %s depth %d\n",
             traceCurrentRuleName, /* MR21 */
             traceDepth);
-          };
+          }
        }
-    };
+    }
     traceGuessOptionValue=buf->traceGuessOptionValue;
     traceCurrentRuleName=buf->traceCurrentRuleName;
     traceDepth=buf->traceDepth;
@@ -692,7 +692,7 @@ void ANTLRParser::traceGuessDone(const ANTLRParserState *state) {
     doIt=0;
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     /* MR23 */ printMessage(stderr,"guess done - returning to rule %s {\"%s\"} at depth %d",
@@ -703,9 +703,9 @@ void ANTLRParser::traceGuessDone(const ANTLRParserState *state) {
       /* MR23 */ printMessage(stderr," (guess mode continues - an enclosing guess is still active)");
     } else {
       /* MR23 */ printMessage(stderr," (guess mode ends)");
-    };
+    }
     /* MR23 */ printMessage(stderr,"\n");
-  };
+  }
 }
 
 void ANTLRParser::traceGuessFail() {
@@ -720,11 +720,11 @@ void ANTLRParser::traceGuessFail() {
     doIt=0;
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     /* MR23 */ printMessage(stderr,"guess failed in %s\n",traceCurrentRuleName);
-  };
+  }
 }
 
 /* traceOption:
@@ -744,7 +744,7 @@ void ANTLRParser::tracein(const ANTLRChar * rule) {
     doIt=0;
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     /* MR23 */ printMessage(stderr,"enter rule %s {\"%s\"} depth %d",
@@ -753,7 +753,7 @@ void ANTLRParser::tracein(const ANTLRChar * rule) {
             traceDepth);
     if (guessing) /* MR23 */ printMessage(stderr," guessing");
     /* MR23 */ printMessage(stderr,"\n");
-  };
+  }
   return;
 }
 
@@ -769,7 +769,7 @@ void ANTLRParser::traceout(const ANTLRChar * rule) {
     doIt=0;
   } else {
     doIt=1;
-  };
+  }
 
   if (doIt) {
     /* MR23 */ printMessage(stderr,"exit rule %s {\"%s\"} depth %d",
@@ -778,7 +778,7 @@ void ANTLRParser::traceout(const ANTLRChar * rule) {
             traceDepth+1);
     if (guessing) /* MR23 */ printMessage(stderr," guessing");
     /* MR23 */ printMessage(stderr,"\n");
-  };
+  }
 }
 
 int ANTLRParser::traceOption(int delta) {
@@ -790,11 +790,11 @@ int ANTLRParser::traceOption(int delta) {
     if (traceCurrentRuleName != NULL) {
       if (prevValue <= 0 && traceOptionValue > 0) {
         /* MR23 */ printMessage(stderr,"trace enabled in rule %s depth %d\n",traceCurrentRuleName,traceDepth);
-      };
+      }
       if (prevValue > 0 && traceOptionValue <= 0) {
         /* MR23 */ printMessage(stderr,"trace disabled in rule %s depth %d\n",traceCurrentRuleName,traceDepth);
-      };
-    };
+      }
+    }
 
     return  prevValue;
 }
@@ -808,11 +808,11 @@ int ANTLRParser::traceGuessOption(int delta) {
     if (traceCurrentRuleName != NULL) {
       if (prevValue <= 0 && traceGuessOptionValue > 0) {
         /* MR23 */ printMessage(stderr,"guess trace enabled in rule %s depth %d\n",traceCurrentRuleName,traceDepth);
-      };
+      }
       if (prevValue > 0 && traceGuessOptionValue <= 0) {
         /* MR23 */ printMessage(stderr,"guess trace disabled in rule %s depth %d\n",traceCurrentRuleName,traceDepth);
-      };
-    };
+      }
+    }
     return prevValue;
 }
 

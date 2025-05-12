@@ -129,7 +129,17 @@ typedef struct _STreeParser {
 			_PARSER_VARS
 		} STreeParser;
 
-#define STreeParserInit(_p) { (_p)->guessing = 0; _refvar_inits(_p); }
+/*
+   [i_a] f77 project & emails from 1994:
+     From: schellen@kafka.mpr.ca (Neil Schellenberger)
+     Subject: Multiple Sorcerer Treewalkers
+   hint at the same problem: _refvar_inits() collision when you use multiple SORCERER walkers in one app
+   (which I intend to be able to do).
+
+   So I kludge it by forcing the developer to specify the 'sorcerer -prefix' prefix to address the
+   'right' _refvar_init()
+ */
+#define STreeParserInit(prefix, _p) { (_p)->guessing = 0; prefix##_refvar_inits(_p); }
 
 
 				/* S a n i t y  C h e c k i n g */

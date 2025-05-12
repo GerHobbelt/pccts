@@ -1,0 +1,44 @@
+program testarray =
+   type SA = array [1..3] of Integer;
+   type A = array [1..4] of SA;
+   var x, y: A;
+begin
+   x[1][1] := 1;
+   x[1][2] := 2;
+   x[1][3] := 3;
+   x[2][1] := 4;
+   x[2][2] := 5;
+   x[2][3] := 6;
+   x[3][1] := 7;
+   x[3][2] := 8;
+   x[3][3] := 9;
+   x[4][1] := 10;
+   x[4][2] := 11;
+   x[4][3] := 12;
+   y := x;
+   put(y[1][1]);
+   put(y[1][2]);
+   put(y[1][3]);
+   put(y[2][1]);
+   put(y[2][2]);
+   put(y[2][3]);
+   put(y[3][1]);
+   put(y[3][2]);
+   put(y[3][3]);  
+   put(y[4][1]);
+   put(y[4][2]);
+   put(y[4][3]);
+   put(y[1][1]);
+   put(y[1][2]);
+   put(y[1][3]);
+   put(y[2][1]);
+   put(y[2][2]);
+   put(y[2][3]);
+   put(y[3][1]);
+   put(y[3][2]);
+   put(y[3][3]);
+   put(y[4][1]);
+   put(y[4][2]);
+   put(y[4][3]);
+   newLine;
+end testarray.

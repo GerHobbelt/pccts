@@ -52,6 +52,33 @@
 #endif
 #endif
 
+/*
+ * some (PC/UNIX) compilers 'adore' prototypes but don't set __STDC__ generally
+ * (unless you set them to 'strict' mode which prevents you to use some platform
+ * specific stuff which might be important to you.)
+ */
+#if defined(_MSC_VER) || defined(__TURBOC__) || defined(__WATCOMC__) || defined(_WIN32) || defined(__WIN32__) || defined(__GNUC__) || defined(__GNUG__)
+#ifndef __USE_PROTOS
+#define __USE_PROTOS
+#endif
+#endif
+
+#if defined(__BORLANDC__)
+#pragma warn -com /* Continuation character \ found in // comment	Compiler warning */
+#endif
+
+/* [i_a] automatic definitions */
+#if defined(_MSC_VER) || defined(__TURBOC__) || defined(__WATCOMC__) || defined(_WIN32) || defined(__WIN32__)
+#ifndef PC
+#define PC
+#endif
+#endif
+#if defined(_WIN32) || defined(__WIN32__)
+#ifndef LONGFILENAMES
+#define LONGFILENAMES
+#endif
+#endif
+
 #ifdef PCCTS_USE_NAMESPACE_STD
 #define PCCTS_NAMESPACE_STD     namespace std {}; using namespace std;
 #else
@@ -77,7 +104,7 @@
 *  makefiles for this to work correctly.
 */
 #ifdef PC
-# if (defined(__WATCOMC__) || defined(_WIN32) || defined(__WIN32__) || \
+# if (defined(__WATCOMC__) || defined(_MSC_VER) || defined(_WIN32) || defined(__WIN32__) || \
    defined(__GNUC__) || defined(__GNUG__))
 #     ifndef PC32
 #        define PC32
@@ -172,6 +199,7 @@
 #define LineInfoFormatStr "#line %d \"%s\"\n"
 #endif
 
+#if 0 /* [i_a] introduced generic routine... */
 #ifdef MPW	                    /* Macintosh Programmer's Workshop */
 #define ErrHdr "File \"%s\"; Line %d #"
 #else
@@ -181,6 +209,24 @@
 #define ErrHdr "%s, line %d:"   /* default */
 #endif
 #endif
+#endif
+
+/* [i_a] introduced generic routine from writing error diagnostics to console/IDE */
+
+typedef enum
+{
+  ERR_DIAG_FMT_UNCHANGED = -1,  /* don't change setting */
+  ERR_DIAG_FMT_UNKNOWN = 0,     /* default */
+  ERR_DIAG_FMT_MPW,             /* Macintosh Programmer's Workshop */
+  ERR_DIAG_FMT_MSVC,            /* Microsoft Visual C++ environment */
+  ERR_DIAG_FMT_BCC              /* Borland C/C++ IDE */
+} printf_stderr_format_t;
+                                                                                  
+void printf_stderr_cfg(printf_stderr_format_t type, const char *srcfile_for_report, int srcline_for_report, FILE *output);
+FILE *printf_stderr_file(void);
+void printf_stderr(const char *srcfile, int srcline, const char *fmt, ...);
+int printf_stderr_continued(const char *fmt, ...); /* dummy return value for ?: constructs */
+
 
 /* must assume old K&R cpp here, can't use #if defined(..)... */
 
@@ -348,12 +394,15 @@ void special_fopen_actions(char * s)
 #endif
 
 #ifdef _MSC_VER
-/*Turn off the warnings for:
+/*
+  Turn off the warnings for:
   unreferenced inline/local function has been removed
 */
 #pragma warning(disable : 4514)
 /* function not expanded */
 #pragma warning(disable : 4710)
+/* unreferenced formal parameter */
+#pragma warning(disable : 4100)
 #endif
 
 #endif

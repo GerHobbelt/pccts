@@ -1,0 +1,654 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: script.g
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.33MR33
+ *
+ *   ..\pccts\bin\antlr -emsvc -gd -gs -gh -e3 -cr -ga -k 2 -tab 2 -w2 -gk -rl 2000 script.g
+ *
+ */
+
+
+
+#if defined(__TURBOC__)
+#pragma warn -aus  /* unused assignment of 'xxx' */
+#endif
+#ifdef _MSC_VER
+/* local variable is initialized but not referenced */
+#pragma warning(disable : 4189)
+#endif
+
+#define ANTLR_VERSION	13333
+#include "pcctscfg.h"
+#include "pccts_stdio.h"
+
+/* ------------------------------------------------------------------------- */
+/*                        (C) copyright Insh_Allah                           */
+/* ------------------------------------------------------------------------- */
+/* $Logfile:: /PRJ_VC/XLIBS/TSC/src/tsc_main.c                             $ */
+/* $Workfile:: tsc_main.c                                                  $ */
+/* $Header:: /PRJ_VC/XLIBS/TSC/src/tsc_main.c 14    29/05/98 3:14p Hobbg   $ */
+/* $Date:: 29/05/98 3:14p                                                  $ */
+/* $Revision:: 14                                                          $ */
+/* $Modtime:: 29/05/98 2:34p                                               $ */
+/* $Author:: Hobbg                                                         $ */
+/*
+*  GNU IAS is free software; you can redistribute it and/or modify
+*  it under the terms of the GNU General Public License as published by
+*  the Free Software Foundation; either version 1, or (at your option)
+*  any later version.
+*
+*  GNU IAS is distributed in the hope that it will be useful,
+*  but WITHOUT ANY WARRANTY; without even the implied warranty of
+*  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+*  GNU General Public License for more details.
+*
+*  You should have received a copy of the GNU General Public License
+*  along with GNU IAS; see the file COPYING.  If not, write to
+*  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
+*
+* $Log: /PRJ_VC/XLIBS/TSC/src/tsc_main.c $
+*/
+#if !defined(_NO_VSS_STRING) 
+#if defined(_WIN32) && (defined(_MSC_VER) && (_MSC_VER > 800))
+#pragma comment (exestr, "$Header: /PRJ_VC/XLIBS/TSC/src/tsc_main.c 14    29/05/98 3:14p Hobbg $" )
+#endif
+#endif
+/* $NoKeywords: $ */
+/* ------------------------------------------------------------------------- */
+
+#include <assert.h>
+#include <ctype.h>
+#include <string.h>
+
+#include "attrib.h"
+#include "set.h" /* needed by antlr.h [at least] */
+
+#define LL_K 2
+#define DEMAND_LOOK
+#ifndef zzTRACE_RULES
+#define zzTRACE_RULES
+#endif
+#include "antlr.h"
+#include "tokens.h"
+#include "dlgdef.h"
+LOOKAHEAD
+
+void
+#ifdef __USE_PROTOS
+zzerraction(void)
+#else
+zzerraction()
+#endif
+{
+	(*zzerr)("invalid token");
+	zzadvance();
+	zzskip();
+}
+>>
+
+
+%%START
+
+@
+	<<
+		NLA = SCRIPT_EOF;
+    printf("End Of Script Reached...\n");   
+	>>
+
+\&\&
+	<<
+		NLA = BOOLEAN_AND;
+	>>
+
+\|\|
+	<<
+		NLA = BOOLEAN_OR;
+	>>
+
+\&
+	<<
+		NLA = BITWISE_AND;
+	>>
+
+\|
+	<<
+		NLA = BITWISE_OR;
+	>>
+
+\^
+	<<
+		NLA = BITWISE_XOR;
+	>>
+
+\}
+	<<
+		NLA = END;
+	>>
+
+\{
+	<<
+		NLA = BEGIN;
+	>>
+
+:=
+	<<
+		NLA = ASSIGN;
+	>>
+
+\+=
+	<<
+		NLA = ASSIGN_PLUS;
+	>>
+
+\-=
+	<<
+		NLA = ASSIGN_MINUS;
+	>>
+
+\*=
+	<<
+		NLA = ASSIGN_MULTIPLY;
+	>>
+
+/=
+	<<
+		NLA = ASSIGN_DIVIDE;
+	>>
+
+%=
+	<<
+		NLA = ASSIGN_MODULO;
+	>>
+
+\*\*=
+	<<
+		NLA = ASSIGN_POWER;
+	>>
+
+\<\<=
+	<<
+		NLA = ASSIGN_LSHIFT;
+	>>
+
+\>\>=
+	<<
+		NLA = ASSIGN_RSHIFT;
+	>>
+
+\|=
+	<<
+		NLA = ASSIGN_BITWISE_OR;
+	>>
+
+\&=
+	<<
+		NLA = ASSIGN_BITWISE_AND;
+	>>
+
+\^=
+	<<
+		NLA = ASSIGN_BITWISE_XOR;
+	>>
+
+\|\|=
+	<<
+		NLA = ASSIGN_BOOLEAN_OR;
+	>>
+
+\&\&=
+	<<
+		NLA = ASSIGN_BOOLEAN_AND;
+	>>
+
+\<\<
+	<<
+		NLA = LSHIFT;
+	>>
+
+\>\>
+	<<
+		NLA = RSHIFT;
+	>>
+
+\>=
+	<<
+		NLA = GE;
+	>>
+
+\>
+	<<
+		NLA = GT;
+	>>
+
+==
+	<<
+		NLA = EQ;
+	>>
+
+\<=
+	<<
+		NLA = LE;
+	>>
+
+\<
+	<<
+		NLA = LT;
+	>>
+
+\!=
+	<<
+		NLA = NE;
+	>>
+
+/
+	<<
+		NLA = DIVIDE;
+	>>
+
+%
+	<<
+		NLA = MODULO;
+	>>
+
+\*\*
+	<<
+		NLA = POWER;
+	>>
+
+\~
+	<<
+		NLA = BITWISE_NOT;
+	>>
+
+\-
+	<<
+		NLA = MINUS;
+	>>
+
+\+
+	<<
+		NLA = PLUS;
+	>>
+
+\*
+	<<
+		NLA = MULTIPLY;
+	>>
+
+\!
+	<<
+		NLA = BOOLEAN_NOT;
+	>>
+
+\.\.\.
+	<<
+		NLA = TRIPLE_DOT;
+	>>
+
+\(
+	<<
+		NLA = LPARENS;
+	>>
+
+\)
+	<<
+		NLA = RPARENS;
+	>>
+
+\[
+	<<
+		NLA = LBRACKET;
+	>>
+
+\]
+	<<
+		NLA = RBRACKET;
+	>>
+
+,
+	<<
+		NLA = COMMA;
+	>>
+
+.
+	<<
+		NLA = DOT;
+	>>
+
+;
+	<<
+		NLA = SEMICOLON;
+	>>
+
+:
+	<<
+		NLA = COLON;
+	>>
+
+0[0-7]*
+	<<
+		NLA = INT_VALUE;
+	>>
+
+[1-9][0-9]*
+	<<
+		NLA = INT_VALUE;
+	>>
+
+0[Xx][0-9A-Fa-f]+
+	<<
+		NLA = INT_VALUE;
+    /* Hex Value! */   
+	>>
+
+([1-9][0-9]* | 0 )( { \.[0-9]+ } [Ee] { [\+\-] } [0-9]+ | \.[0-9]+ )
+	<<
+		NLA = REAL_VALUE;
+	>>
+
+\"
+	<<
+		NLA = 117;
+
+    zzmode(STRING_VALUES); 
+#if 01
+    zzskip(); /* throw away the starting \" */
+#else
+    zzreplstr(""); /* throw away terminating \" */
+    /* can we use zzreplchar(0) here? end of string anyway! */
+    zzmore();
+#endif
+	>>
+
+[a-zA-Z\$_][a-zA-Z0-9\$_]*
+	<<
+		NLA = VARIABLE;
+
+    /*
+    * check if this is a reserved word: return
+    * different token for that!
+    */
+    {
+      char keyword[ZZLEXBUFSIZE]; 
+      size_t keyword_len = zzendexpr - zzlextext + 1;
+
+      if (keyword_len < sizeof(keyword)
+      && keyword_len > 1
+      && !zzbufovf)
+      {
+        /* we assume no keyword is less than 2 characters in size */
+        short int res;
+
+        assert(strlen(zzbegexpr) < sizeof(keyword));
+        strcpy(keyword, zzbegexpr);
+
+        /* convert to all lowercase */
+#if 0
+        strlwr(keyword + 1);
+#else
+        {
+          char *p = keyword + 1;
+
+          while (*p)
+          {
+            *p++ = tolower(*p);
+          }
+        }
+#endif
+        keyword[0] = toupper(keyword[0]);
+
+        res = get_reserved_keyword(keyword, keyword_len);
+        if (res)
+        {
+          NLA = res;
+        }
+      }
+    }
+	>>
+
+[\t\r\ ]+
+	<<
+		NLA = WHITESPACE;
+    zzskip(); /* Ignore whitespace */  
+	>>
+
+\n
+	<<
+		NLA = NEWLINE;
+    zzline++; zzskip(); /* Count lines */   
+	>>
+
+/\*
+	<<
+		NLA = BOGUS21;
+    zzmode(COMMENT); zzskip();   
+	>>
+
+//
+	<<
+		NLA = BOGUS22;
+    zzmode(CPPCOMMENT); zzskip();   
+	>>
+
+#
+	<<
+		NLA = BOGUS23;
+    zzmode(CPPCOMMENT); zzskip();   
+	>>
+
+~[\-\n\t\r\ \"/#0-9a-zA-Z\$_\~\!\%\^\*\(\)\{\}\[\]=\+;:\<\>,.\&\|]
+	<<
+		NLA = UNKNOWN_CHAR;
+    /* erroneous character! */   
+	>>
+
+
+%%STRING_VALUES
+
+@
+	<<
+		NLA = SCRIPT_EOF;
+
+    NLA = ERROR_ITS_EOF_TOKEN;
+
+    zzmode(START); 
+    /* incorrectly terminated string */ 
+	>>
+
+\"
+	<<
+		NLA = STRING_VALUE;
+
+    zzreplstr(""); /* throw away terminating \" */
+    /* can we use zzreplchar(0) here? end of string anyway! */
+    zzmode(START); 
+	>>
+
+\\\\
+	<<
+		NLA = BOGUS1;
+    zzreplchar('\\'); zzmore();   
+	>>
+
+\\\"
+	<<
+		NLA = BOGUS2;
+    zzreplchar('\"'); zzmore();   
+	>>
+
+\\\'
+	<<
+		NLA = BOGUS3;
+    zzreplchar('\''); zzmore();   
+	>>
+
+\\n
+	<<
+		NLA = BOGUS4;
+    zzreplchar('\n'); zzmore();   
+	>>
+
+\\r
+	<<
+		NLA = BOGUS5;
+    zzreplchar('\r'); zzmore();   
+	>>
+
+\\t
+	<<
+		NLA = BOGUS6;
+    zzreplchar('\t'); zzmore();   
+	>>
+
+\\v
+	<<
+		NLA = BOGUS7;
+    zzreplchar('\v'); zzmore();   
+	>>
+
+\\f
+	<<
+		NLA = BOGUS8;
+    zzreplchar('\f'); zzmore();   
+	>>
+
+\\b
+	<<
+		NLA = BOGUS9;
+    zzreplchar('\b'); zzmore();   
+	>>
+
+\\a
+	<<
+		NLA = BOGUS10;
+    zzreplchar('\a'); zzmore();   
+	>>
+
+\\[0-7] { [0-7] { [0-7] }}
+	<<
+		NLA = BOGUS11;
+
+    /* C-strings don't support DECIMAL \\-escaped codes.
+    * We won't either! */
+    zzreplchar((char)strtol(zzbegexpr + 1, NULL, 8));
+    zzmore(); 
+	>>
+
+\\[Xx] [0-9a-fA-F] { [0-9a-fA-F] }
+	<<
+		NLA = BOGUS12;
+
+    zzreplchar((char)strtol(zzbegexpr + 2, NULL, 16));
+    zzmore(); 
+	>>
+
+\\~[\r\n0-7nrtvfbaxX\\\'\"]
+	<<
+		NLA = ERROR_INVALID_ESC_SEQ;
+
+    /* faulty escape sequence: report this! */
+
+    /* TBD */
+
+    zzmore(); 
+	>>
+
+\\{\r}\n
+	<<
+		NLA = BOGUS14;
+
+    zzline++; 
+
+    /* faulty escape sequence: report this! In fact, this is a 'string continuation' method in 'C'
+    to make strings continue on the next line. */
+
+    NLA = ERROR_INVALID_ESC_SEQ;
+
+    /*
+    * REMOVE continuation and newline! 
+    * Accept MSDOS 'newlines' BTW 
+    */ 
+	>>
+
+~[\"\r\n\\]+
+	<<
+		NLA = BOGUS15;
+    zzmore();   
+	>>
+
+{\r}\n
+	<<
+		NLA = ERROR_ITS_TOKEN;
+
+    zzline++; zzmode(START); 
+    zzmore(); 
+    /* Print error: incorrectly terminated string */ 
+	>>
+
+
+%%COMMENT
+
+@
+	<<
+		NLA = SCRIPT_EOF;
+
+    NLA = ERROR_ITC_TOKEN;
+
+    zzmode(START); 
+    /* incorrectly terminated C-style comment */ 
+	>>
+
+\*/
+	<<
+		NLA = COMMENTBLOCK;
+    zzmode(START); zzskip();   
+	>>
+
+~[\*\n]
+	<<
+		NLA = BOGUS17;
+    zzskip();   
+	>>
+
+\n
+	<<
+		NLA = BOGUS18;
+    zzline++; zzskip();   
+	>>
+
+\*
+	<<
+		NLA = BOGUS19;
+    zzskip();   
+	>>
+
+
+%%CPPCOMMENT
+
+@
+	<<
+		NLA = SCRIPT_EOF;
+
+    zzskip();
+    zzmode(START); 
+    /* end of comment is end of file */ 
+	>>
+
+\n
+	<<
+		NLA = CPPCOMMENTLINE;
+    zzline++; zzmode(START); zzskip();   
+	>>
+
+~[\n]
+	<<
+		NLA = BOGUS20;
+    zzskip();   
+	>>
+
+%%

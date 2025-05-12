@@ -1,0 +1,57 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: simple.g
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.33MR33
+ *
+ *   ..\..\bin\antlr.exe -emsvc -CC simple.g -glms -ge -gs -gh -e3 -cr -ga -k 2 -tab 2 -gk -w2 -rl 200000 -emsvc
+ *
+ */
+
+#define ANTLR_VERSION	13333
+#include "tokens.h"
+#include "AToken.h"
+>>
+
+<<%%parserclass P>>
+
+
+%%START
+
+@
+	<<
+		return Eof;
+	>>
+
+[0-9]+
+	<<
+		return Number;
+	>>
+
+[a-z A-Z]+
+	<<
+		return Word;
+	>>
+
+[\t \ \f]
+	<<
+    skip();   
+		return Whitespace;
+	>>
+
+~[\ \t \n \r \f]+
+	<<
+		return Other;
+	>>
+
+\n|\r|\n\r
+	<<
+    newline(); skip();   
+		return Newline;
+	>>
+
+%%

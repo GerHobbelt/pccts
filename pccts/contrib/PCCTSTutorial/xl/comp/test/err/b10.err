@@ -1,0 +1,9 @@
+line 6: syntax error at ";" missing { CONST INTLIT STRINGLIT }
+line 6: syntax error at "" -- type conflict in attempted initialization
+	Type of variables being declared: Integer
+	Type of initializer: 
+Error retrieving value of constant
+line 8: syntax error at "recrod" missing { record array } in type definition
+line 9: syntax error at "f" missing ; in type declaration
+line 9: syntax error at "," missing begin in subprogram definition
+line 9: syntax error at "g" missing \. in program definition

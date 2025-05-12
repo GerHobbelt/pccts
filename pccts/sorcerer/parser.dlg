@@ -7,6 +7,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc -gh -k 2 -gt sor.g
+ *
  */
 
 #define ANTLR_VERSION	13333
@@ -75,10 +78,10 @@ scarf_to_end_of_func_call()
 {
   static char func_call_str[MaxAtom+1];
   char *p;
-  
-	p = &func_call_str[0];
-  
-more:
+
+  p = &func_call_str[0];
+
+  more:
   if ( zzchar==')' ) { *p++ = zzchar; *p++ = '\0'; zzadvance(); return func_call_str; }
   if ( zzchar=='"' )
   {
@@ -87,11 +90,11 @@ more:
     {
       if ( zzchar=='\\' ) { *p++ = zzchar; zzadvance(); }
       *p++ = zzchar; zzadvance();
-    }
-  }
-  *p++ = zzchar; zzadvance();
-  goto more;
-}
+      }
+      }
+      *p++ = zzchar; zzadvance();
+      goto more;
+      }
 >>
 
 
@@ -581,7 +584,7 @@ class
 #[_a-zA-Z][_a-zA-Z0-9]*
 	<<
 		NLA = 31;
-    
+
     if ( !(strcmp(zzbegexpr, "#ifdef")==0 ||
     strcmp(zzbegexpr, "#else")==0 ||
     strcmp(zzbegexpr, "#endif")==0 ||
@@ -614,7 +617,7 @@ class
 #\[\]
 	<<
 		NLA = 32;
-    
+
     if ( GenCPP ) zzreplstr("new SORAST");
     else zzreplstr("ast_empty_node()");
     zzmore();
@@ -629,7 +632,7 @@ class
 #\[
 	<<
 		NLA = 34;
-    
+
     pushint(']');
     if ( GenCPP ) zzreplstr("new SORAST(");
     else zzreplstr("ast_node(");
@@ -639,7 +642,7 @@ class
 #\(
 	<<
 		NLA = 35;
-    
+
     pushint('}');
     if ( GenCPP ) zzreplstr("PCCTS_AST::make(");
     else zzreplstr("ast_make(");
@@ -655,7 +658,7 @@ class
 \)
 	<<
 		NLA = 37;
-    
+
     if ( istackempty() )
     zzmore();
     else if ( topint()==')' ) {
@@ -672,7 +675,7 @@ class
 \[
 	<<
 		NLA = 38;
-    
+
     pushint('|');	/* look for '|' to terminate simple [...] */
     zzmore();
 	>>
@@ -680,7 +683,7 @@ class
 \(
 	<<
 		NLA = 39;
-    
+
     pushint(')');
     zzmore();
 	>>
@@ -760,14 +763,14 @@ class
 \@
 	<<
 		NLA = 52;
-    
+
     zzmore(); if ( !GenCPP ) zzreplstr("_parser->");
 	>>
 
 [a-zA-Z_]+\(
 	<<
 		NLA = 53;
-    
+
     if ( (GenCPP && strcmp(zzbegexpr,"ast_scan(")==0) ||
     (!GenCPP && strcmp(zzbegexpr,"ast_scan(")==0) ) {
       char *args=scarf_to_end_of_func_call();
@@ -877,7 +880,7 @@ class
 #ifndef
 	<<
 		NLA = 103;
-    
+
 	>>
 
 #ifdef
@@ -895,7 +898,7 @@ class
 #define
 	<<
 		NLA = 106;
-    
+
 	>>
 
 #endif

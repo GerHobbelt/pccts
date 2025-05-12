@@ -1,0 +1,25 @@
+
+poly :
+	  term ( ADD term )*
+	;
+
+term :
+	  bigterm
+	| reg { EXP INT }
+	;
+
+bigterm :
+	  coefficient ( reg ( EXP exp | ) | )
+	;
+
+coefficient :
+	  INT
+	;
+
+reg :
+	  ID
+	;
+
+exp :
+	  INT
+	;

@@ -1,0 +1,17 @@
+program testbool = 
+   var b1 : Boolean := TRUE;
+   var b2 : Boolean;
+begin
+   if (b1) then
+      put("ok ");
+   else
+      put("error in b1 ");
+   end if;
+
+   b2 := FALSE;
+   if (not b2) then
+      put("ok ");
+   else
+      put("error in b2 ");
+   end if;
+end testbool.

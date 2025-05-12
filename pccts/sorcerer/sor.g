@@ -146,9 +146,9 @@ FILE *f;
 	if ( found_error ) return NULL;
 
 	if ( print_guts ) {
-		fprintf(stderr, "Internal Represenation of Tree Grammar:\n");
+		printf_stderr_continued( "Internal Represenation of Tree Grammar:\n");
 		lisp(root, stderr);
-		fprintf(stderr, "\n");
+		printf_stderr_continued( "\n");
 	}
 
 	last_valid_token = token_type;
@@ -164,9 +164,9 @@ FILE *f;
 	if ( root!=NULL ) build_GLA(root);
 
 	if ( print_guts ) {
-		fprintf(stderr, "Internal Represenation of Grammar Lookahead Automaton:\n");
+		printf_stderr_continued( "Internal Represenation of Grammar Lookahead Automaton:\n");
 		dump_GLAs(root);
-		fprintf(stderr, "\n");
+		printf_stderr_continued( "\n");
 	}
 	return root;
 }
@@ -882,7 +882,7 @@ defines!
 			if ( !ignore ) {
 				p->token_type = atoi($3.text);
 				token_association(p->token_type, p->str);
-/*				fprintf(stderr, "#token %s=%d\n", p->str, p->token_type);*/
+/*				printf_stderr_continued( "#token %s=%d\n", p->str, p->token_type);*/
 				if ( p->token_type>maxt ) maxt=p->token_type;
 				ignore = 0;
 			}
@@ -917,7 +917,7 @@ enum_def!
 			)
 			<<
 			if ( !ignore ) {
-/*				fprintf(stderr, "#token %s=%d\n", p->str, v);*/
+/*				printf_stderr_continued( "#token %s=%d\n", p->str, v);*/
 				if ( v>maxt ) maxt=v;
 				p->token_type = v;
 				token_association(p->token_type, p->str);
@@ -949,7 +949,7 @@ enum_def!
 					)
 					<<
 					if ( !ignore ) {
-/*						fprintf(stderr, "#token %s=%d\n", p->str, v);*/
+/*						printf_stderr_continued( "#token %s=%d\n", p->str, v);*/
 						if ( v>maxt ) maxt=v;
 						p->token_type = v;
 						token_association(p->token_type, p->str);
@@ -983,20 +983,20 @@ int etok;
 int k;
 SetWordType *eset;
 #endif
-{
-	fprintf(stderr, ErrHdr, FileStr[CurFile]!=NULL?FileStr[CurFile]:"stdin", zzline);
-	fprintf(stderr, " syntax error at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
-	if ( !etok && !eset ) {fprintf(stderr, "\n"); return;}
-	if ( k==1 ) fprintf(stderr, " missing");
+{                            
+	printf_stderr(FileStr[CurFile]!=NULL?FileStr[CurFile]:"stdin", zzline
+	             ," syntax error at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
+	if ( !etok && !eset ) {printf_stderr_continued("\n"); return;}
+	if ( k==1 ) printf_stderr_continued(" missing");
 	else
 	{
-		fprintf(stderr, "; \"%s\" not", bad_text);
-		if ( zzset_deg(eset)>1 ) fprintf(stderr, " in");
+		printf_stderr_continued("; \"%s\" not", bad_text);
+		if ( zzset_deg(eset)>1 ) printf_stderr_continued(" in");
 	}
 	if ( zzset_deg(eset)>0 ) zzedecode(eset);
-	else fprintf(stderr, " %s", zztokens[etok]);
-	if ( strlen(egroup) > (size_t)0 ) fprintf(stderr, " in %s", egroup);
-	fprintf(stderr, "\n");
+	else printf_stderr_continued(" %s", zztokens[etok]);
+	if ( strlen(egroup) > (size_t)0 ) printf_stderr_continued(" in %s", egroup);
+	printf_stderr_continued("\n");
 }
 
 SymEntry *

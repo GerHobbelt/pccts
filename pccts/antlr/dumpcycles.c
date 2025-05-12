@@ -26,18 +26,18 @@ dumpcycles()
     for (p = Cycles[k]->next; p!=NULL; p=p->next) {
   	  c = (Cycle *) p->elem;
       degree=set_deg(c->cyclicDep);
-	  fprintf(stderr,"Cycle %d: (degree %d) %s -->\n", i++, degree, RulePtr[c->croot]->rname);
-      fprintf(stderr,"    *self*\n");
+	  printf_stderr_continued("Cycle %d: (degree %d) %s -->\n", i++, degree, RulePtr[c->croot]->rname);
+      printf_stderr_continued("    *self*\n");
       MR_dumpRuleSet(c->cyclicDep);
-      fprintf(stderr,"\n");
+      printf_stderr_continued("\n");
 	  f = (CacheEntry *)
 			hash_get(Fcache,Fkey(RulePtr[c->croot]->rname,'o',k));
       if (f == NULL) {
-        fprintf(stderr,"    *** FOLLOW(%s) must be in cache but isn't ***\n",
+        printf_stderr_continued("    *** FOLLOW(%s) must be in cache but isn't ***\n",
                                          RulePtr[c->croot]->rname);
-      };
-    };
-  };
+      }
+    }
+  }
 }
 
 void 
@@ -51,17 +51,17 @@ int k;
   int   i=0;
   int   *pi;
 
-  fprintf(stderr,"\n");
+  printf_stderr_continued("\n");
   if (FoStack[k] == NULL) {
-    fprintf(stderr,"FoStack[%d] is null\n",k);
-  };
+    printf_stderr_continued("FoStack[%d] is null\n",k);
+  }
   if (FoTOS[k] == NULL) {
-    fprintf(stderr,"FoTOS[%d] is null\n",k);
+    printf_stderr_continued("FoTOS[%d] is null\n",k);
   }
   if (FoTOS[k] != NULL && FoStack[k] != NULL) {
     for (pi=FoStack[k]; pi <= FoTOS[k]; pi++) {
       i++;
-      fprintf(stderr,"#%d  rule %d  %s\n",i,*pi,RulePtr[*pi]->rname);
+      printf_stderr_continued("#%d  rule %d  %s\n",i,*pi,RulePtr[*pi]->rname);
     }
   }
 }

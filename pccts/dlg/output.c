@@ -66,7 +66,10 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <limits.h>
+
 #include "dlg.h"
+
 #ifdef MEMCHK
 #include "trax.h"
 #else
@@ -94,8 +97,20 @@ FILE *class_stream;	/* where to put the scan.h stuff (if gen_cpp) */
 
 /* NOTE: This section is MACHINE DEPENDENT */
 #define DIF_SIZE 4
-#if defined(PC) && !defined(PC32)
+#if !defined(INT_MAX) && (defined(PC) && !defined(PC32))
 unsigned long typesize[DIF_SIZE]  = { 0x7f, 0x7fff, 0x7ffful, 0x7ffffffful }; /* MR20 */
+char t0[] = "unsigned char";
+char t1[] = "unsigned short";
+char t2[] = "unsigned int";
+char t3[] = "unsigned long";
+char *typevar[DIF_SIZE] = { t0, t1, t2, t3};
+#elif defined(INT_MAX) && (INT_MAX < 0x8000UL) /* [i_a] fix for 16-bit compilers (for embedded apps) */
+/*
+ * [i_a] this whole mess should be based on the values in <limits.h>
+ * if it weren't that some old compilers (Borland Turbo C 3.x for example
+ * have faulty values there ('off by one' error says somethin'? :-))
+ */
+unsigned long typesize[DIF_SIZE]  = { 0x7f, 0x7fff, 0x7fffUL, 0x7fffffffUL };
 char t0[] = "unsigned char";
 char t1[] = "unsigned short";
 char t2[] = "unsigned int";
@@ -108,6 +123,14 @@ char t1[] = "unsigned short";
 char t2[] = "unsigned int";
 char t3[] = "unsigned long";
 char *typevar[DIF_SIZE] = { t0, t1, t2, t3};
+#endif
+
+#if defined(DEBUG) || defined(_DEBUG)
+/* code to print out special structures when using a debugger */
+void p_set(set label);
+void s_p_nfa(nfa_node *p);
+void p_dfa_node(dfa_node *p);
+
 #endif
 
 /* Added by TJP August 1994 */
@@ -146,6 +169,8 @@ void p_class_hdr(void)
 void p_class_hdr()						
 #endif
 {
+    int i;
+
 	if ( class_stream == NULL ) return;
 	fprintf(class_stream, "#ifndef %s\n", gate_symbol(ClassName("")));
 	fprintf(class_stream, "#define %s\n", gate_symbol(ClassName("")));
@@ -159,6 +184,13 @@ void p_class_hdr()
 	fprintf(class_stream, " * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz\n");
 	fprintf(class_stream, " * Purdue University Electrical Engineering\n");
 	fprintf(class_stream, " * DLG Version %s\n", version);
+    fprintf(class_stream, " *\n");
+    fprintf(class_stream, " *  ");
+    for (i=0 ; i < Save_argc ; i++) {
+      fprintf(class_stream, " %s", Save_argv[i]);
+    }
+	fprintf(class_stream, "\n");
+	fprintf(class_stream, " *\n");
 	fprintf(class_stream, " */\n\n");
 	fprintf(class_stream, "\n");
 	fprintf(class_stream, "#include \"%s\"\n", DLEXERBASE_H);
@@ -259,6 +291,38 @@ void p_class_def2()
 	fprintf(class_stream, "#endif\n");
 }
 
+/* generate top header on output */
+
+#ifdef __USE_PROTOS
+void p_top_head(FILE *out)
+#else
+void p_top_head(out)
+FILE *out;
+#endif
+{
+    int i;
+
+	fprintf(out, "/*\n");
+	fprintf(out, " * D L G tables\n");
+	fprintf(out, " *\n");
+	fprintf(out, " * Generated from:");
+	fprintf(out, " %s", file_str[0]);
+	fprintf(out, "\n");
+	fprintf(out, " *\n");
+	fprintf(out, " * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz\n");
+	fprintf(out, " * Purdue University Electrical Engineering\n");
+	fprintf(out, " * DLG Version %s\n", version);
+    fprintf(out, " *\n");
+    fprintf(out, " *  ");
+    for (i=0 ; i < Save_argc ; i++) {
+      fprintf(out, " %s", Save_argv[i]);
+    }
+	fprintf(out, "\n");
+	fprintf(out, " *\n");
+	fprintf(out, " */\n\n");
+	fprintf(out,"\n");
+}
+
 /* generate required header on output */
 
 #ifdef __USE_PROTOS
@@ -267,17 +331,7 @@ void p_head(void)
 void p_head()
 #endif
 {
-	fprintf(OUT, "/*\n");
-	fprintf(OUT, " * D L G tables\n");
-	fprintf(OUT, " *\n");
-	fprintf(OUT, " * Generated from:");
-	fprintf(OUT, " %s", file_str[0]);
 	fprintf(OUT, "\n");
-	fprintf(OUT, " *\n");
-	fprintf(OUT, " * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz\n");
-	fprintf(OUT, " * Purdue University Electrical Engineering\n");
-	fprintf(OUT, " * DLG Version %s\n", version);
-	fprintf(OUT, " */\n\n");
 	if ( gen_cpp)  fprintf(OUT, "#include \"pcctscfg.h\"\n");
 	if ( gen_cpp ) fprintf(OUT, "#include \"pccts_stdio.h\"\n");
 	if ( !gen_cpp ) fprintf(OUT, "#include \"%s\"\n\n", mode_file);
@@ -502,13 +556,13 @@ void p_accept_table()
 			set_rm(0, accept_set);
 
 			if( set_deg(accept_set)>1){
-				fprintf(stderr, "dlg warning: ambiguous regular expression ");
+				printf_stderr_continued("dlg warning: ambiguous regular expression ");
 				q = regular_expr = set_pdq(accept_set);
 				while(*regular_expr != nil){
-					fprintf(stderr," %d ", *regular_expr);
+					printf_stderr_continued(" %d ", *regular_expr);
 					++regular_expr;
 				}
-				fprintf(stderr, "\n");
+				printf_stderr_continued("\n");
 				free(q);
 			}
 		}
@@ -716,7 +770,7 @@ char *suffix;
 	return buf;
 }
 
-#ifdef DEBUG
+#if defined(DEBUG) || defined(_DEBUG)
 
 /* print out a particular nfa node that is pointed to by p */
 
@@ -727,8 +781,6 @@ void p_nfa_node(p)
 nfa_node *p;
 #endif
 {
-	 register nfa_node *t;
-
 	if (p != NIL_INDEX){
 		printf("NFA state : %d\naccept state : %d\n",
 			NFA_NO(p),p->accept);
@@ -747,16 +799,17 @@ nfa_node *p;
 		printf("\n");
 		}
 }
+
 #endif
 
-#ifdef  DEBUG
+#if defined(DEBUG) || defined(_DEBUG)
 
 /* code to print out special structures when using a debugger */
 
 #ifdef __USE_PROTOS
-void p_nfa(p)
-#else
 void p_nfa(nfa_node *p)
+#else
+void p_nfa(p)
 nfa_node *p;	/* state number also index into array */
 #endif
 {
@@ -819,7 +872,7 @@ void p_dfa()
 	int i;
 
 	for (i = 1; i<=dfa_allocated; i++)
-		p_dfa_node(NFA(i));
+		p_dfa_node((dfa_node *)NFA(i));
 }
 
 

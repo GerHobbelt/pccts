@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="DLG"
+	ProjectGUID="{A2AF3C41-6605-49B1-A484-DFEC76363492}"
+>
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\."
+			IntermediateDirectory=".\."
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories="..\h,..\support\set"
+				PreprocessorDefinitions="__STDC__,NDEBUG,LONGFILENAMES,PC,USER_ZZSYN,ZZLEXBUFSIZE=65536,_DEBUG,WIN32,_CONSOLE"
+				StringPooling="TRUE"
+				RuntimeLibrary="4"
+				EnableFunctionLevelLinking="TRUE"
+				PrecompiledHeaderFile=".\./DlgMSVC70.pch"
+				AssemblerListingLocation=".\./"
+				ObjectFile=".\./"
+				ProgramDataBaseFileName=".\./"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				CompileAs="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				OutputFile="./Dlg.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				ProgramDatabaseFile=".\./Dlg.pdb"
+				SubSystem="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\./DlgMSVC70.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copy to ..\bin directory"
+				CommandLine="mkdir ..\bin
+copy ..\bin\dlg.exe dlg_old.exe
+copy dlg.exe        ..\bin\.
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\."
+			IntermediateDirectory=".\."
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories="..\h,..\support\set"
+				PreprocessorDefinitions="__STDC__,LONGFILENAMES,PC,USER_ZZSYN,ZZLEXBUFSIZE=65536,_DEBUG,WIN32,_CONSOLE"
+				RuntimeLibrary="5"
+				PrecompiledHeaderFile=".\./DlgMSVC70.pch"
+				AssemblerListingLocation=".\./"
+				ObjectFile=".\./"
+				ProgramDataBaseFileName=".\./"
+				WarningLevel="3"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="4"
+				CompileAs="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				OutputFile="./Dlg.exe"
+				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\./Dlg.pdb"
+				SubSystem="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\./DlgMSVC70.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copy to ..\bin directory"
+				CommandLine="mkdir ..\bin
+copy ..\bin\dlg.exe dlg_old.exe
+copy dlg.exe        ..\bin\.
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<File
+			RelativePath=".\automata.c">
+		</File>
+		<File
+			RelativePath=".\dlg_a.c">
+		</File>
+		<File
+			RelativePath=".\dlg_p.c">
+		</File>
+		<File
+			RelativePath=".\dlg_p.g">
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building DLG Parser from ANTLR Grammar"
+					CommandLine="..\bin\antlr -emsvc $(InputName).g  -gh
+..\bin\dlg -emsvc -C2 parser.dlg dlg_a.c
+"
+					Outputs="dlg_a.c;dlg_p.c;err.c;mode.h;parser.dlg;tokens.h;stdpccts.h"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building DLG Parser from ANTLR Grammar"
+					CommandLine="..\bin\antlr -emsvc $(InputName).g  -gh
+..\bin\dlg -emsvc -C2 parser.dlg dlg_a.c
+"
+					Outputs="dlg_a.c;dlg_p.c;err.c;mode.h;parser.dlg;tokens.h;stdpccts.h"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\err.c">
+		</File>
+		<File
+			RelativePath=".\main.c">
+		</File>
+		<File
+			RelativePath=".\output.c">
+		</File>
+		<File
+			RelativePath=".\relabel.c">
+		</File>
+		<File
+			RelativePath="..\support\set\set.c">
+		</File>
+		<File
+			RelativePath=".\support.c">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

@@ -1,0 +1,6 @@
+program incorrect8 =
+   var x :Integer;
+begin // incorrect8
+   x := 5;
+end incorrect.
+// closing identifier doesn't match program

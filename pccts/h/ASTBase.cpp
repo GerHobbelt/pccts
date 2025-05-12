@@ -91,7 +91,7 @@ ASTBase::preorder(void* pData /*= NULL*/ /* MR23 */)
 	{
 		if ( tree->_down != NULL ) {
 			tree->preorder_before_action(pData); 		// MR1	
-		};
+		}
 		tree->preorder_action(pData);
 		if ( tree->_down!=NULL )
 		{
@@ -199,13 +199,13 @@ ASTDoublyLinkedBase::dup()
 	  ((ASTDoublyLinkedBase *)u->_right)->_left = u;		// MR1
         } else {							// MR1
 	  u->_right = NULL;						// MR1
-        };								// MR1
+        }								// MR1
 	if (t->_down!=NULL) {						// MR1
   	  u->_down = t->_down->dup();					// MR1
           ((ASTDoublyLinkedBase *)u->_down)->_up = u;			// MR1
         } else {							// MR1
 	  u->_down = NULL;						// MR1
-        };								// MR1
+        }								// MR1
 	return u;
 }
 

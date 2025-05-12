@@ -1,0 +1,14 @@
+program incorrect7 =
+
+   procedure p
+      var x:Integer := 5;
+   begin // p
+      put(x);
+   end p;
+   
+   var y:Integer := 6;  // var declared after procedure
+
+begin // incorrect7
+   p;
+   put(y);
+end incorrect7.

@@ -1,0 +1,5 @@
+line 15: syntax error at "p" -- only a variable can be used in place of a pass-by-reference formal parameter
+	Formal parameter type was Integer
+	Actual parameter type was Integer
+	Formal parameter was x
+	Actual parameter was (i + 3)

@@ -1,0 +1,84 @@
+line 15: syntax error at "not" -- right side is not Boolean
+	Type of right side was Integer
+	Right side was 1
+line 15: syntax error at "and" -- right side is not Boolean
+	Type of right side was Integer
+	Right side was 2
+line 15: syntax error at "and" -- right side is not Boolean
+	Type of right side was Integer
+	Right side was 3
+line 16: syntax error at "*" -- left side is not Integer
+	Type of left side was Boolean
+	Left side was FALSE
+line 16: syntax error at "*" -- right side is not Integer
+	Type of right side was Boolean
+	Right side was TRUE
+line 16: syntax error at "/" -- right side is not Integer
+	Type of right side was Boolean
+	Right side was FALSE
+line 16: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Boolean
+	Rvalue was of type Integer
+	Lvalue was: TRUE
+	Rvalue was: ((FALSE * TRUE) / FALSE)
+line 17: syntax error at "mod" -- left side is not Integer
+	Type of left side was T
+	Left side was z
+line 17: syntax error at "mod" -- right side is not Integer
+	Type of right side was T
+	Right side was z
+line 17: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type T
+	Rvalue was of type Integer
+	Lvalue was: z
+	Rvalue was: (z mod z)
+line 18: syntax error at "or" -- left side is not Boolean
+	Type of left side was Integer
+	Left side was 1
+line 18: syntax error at "or" -- right side is not Boolean
+	Type of right side was Integer
+	Right side was 2
+line 18: syntax error at "or" -- right side is not Boolean
+	Type of right side was Integer
+	Right side was 3
+line 18: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Integer
+	Rvalue was of type Boolean
+	Lvalue was: x
+	Rvalue was: ((1 or 2) or 3)
+line 19: syntax error at "+" -- Left side is not Integer
+	Type of left side was Boolean
+	Left side was FALSE
+line 19: syntax error at "+" -- right side is not Integer
+	Type of right side was Boolean
+	Right side was TRUE
+line 19: syntax error at "-" -- right side is not Integer
+	Type of right side was Boolean
+	Right side was TRUE
+line 19: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Boolean
+	Rvalue was of type Integer
+	Lvalue was: TRUE
+	Rvalue was: ((FALSE + TRUE) - TRUE)
+line 20: syntax error at "-" -- Left side is not Integer
+	Type of left side was T
+	Left side was z
+line 20: syntax error at "-" -- right side is not Integer
+	Type of right side was T
+	Right side was z
+line 20: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type T
+	Rvalue was of type Integer
+	Lvalue was: z
+	Rvalue was: (z - z)
+line 21: syntax error at "/=" -- left side is not Integer
+	Type of left side was T
+	Left side was z
+line 21: syntax error at "/=" -- right side is not Integer
+	Type of right side was T
+	Right side was z
+line 22: syntax error at "p" -- type mismatch between actual and formal parameters
+	Formal parameter type was Integer
+	Actual parameter type was Boolean
+	Formal parameter was  x
+	Actual parameter was TRUE

@@ -1,0 +1,93 @@
+#!pwish -f
+##############################################################################
+#
+# 	Copyright (c) John D. Mitchell, 1995 -- All Rights Reserved
+#
+# PROJECT:	CStr
+# MODULE:	Contrib
+# FILE: 	parserd.tk
+# AUTHOR: 	John D. Mitchell, Jul 15, 1995
+#
+# COMMANDS:
+# 	Name			Description
+#	----			-----------
+#
+# REVISION HISTORY:
+#	Name	Date		Description
+#	----	----		-----------
+#	JDM	95.07.15   	Initial Revision
+#
+# DESCRIPTION:
+#	This file contains the Parser windoing shell *server* side
+#	'daemon' code.
+#
+###############################################################################
+
+#
+# First figure out who the user is.
+#
+if {-1 == [lsearch [info vars] user]} {
+    set user $env(USER)
+}
+
+#
+# Set the default server host machine and port number.
+#
+if {-1 == [lsearch [info vars] defaultHost]} {
+    if [catch {exec hostname} defaultHost] {
+	set defaultHost "NoHost"
+    }
+}
+if {-1 == [lsearch [info vars] defaultPort]} {
+    set defaultPort 1068
+}
+
+#
+# See if the user specified a port number on the command line.
+#
+if {1 <= $argc} {
+    # Override default port setting.
+    set defaultPort [lindex $argv 0]
+    puts stdout "Using '$defaultPort' as server connection port number..."
+}
+
+#
+# Check for too many damn command line arguments.
+#
+if {1 < $argc} {
+    puts stderr "parserd:  Too many command line arguments!"
+    puts stderr "parserd:  $argv"
+    puts stderr {parserd:  Usage:  parserd [port #]}
+    puts stderr "parserd:  Aborting..."
+    exit
+}
+
+#
+# Attempt to initialize ourselves as a Tcl-DP RPC-Server on the current
+# machine at the specified port number.
+#
+if {"" == $defaultPort} {
+    puts stderr "parserd:  defaultPort variable undefined!"
+    puts stderr "parserd:  Aborting..."
+    exit
+}
+puts -nonewline stderr "parserd:  Setting up as Parser Server on "
+puts -nonewline stderr "$defaultHost:$defaultPort..."
+if {$defaultPort != [dp_MakeRPCServer $defaultPort]} {
+    puts stderr ""
+    puts stderr "parserd:  Unable to setup server!"
+    puts stderr "parserd:  Aborting..."
+    exit
+}
+puts stderr "connected!"
+
+#
+# Finally, identify the server to the user.
+#
+wm title . "Parser Server Daemon"
+wm iconname . "Parser Server"
+wm iconify .
+
+#
+# Add additional functionality and user interface stuff here...
+#

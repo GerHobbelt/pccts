@@ -1,0 +1,4 @@
+line 5: syntax error at "incorrect" -- undefined subprogram
+line 5: syntax error at "incorrect" -- name referenced after end does not match subprogram declaration
+	Subprogram was declared with name incorrect8
+invalid token near line 6 (text was '// closing identifier doesn't match program')

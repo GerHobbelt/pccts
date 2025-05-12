@@ -9,10 +9,13 @@ DLG = $(BIN)/dlg
 PCCTS_H = $(PCCTS)/h
 SET = $(PCCTS)/support/set
 
+#CFLAGS = -Ih -I. -I$(PCCTS_H) -I$(SET) -g -DZZLEXBUFSIZE=32000
+CFLAGS = -Wall -pedantic -O2 -Ih -I. -I$(PCCTS_H) -I$(SET) -g -DZZLEXBUFSIZE=32000
 CC=cc
 COPT=-g
 CFLAGS = $(COPT) -Ih -I. -I$(PCCTS_H) -I$(SET) -DZZLEXBUFSIZE=32000
-AFLAGS = -gh -k 2 -gt
+#AFLAGS = -gh -k 2 -gt
+AFLAGS = -gh -k 2 -gt -ga -e3 
 DFLAGS = -C2
 GRM = sor.g
 SRC = sor.c scan.c err.c main.c globals.c gen.c $(SET)/set.c hash.c look.c cpp.c
@@ -22,7 +25,7 @@ SHELL=/bin/sh
 
 all:
 	$(MAKE) sor
-	(cd ./lib; $(MAKE) CC="$(CC)" COPT="$(COPT)")
+	(cd lib; $(MAKE) CC="$(CC)" COPT="$(COPT)")
 
 sor: $(OBJ) $(SRC)
 	$(CC) -o sor $(CFLAGS) $(OBJ)
@@ -38,6 +41,12 @@ set.o : $(SET)/set.c
 
 scan.c mode.h : parser.dlg
 	$(DLG) $(DFLAGS) parser.dlg scan.c
+
+regenerate: sor.c
+	$(ANTLR) $(AFLAGS) sor.g
+	$(DLG) $(DFLAGS) parser.dlg scan.c
+	$(ANTLR) -gc -k 2 -gt -pa -e3 -cr -ga -w2 -info ptfmo sor.g > sor.full.dsc
+	$(ANTLR) -gc -k 2 -gt -p -e3 -cr -ga -w2 sor.g > sor.dsc
 
 scan.o : scan.c mode.h tokens.h
 

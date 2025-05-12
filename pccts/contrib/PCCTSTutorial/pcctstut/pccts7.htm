@@ -1,0 +1,348 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>Expressions</title>
+<style>
+<!--
+PRE {color: maroon;}
+CODE {color: maroon;}
+-->
+</style>
+
+
+<meta name="Microsoft Theme" content="expeditn 001, default"><meta name="Microsoft Border" content="tb, default"></head>
+
+<body background="../_themes/expeditn/exptextb.jpg" bgcolor="#FFFFFF" text="#000000" link="#006600" vlink="#669966" alink="#990000"><!--mstheme--><font face="book antiqua"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<h1 align="center"><font size="7" color="#800000"><strong>Expressions</strong></font></h1>
+
+<p align="center"><a href="pccts6.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts8.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<p align="center">&nbsp;</p>
+
+<p>XL expressions are pretty similar to any old expressions you'd find in any old language
+(or in any new language, for that matter.) The stuff we do here will be pretty much the
+same in any parser or compiler you write in PCCTS, so pay attention! I know you're falling
+asleep after reading thirty-odd pages of drivel, but hang with me for a little longer!</p>
+
+<p>There are a few things to notice about using PCCTS when you write expressions. The big
+one is that PCCTS is an LL(k) parser-generator. That means several things, but the biggest
+(with regard to expressions) is that left recursion is <b>not</b> allowed. See some
+compiler books for the details; in a nutshell</p>
+
+<!--mstheme--></font><pre>a : a PLUS a ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>would generate code like</p>
+
+<!--mstheme--></font><pre>a()
+{
+    a();
+    match(PLUS);
+    a();
+}
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which would obviously recursively call itself until you run out of stack space. There
+are several ways around this. You have probably seen the following type of code used to
+describe parts of expressions:</p>
+
+<!--mstheme--></font><pre>a
+  : a PLUS a
+  | t
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>To get rid of the left-recursion that renders LL(k) grammars helpless, you can use some
+wonderfully-mechanical algorithms to turn it into</p>
+
+<!--mstheme--></font><pre>a      : a1 a_tail ;
+a1     : t ;
+a_tail : PLUS t a_tail
+       | // nothing
+       ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Yuck! It works, but how long did you have to think about it to understand what it
+means?</p>
+
+<p>Notice that the mechanically-generated code utilizes tail-recursion (recursion as the
+last element of a rule, also know as right-recursion) to keep adding (PLUS t) to the end
+of the &quot;a&quot; thing we are creating. Eventually, it ends with the empty (epsilon)
+production in place of <code>a_tail</code></p>
+
+<p>Thinking about right-recursion, recall that right recursion can always be replaced very
+easily by a loop. (From where do you recall this? I dunno. Some programming class.) In
+PCCTS, we have the advantage of being able to use ()* and ()+ closures using EBNF
+notation. In other words, we can easily represent loops. So, a rule like</p>
+
+<!--mstheme--></font><pre>a_tail
+  : PLUS t a_tail
+  | // nothing
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>can be re-written as</p>
+
+<!--mstheme--></font><pre>a_tail
+  : (PLUS t)*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which is much better so far. Now look what we have:</p>
+
+<!--mstheme--></font><pre>a      : a1 a_tail ;
+a1     : t ;
+a_tail : (PLUS t)* ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Notice something about <code>a_tail</code> now? Without the tail recursion, it's only
+used in one place, so we can substitute it. And while we're at it, let's substitute <code>a1</code>
+in place as well, yielding</p>
+
+<!--mstheme--></font><pre>a : t (PLUS t)* ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>When we look at that, we see that that's exactly what we wanted. Basically, PLUS is
+associative, so the order in which you add things really doesn't matter. You can keep
+saying &quot;PLUS something else&quot; at the end of our PLUS expression. The above
+notation is actually very good, because it matches what your brain does as it adds new
+parts to the expression as it reads left-to-right.</p>
+
+<p>The moral of the above nonsense is that an expression-like rule such as</p>
+
+<!--mstheme--></font><pre>a : a OPERATOR
+  | t
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>can be re-written</p>
+
+<!--mstheme--></font><pre>a : t (OPERATOR t)* ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Now that we're armed, lets start organizing for our attack on XL's expression rules!</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Precedence<!--mstheme--></font></h2>
+
+<p>In the description of XL above, we defined that the operators have the following
+precedences:</p>
+<div align="center"><center>
+
+<table border="1" cellpadding="9" cellspacing="1" width="100%" bordercolordark="#660000" bordercolorlight="#CC9966">
+  <tr>
+    <td><!--mstheme--><font face="book antiqua">Boolean negation<!--mstheme--></font></td>
+    <td><!--mstheme--><font face="book antiqua"><b>not</b><!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td width="199"><!--mstheme--><font face="book antiqua">Unary adding operators<!--mstheme--></font></td>
+    <td width="127"><!--mstheme--><font face="book antiqua">+ -<!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td width="199"><!--mstheme--><font face="book antiqua">Multiplying operators<!--mstheme--></font></td>
+    <td width="127"><!--mstheme--><font face="book antiqua">* / <b>mod</b><!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td width="199"><!--mstheme--><font face="book antiqua">Binary adding operators<!--mstheme--></font></td>
+    <td width="127"><!--mstheme--><font face="book antiqua">+ -<!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td width="199"><!--mstheme--><font face="book antiqua">Relational operators<!--mstheme--></font></td>
+    <td width="127"><!--mstheme--><font face="book antiqua">= /= &lt; &lt;= &gt; &gt;=<!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td width="199"><!--mstheme--><font face="book antiqua">Logical operators<!--mstheme--></font></td>
+    <td width="127"><!--mstheme--><font face="book antiqua"><b>and</b> <b>or</b><!--mstheme--></font></td>
+  </tr>
+</table>
+</center></div>
+
+<p>What exactly does this mean? Well, it means that if we see a <b>not</b> somewhere in an
+expression, we should resolve it before we resolve any other operators (unless, of course,
+there are specific precedences specified by using parentheses.) So if we had an expression
+like</p>
+
+<!--mstheme--></font><pre>a and x or not y and 2 + -q * s &lt; 10
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>we would first evaluate the &quot;not&quot; (let's use parentheses to specify
+evaluation grouping)</p>
+
+<!--mstheme--></font><pre>a and x or (not y) and 2 + -q * s &lt; 10
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>then take care of the unary -</p>
+
+<!--mstheme--></font><pre>a and x or (not y) and 2 + (-q) * s &lt; 10
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>then the *</p>
+
+<!--mstheme--></font><pre>a and x or (not y) and 2 + ((-q) * s) &lt; 10
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>then the binary +</p>
+
+<!--mstheme--></font><pre>a and x or (not y) and(2 + ((-q) * s)) &lt; 10
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>then the relational &lt; </p>
+
+<!--mstheme--></font><pre>a and x or (not y) and((2 + ((-q) * s)) &lt; 10)
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>then the boolean <b>and</b> and <b>or</b></p>
+
+<!--mstheme--></font><pre>(((a and x) or (not y)) and ((2 + ((-q) * s)) &lt; 10))
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Whoa! Is that right? In most languages, <b>and</b> has a higher precedence than <b>or</b>.
+But in our precedence chart for XL, <b>and</b> and <b>or</b> have the same precedence. So
+while we might <i>expect</i> to see the evaluation proceed like</p>
+
+<!--mstheme--></font><pre>((a and x) or ((not y) and ((2 + ((-q) * s)) &lt; 10)))
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>that's not how it goes, because <b>and</b> and <b>or</b> have the same precedence, we
+have to just read them left to right. (In this situation, XL's design is less intuitive
+because of the preponderance of other languages that give <b>and</b> a higher precedence
+than <b>or</b>. But that was the language designer's choice, and we'll live with it.)</p>
+
+<p>So what do we do with these precedences? Basically 
+
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">each level of precedence represents a rule in the grammar <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Each operator in that precedence level is one alternative in that rule <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">The rules will nest with the highest precedence operators being the most-deeply nested
+    rules <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Each precedence level will only imbed the next higher precedence level. <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">The highest precedence level will only use &quot;primitive&quot; expression elements,
+    such as variable references and literals. <!--mstheme--></font><!--msthemelist--></td></tr>
+<!--msthemelist--></table>
+
+<p>So lets start at the top of the precedence chart. I'm going to go out on a limb and
+avoid the terms <b>term</b>, <b>factor</b>, <b>simple expression</b>. I could never
+remember which was supposed to be which from a mathematics point of view. Instead, I'll
+follow Sun's lead in their Java grammar, and use more descriptive names.</p>
+
+<p>We need to start with our primitive expression elements. In XL, these are constant
+values, variable references, and parenthesized expressions. Remember, parenthesizing an
+expression basically makes it the most important thing that is currently being evaluated.</p>
+
+<!--mstheme--></font><pre>primitiveElement
+  : constantValue
+  | variableReference
+  | LPAREN expression RPAREN
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>So far so good. Now, let's just walk down the precedence chart. First, boolean
+negation:</p>
+
+<!--mstheme--></font><pre>booleanNegationExpression
+  : (NOT)* primitiveElement
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Notice that the <b>NOT</b> is optional here, and you can have as many of them as you
+like. That is because we want to be able to just pass any expression element through a
+rule without modifying it, enabling us to have an expression just be a <code>primitiveElement</code>
+if that's what the user wants. Next, we have unary PLUS and MINUS:</p>
+
+<!--mstheme--></font><pre>// in the grammar
+signExpression
+  : (PLUS|MINUS)* booleanNegationExpression
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Something I like to do (and this is strictly style preference) is to define a token
+class for each operator set, which would make this:</p>
+
+<!--mstheme--></font><pre>// in the scanner specification
+#tokclass ADD_OP {PLUS MINUS}
+
+// in the grammar
+signExpression
+  : (ADD_OP)* booleanNegationExpression
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which I personally find a bit more readable, but you might think differently. Just
+another possibility. Notice that the ( )* can evaluate to &quot;no operators,&quot;
+meaning that <code>booleanNegationExpression</code> can be passed straight through this
+precedence level without any modification.</p>
+
+<p>Let us have as many plusses or minuses in front of our expression so far. Next, we have
+our multiplying operators, *, / and mod:</p>
+
+<!--mstheme--></font><pre>// in the scanner specification
+#tokclass MULT_OP {TIMES DIV MOD}
+
+// in the grammar
+multiplyingExpression
+  : signExpression (MULT_OP signExpression)*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Which lets us keep tacking on multiplying operators ad nauseum.</p>
+
+<p>Notice that this precedence rule imbedded the previous rule, and again, can let it just
+pass <code>signExpression</code> right on through without modifying it. By now, things
+should be seeming a bit more clear. Next, we move onto the binary adding operations:</p>
+
+<!--mstheme--></font><pre>// use same ADD_OP in the scanner specification
+ 
+// in the grammar
+addingExpression
+  : multiplyingExpression (ADD_OP multiplyingExpression)*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Will we have a conflict between an ADD_OP acting as a binary add operator and one
+acting as a unary operator? No. The reason is that if we see one in between two partial
+expressions, it must be a binary operator. If we see another right after it (and any
+number of them after that) they must be working (covertly) as unary operators. Next we
+have the relational operators:</p>
+
+<!--mstheme--></font><pre>// in the scanner specification
+#tokclass RELATIONAL_OP {EQUALS NOT_EQUALS GT GTE LT LTE}
+
+// in the grammar
+relationalExpression
+  : addingExpression (RELATIONAL_OP addingExpression)*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Finally, we get to the operators with the lowest precedence. At this level, we can call
+the result a full expression. This level encompasses <b>and</b> and <b>or</b> operators:</p>
+
+<!--mstheme--></font><pre>// in the scanner specification
+#tokclass BOOLEAN_OP {AND OR}
+
+// in the grammar
+expression
+  : relationalExpression (BOOLEAN_OP relationalExpression)*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Tack on as many and/or partial expressions as you like...</p>
+
+<p>Now that we've gotten through expressions, it really doesn't seem so bad. The
+precedence table actually made it easier, rather than more confusing.</p>
+
+<p>At this point, we have specified the entire grammar for an XL parser. We'll see the
+whole grammar together soon, but first we need to discuss <a href="pccts8.htm">the code
+that holds it all together</a>.</p>
+
+<p align="center">&nbsp; 
+<!--msnavigation--></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<p align="center"><a href="pccts6.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts8.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+
+<p align="center">This page was last updated on 09/08/97.</p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--mstheme--></font></body>
+</html>

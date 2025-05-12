@@ -1,0 +1,144 @@
+Cross Reference:
+
+Rule              grammar referenced by { }
+Rule            class_def referenced by { grammar }
+Rule                 rule referenced by { grammar }
+Rule              laction referenced by { grammar }
+Rule              lmember referenced by { grammar }
+Rule              lprefix referenced by { grammar }
+Rule                aPred referenced by { grammar }
+Rule           predOrExpr referenced by { aPred predPrimary }
+Rule          predAndExpr referenced by { predOrExpr }
+Rule          predPrimary referenced by { predAndExpr predPrimary }
+Rule            aLexclass referenced by { grammar }
+Rule                error referenced by { grammar }
+Rule               tclass referenced by { grammar }
+Rule                token referenced by { grammar }
+Rule                block referenced by { rule element }
+Rule                  alt referenced by { block }
+Rule        element_label referenced by { element }
+Rule              element referenced by { alt }
+Rule default_exception_handler referenced by { grammar }
+Rule      exception_group referenced by { rule block default_exception_handler }
+Rule    exception_handler referenced by { exception_group }
+Rule            enum_file referenced by { }
+Rule              defines referenced by { enum_file }
+Rule             enum_def referenced by { enum_file }
+
+grammar :
+	  ( "{\\}#header" Action | "{\\}#first" Action | "{\\}#parser" QuotedTerm | "{\\}#tokdefs" QuotedTerm )* ( Action | laction | lmember | lprefix | aLexclass | token | error | tclass | aPred | default_exception_handler | class_def | "\}" )* rule ( rule | aLexclass | token | error | tclass | aPred | class_def | "\}" )* ( Action | laction | lmember | lprefix | error | tclass | class_def | aPred | "\}" )* Eof
+	;
+
+class_def :
+	  "class" ( NonTerminal | TokenTerm ) ( "\{" )* "\{"
+	;
+
+rule :
+	  NonTerminal { "!" } { { "\<" } PassAction } { "\>" PassAction } { QuotedTerm } ":" block ";" { Action } ( exception_group )*
+	;
+
+laction :
+	  "{\\}#lexaction" Action
+	;
+
+lmember :
+	  "{\\}#lexmember" Action
+	;
+
+lprefix :
+	  "{\\}#lexprefix" Action
+	;
+
+aPred :
+	  "{\\}#pred" TokenTerm ( Pred { predOrExpr } | predOrExpr ) { ";" }
+	;
+
+predOrExpr :
+	  predAndExpr ( "\|\|" predAndExpr )*
+	;
+
+predAndExpr :
+	  predPrimary ( "&&" predPrimary )*
+	;
+
+predPrimary :
+	  TokenTerm
+	| "\(" predOrExpr "\)"
+	| "!" predPrimary
+	;
+
+aLexclass :
+	  "{\\}#lexclass" TokenTerm
+	;
+
+error :
+	  "{\\}#errclass" ( TokenTerm | QuotedTerm ) "\{" ( NonTerminal | TokenTerm | QuotedTerm ) ( ( NonTerminal | TokenTerm | QuotedTerm ) )* "\}"
+	;
+
+tclass :
+	  "{\\}#tokclass" TokenTerm { "\(" QuotedTerm "\)" } "\{" ( ( TokenTerm { ".." TokenTerm } | QuotedTerm ) )+ "\}"
+	;
+
+token :
+	  "{\\}#token" { TokenTerm { "\(" QuotedTerm "\)" } { "=" "[0-9]+" } } { QuotedTerm } { Action } { ";" }
+	;
+
+block :
+	  alt ( exception_group )* ( "\|" alt ( exception_group )* )*
+	;
+
+alt :
+	  { "\@" } ( { "\~" } element )*
+	;
+
+element_label :
+	  LABEL ":"
+	;
+
+element :
+	  { element_label } ( TokenTerm { ".." ( QuotedTerm | TokenTerm ) } ( "^" | | "!" ) { "\@" } 
+	                    | QuotedTerm { ".." ( QuotedTerm | TokenTerm ) } ( "^" | | "!" ) { "\@" } 
+	                    | WildCard ( "^" | | "!" ) 
+	                    | NonTerminal { "!" } { { "\<" } PassAction } { "\>" PassAction } )
+	| Action
+	| Pred { PassAction }
+	| { Pragma ( "approx" | "LL\(1\)" | "LL\(2\)" ) } { FirstSetSymbol "\(" ( NonTerminal | TokenTerm ) "\)" } 
+	  ( "\(" block "\)" ( "\*" 
+	                    | "\+" 
+	                    | "?" ( ( "=>" | "&&" ) Pred { PassAction } 
+	                          | 
+	                          ) 
+	                    | 
+	                    ) 
+	  | "\{" block "\}" )
+	| "\*"
+	| "\+"
+	| "\>"
+	| PassAction
+	;
+
+default_exception_handler :
+	  exception_group
+	;
+
+exception_group :
+	  "exception" { PassAction } ( exception_handler )* { "default" ":" Action }
+	;
+
+exception_handler :
+	  "catch" ( NonTerminal | TokenTerm ) ":" { Action }
+	;
+
+enum_file :
+	  { "#ifndef" ID { "#define" ID } } ( ( enum_def )+ | defines )
+	|
+	
+	;
+
+defines :
+	  ( "#define" ID INT )+
+	;
+
+enum_def :
+	  "enum" ID "\{" ID ( "=" INT | ) ( "," { ID { "=" INT } | ID ( "=" INT | ) } )* "\}" ";"
+	;

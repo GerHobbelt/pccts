@@ -1,0 +1,153 @@
+#!pwish -f
+##############################################################################
+#
+# 	Copyright (c) John D. Mitchell, 1995 -- All Rights Reserved
+#
+# PROJECT:	CStr
+# MODULE:	Contrib
+# FILE: 	parser
+# AUTHOR: 	John D. Mitchell, Jul 15, 1995
+#
+# COMMANDS:
+# 	Name			Description
+#	----			-----------
+#
+# REVISION HISTORY:
+#	Name	Date		Description
+#	----	----		-----------
+#	JDM	95.07.15   	Initial Revision
+#
+# DESCRIPTION:
+#	This file contains the Parser wIndoing SHell (PISH) *server* side
+#	application code.
+#
+#	The 
+#
+###############################################################################
+
+catch {wm withdraw .}
+
+#
+# First figure out who the user is.
+#
+if {-1 == [lsearch [info vars] user]} {
+    set user $env(USER)
+}
+
+#
+# Set the default server host machine and port number.
+#
+if {-1 == [lsearch [info vars] defaultHost]} {
+    if [catch {exec hostname} defaultHost] {
+	set defaultHost "NoHost"
+	puts stdout "Unable to set defaultHost!"
+    }
+}
+if {-1 == [lsearch [info vars] defaultPort]} {
+    set defaultPort 1068
+}
+
+#
+# Make sure that the user specified a file to use...
+#
+if {1 <= $argc} {
+    # Get the name of the file.
+    set fileName [lindex $argv 0]
+    puts stdout "Using '$fileName' as parser input file..."
+
+    # Make sure it exists.
+    if [catch {open $fileName} srcFile] {
+	puts stderr "Unable to open '$fileName'!"
+	puts stderr "Aborting..."
+	exit
+    }
+
+    # Read the contents into a string.
+    if [catch {read $srcFile} srcData] {
+	puts stderr "Unable to read data from '$fileName'!"
+	puts stderr "Aborting..."
+	exit
+    }
+
+    # Okay, we're done with the file since we have it's contents.
+    catch {close $srcFile}
+}
+
+#
+# See if the user specified a port number on the command line.
+#
+if {2 <= $argc} {
+    # Override default port setting.
+    set defaultPort [lindex $argv 1]
+    puts stdout "Using '$defaultPort' as server connection port number..."
+}
+
+#
+# See if the user specified a host name on the command line.
+#
+if {3 <= $argc} {
+    # Override default port setting.
+    set defaultHost [lindex $argv 2]
+    puts stdout "Using '$defaultHost' as server connection host name..."
+}
+
+#
+# Check for too many damn command line arguments.
+#
+if {0 == $argc || 3 < $argc} {
+    puts stderr "parser:  Malformed command line!"
+    puts stderr "parser:  $argv"
+    puts stderr {parser:  Usage:  parser sourceFile [port # [host]]}
+    puts stderr "parser:  Aborting..."
+    exit
+}
+
+#
+# Attempt to initialize ourselves as a Tcl-DP RPC-Client on the current
+# machine to the server on the given host at the specified port number.
+#
+if {"" == $defaultPort} {
+    puts stderr "parser:  defaultPort variable undefined!"
+    puts stderr "parser:  Aborting..."
+    exit
+}
+if {"" == $defaultHost} {
+    puts stderr "parser:  defaultHost variable undefined!"
+    puts stderr "parser:  Aborting..."
+    exit
+}
+if [catch {dp_MakeRPCClient $defaultHost $defaultPort} server] {
+    puts stderr "parser:  Unable to connect to parser server!"
+    puts stderr "parser:  Aborting..."
+    exit
+}
+
+#
+# Go forth and parse!
+#
+if [catch {dp_RPC $server parser parse $srcData} parseResults] {
+    # Parse failed?
+    puts stderr "Parse seems to have failed!"
+} {
+    # Parsed!!!
+    puts stderr "Parsed okay!"
+}
+puts stdout "$parseResults"
+
+#
+# Get the statistics of the parse.
+#
+if [catch {dp_RPC $server parser stats} parseStats] {
+    # Stats request failed?
+    puts stderr "Parser statistics request seems to have failed!"
+} {
+    # Retrieved.
+}
+puts stdout "$parseStats"
+
+#
+# Cleanliness is next to godliness!
+#
+catch {dp_close $server}
+exit
+

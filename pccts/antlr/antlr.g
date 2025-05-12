@@ -29,7 +29,7 @@
  * Terence Parr
  * Parr Research Corporation
  * with Purdue University and AHPCRC, University of Minnesota
- * 1989-1995
+ * 1989-1999
  */
 
 /* MR1									*/
@@ -51,6 +51,10 @@
 /* MR20 G. Hobbelt For Borland C++ 4.x & 5.x compiling with ALL warnings enabled */
 #if defined(__TURBOC__)
 #pragma warn -aus  /* unused assignment of 'xxx' */
+#endif
+#ifdef _MSC_VER
+/* local variable is initialized but not referenced */
+#pragma warning(disable : 4189)
 #endif
 
 
@@ -239,7 +243,7 @@ int tokenActionActive=0;                                            /* MR1 */
                               zzbegexpr[0] = '\0';
 							  if ( zzbufovf ) {
 								err( eMsgd("predicate buffer overflow; size %d",ZZLEXBUFSIZE));
-							  };
+							  }
 #ifdef __cplusplus__
 /* MR10 */                    list_apply(CurActionLabels, (void (*)(void *))mark_label_used_in_sem_pred);
 #else
@@ -398,14 +402,14 @@ int tokenActionActive=0;                                            /* MR1 */
 /* MR10 */						if ( !GenCC && (el->elem == NULL || el->elem->ntype==nRuleRef) && GenAST) {
 /* MR10 */                          err("You can no longer use attributes returned by rules when also using ASTs");
 /* MR10 */                          err("   Use upward inheritance (\"rule >[Attrib a] : ... <<$a=...\>\>\")");
-/* MR10 */                      };
+/* MR10 */                      }
 /* MR10 */
 /* MR10 */                      /* keep track of <<... $label ...>> for semantic predicates in guess mode */
 /* MR10 */                      /* element labels contain pointer to the owners node                      */
 /* MR10 */
 /* MR10 */                      if (el->elem != NULL && el->elem->ntype == nToken) {
 /* MR10 */                        list_add(&CurActionLabels,el);
-/* MR10 */                      };
+/* MR10 */                      }
 							}
 							else
 								warn(eMsg1("$%s not parameter, return value, (defined) element label",&zzbegexpr[1]));
@@ -641,7 +645,7 @@ grammar :	<<Graph g;>>
         				strcpy(FirstAction, LATEXT(1));
     				} else {
                         warn("additional #first statement ignored");
-                    };
+                    }
 				>>
 
 			|	"{\\}#parser" QuotedTerm
@@ -778,7 +782,7 @@ class_def
 /* MR10 */  (~ "\{"
 /* MR10 */            <<if (ClassDeclStuff == NULL) {
 /* MR10 */                   ClassDeclStuff=(char *)calloc(MaxClassDeclStuff+1,sizeof(char));
-/* MR10 */              };
+/* MR10 */              }
 /* MR10 */              strncat(ClassDeclStuff," ",MaxClassDeclStuff);
 /* MR10 */              strncat(ClassDeclStuff,LATEXT(1),MaxClassDeclStuff);
 /* MR22 */              do {
@@ -874,13 +878,18 @@ rule	:	<<
 			if ( GenEClasseForRules && q!=NULL ) {
 				e = newECnode;
 				require(e!=NULL, "cannot allocate error class node");
-				if ( q->egroup == NULL ) {a = q->str; a[0] = (char)toupper(a[0]);}
-				else a = q->egroup;
+				if ( q->egroup == NULL ) 
+				{
+				    a = q->str; 
+				    /* a[0] = (char)toupper(a[0]); */  /* [i_a] removed; why was this 'hack'(?) here anyway? -- fooked up my fix in genDefFile() as the token is 'damaged' and thus hashed incorrectly :-(( */
+				}
+				else 
+				    a = q->egroup;
 				if ( Tnum( a ) == 0 )
 				{
 					e->tok = addTname( a );
 					list_add(&eclasses, (char *)e);
-					if ( q->egroup == NULL ) a[0] = (char)tolower(a[0]);
+					/* if ( q->egroup == NULL ) a[0] = (char)tolower(a[0]); */ /* [i_a] removed; why was this 'hack'(?) here anyway? See comment 8 lines above */
 					/* refers to itself */
 					list_add(&(e->elist), mystrdup(q->str));
 				}
@@ -991,7 +1000,7 @@ lmember:	<<char *a;>>					     /* MR1 */
 /* MR1 */		  require(a!=NULL, "rule lmember: cannot allocate action");
 /* MR1 */		  strcpy(a, LATEXT(1));
 /* MR1 */		  list_add(&LexMemberActions, a);
-/* MR1 */		};
+/* MR1 */		}
 /* MR1 */		>>
 /* MR1 */	;
 /* MR1 */	<<CannotContinue=TRUE;>>
@@ -1010,7 +1019,7 @@ lprefix:	<<char *a;>>					     /* MR1 */
 /* MR1 */		  require(a!=NULL, "rule lprefix: cannot allocate action");
 /* MR1 */		  strcpy(a, LATEXT(1));
 /* MR1 */		  list_add(&LexPrefixActions, a);
-/* MR1 */		};
+/* MR1 */		}
 /* MR1 */		>>
 /* MR1 */	;
 /* MR1 */	<<CannotContinue=TRUE;>>
@@ -1059,7 +1068,7 @@ aPred:  <<PredEntry     *predEntry=NULL;
               warnFL(eMsg1("#pred %s previously defined - ignored",name),
                                               FileStr[action_file],action_line);
               name=NULL;
-            };
+            }
           >>
 
         (
@@ -1095,11 +1104,11 @@ aPred:  <<PredEntry     *predEntry=NULL;
                         predExpr->source->file=action_file;
                         predExpr->source->is_predicate=1;
                         predExpr->k=predicateLookaheadDepth(predExpr->source);
-                      };
+                      }
                       predEntry->pred=predExpr;
                       hash_add(Pname,name,(Entry *)predEntry);
                       predExpr=NULL;
-                };
+                }
                 predicate_free(predExpr);
               >>
 
@@ -1116,7 +1125,7 @@ aPred:  <<PredEntry     *predEntry=NULL;
                   predEntry->pred=predExpr;
                   hash_add(Pname,name,(Entry *)predEntry);
                   predExpr=NULL;
-                };
+                }
                 predicate_free(predExpr);
               >>
         )
@@ -1142,14 +1151,14 @@ predOrExpr>[Predicate *result] :
                 if (predExpr != NULL) {
                     ORnode->down=predExpr;
                     tail=&predExpr->right;
-                };
+                }
             >>
         ( "\|\|"  predAndExpr>[predExpr]
             <<
                 if (predExpr != NULL) {
                     *tail=predExpr;
                     tail=&predExpr->right;
-                };
+                }
             >>
         )*
         <<
@@ -1176,14 +1185,14 @@ predAndExpr>[Predicate *result] :
                 if (predExpr != NULL) {
                     ANDnode->down=predExpr;
                     tail=&predExpr->right;
-                };
+                }
             >>
         ( "&&"  predPrimary>[predExpr]
             <<
                 if (predExpr != NULL) {
                     *tail=predExpr;
                     tail=&predExpr->right;
-                };
+                }
             >>
         )*
         <<
@@ -1219,7 +1228,7 @@ predPrimary>[Predicate *result] :
                   predExpr=predicate_dup(predEntry->pred);
                   predExpr->predEntry=predEntry;
                   $result=predExpr;
-                };
+                }
             >>
 
         | "\(" predOrExpr>[predExpr] "\)"
@@ -1291,8 +1300,8 @@ error	:	<<char *t=NULL; ECnode *e; int go=1; TermEntry *p;>>
 
 /* rule tclass */
 
-tclass	:	<<char *t=NULL; TCnode *e; int go=1,tok,totok; TermEntry *p, *term, *toterm;>>
-            <<char *akaString=NULL; int save_file; int save_line;>>
+tclass	:	<<char *t=NULL; TCnode *e; int go=1,tok,totok; TermEntry *p = 0, *term, *toterm;>>
+            <<char *akaString=NULL; int save_file = 0; int save_line = 0;>>
             <<char *totext=NULL; >>
 			"{\\}#tokclass" TokenTerm <<t=mystrdup(LATEXT(1));>>
 			<<e = newTCnode;
@@ -1333,11 +1342,11 @@ tclass	:	<<char *t=NULL; TCnode *e; int go=1,tok,totok; TermEntry *p, *term, *to
 /* MR23 */                warnFL(eMsg2("this #tokclass statment conflicts with a previous #tokclass %s(\"%s\") statement",
 /* MR23 */                              t,p->akaString),
 /* MR23 */			                    FileStr[save_file],save_line);
-/* MR23 */             };
+/* MR23 */             }
 /* MR23 */            } else {
 /* MR23 */              p->akaString=akaString;
-/* MR23 */            };
-/* MR23 */          };
+/* MR23 */            }
+/* MR23 */          }
 /* MR23 */		>>
 
 			"\{"
@@ -1441,12 +1450,12 @@ token	:	<<char *t=NULL, *e=NULL, *a=NULL; int tnum=0;>>
                       warnFL(eMsg2("this #token statment conflicts with a previous #token %s(\"%s\") statement",
                                     t,te->akaString),
                         FileStr[save_file],save_line);
-                    };
+                    }
                   } else {
                     te->akaString=akaString;
-                  };
-                };
-              };
+                  }
+                }
+              }
             >>
 		;
 		<<CannotContinue=TRUE;>>
@@ -1483,7 +1492,7 @@ block[set *toksrefd, set *rulesrefd]
 /* MR12c */  		if (actionNode->noHoist) {
 /* MR12c */           errFL("<<nohoist>> appears as init-action - use <<>> <<nohoist>>",
 /* MR12c */                       FileStr[actionNode->file],actionNode->line);
-/* MR12c */         };
+/* MR12c */         }
 				}
 			}
 			((Junction *)g.left)->blockid = CurBlockID;
@@ -1811,7 +1820,7 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
 			<<if ( $first_on_line ) {                                /* MR7 */
                 CurAltStart = (Junction *)$0.left;                   /* MR7 */
                 altAdd(CurAltStart);                                 /* MR7 */
-              };>>                                                   /* MR7 */
+              }>>                                                    /* MR7 */
 			<<$node = (Node *) ((Junction *)$0.left)->p1;>>
 
 		|	<<if ( $old_not )	warn("~ SEMANTIC-PREDICATE is an undefined operation");>>
@@ -1820,7 +1829,7 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
             <<if (numericActionLabel) {             /* MR10 */
                 list_add(&NumericPredLabels,act);   /* MR10 */
                 numericActionLabel=0;               /* MR10 */
-              };                                    /* MR10 */
+              }                                     /* MR10 */
             >>
 			{	<<char *a;>>
 				PassAction
@@ -1834,7 +1843,7 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
 			<<if ( $first_on_line ) {                                /* MR7 */
                 CurAltStart = (Junction *)$0.left;                   /* MR7 */
                 altAdd(CurAltStart);                                 /* MR7 */
-              };>>                                                   /* MR7 */
+              }>>                                                    /* MR7 */
 			<<$node = (Node *)act;>>
 
 		|	<<if ( $old_not )	warn("~ BLOCK is an undefined operation");>>
@@ -1896,7 +1905,7 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
                         <<if (numericActionLabel) {             /* MR10 */
                             list_add(&NumericPredLabels,act);   /* MR10 */
                             numericActionLabel=0;               /* MR10 */
-                          };                                    /* MR10 */
+                          }                                     /* MR10 */
                         >>
 						{	<<char *a;>>
 							PassAction
@@ -1910,12 +1919,18 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
 						<<if ($first_on_line) {                      /* MR7 */
                             CurAltStart=(Junction *)$$.left;         /* MR7 */
                             altAdd(CurAltStart);                     /* MR7 */
-                          };>>
+                          }>>
 						<<$node = (Node *)act;>>
 
 						/* for now, just snag context */
 						<<
-						pred = computePredFromContextGuard(blk,&predMsgDone);           /* MR10 */
+                        if (CannotContinue) {                                           /* [i_a] MR33 crash fix */
+                          if ( !predMsgDone) err("previous errors/warnings do not permit evaluation of the (probably invalid) context guard.");/* [i_a] MR33 crash fix */
+                          predMsgDone=1;                                                /* [i_a] MR33 crash fix */
+                          pred=NULL;                                                    /* [i_a] MR33 crash fix */
+						} else {                                                        /* [i_a] MR33 crash fix */
+    						pred = computePredFromContextGuard(blk,&predMsgDone);       /* MR10 */
+    					}                                                               /* [i_a] MR33 crash fix */
 						if ( pred==NULL) {                                              /* MR10 */
                           if ( !predMsgDone) err("invalid or missing context guard");   /* MR10 */
                           predMsgDone=1;                                                /* MR10 */
@@ -1930,21 +1945,21 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
 /* MR13 */                    if (! equal_height) {
 /* MR13 */                       errFL("in guarded predicates all tokens in the guard must be at the same height",
 /* MR13 */                              FileStr[act->file],act->line);
-/* MR13 */                    };
+/* MR13 */                    }
 /* MR13 */                  }
 /* MR10 */                  if (ampersandStyle) {
 /* MR10 */			  		  act->ampersandPred = pred;
 /* MR11 */                    if (! HoistPredicateContext) {
 /* MR11 */                      errFL("without \"-prc on\" (guard)? && <<pred>>? ... doesn't make sense",
 /* MR11 */                              FileStr[act->file],act->line);
-/* MR11 */                    };
+/* MR11 */                    }
 /* MR10 */                  } else {
 /* MR10 */			  		  act->guardpred = pred;
-/* MR10 */                  };
+/* MR10 */                  }
 /* MR10 */                  if (pred->k != semDepth) {
 /* MR10 */                     warn(eMsgd2("length of guard (%d) does not match the length of semantic predicate (%d)",
 /* MR10 */                                  pred->k,semDepth));
-/* MR10 */                  };
+/* MR10 */                  }
 						}
 						>>
 					|	<<$$ = makeBlk($$,approx,pFirstSetSymbol);
@@ -1965,7 +1980,7 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
 					if ( $first_on_line ) {                         /* MR7 */
 					   CurAltStart = (Junction *)((Junction *)((Junction *)$$.left)->p1);  /* MR7 */
                        altAdd(CurAltStart);                         /* MR7 */
-                    };                                              /* MR7 */
+                    }                                               /* MR7 */
 					$node = (Node *) ((Junction *)$$.left)->p1;
 				}
 				>>
@@ -1985,7 +2000,7 @@ element[int old_not, int first_on_line, int use_def_MT_handler] > [Node *node]
 				<<if ( $first_on_line ) {                            /* MR7 */
 					CurAltStart = (Junction *) ((Junction *)((Junction *)$$.left)->p1);  /* MR7 */
                     altAdd(CurAltStart);                             /* MR7 */
-                  };
+                  }
 				>>
 				<<$node = (Node *) ((Junction *)$$.left)->p1;>>
 
@@ -2071,7 +2086,7 @@ exception_group > [ExceptionGroup *eg]
 					        break;
 				        }
 				 } /* end switch */
-/* MR6 */	  }; /* end test on label->elem */
+/* MR6 */	  } /* end test on label->elem */
 		    } /* end test on label->ex_group */
 
 		} /* end test on exception label */
@@ -2084,14 +2099,14 @@ exception_group > [ExceptionGroup *eg]
 /* MR7 */     egAdd($eg);
 /* MR7 */   } else {
 /* MR7 */     $eg->labelEntry=label;
-/* MR7 */   };
+/* MR7 */   }
 /* MR7 */
 /* MR7 */	    /* You may want to remove this exc from the rule list  */
 /* MR7 */		/* and handle at the labeled element site.             */
 /* MR7 */
 /* MR7 */   if (label != NULL) {
 /* MR7 */     $eg = NULL;
-/* MR7 */   };
+/* MR7 */   }
 
 		>>
 	;
@@ -2166,7 +2181,7 @@ exception_handler > [ExceptionHandler *eh]
 
 enum_file[char *fname]
 	:	{	"#ifndef" ID
-			{	"#define" ID /* ignore if it smells like a gate */
+			{	"#define" ID { INT } /* ignore if it smells like a gate */
 				/* First #define after the first #ifndef (if any) is ignored */
 			}
 		}
@@ -2186,7 +2201,7 @@ defines[char *fname]
 			INT
 			<<
 			v = atoi(LATEXT(1));
-/*			fprintf(stderr, "#token %s=%d\n", t, v);*/
+/*			printf_stderr_continued( "#token %s=%d\n", t, v);*/
 
 	/* MR2 Andreas Magnusson (Andreas.Magnusson@mailbox.swipnet.se) */
 	/* MR2 Fix to bug introduced by 1.33MR1 for #tokdefs            */
@@ -2200,8 +2215,8 @@ defines[char *fname]
 			    addForcedTname( t, v );
 			  } else {
 			    warnFL(eMsg1("redefinition of token %s; ignored",t),$fname,zzline);
-			  };
-	                };
+			  }
+	        }
 			>>
 		)+
 		<<TokenNum = maxt + 1;>>
@@ -2219,7 +2234,7 @@ enum_def[char *fname]
 			|			<<v++;>>
 			)
 			<<
-/*			fprintf(stderr, "#token %s=%d\n", t, v);*/
+/*			printf_stderr_continued( "#token %s=%d\n", t, v);*/
 			TokenNum = v;
 			if ( v>maxt ) maxt=v;				/* MR3 */
 			if ( Tnum( t ) == 0 ) addForcedTname( t, v );
@@ -2242,7 +2257,7 @@ enum_def[char *fname]
 					|			<<v++;>>
 					)
 					<<
-/*					fprintf(stderr, "#token %s=%d\n", t, v);*/
+/*					printf_stderr_continued( "#token %s=%d\n", t, v);*/
 					TokenNum = v;
 					if ( v>maxt ) maxt=v;				/* MR3 */
 					if ( Tnum( t ) == 0 ) addForcedTname( t, v );
@@ -2392,7 +2407,7 @@ int tnum;
 			if ( p == NULL) {
 err(eMsg1("new token definition '%s' not allowed - only #token with name already defined by #tokdefs file allowed",t));
 	    		return;
-            };
+            }
 		}
 		Tklink(t, e);
 		if ( a!=NULL ) {
@@ -2407,7 +2422,7 @@ err(eMsg1("new token definition '%s' not allowed - only #token with name already
 			p = (TermEntry *) hash_get(Tname, t);
             if (p == NULL) {
 err(eMsg1("new token definition '%s' not allowed - only #token with name already defined by #tokdefs file allowed",t));
-            };
+            }
    		    return;
 		}
 		if ( Tnum( t ) == 0 ) addTname( t );
@@ -2512,7 +2527,7 @@ char *s;
 #endif
 {
 	char *nxt;
-    fprintf(stderr, "found consumeUntil( {...} )\n");
+    printf_stderr_continued( "found consumeUntil( {...} )\n");
 	while ( *s==' ' || *s=='\t' || *s=='\n' || *s=='\r' ) {s++;}
 	if ( *s!='{' )
 	{
@@ -2523,8 +2538,8 @@ char *s;
 	while ( *s==' ' || *s=='\t' || *s=='\n' || *s=='\r' ) {s++;}
 	while ( *s!='}' )
 	{
-	    if ( match_token(s,&nxt) ) fprintf(stderr, "found token %s\n", s);
-		else if ( match_rexpr(s,&nxt) ) fprintf(stderr, "found rexpr %s\n", s);
+	    if ( match_token(s,&nxt) ) printf_stderr_continued( "found token %s\n", s);
+		else if ( match_rexpr(s,&nxt) ) printf_stderr_continued( "found rexpr %s\n", s);
 		else {
 		    err("invalid element in consumeUntil( {...} )");
 			return "bad_set";
@@ -2553,19 +2568,27 @@ int k;
 SetWordType *eset;
 #endif
 {
-	fprintf(stderr, ErrHdr, FileStr[CurFile]!=NULL?FileStr[CurFile]:"stdin", zzline);
-	fprintf(stderr, " syntax error at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
-	if ( !etok && !eset ) {fprintf(stderr, "\n"); return;}
-	if ( k==1 ) fprintf(stderr, " missing");
+	errNoCR("syntax error");
+	printf_stderr_continued(" at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
+	if ( !etok && !eset ) 
+	{
+	    printf_stderr_continued("\n"); 
+	    return;
+	}
+	if ( k==1 ) 
+	    printf_stderr_continued(" missing");
 	else
 	{
-		fprintf(stderr, "; \"%s\" not", bad_text);
-		if ( zzset_deg(eset)>1 ) fprintf(stderr, " in");
+		printf_stderr_continued("; \"%s\" not", bad_text);
+		if ( zzset_deg(eset)>1 ) printf_stderr_continued(" in");
 	}
-	if ( zzset_deg(eset)>0 ) zzedecode(eset);
-	else fprintf(stderr, " %s", zztokens[etok]);
-	if ( strlen(egroup) > (size_t)0 ) fprintf(stderr, " in %s", egroup);
-	fprintf(stderr, "\n");
+	if ( zzset_deg(eset)>0 ) 
+	    zzedecode(eset);
+	else 
+	    printf_stderr_continued(" %s", zztokens[etok]);
+	if ( strlen(egroup) > (size_t)0 ) 
+	    printf_stderr_continued(" in %s", egroup);
+	printf_stderr_continued("\n");
 }
 >>
 

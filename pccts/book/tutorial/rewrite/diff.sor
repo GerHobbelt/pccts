@@ -1,0 +1,38 @@
+#header <<
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include "tokens.h"
+#include "AToken.h"
+typedef ANTLRCommonToken ANTLRToken;
+#include "AST.h"
+typedef AST SORAST;
+>>
+
+class DiffPoly {
+
+poly:	#( ADD poly poly )
+	|	term
+	;
+
+term!:	i:INT					<<#term = #[INT,"0"];>>
+	|	id:ID					<<#term = #[INT,"1"];>>
+	|	#( ex:EXP id:ID e:INT )
+		<<
+		#term = #(#[MULT,"MULT"], #[INT,e->getIConst()], #(ex,id,e));
+		e->decIConst();		// decrement exponent
+		>>
+	|	#(	m:MULT ct:INT
+			(	#( ex:EXP idt:ID et:INT )
+				<<
+				ct->setIConst(ct->getIConst()*et->getIConst());
+				et->decIConst();
+				#term = #(m, ct, #(ex,idt,et));
+				>>
+			|	ID
+				<<#term = ct;>>
+			)
+		)
+	;
+
+}

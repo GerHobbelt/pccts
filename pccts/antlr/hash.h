@@ -28,6 +28,9 @@
  * 1989-2001
  */
 
+#ifndef __pccts_hash_h__
+#define __pccts_hash_h__
+
 				/* H a s h  T a b l e  S t u f f */
 
 #ifndef HashTableSize
@@ -71,3 +74,5 @@ void	killHashTable(Entry **);
 Entry *hash_get(), **newHashTable(), *hash_add();
 void	killHashTable();        /* MR9 23-Sep-97 */
 #endif
+
+#endif /* __pccts_hash_h__ */

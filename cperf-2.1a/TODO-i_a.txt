@@ -1,0 +1,7 @@
+* Merge gperf 2.7.2 changes with this source code
+
+* Use the gperf 2.7.2 texinfo doc in doc/ as lead to change the cperf texinfo documentation.
+
+* Check the gperf 2.7.2 tests with cperf 2.1a [patched]
+
+* add 'reponse file' handling to cperf for MSDOS systems.

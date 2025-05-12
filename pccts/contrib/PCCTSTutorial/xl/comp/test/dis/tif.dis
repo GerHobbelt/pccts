@@ -1,0 +1,42 @@
+     0 i_program               2
+     2 i_localvar              0
+     4 i_constant              3
+     6 i_simple_assign
+     7 i_localvar              1
+     9 i_constant              4
+    11 i_simple_assign
+    12 i_localvar              0
+    14 i_simple_value 
+    15 i_localvar              1
+    17 i_simple_value 
+    18 i_gt           
+    19 i_branch_false         12(        33)
+    21 i_put_string            8 x is > y
+    23 i_goto                 31(        56)
+    25 i_localvar              0
+    27 i_simple_value 
+    28 i_localvar              1
+    30 i_simple_value 
+    31 i_lt           
+    32 i_branch_false         12(        46)
+    34 i_put_string            8 x is < y
+    36 i_goto                 10(        48)
+    38 i_put_string            8 x is = y
+    40 i_localvar              0
+    42 i_simple_value 
+    43 i_localvar              1
+    45 i_simple_value 
+    46 i_lt           
+    47 i_branch_false         12(        61)
+    49 i_put_string            8 x is < y
+    51 i_goto                 31(        84)
+    53 i_localvar              0
+    55 i_simple_value 
+    56 i_localvar              1
+    58 i_simple_value 
+    59 i_eq           
+    60 i_branch_false         12(        74)
+    62 i_put_string            8 x is = y
+    64 i_goto                 10(        76)
+    66 i_put_string            8 x is > y
+    68 i_halt         

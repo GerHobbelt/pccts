@@ -1,0 +1,400 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [testrecord]
+         ( Body
+            ( Define
+               ( TYPE [Q]
+                  ( Record
+                     ( Define
+                        ( VAR [q] >>  Type: Integer))
+                     ( Define
+                        ( VAR [w] >>  Type: Integer)))))
+            ( Define
+               ( TYPE [R]
+                  ( Record
+                     ( Define
+                        ( VAR [x] >>  Type: Integer))
+                     ( Define
+                        ( VAR [y] >>  Type: Integer))
+                     ( Define
+                        ( VAR [z] >>  Type: Integer))
+                     ( Define
+                        ( VAR [r] >>  Type: Q)))))
+            ( Define
+               ( TYPE [Arr] >>  Type: R
+                  ( Array >>  Type: R
+                     ( Lower
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Upper
+                        ( INTLIT [3] >>  Type: Integer)))))
+            ( Define
+               ( VAR [A] >>  Type: Arr))
+            ( Define
+               ( VAR [B] >>  Type: Arr))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( Ref x  >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( Ref y  >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( Ref z  >>  Type: Integer))
+               ( INTLIT [3] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Field >>  Type: Q
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref r  >>  Type: Q))
+                  ( Ref q  >>  Type: Integer))
+               ( INTLIT [4] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Field >>  Type: Q
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref r  >>  Type: Q))
+                  ( Ref w  >>  Type: Integer))
+               ( INTLIT [5] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [2] >>  Type: Integer))
+                  ( Ref x  >>  Type: Integer))
+               ( INTLIT [6] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [2] >>  Type: Integer))
+                  ( Ref y  >>  Type: Integer))
+               ( INTLIT [7] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [2] >>  Type: Integer))
+                  ( Ref z  >>  Type: Integer))
+               ( INTLIT [8] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Field >>  Type: Q
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref r  >>  Type: Q))
+                  ( Ref q  >>  Type: Integer))
+               ( INTLIT [9] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Field >>  Type: Q
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref r  >>  Type: Q))
+                  ( Ref w  >>  Type: Integer))
+               ( INTLIT [10] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [3] >>  Type: Integer))
+                  ( Ref x  >>  Type: Integer))
+               ( INTLIT [11] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [3] >>  Type: Integer))
+                  ( Ref y  >>  Type: Integer))
+               ( INTLIT [12] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Index >>  Type: R
+                     ( Ref A  >>  Type: Arr)
+                     ( INTLIT [3] >>  Type: Integer))
+                  ( Ref z  >>  Type: Integer))
+               ( INTLIT [13] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Field >>  Type: Q
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref r  >>  Type: Q))
+                  ( Ref q  >>  Type: Integer))
+               ( INTLIT [14] >>  Type: Integer))
+            ( Assign
+               ( Field >>  Type: Integer
+                  ( Field >>  Type: Q
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref r  >>  Type: Q))
+                  ( Ref w  >>  Type: Integer))
+               ( INTLIT [15] >>  Type: Integer))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref x  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref y  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref z  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref A  >>  Type: Arr)
+                           ( INTLIT [1] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref q  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref A  >>  Type: Arr)
+                           ( INTLIT [1] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref w  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref x  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref y  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref z  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref A  >>  Type: Arr)
+                           ( INTLIT [2] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref q  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref A  >>  Type: Arr)
+                           ( INTLIT [2] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref w  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref x  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref y  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref A  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref z  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref A  >>  Type: Arr)
+                           ( INTLIT [3] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref q  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref A  >>  Type: Arr)
+                           ( INTLIT [3] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref w  >>  Type: Integer))))
+            ( NewLine)
+            ( Assign
+               ( Ref B  >>  Type: Arr)
+               ( Value >>  Type: Arr
+                  ( Ref A  >>  Type: Arr)))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref x  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref y  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Ref z  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref B  >>  Type: Arr)
+                           ( INTLIT [1] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref q  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref B  >>  Type: Arr)
+                           ( INTLIT [1] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref w  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref x  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref y  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [2] >>  Type: Integer))
+                     ( Ref z  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref B  >>  Type: Arr)
+                           ( INTLIT [2] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref q  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref B  >>  Type: Arr)
+                           ( INTLIT [2] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref w  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref x  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref y  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Index >>  Type: R
+                        ( Ref B  >>  Type: Arr)
+                        ( INTLIT [3] >>  Type: Integer))
+                     ( Ref z  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref B  >>  Type: Arr)
+                           ( INTLIT [3] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref q  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Field >>  Type: Integer
+                     ( Field >>  Type: Q
+                        ( Index >>  Type: R
+                           ( Ref B  >>  Type: Arr)
+                           ( INTLIT [3] >>  Type: Integer))
+                        ( Ref r  >>  Type: Q))
+                     ( Ref w  >>  Type: Integer)))))))
+

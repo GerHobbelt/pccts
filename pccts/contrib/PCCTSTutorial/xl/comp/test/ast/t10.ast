@@ -1,0 +1,82 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [test4]
+         ( Body
+            ( Define
+               ( VAR [i] >>  Type: Integer))
+            ( Define
+               ( TYPE [S]
+                  ( Record
+                     ( Define
+                        ( VAR [f] >>  Type: Boolean))
+                     ( Define
+                        ( VAR [g] >>  Type: Boolean)))))
+            ( Define
+               ( VAR [v] >>  Type: S))
+            ( Define
+               ( Procedure [p]
+                  ( Parms
+                     ( Define
+                        ( VAR [x] >>  Type: Integer)))
+                  ( Body
+                     ( Define
+                        ( CONST [n] >>  Type: Integer >>  InitialValue: 10))
+                     ( Define
+                        ( TYPE [T] >>  Type: Integer
+                           ( Array >>  Type: Integer
+                              ( Lower
+                                 ( INTLIT [1] >>  Type: Integer))
+                              ( Upper
+                                 ( INTLIT [10] >>  Type: Integer)))))
+                     ( Define
+                        ( VAR [y] >>  Type: T))
+                     ( Define
+                        ( VAR [z] >>  Type: T))
+                     ( Define
+                        ( Procedure [q]
+                           ( Parms)
+                           ( Body
+                              ( Assign
+                                 ( Index >>  Type: Integer
+                                    ( Ref z  >>  Type: T)
+                                    ( INTLIT [10] >>  Type: Integer))
+                                 ( Value >>  Type: Integer
+                                    ( Ref x  >>  Type: Integer)))
+                              ( Assign
+                                 ( Field >>  Type: Boolean
+                                    ( Ref v  >>  Type: S)
+                                    ( Ref g  >>  Type: Boolean))
+                                 ( INTLIT [0] >>  Type: Boolean)))))
+                     ( Assign
+                        ( Ref y  >>  Type: T)
+                        ( Value >>  Type: T
+                           ( Ref z  >>  Type: T)))
+                     ( ProcedureCall
+                        ( Ref q )
+                        ( Parms))
+                     ( Put
+                        ( Value >>  Type: Integer
+                           ( Ref x  >>  Type: Integer))))))
+            ( Assign
+               ( Field >>  Type: Boolean
+                  ( Ref v  >>  Type: S)
+                  ( Ref f  >>  Type: Boolean))
+               ( INTLIT [1] >>  Type: Boolean))
+            ( Get
+               ( Ref i  >>  Type: Integer))
+            ( ProcedureCall
+               ( Ref p )
+               ( Parms
+                  ( Value >>  Type: Integer
+                     ( Ref i  >>  Type: Integer)))))))
+

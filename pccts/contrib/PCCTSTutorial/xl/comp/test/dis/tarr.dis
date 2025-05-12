@@ -1,0 +1,547 @@
+     0 i_program              24
+     2 i_localvar              0
+     4 i_constant              1
+     6 i_constant              1
+     8 i_constant              4
+    10 i_bounds       
+    11 i_constant              3
+    13 i_mult         
+    14 i_add          
+    15 i_constant              1
+    17 i_constant              1
+    19 i_constant              3
+    21 i_bounds       
+    22 i_add          
+    23 i_constant              1
+    25 i_simple_assign
+    26 i_localvar              0
+    28 i_constant              1
+    30 i_constant              1
+    32 i_constant              4
+    34 i_bounds       
+    35 i_constant              3
+    37 i_mult         
+    38 i_add          
+    39 i_constant              2
+    41 i_constant              1
+    43 i_constant              3
+    45 i_bounds       
+    46 i_add          
+    47 i_constant              2
+    49 i_simple_assign
+    50 i_localvar              0
+    52 i_constant              1
+    54 i_constant              1
+    56 i_constant              4
+    58 i_bounds       
+    59 i_constant              3
+    61 i_mult         
+    62 i_add          
+    63 i_constant              3
+    65 i_constant              1
+    67 i_constant              3
+    69 i_bounds       
+    70 i_add          
+    71 i_constant              3
+    73 i_simple_assign
+    74 i_localvar              0
+    76 i_constant              2
+    78 i_constant              1
+    80 i_constant              4
+    82 i_bounds       
+    83 i_constant              3
+    85 i_mult         
+    86 i_add          
+    87 i_constant              1
+    89 i_constant              1
+    91 i_constant              3
+    93 i_bounds       
+    94 i_add          
+    95 i_constant              4
+    97 i_simple_assign
+    98 i_localvar              0
+   100 i_constant              2
+   102 i_constant              1
+   104 i_constant              4
+   106 i_bounds       
+   107 i_constant              3
+   109 i_mult         
+   110 i_add          
+   111 i_constant              2
+   113 i_constant              1
+   115 i_constant              3
+   117 i_bounds       
+   118 i_add          
+   119 i_constant              5
+   121 i_simple_assign
+   122 i_localvar              0
+   124 i_constant              2
+   126 i_constant              1
+   128 i_constant              4
+   130 i_bounds       
+   131 i_constant              3
+   133 i_mult         
+   134 i_add          
+   135 i_constant              3
+   137 i_constant              1
+   139 i_constant              3
+   141 i_bounds       
+   142 i_add          
+   143 i_constant              6
+   145 i_simple_assign
+   146 i_localvar              0
+   148 i_constant              3
+   150 i_constant              1
+   152 i_constant              4
+   154 i_bounds       
+   155 i_constant              3
+   157 i_mult         
+   158 i_add          
+   159 i_constant              1
+   161 i_constant              1
+   163 i_constant              3
+   165 i_bounds       
+   166 i_add          
+   167 i_constant              7
+   169 i_simple_assign
+   170 i_localvar              0
+   172 i_constant              3
+   174 i_constant              1
+   176 i_constant              4
+   178 i_bounds       
+   179 i_constant              3
+   181 i_mult         
+   182 i_add          
+   183 i_constant              2
+   185 i_constant              1
+   187 i_constant              3
+   189 i_bounds       
+   190 i_add          
+   191 i_constant              8
+   193 i_simple_assign
+   194 i_localvar              0
+   196 i_constant              3
+   198 i_constant              1
+   200 i_constant              4
+   202 i_bounds       
+   203 i_constant              3
+   205 i_mult         
+   206 i_add          
+   207 i_constant              3
+   209 i_constant              1
+   211 i_constant              3
+   213 i_bounds       
+   214 i_add          
+   215 i_constant              9
+   217 i_simple_assign
+   218 i_localvar              0
+   220 i_constant              4
+   222 i_constant              1
+   224 i_constant              4
+   226 i_bounds       
+   227 i_constant              3
+   229 i_mult         
+   230 i_add          
+   231 i_constant              1
+   233 i_constant              1
+   235 i_constant              3
+   237 i_bounds       
+   238 i_add          
+   239 i_constant             10
+   241 i_simple_assign
+   242 i_localvar              0
+   244 i_constant              4
+   246 i_constant              1
+   248 i_constant              4
+   250 i_bounds       
+   251 i_constant              3
+   253 i_mult         
+   254 i_add          
+   255 i_constant              2
+   257 i_constant              1
+   259 i_constant              3
+   261 i_bounds       
+   262 i_add          
+   263 i_constant             11
+   265 i_simple_assign
+   266 i_localvar              0
+   268 i_constant              4
+   270 i_constant              1
+   272 i_constant              4
+   274 i_bounds       
+   275 i_constant              3
+   277 i_mult         
+   278 i_add          
+   279 i_constant              3
+   281 i_constant              1
+   283 i_constant              3
+   285 i_bounds       
+   286 i_add          
+   287 i_constant             12
+   289 i_simple_assign
+   290 i_localvar             12
+   292 i_localvar              0
+   294 i_value                12
+   296 i_assign               12
+   298 i_localvar             12
+   300 i_constant              1
+   302 i_constant              1
+   304 i_constant              4
+   306 i_bounds       
+   307 i_constant              3
+   309 i_mult         
+   310 i_add          
+   311 i_constant              1
+   313 i_constant              1
+   315 i_constant              3
+   317 i_bounds       
+   318 i_add          
+   319 i_simple_value 
+   320 i_put_int      
+   321 i_localvar             12
+   323 i_constant              1
+   325 i_constant              1
+   327 i_constant              4
+   329 i_bounds       
+   330 i_constant              3
+   332 i_mult         
+   333 i_add          
+   334 i_constant              2
+   336 i_constant              1
+   338 i_constant              3
+   340 i_bounds       
+   341 i_add          
+   342 i_simple_value 
+   343 i_put_int      
+   344 i_localvar             12
+   346 i_constant              1
+   348 i_constant              1
+   350 i_constant              4
+   352 i_bounds       
+   353 i_constant              3
+   355 i_mult         
+   356 i_add          
+   357 i_constant              3
+   359 i_constant              1
+   361 i_constant              3
+   363 i_bounds       
+   364 i_add          
+   365 i_simple_value 
+   366 i_put_int      
+   367 i_localvar             12
+   369 i_constant              2
+   371 i_constant              1
+   373 i_constant              4
+   375 i_bounds       
+   376 i_constant              3
+   378 i_mult         
+   379 i_add          
+   380 i_constant              1
+   382 i_constant              1
+   384 i_constant              3
+   386 i_bounds       
+   387 i_add          
+   388 i_simple_value 
+   389 i_put_int      
+   390 i_localvar             12
+   392 i_constant              2
+   394 i_constant              1
+   396 i_constant              4
+   398 i_bounds       
+   399 i_constant              3
+   401 i_mult         
+   402 i_add          
+   403 i_constant              2
+   405 i_constant              1
+   407 i_constant              3
+   409 i_bounds       
+   410 i_add          
+   411 i_simple_value 
+   412 i_put_int      
+   413 i_localvar             12
+   415 i_constant              2
+   417 i_constant              1
+   419 i_constant              4
+   421 i_bounds       
+   422 i_constant              3
+   424 i_mult         
+   425 i_add          
+   426 i_constant              3
+   428 i_constant              1
+   430 i_constant              3
+   432 i_bounds       
+   433 i_add          
+   434 i_simple_value 
+   435 i_put_int      
+   436 i_localvar             12
+   438 i_constant              3
+   440 i_constant              1
+   442 i_constant              4
+   444 i_bounds       
+   445 i_constant              3
+   447 i_mult         
+   448 i_add          
+   449 i_constant              1
+   451 i_constant              1
+   453 i_constant              3
+   455 i_bounds       
+   456 i_add          
+   457 i_simple_value 
+   458 i_put_int      
+   459 i_localvar             12
+   461 i_constant              3
+   463 i_constant              1
+   465 i_constant              4
+   467 i_bounds       
+   468 i_constant              3
+   470 i_mult         
+   471 i_add          
+   472 i_constant              2
+   474 i_constant              1
+   476 i_constant              3
+   478 i_bounds       
+   479 i_add          
+   480 i_simple_value 
+   481 i_put_int      
+   482 i_localvar             12
+   484 i_constant              3
+   486 i_constant              1
+   488 i_constant              4
+   490 i_bounds       
+   491 i_constant              3
+   493 i_mult         
+   494 i_add          
+   495 i_constant              3
+   497 i_constant              1
+   499 i_constant              3
+   501 i_bounds       
+   502 i_add          
+   503 i_simple_value 
+   504 i_put_int      
+   505 i_localvar             12
+   507 i_constant              4
+   509 i_constant              1
+   511 i_constant              4
+   513 i_bounds       
+   514 i_constant              3
+   516 i_mult         
+   517 i_add          
+   518 i_constant              1
+   520 i_constant              1
+   522 i_constant              3
+   524 i_bounds       
+   525 i_add          
+   526 i_simple_value 
+   527 i_put_int      
+   528 i_localvar             12
+   530 i_constant              4
+   532 i_constant              1
+   534 i_constant              4
+   536 i_bounds       
+   537 i_constant              3
+   539 i_mult         
+   540 i_add          
+   541 i_constant              2
+   543 i_constant              1
+   545 i_constant              3
+   547 i_bounds       
+   548 i_add          
+   549 i_simple_value 
+   550 i_put_int      
+   551 i_localvar             12
+   553 i_constant              4
+   555 i_constant              1
+   557 i_constant              4
+   559 i_bounds       
+   560 i_constant              3
+   562 i_mult         
+   563 i_add          
+   564 i_constant              3
+   566 i_constant              1
+   568 i_constant              3
+   570 i_bounds       
+   571 i_add          
+   572 i_simple_value 
+   573 i_put_int      
+   574 i_localvar             12
+   576 i_constant              1
+   578 i_constant              1
+   580 i_constant              4
+   582 i_bounds       
+   583 i_constant              3
+   585 i_mult         
+   586 i_add          
+   587 i_constant              1
+   589 i_constant              1
+   591 i_constant              3
+   593 i_bounds       
+   594 i_add          
+   595 i_simple_value 
+   596 i_put_int      
+   597 i_localvar             12
+   599 i_constant              1
+   601 i_constant              1
+   603 i_constant              4
+   605 i_bounds       
+   606 i_constant              3
+   608 i_mult         
+   609 i_add          
+   610 i_constant              2
+   612 i_constant              1
+   614 i_constant              3
+   616 i_bounds       
+   617 i_add          
+   618 i_simple_value 
+   619 i_put_int      
+   620 i_localvar             12
+   622 i_constant              1
+   624 i_constant              1
+   626 i_constant              4
+   628 i_bounds       
+   629 i_constant              3
+   631 i_mult         
+   632 i_add          
+   633 i_constant              3
+   635 i_constant              1
+   637 i_constant              3
+   639 i_bounds       
+   640 i_add          
+   641 i_simple_value 
+   642 i_put_int      
+   643 i_localvar             12
+   645 i_constant              2
+   647 i_constant              1
+   649 i_constant              4
+   651 i_bounds       
+   652 i_constant              3
+   654 i_mult         
+   655 i_add          
+   656 i_constant              1
+   658 i_constant              1
+   660 i_constant              3
+   662 i_bounds       
+   663 i_add          
+   664 i_simple_value 
+   665 i_put_int      
+   666 i_localvar             12
+   668 i_constant              2
+   670 i_constant              1
+   672 i_constant              4
+   674 i_bounds       
+   675 i_constant              3
+   677 i_mult         
+   678 i_add          
+   679 i_constant              2
+   681 i_constant              1
+   683 i_constant              3
+   685 i_bounds       
+   686 i_add          
+   687 i_simple_value 
+   688 i_put_int      
+   689 i_localvar             12
+   691 i_constant              2
+   693 i_constant              1
+   695 i_constant              4
+   697 i_bounds       
+   698 i_constant              3
+   700 i_mult         
+   701 i_add          
+   702 i_constant              3
+   704 i_constant              1
+   706 i_constant              3
+   708 i_bounds       
+   709 i_add          
+   710 i_simple_value 
+   711 i_put_int      
+   712 i_localvar             12
+   714 i_constant              3
+   716 i_constant              1
+   718 i_constant              4
+   720 i_bounds       
+   721 i_constant              3
+   723 i_mult         
+   724 i_add          
+   725 i_constant              1
+   727 i_constant              1
+   729 i_constant              3
+   731 i_bounds       
+   732 i_add          
+   733 i_simple_value 
+   734 i_put_int      
+   735 i_localvar             12
+   737 i_constant              3
+   739 i_constant              1
+   741 i_constant              4
+   743 i_bounds       
+   744 i_constant              3
+   746 i_mult         
+   747 i_add          
+   748 i_constant              2
+   750 i_constant              1
+   752 i_constant              3
+   754 i_bounds       
+   755 i_add          
+   756 i_simple_value 
+   757 i_put_int      
+   758 i_localvar             12
+   760 i_constant              3
+   762 i_constant              1
+   764 i_constant              4
+   766 i_bounds       
+   767 i_constant              3
+   769 i_mult         
+   770 i_add          
+   771 i_constant              3
+   773 i_constant              1
+   775 i_constant              3
+   777 i_bounds       
+   778 i_add          
+   779 i_simple_value 
+   780 i_put_int      
+   781 i_localvar             12
+   783 i_constant              4
+   785 i_constant              1
+   787 i_constant              4
+   789 i_bounds       
+   790 i_constant              3
+   792 i_mult         
+   793 i_add          
+   794 i_constant              1
+   796 i_constant              1
+   798 i_constant              3
+   800 i_bounds       
+   801 i_add          
+   802 i_simple_value 
+   803 i_put_int      
+   804 i_localvar             12
+   806 i_constant              4
+   808 i_constant              1
+   810 i_constant              4
+   812 i_bounds       
+   813 i_constant              3
+   815 i_mult         
+   816 i_add          
+   817 i_constant              2
+   819 i_constant              1
+   821 i_constant              3
+   823 i_bounds       
+   824 i_add          
+   825 i_simple_value 
+   826 i_put_int      
+   827 i_localvar             12
+   829 i_constant              4
+   831 i_constant              1
+   833 i_constant              4
+   835 i_bounds       
+   836 i_constant              3
+   838 i_mult         
+   839 i_add          
+   840 i_constant              3
+   842 i_constant              1
+   844 i_constant              3
+   846 i_bounds       
+   847 i_add          
+   848 i_simple_value 
+   849 i_put_int      
+   850 i_new_line     
+   851 i_halt         

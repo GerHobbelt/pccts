@@ -21,10 +21,8 @@ typedef struct	{
 
 #ifdef __USE_PROTOS
 int rexpr( char *expr, char *s );
-int match( NodePtr automaton, char *s );
 #else
 int rexpr();
-int match();
 #endif
 
 

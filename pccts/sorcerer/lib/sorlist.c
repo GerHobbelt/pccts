@@ -26,6 +26,8 @@
  * AHPCRC, University of Minnesota
  * 1992-1994
  */
+#include "pcctscfg.h"
+
 #include <stdio.h>
 #include <setjmp.h>
 

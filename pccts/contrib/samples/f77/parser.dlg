@@ -1,0 +1,1619 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: f77.g expr.g decl.g io.g
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.33MR33
+ *
+ *   ..\..\..\bin\antlr.exe -emsvc -k 2 -glms -gh -ga -gt f77.g expr.g decl.g io.g
+ *
+ */
+
+#define ANTLR_VERSION	13333
+#include "pcctscfg.h"
+#include "pccts_stdio.h"
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+/* #include "cr_attr.h" */
+
+#define D_TextSize 256
+
+#ifndef D_TextSize
+#define D_TextSize	30
+#endif
+
+typedef struct { char text[D_TextSize]; } Attrib;
+
+void zzcr_attr(Attrib *attrib, int tok, char *tok_text);
+
+#if 0
+#define zzcr_attr(a,tok,t)	strncpy((a)->text, t, D_TextSize-1); \
+(a)->text[D_TextSize-1] = '\0';
+#endif
+
+
+extern void ReadWriteProcessing(void);
+extern void IOStatement(void);
+
+
+
+
+
+
+
+
+
+
+
+#define SUPPRESS_TRAILING_COMMENTS
+#define zzAST_DOUBLE
+#define AST_FIELDS char f77NodeText[100]; int token; char *TrailingComment;
+#ifndef zzcr_ast
+#define zzcr_ast(ast,attr,tok,tok_text) {	\
+  char *ptr;								\
+  strcpy(ast->f77NodeText,tok_text);		\
+  ast->TrailingComment = NULL;			\
+  ptr = strchr(ast->f77NodeText, '!');	\
+  if(ptr != NULL) {						\
+    /**ptr = '\0';this is left for later!!!!*/ \
+    ast->TrailingComment = ptr+1;		\
+  }									\
+  ast->token = tok;						\
+}
+#endif
+
+#define IDENTIFIER_LENGTH (32)
+#if !defined(TRUE)
+#define TRUE (1 == 1)
+#define FALSE (1 == 0)
+#endif
+enum {LVALUE, RVALUE}; /*Used to pass the position of an element relative to '="*/
+extern void AddSymbol(char *Name, int Type);
+extern int LookUp(char *Name);
+extern void ChangeType(char *Name, int Type);
+
+extern void GetTrailingComment(void);
+extern void GetQuotedString(void);
+extern void ProcessHollerith(void);
+extern void NewLineProcessing(void);
+extern int LineColumn;
+extern int keyword_context;
+/*This two are used to recognise 'combined expressions'.*/
+extern int LPCount;
+extern int ReadWriteControlFlag;
+extern int ExpectingIOKeyword;
+extern int CommaCount;	/*Whithin parenthesis!*/
+#define BegCol (zzbegcol-LineColumn-1)
+#define EndCol (zzendcol-LineColumn-1)
+extern int LineCount;
+extern int StatementCount;
+extern int CurrentStatement;
+#if !defined(ZZCOL)
+#error ZZCOL must be defined
+#endif
+#define F77_BUFFER_SIZE 100
+#define F77_LINE_SIZE 72
+#define ZZCAN_GUESS
+#include "pccts_setjmp.h"
+#define LL_K 2
+#include "antlr.h"
+#include "ast.h"
+#include "tokens.h"
+#include "dlgdef.h"
+LOOKAHEAD
+
+void
+#ifdef __USE_PROTOS
+zzerraction(void)
+#else
+zzerraction()
+#endif
+{
+	(*zzerr)("invalid token");
+	zzadvance();
+	zzskip();
+}
+>>
+
+<<%%lexaction
+
+void zzcr_attr(Attrib *attrib, int tok, char *tok_text) {
+  strncpy(attrib->text, tok_text, D_TextSize-1);
+  attrib->text[D_TextSize-1] = '\0';
+
+#ifndef SUPPRESS_TRAILING_COMMENTS
+  if(zzinf_tokens[zzinf_labase+1] == TRAILING_COMMENT) {
+    zzinf_tokens[zzinf_labase+1] = zzinf_tokens[zzinf_labase];
+    zzinf_line[zzinf_labase+1] = zzinf_line[zzinf_labase];
+    strncpy(attrib->trail_comment_text, zzinf_text[zzinf_labase+1], D_TextSize-1);
+    /*strcat(zzinf_text[zzinf_labase], zzinf_text[zzinf_labase+1]);*/
+    zzinf_text[zzinf_labase+1] = zzinf_text[zzinf_labase];
+    zzinf_tokens[zzinf_labase] = SKIP_TOKEN;
+
+    zzinf_labase++;
+  }
+  else if(zzinf_tokens[zzinf_labase] == SKIP_TOKEN) {
+    zzinf_labase++;
+  }
+#endif
+}
+>>
+
+
+%%START
+
+@
+	<<
+		NLA = 1;
+	>>
+
+[\ ]+
+	<<
+		NLA = WHITESPACE;
+    zzskip();  
+	>>
+
+=
+	<<
+		NLA = EQUAL;
+
+	>>
+
+\*\*
+	<<
+		NLA = POW;
+
+	>>
+
+\*
+	<<
+		NLA = STAR;
+
+	>>
+
+\-
+	<<
+		NLA = MIN;
+
+	>>
+
+\+
+	<<
+		NLA = PLU;
+
+	>>
+
+\/\/
+	<<
+		NLA = CONCAT;
+
+	>>
+
+\/
+	<<
+		NLA = DIV;
+
+	>>
+
+\&
+	<<
+		NLA = AMPERSAND;
+
+	>>
+
+\:
+	<<
+		NLA = COLUMN;
+
+	>>
+
+\;
+	<<
+		NLA = SEMICOLUMN;
+
+    zzmode(KEYWORD);
+    zzskip();
+	>>
+
+\(
+	<<
+		NLA = LP;
+
+    if((keyword_context == WRITE) || (keyword_context == READ))
+    {
+      LPCount++;
+      if((LPCount == 1) && (ReadWriteControlFlag == TRUE)) {
+        ExpectingIOKeyword = TRUE;
+      }
+    }
+	>>
+
+\)
+	<<
+		NLA = RP;
+
+    if((keyword_context == WRITE) || (keyword_context == READ))
+    {
+      LPCount--;
+      if((LPCount == 0) && (ReadWriteControlFlag == TRUE)) {
+        ReadWriteControlFlag = FALSE;
+      }
+    }
+	>>
+
+\,
+	<<
+		NLA = COMMA;
+
+    if((keyword_context == WRITE) || (keyword_context == READ))
+    {
+      CommaCount++;	/*Commas since the last WRITE or READ*/
+      if(ReadWriteControlFlag == TRUE) {
+        ExpectingIOKeyword = TRUE;
+      }
+    }
+	>>
+
+\n
+	<<
+		NLA = EOL;
+
+    NewLineProcessing();
+    zzskip();
+    zzmode(NEWLINE);
+	>>
+
+[1-9][0-9]*H
+	<<
+		NLA = HOLLERITH_CONST;
+
+    ProcessHollerith();
+	>>
+
+.[\ ]*FALSE[\ ]*.
+	<<
+		NLA = T_FALSE;
+
+	>>
+
+.[\ ]*TRUE[\ ]*.
+	<<
+		NLA = T_TRUE;
+
+	>>
+
+{.[\ ]*}AND[\ ]*.
+	<<
+		NLA = AND;
+
+	>>
+
+{.[\ ]*}OR[\ ]*.
+	<<
+		NLA = OR;
+
+	>>
+
+{.[\ ]*}NEQV[\ ]*.
+	<<
+		NLA = NEQV;
+
+	>>
+
+{.[\ ]*}EQV[\ ]*.
+	<<
+		NLA = EQV;
+
+	>>
+
+{.[\ ]*}NOT[\ ]*.
+	<<
+		NLA = NOT;
+
+	>>
+
+{.[\ ]*}LT[\ ]*.
+	<<
+		NLA = LT;
+	>>
+
+{.[\ ]*}LE[\ ]*.
+	<<
+		NLA = LE;
+	>>
+
+{.[\ ]*}EQ[\ ]*.
+	<<
+		NLA = EQ;
+	>>
+
+{.[\ ]*}NE[\ ]*.
+	<<
+		NLA = NE;
+	>>
+
+{.[\ ]*}GT[\ ]*.
+	<<
+		NLA = GT;
+	>>
+
+{.[\ ]*}GE[\ ]*.
+	<<
+		NLA = GE;
+	>>
+
+.[\ ]*IS[\ ]*.
+	<<
+		NLA = IS;
+	>>
+
+[#Z][0-9A-F]+
+	<<
+		NLA = HEX_CONST;
+
+    if(*zzbegexpr == 'Z') {/*If the Z notation...*/
+      switch(keyword_context) {
+        case DATA:
+        case INTEGER:
+        case CHARACTER:
+        case REAL:
+        case LOGICAL:
+        case DOUBLE_PRECISION:
+        break;
+        default:
+        NLA = IDENTIFIER;
+        break;
+      }
+    }
+	>>
+
+[0-9]*\.[0-9]+
+	<<
+		NLA = BASIC_REAL;
+	>>
+
+[0-9]+.
+	<<
+		NLA = 112;
+
+    if(	((zzchar >= 'a') && (zzchar <= 'z'))
+    ||
+    ((zzchar >= 'A') && (zzchar <= 'Z'))
+    )	{
+      *zzendexpr = '\0';
+      NLA = CONSTINT;
+    }
+    else
+    {
+      NLA = BASIC_REAL;
+    }
+	>>
+
+([0-9]+.[0-9]+|[0-9]+.|.[0-9]+|[0-9]+)E{[\+\-]}[0-9]+
+	<<
+		NLA = REAL_EXPO;
+	>>
+
+[0-9]+
+	<<
+		NLA = SOME_CONSTINTEGER;
+
+    if(EndCol < 72)
+    NLA = CONSTINT;
+    else if(BegCol >= 72) {
+      NLA = SEQUENCE;
+      zzskip();
+    }
+    else
+    NLA = CONSTINT_ERROR;
+	>>
+
+[\%\!]
+	<<
+		NLA = 119;
+
+    zzmode(COMMENT);
+    zzreplstr("!");
+    zzmore();
+	>>
+
+[\"]
+	<<
+		NLA = QUOTED_STRING;
+    GetQuotedString();  
+	>>
+
+[']
+	<<
+		NLA = APOSTROPHY;
+
+    /*Detecting apostrophis in combined expressions.*/
+    if(	(
+    (keyword_context == WRITE)
+    || (keyword_context == READ)
+    )
+    && (LPCount == 1)
+    && (CommaCount == 0)
+    ) {
+      NLA = APOSTROPHY;
+    }
+    /*UNISYS FORTRAN V3.8*/
+    else if(keyword_context == FIND) {
+      NLA = APOSTROPHY;
+    }
+    else	{
+      GetQuotedString();
+      NLA = QUOTED_STRING;
+    }
+	>>
+
+TO
+	<<
+		NLA = TO;
+
+    if(keyword_context != ASSIGN)
+    NLA = IDENTIFIER;
+
+	>>
+
+PAGE
+	<<
+		NLA = PAGE;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+SET
+	<<
+		NLA = SET;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+LIST
+	<<
+		NLA = LIST;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+XREF
+	<<
+		NLA = XREF;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+ERRLIST
+	<<
+		NLA = ERRLIST;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+LINEINFO
+	<<
+		NLA = LINEINFO;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+NEW
+	<<
+		NLA = NEW;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+RESET
+	<<
+		NLA = RESET;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+OWN
+	<<
+		NLA = OWN;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+CHARS
+	<<
+		NLA = CHARS;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+STACK
+	<<
+		NLA = STACK;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+FREE
+	<<
+		NLA = FREE;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+POP
+	<<
+		NLA = POP;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+INCLUDE
+	<<
+		NLA = INCLUDE;
+    if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
+	>>
+
+FUNCTION
+	<<
+		NLA = 137;
+
+    switch(keyword_context) {
+      case INTEGER:
+      case REAL:
+      case DOUBLE_PRECISION:
+      case LOGICAL:
+      case CHARACTER:
+      case COMPLEX:
+      case DOUBLE_COMPLEX:
+      NLA = FUNCTION;
+      keyword_context = FUNCTION;
+      break;
+      default:
+      NLA = IDENTIFIER;
+      break;
+    }
+	>>
+
+IF
+	<<
+		NLA = 138;
+    keyword_context = NLA = IF;  
+	>>
+
+DO
+	<<
+		NLA = 139;
+    keyword_context = NLA = DO;  
+	>>
+
+GO[\ \t]*TO
+	<<
+		NLA = 140;
+    keyword_context = NLA = GO_TO;  
+	>>
+
+RETURN
+	<<
+		NLA = 141;
+    keyword_context = NLA = RETURN;  
+	>>
+
+ASSIGN
+	<<
+		NLA = 142;
+    keyword_context = NLA = ASSIGN;  
+	>>
+
+READ
+	<<
+		NLA = 143;
+    keyword_context = NLA = READ;ReadWriteProcessing();  
+	>>
+
+WRITE
+	<<
+		NLA = 144;
+    ReadWriteProcessing();keyword_context = NLA = WRITE;  
+	>>
+
+FIND
+	<<
+		NLA = 145;
+    keyword_context = NLA = FIND;  
+	>>
+
+CALL
+	<<
+		NLA = 146;
+    zzmode(KEYWORD); keyword_context = NLA = CALL;  
+	>>
+
+INQUIRE
+	<<
+		NLA = 147;
+    keyword_context = NLA = INQUIRE;  
+	>>
+
+BACKSPACE
+	<<
+		NLA = 148;
+    keyword_context = NLA = BACKSPACE;  
+	>>
+
+ENDFILE
+	<<
+		NLA = 149;
+    keyword_context = NLA = ENDFILE;  
+	>>
+
+REWIND
+	<<
+		NLA = 150;
+    keyword_context = NLA = REWIND;  
+	>>
+
+OPEN
+	<<
+		NLA = 151;
+
+    /*UNISYS FORTRAN V3.8*/
+    if(keyword_context == INQUIRE) {
+      keyword_context = NLA = OPEN;
+    }
+    /*END UNISYS FORTRAN V3.8*/
+    else if(keyword_context == IF) {
+      keyword_context = NLA = OPEN;
+      ReadWriteProcessing();
+    }
+    else {
+      NLA = IDENTIFIER;
+    }
+	>>
+
+CLOSE
+	<<
+		NLA = 152;
+
+    if(keyword_context == IF) {
+      keyword_context = NLA = CLOSE;
+    }
+    else	{
+      NLA = IDENTIFIER;
+    }
+	>>
+
+STOP
+	<<
+		NLA = 153;
+
+    if(keyword_context == IF) {
+      keyword_context = NLA = STOP;
+    }
+    else	{
+      NLA = IDENTIFIER;
+    }
+	>>
+
+CHANGE
+	<<
+		NLA = 154;
+
+    if(keyword_context == IF) {
+      keyword_context = NLA = CHANGE;
+    }
+    else	{
+      NLA = IDENTIFIER;
+    }
+	>>
+
+FILE
+	<<
+		NLA = FILE_WORD;
+
+	>>
+
+THEN
+	<<
+		NLA = THEN;
+	>>
+
+LIBPARAMETER
+	<<
+		NLA = LIBPARAMETER;
+	>>
+
+FUNCTIONNAME
+	<<
+		NLA = FUNCTIONNAME;
+	>>
+
+KIND
+	<<
+		NLA = KIND;
+	>>
+
+TITLE
+	<<
+		NLA = TITLE;
+    IOStatement();  
+	>>
+
+FILETYPE
+	<<
+		NLA = FILETYPE;
+	>>
+
+NEWFILE
+	<<
+		NLA = NEWFILE;
+	>>
+
+MYUSE
+	<<
+		NLA = MYUSE;
+	>>
+
+MAXRECSIZE
+	<<
+		NLA = MAXRECSIZE;
+	>>
+
+SAVEFACTOR
+	<<
+		NLA = SAVEFACTOR;
+	>>
+
+BLOCKSIZE
+	<<
+		NLA = BLOCKSIZE;
+	>>
+
+SECURITYTYPE
+	<<
+		NLA = SECURITYTYPE;
+	>>
+
+AREAS
+	<<
+		NLA = AREAS;
+	>>
+
+AREASIZE
+	<<
+		NLA = AREASIZE;
+	>>
+
+PROTECTION
+	<<
+		NLA = PROTECTION;
+	>>
+
+UNITS
+	<<
+		NLA = UNITS;
+	>>
+
+UPDATEFILE
+	<<
+		NLA = UPDATEFILE;
+	>>
+
+STATUS
+	<<
+		NLA = STATUS;
+
+    IOStatement();
+    if(zzchar == '(') {
+      NLA = IDENTIFIER;
+    }
+	>>
+
+FMT
+	<<
+		NLA = FMT;
+    IOStatement();  
+	>>
+
+RECL
+	<<
+		NLA = RECL;
+    IOStatement();  
+	>>
+
+REC
+	<<
+		NLA = REC;
+    IOStatement();  
+	>>
+
+END
+	<<
+		NLA = END;
+    IOStatement();  
+	>>
+
+ERR
+	<<
+		NLA = ERR;
+    IOStatement();  
+	>>
+
+IOSTAT
+	<<
+		NLA = IOSTAT;
+    IOStatement();  
+	>>
+
+URGENT
+	<<
+		NLA = URGENT;
+    IOStatement();  
+	>>
+
+DATA
+	<<
+		NLA = IO_DATA;
+    IOStatement();  
+	>>
+
+NUMBER
+	<<
+		NLA = NUMBER;
+    IOStatement();  
+	>>
+
+NEXTREC
+	<<
+		NLA = NEXTREC;
+    IOStatement();  
+	>>
+
+EXIST
+	<<
+		NLA = EXIST;
+    IOStatement();  
+	>>
+
+OPENED
+	<<
+		NLA = OPENED;
+    IOStatement();  
+	>>
+
+NAMED
+	<<
+		NLA = NAMED;
+    IOStatement();  
+	>>
+
+RECORD
+	<<
+		NLA = RECORD;
+    IOStatement();  
+	>>
+
+NAME
+	<<
+		NLA = NAME;
+    IOStatement();  
+	>>
+
+DISP
+	<<
+		NLA = DISP;
+    IOStatement();  
+	>>
+
+SUBFILE
+	<<
+		NLA = SUBFILE;
+    IOStatement();  
+	>>
+
+OPENTYPE
+	<<
+		NLA = OPENTYPE;
+    IOStatement();  
+	>>
+
+RESIDENT
+	<<
+		NLA = RESIDENT;
+    IOStatement();  
+	>>
+
+ACCESS
+	<<
+		NLA = ACCESS;
+    IOStatement();  
+	>>
+
+SEQUENTIAL
+	<<
+		NLA = SEQUENTIAL;
+    IOStatement();  
+	>>
+
+DIRECT
+	<<
+		NLA = DIRECT;
+    IOStatement();  
+	>>
+
+UNFORMATTED
+	<<
+		NLA = UNFORMATTED;
+    IOStatement();  
+	>>
+
+FORMATTED
+	<<
+		NLA = FORMATTED;
+    IOStatement();  
+	>>
+
+FORM
+	<<
+		NLA = FORM;
+    IOStatement();  
+	>>
+
+BLANK
+	<<
+		NLA = BLANK;
+    IOStatement();  
+	>>
+
+[a-zA-Z\$][a-zA-Z0-9_\$]*
+	<<
+		NLA = IDENTIFIER;
+	>>
+
+
+%%NEWLINE
+
+@
+	<<
+		NLA = 1;
+	>>
+
+FILE
+	<<
+		NLA = FILEKEYWORD;
+    keyword_context = FILEKEYWORD; zzmode(START);  
+	>>
+
+[\ ]+
+	<<
+		NLA = 5;
+
+    if(EndCol < 4) {
+      zzskip();
+    }
+    else if(EndCol == 4)
+    {
+      if(zzchar == '0')
+      {/*Start of a new statement but skip this whitespace.*/
+        zzmode(KEYWORD);
+        keyword_context = KEYWORD_UNDEFINED;
+        zzskip();
+      }
+      else	{/*Continuation line...*/
+        NLA = CONTINUATION_LINE;
+        if(keyword_context == FORMAT) {
+          zzmode(FORMAT_CLASS);
+        }
+        else	{
+          zzmode(START);
+        }
+        zzskip();
+      }
+      zzreplstr("DEBUGING");
+      zzadvance();	/*Skip the char on column 6.*/
+    }
+    else if(EndCol < 71)
+    {/*Start of a new statement but skip this whitespace.*/
+      zzmode(KEYWORD);
+      zzskip();
+    }
+    else if(EndCol == 71)
+    {
+      NLA = BLANK_LINE;
+      zzmode(START);
+      /*zzskip();*/
+    }
+    else	{
+      NLA = ERROR_WHITESPACE_LABEL;
+      zzmode(START);
+    }
+	>>
+
+[C\*]
+	<<
+		NLA = 9;
+
+    if(BegCol == 0) {
+      zzmode(COMMENT);
+      zzskip();
+    }
+	>>
+
+[0-9]+
+	<<
+		NLA = LABEL;
+
+    if(EndCol >= 5) {
+      NLA = ERROR_LABEL_TOKEN;
+    }
+    else	{
+      /*Start of a new statement follows.*/
+      zzmode(KEYWORD);
+    }
+	>>
+
+$|$$
+	<<
+		NLA = CONTROL_IMAGE;
+
+    keyword_context = NLA;
+    if(BegCol >= 2)
+    NLA = CONTROL_IMAGE_ERROR;
+    zzmode(START);
+	>>
+
+
+%%KEYWORD
+
+@
+	<<
+		NLA = 1;
+	>>
+
+IF
+	<<
+		NLA = IF;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+ELSE IF
+	<<
+		NLA = ELSE_IF;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+ELSE
+	<<
+		NLA = ELSE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+ENDIF
+	<<
+		NLA = END_IF;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+END
+	<<
+		NLA = END;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+STOP
+	<<
+		NLA = STOP;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+REAL
+	<<
+		NLA = REAL;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+DOUBLE[\ ]*PRECISION
+	<<
+		NLA = DOUBLE_PRECISION;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+LOGICAL
+	<<
+		NLA = LOGICAL;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+INTEGER
+	<<
+		NLA = INTEGER;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+CHARACTER
+	<<
+		NLA = CHARACTER;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+COMPLEX
+	<<
+		NLA = COMPLEX;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+DOUBLE_COMPLEX
+	<<
+		NLA = DOUBLE_COMPLEX;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+IMPLICIT
+	<<
+		NLA = IMPLICIT;
+    ; keyword_context = NLA;  
+	>>
+
+COMMON
+	<<
+		NLA = COMMON;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+DATA
+	<<
+		NLA = DATA;
+
+    if(zzchar == ' ') {
+      zzmode(START); keyword_context = NLA;
+    }
+    else {/*It is an identifier!*/
+      zzmode(START);
+      NLA = IDENTIFIER;
+      keyword_context = ASSIGNMENT;
+    }
+	>>
+
+DO
+	<<
+		NLA = DO;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+CONTINUE
+	<<
+		NLA = CONTINUE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+CALL
+	<<
+		NLA = CALL;
+    keyword_context = NLA;  
+	>>
+
+SUBROUTINE
+	<<
+		NLA = SUBROUTINE;
+    keyword_context = NLA;  
+	>>
+
+FUNCTION
+	<<
+		NLA = FUNCTION;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+GO[\ \t]*TO
+	<<
+		NLA = GO_TO;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+RETURN
+	<<
+		NLA = RETURN;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+EXTERNAL
+	<<
+		NLA = EXTERNAL;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+INTRINSIC
+	<<
+		NLA = INTRINSIC;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+SAVE
+	<<
+		NLA = SAVE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+ENTRY
+	<<
+		NLA = ENTRY;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+PARAMETER
+	<<
+		NLA = PARAMETER;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+FORMAT
+	<<
+		NLA = FORMAT;
+
+    zzmode(FORMAT_CLASS);
+    keyword_context = NLA;
+    LPCount = 0;
+    CommaCount = 0;
+	>>
+
+INQUIRE
+	<<
+		NLA = INQUIRE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+BACKSPACE
+	<<
+		NLA = BACKSPACE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+ENDFILE
+	<<
+		NLA = ENDFILE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+REWIND
+	<<
+		NLA = REWIND;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+BLOCK[\ ]+GLOBALS
+	<<
+		NLA = BLOCK_GLOBALS;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+EXPORT
+	<<
+		NLA = EXPORT;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+CHANGE
+	<<
+		NLA = CHANGE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+OPEN
+	<<
+		NLA = OPEN;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+CLOSE
+	<<
+		NLA = CLOSE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+DIMENSION
+	<<
+		NLA = DIMENSION;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+EQUIVALENCE
+	<<
+		NLA = EQUIVALENCE;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+ASSIGN
+	<<
+		NLA = ASSIGN;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+LIBRARY
+	<<
+		NLA = LIBRARY;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+WRITE
+	<<
+		NLA = WRITE;
+    ReadWriteProcessing();  
+	>>
+
+READ
+	<<
+		NLA = READ;
+    ReadWriteProcessing();  
+	>>
+
+FIND
+	<<
+		NLA = FIND;
+    zzmode(START); keyword_context = NLA;  
+	>>
+
+[a-zA-Z\$][a-zA-Z0-9_\$]*
+	<<
+		NLA = 65;
+
+    zzmode(START);
+    NLA = IDENTIFIER;
+    keyword_context = ASSIGNMENT;
+	>>
+
+[\ \t]+
+	<<
+		NLA = 68;
+    zzskip();  
+	>>
+
+[\%\!]
+	<<
+		NLA = 69;
+
+    zzmode(COMMENT);
+    zzreplstr("!");
+    zzmore();
+	>>
+
+
+%%COMMENT
+
+@
+	<<
+		NLA = 1;
+	>>
+
+(~[\n])*
+	<<
+		NLA = COMMENT_LINE;
+    {
+      if(BegCol >= 5) {
+        NLA = TRAILING_COMMENT;
+#ifdef SUPPRESS_TRAILING_COMMENTS
+        zzskip();
+#endif
+      }
+      zzmode(START);
+    }  
+	>>
+
+
+%%FORMAT_CLASS
+
+@
+	<<
+		NLA = 1;
+	>>
+
+['\"]
+	<<
+		NLA = 223;
+
+    GetQuotedString();
+    NLA = QUOTED_STRING;
+	>>
+
+[\ \t]+
+	<<
+		NLA = 224;
+    zzskip();  
+	>>
+
+\,
+	<<
+		NLA = 225;
+
+    NLA = COMMA;
+    zzskip();
+	>>
+
+\.
+	<<
+		NLA = DEC_POINT;
+
+	>>
+
+[1-9][0-9]*H
+	<<
+		NLA = 227;
+
+    ProcessHollerith();
+    NLA = HOLLERITH_CONST;
+	>>
+
+TR
+	<<
+		NLA = TR;
+
+	>>
+
+TL
+	<<
+		NLA = TL;
+
+	>>
+
+T
+	<<
+		NLA = T;
+
+	>>
+
+X
+	<<
+		NLA = X;
+
+	>>
+
+\/
+	<<
+		NLA = SLASH;
+
+	>>
+
+:
+	<<
+		NLA = COLUMN;
+
+	>>
+
+SP
+	<<
+		NLA = SP;
+
+	>>
+
+SS
+	<<
+		NLA = SS;
+
+	>>
+
+S
+	<<
+		NLA = S;
+
+	>>
+
+P
+	<<
+		NLA = P;
+
+	>>
+
+BN
+	<<
+		NLA = BN;
+
+	>>
+
+BZ
+	<<
+		NLA = BZ;
+
+	>>
+
+I
+	<<
+		NLA = I;
+	>>
+
+J
+	<<
+		NLA = J;
+	>>
+
+F
+	<<
+		NLA = F;
+	>>
+
+E
+	<<
+		NLA = E;
+	>>
+
+D
+	<<
+		NLA = D;
+	>>
+
+G
+	<<
+		NLA = G;
+	>>
+
+O
+	<<
+		NLA = O;
+	>>
+
+L
+	<<
+		NLA = L;
+	>>
+
+A
+	<<
+		NLA = A;
+	>>
+
+Z
+	<<
+		NLA = Z;
+	>>
+
+U
+	<<
+		NLA = U;
+	>>
+
+K
+	<<
+		NLA = K;
+    zzskip();  
+	>>
+
+$
+	<<
+		NLA = DOLLAR_EDITING;
+    zzskip();  
+	>>
+
+[0-9]+
+	<<
+		NLA = 252;
+
+    if(BegCol >= 72) {
+      NLA = SEQUENCE;
+      zzskip();
+    }
+    else	{
+      NLA = CONSTINT;
+    }
+	>>
+
+\(
+	<<
+		NLA = 253;
+    NLA = LP; LPCount++;  
+	>>
+
+\)
+	<<
+		NLA = 254;
+    NLA = RP; LPCount--; if(LPCount == 0) zzmode(START);  
+	>>
+
+[\%\!]
+	<<
+		NLA = 255;
+
+    zzmode(COMMENT);
+    zzreplstr("!");
+    zzmore();
+	>>
+
+\n
+	<<
+		NLA = 256;
+
+    NewLineProcessing();
+    zzskip();
+    zzmode(NEWLINE);
+	>>
+
+%%

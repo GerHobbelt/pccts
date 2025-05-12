@@ -1,0 +1,54 @@
+This is a 'script interpreter/compiler' core which I've started so I'd use/test PCCTS
+capabilities.
+
+As it is VERY incomplete (it just shows a load of messages on stdout if a script file is 
+parsed by the test executable, you may view it as some sort of 'showcase' for features
+of PCCTS I've seen used rarely in other testscripts delivered with PCCTS or found 
+elsewhere:
+
+- your personal hadcoded lexer in 'C' merged with a ANTLR grammar: mimic DLG interface
+
+- ANTLR grammar with lots of exception handlers, even using MY OWN *EXTRA* EXCEPTIONS.
+
+Feel free to experiment with this one all you like. The 'script.g' grammar is a full
+language definition for a script programming language (a simplified version is actually
+in use (YACC ... sorry, _yuck_ ;-) variant that is) in a large commercial embedded 
+application project in Rotterdam/The Netherlands.
+
+This directory contains a *outdated* MSVC 5.0 project file for building this stuff.
+The most recent is the 'makefile' for Linux/GCC but it should probably work on
+other platforms too. Note however, that the 
+.c.o:
+rule has not be specified as gcc/make implies this. When you make barfs, replace
+the action line
+  $(CC) .... $(OBJ)
+with
+  $(CC) .... $(SRC)
+and your compiler should (at once!) compile a few C files into a ready executable.
+
+                  ------------------------------------------------
+
+When in doubt, use PCCTS for your grammars! I should know; I've designed the 'nephew'
+of this one for YACC and had to hack it to death to get some decent error reporting
+anywhere inside that grammar: USERS code the scripts so good error reporting is a
+*must*. And the project schedule didn't allow for repairing my grave mistake by using
+YACC and switch to PCCTS after all.
+('yeah, but this one works *a bit* so can't you hack it that is works a bit better 
+next week?' 'Yeah, man, *of* *course* I can hack it! <I'm not a donkey, you know!>
+<sigh> <why must my ego always kick in at times like that? why can't I just say:
+'shit! no! this is way tooooooo difficult too hack. you couldn't anyway, so why should
+I be able?!'> <grumble>)
+
+The moral of the story:
+you can't switch grammar compilers half-way your projects so START using PCCTS!
+
+when you're a tenderfoot just fresh out of school (yeah, yeah, I *know*, some
+call it University...) and you've had these exams about LR and LL and maybe
+you heard about YACC? Never mind, grab your bottom and haul your ass over to the
+PCCTS way of workin'.
+
+              End of ravings & rantings, it's bedtime (02:00 local time)
+
+Ger 'Insh_Allah' Hobbelt
+i_a@mbh.org
+

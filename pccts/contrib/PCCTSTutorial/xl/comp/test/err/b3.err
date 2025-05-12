@@ -1,0 +1,3 @@
+line 5: syntax error at "then" -- type of condition on if statement is not Boolean
+	Type of condition was Integer
+	Expression was (x + 2)

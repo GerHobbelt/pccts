@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>A PCCTS Tutorial</title>
+<style>
+<!--
+-->
+</style>
+
+
+<meta name="Microsoft Theme" content="expeditn 001, default"><meta name="Microsoft Border" content="tb, default"></head>
+
+<body background="../_themes/expeditn/exptextb.jpg" bgcolor="#FFFFFF" text="#000000" link="#006600" vlink="#669966" alink="#990000"><!--mstheme--><font face="book antiqua"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<h1 align="center"><font size="7" color="#800000"><strong>A PCCTS Tutorial</strong></font></h1>
+
+<p align="center"><a href="../parseview/index.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="../lalrtoll.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<h2 align="center"><!--mstheme--><font color="#660033">(Or how I learned to hack together a compiler using PCCTS...)<!--mstheme--></font></h2>
+
+<h2 align="center"><!--mstheme--><font color="#660033">by Scott Stanchfield<!--mstheme--></font></h2>
+
+<h2 align="center"><!--mstheme--><font color="#660033">email: <a href="mailto:thetick@scruz.net">thetick@scruz.net</a><!--mstheme--></font></h2>
+
+<p align="center"><!--webbot bot="Navigation" s-type="children" s-orientation="horizontal" s-rendering="graphics" b-include-home="FALSE" b-include-up="FALSE" startspan --><a href="pccts2.htm"><img src="_derived/pccts2.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="A Simple Language"></a><a href="pccts3.htm"><img src="_derived/pccts3.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Organization"></a><a href="pccts4.htm"><img src="_derived/pccts4.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Recognition"></a><a href="pccts5.htm"><img src="_derived/pccts5.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Grammar"></a><a href="pccts6.htm"><img src="_derived/pccts6.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Statements"></a><a href="pccts7.htm"><img src="_derived/pccts7.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Expressions"></a><a href="pccts8.htm"><img src="_derived/pccts8.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="PCCTS Glue"></a><a href="pccts9.htm"><img src="_derived/pccts9.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Compiling it All"></a><!--webbot bot="Navigation" endspan i-checksum="42735" --></p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h1>Introduction</h1>
+
+<h2><!--mstheme--><font color="#660033">(In other words, the part you'll never read...)<!--mstheme--></font></h2>
+
+<h3><!--mstheme--><font color="#996600">Note: All source code and HTML can now be downloaded:<!--mstheme--></font></h3>
+
+<p>(Note that the HTML versions are the old versions -- they don't look like these pages,
+but contain the same content.&nbsp; I'll update the when I get a chance.)</p>
+
+<h4>PKZip/WinZip format</h4>
+
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/recog1.zip">base recognizer</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/recog2.zip">recognizer after cleanup</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/tests.zip">sample XL code for testing</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/pcctstut.zip">HTML w/style sheets</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/pcctstns.zip">HTML w/o style sheets</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+<!--msthemelist--></table>
+
+<h4>.tar.gz format</h4>
+
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/recog1.tgz">base recognizer</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/recog2.tgz">recognizer after cleanup</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/tests.tgz">sample XL code for testing</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/pcctstut.tgz">HTML w/style sheets</a> <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua"><a href="archive/pcctstns.tgz">HTML w/o style sheets</a> <!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+  <!--mstheme--></font><!--msthemelist--></td></tr>
+<!--msthemelist--></table>
+
+<p>WARNING: This is a work in progress! It is not complete nor has the code contained
+herein been verified. I am putting this on the net at this point in hopes that some may
+find it useful. I plan to try to complete this tutorial (including verifying all code
+herein) sometime 1Q97. I'll post news on updates in <a href="news:comp.compilers.tools.pccts"><code>comp.compilers.tools.pccts</code></a>.</p>
+
+<p>I need to warn you up front that I can be a bit long-winded, so bear with me while I
+try to describe a bit about what PCCTS is, how you can write parsers and compilers using
+it, what type of code it will produce, the color of the moon on an October evening and why
+&quot;42&quot; is such an important number (or so says Douglas Adams.)</p>
+
+<p>Ok. Call me nuts. I just sick of all the whining about how hard it is to learn PCCTS.
+(So the whining is valid -- it's a <i>bit</i> hard to learn. <i>I</i> only had the cat to
+whine to.) I remembered learning it a few years ago using the &quot;Advanced
+Tutorial&quot; but things have changed significantly since then. Back then, I used PCCTS
+for a compiler course. I loved it and have loved it ever since. I figured, &quot;Hey, I've
+got a simple compiler written in PCCTS, so why not revise it and write it as a
+tutorial?&quot; So here it is.</p>
+
+<p>I want this tutorial to really help people, so I'm asking for input. Email me at <a href="mailto:thetick@scruz.net">thetick@scruz.net</a> with any suggestions or comments you
+may have, and I just might do some more work on this.</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">History of this document <!--mstheme--></font></h2>
+<div align="center"><center>
+
+<table border="1" cellpadding="9" cellspacing="1" width="100%" bordercolordark="#660000" bordercolorlight="#CC9966">
+  <tr>
+    <td><!--mstheme--><font face="book antiqua">9/8/97<!--mstheme--></font></td>
+    <td><!--mstheme--><font face="book antiqua">Finished up pretty-up changes using FrontPage 98 beta.&nbsp; No new content.<!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td><!--mstheme--><font face="book antiqua">12/21/96 - part 2<!--mstheme--></font></td>
+    <td><!--mstheme--><font face="book antiqua">Marathon session time! The recognizer section is now (fairly) complete. The sample
+    code works (and can be downloaded, complete with makefile and VC++ project file.) <!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td><!--mstheme--><font face="book antiqua">12/21/96 - part 1<!--mstheme--></font></td>
+    <td><!--mstheme--><font face="book antiqua">I noticed that the definition of XL didn't really make sense with regard to unary
+    adding operators. The precedence said mult-ops had a higher precedence. So an expression
+    like <br>
+    &nbsp;&nbsp;-a * b<br>
+    is interpreted as<br>
+    &nbsp;&nbsp;-(a * b)<br>
+    technically it's a wash, as the expression will evaluate the same anyway. However, logic
+    dictates that a unary op applies to the single thing to its right, so I switched the
+    precedences. Isn't precedence fun! <!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td><!--mstheme--><font face="book antiqua">12/15/96<!--mstheme--></font></td>
+    <td><!--mstheme--><font face="book antiqua">Started this history (Now I'll try to keep a record.)<br>
+    Cleaned up &lt; and &gt; symbols. Some browsers had trouble when I didn't use the symbolic
+    names for them. <!--mstheme--></font></td>
+  </tr>
+  <tr>
+    <td><!--mstheme--><font face="book antiqua">12/??/96<!--mstheme--></font></td>
+    <td><!--mstheme--><font face="book antiqua">Put the first part of this tutorial on the web. (So I don't keep good records...) <!--mstheme--></font></td>
+  </tr>
+</table>
+</center></div>
+
+<p>And now let's talk about the <a href="pccts2.htm">language we'll be compiling.</a> </p>
+
+<p>This page has been accessed <img src="/cgi-bin/counter?ft=0|frgb=0;0;0|tr=0|trgb=0;0;0|wxh=15;20|md=6|dd=C|df=thetick0001.dat">
+times. Whoohoo!</p>
+
+<p align="center"><!--webbot bot="Navigation" s-type="children" s-orientation="horizontal" s-rendering="graphics" b-include-home="FALSE" b-include-up="FALSE" startspan --><a href="pccts2.htm"><img src="_derived/pccts2.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="A Simple Language"></a><a href="pccts3.htm"><img src="_derived/pccts3.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Organization"></a><a href="pccts4.htm"><img src="_derived/pccts4.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Recognition"></a><a href="pccts5.htm"><img src="_derived/pccts5.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Grammar"></a><a href="pccts6.htm"><img src="_derived/pccts6.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Statements"></a><a href="pccts7.htm"><img src="_derived/pccts7.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Expressions"></a><a href="pccts8.htm"><img src="_derived/pccts8.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="PCCTS Glue"></a><a href="pccts9.htm"><img src="_derived/pccts9.htm_cmp_expeditn000_hbtn.gif" width="140" height="60" border="0" alt="Compiling it All"></a><!--webbot bot="Navigation" endspan i-checksum="42735" --> 
+<!--msnavigation--></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<p align="center"><a href="../parseview/index.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="../lalrtoll.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+
+<p align="center">This page was last updated on 09/08/97.</p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--mstheme--></font></body>
+</html>

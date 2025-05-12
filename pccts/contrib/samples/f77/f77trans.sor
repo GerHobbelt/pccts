@@ -1,0 +1,1013 @@
+#header <<
+	#undef SORCERER_TRANSFORM
+	#define CASTBase_h	/*To eliminate castbase.h*/
+	#include <assert.h>
+	#include "stdpccts.h"
+	typedef AST SORAST;
+
+	/* Only requirements are that the user define what an AST is; it must have
+	 * right, down pointers and a token field.  After that, the user can put it
+	 * what he/she wants
+	 */
+	#ifdef __STDC__
+	#include "stdlib.h"
+	#else
+	#include "malloc.h"
+	#endif
+
+
+
+>>
+
+<<
+
+/* define error routines here or include sorcerer.c */
+#include "errsupport.c"
+/* #include "slist.c" */
+#include "astlib.c"
+#include "sstack.c"
+/* #include "sint.c" */
+
+#include "sorlist.c"    /* [i_a] */
+#include "sintstack.c" 	/* [i_a] */
+
+
+#define FindForwardUntil(FoundPointer, Scope, Condition, UntilNode)	\
+	while(FoundPointer->token != UntilNode) {						\
+		if(FoundPointer->token == Scope) {							\
+			if(Condition) break;									\
+			}														\
+		FoundPointer=FoundPointer->right;							\
+		}															\
+	if(FoundPointer->token == UntilNode) {							\
+		FoundPointer=NULL;											\
+		}
+
+#define FindBackwardUntil(FoundPointer, Scope, Condition, UntilNode)	\
+	while(FoundPointer->token != UntilNode) {						\
+		if(FoundPointer->token == Scope) {							\
+			if(Condition) break;									\
+			}														\
+		FoundPointer=FoundPointer->left;							\
+		}															\
+	if(FoundPointer->token == UntilNode) {							\
+		FoundPointer=NULL;											\
+		}															\
+	if(FoundPointer->left == NULL) {/*Begining of file.*/			\
+		FoundPointer=NULL;											\
+		}
+
+SORAST *file_root = NULL;
+SORAST *open_root = NULL;
+
+char *KindPtr = NULL;
+char *TitlePtr = NULL;
+
+
+
+
+
+extern void o_read_statement(STreeParser *_parser, SORAST **_root);
+extern void o_write_statement(STreeParser *_parser, SORAST **_root);
+extern void o_format_statement(STreeParser *_parser, SORAST **_root);
+
+
+
+
+
+
+
+SORAST *FindTokenForward(SORAST *t, int token) {
+	SORAST *l_t = t;
+	if(t == NULL) return(NULL);
+	if(t->token == token) return(t);
+	l_t = FindTokenForward(l_t->down, token);
+	if(!l_t) {
+		l_t = FindTokenForward(t->right, token);
+		}
+	return(l_t);
+	}
+
+SORAST *FindTokenBackward(SORAST *t, int token) {
+	SORAST *l_t = t;
+	if(t == NULL) return(NULL);
+	if(t->token == token) return(t);
+	l_t = FindTokenBackward(l_t->left, token);
+	if(!l_t) {
+		l_t = FindTokenBackward(t->up, token);
+		}
+	return(l_t);
+	}
+
+SORAST *ast_node(int token, const char *sym) {
+	SORAST *p = (SORAST *)calloc(1, sizeof(SORAST));
+	assert(p != NULL);
+	p->token = token;
+	strcpy(p->f77NodeText, sym);
+	return(p);
+	}
+
+void F77SearchPerform(SORAST *root, int statement_id, void (*parse_function)(SORAST *)) {
+	SORAST *format = #(#[statement_id,"a"]);
+	SORAST *cursor = root, *p;
+	while((p=ast_find_all(root,format,&cursor)) != NULL)
+		{
+		parse_function(p);
+		}
+	}
+
+void FormatedIO(SORAST *root) {
+	SORAST *format, *l_root = root;
+	STreeParser l_parser;
+	STreeParserInit(x_, &l_parser); /* calls the 'f77trans.sor' program() rule! --> use f77trans.sor _refvar_inits()! */
+	assert((l_root->token == READ) || (l_root->token == WRITE));
+	if(l_root->token == READ) {
+		format = x_read_statement(&l_parser, &l_root);
+		}
+	else if(l_root->token == WRITE) {
+		format = x_write_statement(&l_parser, &l_root);
+		}
+	if(format != NULL) {
+		if(format->token == CONSTINT) {
+			l_root = root;
+			if(l_root->token == READ) {
+				o_read_statement(&l_parser, &l_root);
+				}
+			else if(l_root->token == WRITE) {
+				o_write_statement(&l_parser, &l_root);
+				}
+			/*Find first the begining of subroutine or program...*/
+			l_root = FindTokenBackward(root, SUBROUTINE);
+			/*Then, find the FORMAT statement which has the required label...*/
+			do {
+				l_root = FindTokenForward(l_root->right, FORMAT);
+				}
+			while(atoi(l_root->down->f77NodeText) != atoi(format->f77NodeText));
+
+			if(l_root != NULL) {
+				o_format_statement(&l_parser, &l_root);
+				}
+			}
+		}
+	}
+
+AST *F77TreeTranslator(AST *InpRoot, AST *OutRoot)
+{
+	SORAST *l_root = InpRoot;	/*l_root: program() sets the second pointer to NULL.*/
+	STreeParser myparser;
+	STreeParserInit(x_, &myparser); /* calls the 'f77trans.sor' program() rule! --> use f77trans.sor _refvar_inits()! */
+
+	zzdouble_link(l_root, NULL, NULL);
+    x_program(&myparser, &l_root);
+	/*
+	F77SearchPerform(InpRoot, READ, &FormatedIO);
+	F77SearchPerform(InpRoot, WRITE, &FormatedIO);
+	*/
+	return(InpRoot);
+}
+
+/*Removes 'Node' and its sub-trees from the AST. Frees memory.*/
+void F77UnlinkAndDestroy(SORAST *Node) {
+	if(Node->left == NULL) {/*First element!*/
+		Node->right->left = NULL;
+		}
+	else if(Node->right == NULL) {/*Last element!*/
+		Node->left->right = NULL;
+		}
+	else {
+		Node->right->left = Node->left;
+		Node->left->right = Node->right;
+		}
+	ast_free(Node->down);
+	free(Node);
+	}
+
+>>
+
+program:<<>>
+	{comment_block}
+	{file_block}
+	{block_globals_block {comment_block}}
+	main_program {comment_block}
+	(subroutine_block {comment_block})*
+	;
+
+main_program:
+	{decl_block}
+	{
+	e:exec_block << ast_insert_after(e->left, open_root);>>
+	}
+	end_statement
+	;
+
+subroutine_block:
+	(subroutine_statement|function_statement)
+	{comment_block}
+	{decl_block}
+	{exec_block}
+	end_statement
+	;
+
+decl_block:
+	decl_statement
+	(decl_statement
+	|comment_line
+	|blank_line
+	|control_image
+	)*
+	;
+
+decl_statement:
+	common_statement
+	|data_statement
+	|character_statement
+	|integer_statement
+	|real_statement
+	|logical_statement
+	|precision_statement
+	|dimension_statement
+	|equivalence_statement
+	|external_statement
+	|intrinsic_statement
+	|save_statement
+	|parameter_statement
+	|implicit_statement
+	;
+
+comment_block:
+	(comment_line
+	|blank_line
+	|control_image
+	)+
+	;
+
+exec_statement:
+	continue_statement
+	|assignment_statement
+	|do_statement
+	|unconditional_goto
+	|computed_goto
+	|assigned_goto
+	|read_statement
+	|write_statement
+	|open_statement
+	|close_statement
+	|inquire_statement
+	|change_statement
+	|find_statement	/*UNISYS FORTRAN V3.8*/
+	|call_statement
+	|block_if_statement
+	|arithm_if_statement
+	|log_if_statement
+	|stop_statement
+	|return_statement
+	|format_statement
+	|backspace_statement
+	|rewind_statement
+	|endfile_statement
+	|assign_statement
+	;
+
+exec_block:
+	exec_statement
+	(exec_statement
+	|comment_line
+	|entry_statement
+	|blank_line
+	|control_image
+	)*
+	;
+
+block_globals_block:
+	block_globals_statement
+	{file_block}
+	{export_statement {comment_block}}
+	end_statement
+	;
+
+file_block:
+	file_statement
+	(file_statement
+	|comment_line
+	|blank_line
+	|control_image
+	)*
+	;
+
+comment_line:#(COMMENT_LINE)
+	;
+
+blank_line:	#(c:BLANK_LINE)
+	;
+
+block_globals_statement: #(BLOCK_GLOBALS {LABEL})
+	;
+
+common_statement: #(COMMON {LABEL} block_item	(COMMA block_item)*)
+	;
+
+block_item :
+	lvalue
+	|DIV {IDENTIFIER} DIV lvalue
+	|CONCAT lvalue
+	;
+
+ /*******************/
+ /*SAVE statement   */
+ /*******************/
+save_statement: <<>>
+ #(SAVE {LABEL} LP save_item (COMMA save_item)* RP)
+	;
+save_item:
+	(
+	DIV IDENTIFIER DIV /*Common block designator*/
+	|IDENTIFIER
+	)
+	;
+
+ /*******************/
+ /*PARAMETER statement   */
+ /*******************/
+parameter_statement:
+	#(PARAMETER {LABEL} LP para_item (COMMA para_item)* RP)
+	;
+
+para_item: CONSTANT_NAME EQUAL expression
+	;
+
+ /*******************/
+ /*EXTERNAL statement   */
+ /*******************/
+external_statement:
+	#(EXTERNAL {LABEL} function_name (COMMA function_name)*)
+	;
+
+function_name: FUNCTION_NAME
+	;
+
+ /*******************/
+ /*INTRINSIC statement   */
+ /*******************/
+intrinsic_statement:
+	#(INTRINSIC {LABEL} function_name (COMMA function_name)*)
+	;
+
+ /*******************/
+ /*IMPLICIT statement   */
+ /*******************/
+implicit_statement:
+	#(IMPLICIT {LABEL} implicit_item (COMMA implicit_item)*)
+	;
+
+implicit_item: implicit_type LP letter_spec (COMMA letter_spec)* RP
+	;
+
+implicit_type:
+		(INTEGER
+		|REAL
+		|DOUBLE_PRECISION
+		|LOGICAL
+		|CHARACTER
+		|COMPLEX
+		|DOUBLE_COMPLEX
+		)
+		{STAR CONSTINT}
+		;
+
+letter_spec:
+	IDENTIFIER
+	{MIN IDENTIFIER}
+	;
+
+data_statement:	#(DATA (any_token)+ )
+	;
+
+inquire_statement: #(INQUIRE (any_token)+)
+	;
+
+assignment_statement:
+	#(
+	EQUAL
+	{LABEL}
+	(lvalue
+	|FUNCTION_NAME /*This is allowed in a FUNCTION definition.*/
+	)
+	rvalue
+	)
+	;
+
+lvalue:
+		int_lvalue
+		|real_lvalue
+		|char_lvalue
+		|log_lvalue
+		|double_lvalue
+		;
+
+rvalue:	expression
+	;
+
+array_reference:
+	int_array_ref
+	|real_array_ref
+	|char_array_ref
+	|double_array_ref
+	|log_array_ref
+	;
+
+int_lvalue: 
+	int_array_ref
+	|INTEGER_ID
+	;
+
+real_lvalue: 
+	real_array_ref
+	|REAL_ID
+	;
+
+char_lvalue: 
+	char_array_ref
+	|CHARACTER_ID
+	|substring
+	;
+
+double_lvalue: 
+	double_array_ref
+	|DOUBLE_PRECISION_ID
+	;
+
+log_lvalue: 
+	log_array_ref
+	|LOGICAL_ID
+	;
+
+int_array_ref:
+	#(INTEGER_ARRAY_ID {LP expression	(COMMA expression)* RP})
+	;
+
+real_array_ref:
+	#(REAL_ARRAY_ID {LP expression (COMMA expression)* RP})
+	;
+
+char_array_ref:
+	#(CHARACTER_ARRAY_ID {LP expression (COMMA expression)* RP})
+	;
+
+log_array_ref:
+	#(LOGICAL_ARRAY_ID {LP expression	(COMMA expression)* RP})
+	;
+
+double_array_ref:
+	#(DOUBLE_PRECISION_ARRAY_ID {LP expression (COMMA expression)* RP})
+	;
+
+array_name:
+	(INTEGER_ARRAY_ID
+	|REAL_ARRAY_ID
+	|CHARACTER_ARRAY_ID
+	|LOGICAL_ARRAY_ID
+	|DOUBLE_PRECISION_ARRAY_ID
+	)
+	;
+
+function_reference:
+	#(FUNCTION_NAME LP expression (COMMA expression)* RP)
+	;
+
+expression:
+	real_expression
+	|exp_operand
+	;
+
+real_expression:
+	#(UNARY_PLU expression)
+	|#(NOT expression)
+	|#(UNARY_MIN expression)
+	|#(PLU expression expression)
+	|#(MIN expression expression)
+	|#(MUL expression expression)
+	|#(DIV expression expression)
+	|#(POW expression expression)
+	|#(AND expression expression)
+	|#(OR expression expression)
+	|#(NEQV expression expression)
+	|#(EQV expression expression)
+	|#(LT expression expression)
+	|#(LE expression expression)
+	|#(EQ expression expression)
+	|#(NE expression expression)
+	|#(GT expression expression)
+	|#(GE expression expression)
+	|#(IS expression expression)
+	|#(CONCAT expression expression)
+	;
+
+exp_operand:
+	array_reference
+	|function_reference
+	|INTEGER_ID
+	|REAL_ID
+	|DOUBLE_PRECISION_ID
+	|CONSTINT
+	|HEX_CONST
+	|BASIC_REAL
+	|REAL_EXPO
+	|LOGICAL_ID
+	|T_TRUE
+	|T_FALSE
+	|substring
+	|CHARACTER_ID
+	|(HOLLERITH_CONST)
+	|(QUOTED_STRING)
+	|LP expression RP
+	;
+
+
+integer_expr:
+	#(UNARY_PLU integer_expr)
+	|#(UNARY_MIN integer_expr)
+	|#(PLU integer_expr (integer_expr|QUOTED_STRING))
+	|#(MIN integer_expr (integer_expr|QUOTED_STRING))
+	|#(MUL integer_expr integer_expr)
+	|#(DIV integer_expr integer_expr)
+	|LP integer_expr RP
+	|int_array_ref
+	|function_reference
+	|INTEGER_ID
+	|CONSTINT
+	|HEX_CONST
+	|REAL_ID	/*UNISYS FORTRAN allows this!*/
+	;
+
+substring: 
+	CHARACTER_SUBSTRING LP {expression} COLUMN {expression} RP
+	;
+
+control_image:
+	#(CONTROL_IMAGE	(any_token)*)
+	;
+
+file_statement: <<SORAST *l_root; char buffer[100];>>
+	#(f:FILEKEYWORD c:CONSTINT LP file_item (COMMA file_item)* RP)
+	<<{
+	if(strcmp(KindPtr, "REMOTE")) {
+		strcpy(buffer, " ");
+		}
+	else {
+		strcpy(buffer, "USER");
+		}
+	l_root = #(#[OPEN, "OPEN"],#[LP, "("],#[UNIT, "UNIT"],#[EQUAL, "="],
+		  #[CONSTINT, c->f77NodeText],#[COMMA, ","],#[FILE_WORD, "FILE"],#[EQUAL, "="],
+		  #[QUOTED_STRING, buffer],#[RP, ")"]);
+	if(open_root == NULL) {
+		open_root = l_root;
+		}
+	else {
+		ast_append(open_root, l_root);
+		}
+	F77UnlinkAndDestroy(f);
+	}>>
+	;
+
+file_item:
+		KIND EQUAL k:.		<<KindPtr = k->f77NodeText;>>
+		|TITLE EQUAL t:.	<<TitlePtr = t->f77NodeText;>>
+		|FILETYPE EQUAL .
+		|NEWFILE EQUAL .
+		|MYUSE EQUAL .
+		|MAXRECSIZE EQUAL .
+		|SAVEFACTOR EQUAL .
+		|BLOCKSIZE EQUAL .
+		|SECURITYTYPE EQUAL .
+		|AREAS EQUAL .
+		|AREASIZE EQUAL .
+		|PROTECTION EQUAL .
+		|UNITS EQUAL .
+		|UPDATEFILE EQUAL .
+		|FILE_WORD EQUAL .
+		|STATUS EQUAL .
+		|ACCESS EQUAL .
+		|FORM EQUAL .
+		|RECL EQUAL .
+		|BLANK EQUAL .
+		;
+
+	/*UNISYS FORTRAN V3.8*/
+find_statement: #(FIND {LABEL} LP findlist RP)
+	;
+
+findlist:
+	(#(COMMA unit_id REC EQUAL integer_expr))
+	|(#(APOSTROPHY unit_id integer_expr))
+	|(#(UNIT EQUAL unit_id COMMA REC EQUAL integer_expr))
+	|(#(REC EQUAL integer_expr COMMA UNIT EQUAL unit_id))
+	;
+
+	/*END UNISYS FORTRAN V3.8*/
+
+character_statement: #(CHARACTER {LABEL} (any_token)*)
+	;
+
+integer_statement: #(INTEGER {LABEL} (any_token)*)
+	;
+
+real_statement: #(REAL {LABEL} (any_token)*)
+	;
+
+logical_statement:#(LOGICAL {LABEL} (any_token)*)
+	;
+
+precision_statement:
+	#(DOUBLE_PRECISION {LABEL} (any_token)*)
+	;
+
+dimension_statement: #(DIMENSION {LABEL}(any_token)*)
+	;
+
+equivalence_statement:#(EQUIVALENCE {LABEL} (any_token)*)
+	;
+
+
+backspace_statement: #(BACKSPACE {LABEL} io_specifier)
+	;
+
+endfile_statement:#(ENDFILE {LABEL}io_specifier)
+	;
+
+rewind_statement: #(REWIND {LABEL} io_specifier)
+	;
+
+ /*This is the same for BACKSPACE, ENDFILE and REWIND. Save some code size.*/
+io_specifier:
+	IO_SPEC_LP
+	{UNIT EQUAL} unit_id
+	(#(ERR COMMA EQUAL CONSTINT)
+	|#(IOSTAT COMMA EQUAL exp_operand))*
+	IO_SPEC_RP
+	|unit_id
+	;
+
+read_statement > [SORAST *Format]:
+	#(READ {LABEL} control_info > [Format] input_list)
+	;
+
+write_statement > [SORAST *Format]:
+	#(WRITE {LABEL} control_info > [Format] {output_list})
+	;
+
+control_info > [SORAST *Format]: <<Format = NULL;>>
+		LP (
+		#(COMMA unit_id format_id > [Format]) |
+		#(APOSTROPHY unit_id integer_expr) |
+		#(EQUAL UNIT unit_id) |
+		unit_id
+		)
+		(
+		<<SORAST *l_node;>>
+		the_remainder > [l_node]
+		<<if(l_node != NULL) Format = l_node;>>
+		)* RP
+		;
+
+the_remainder > [SORAST *Format]: <<Format = NULL;>>
+		COMMA
+		(FMT	 	EQUAL format_id > [Format]
+		|IO_DATA	EQUAL integer_expr
+		|REC 		EQUAL integer_expr
+		|END 		EQUAL CONSTINT
+		|ERR 		EQUAL CONSTINT
+		|IOSTAT 	EQUAL exp_operand
+		|URGENT 	EQUAL expression
+		|format_id > [Format]
+		)
+		;
+
+
+unit_id: STAR|expression
+		;
+
+format_id > [SORAST *Format]:
+		f:STAR {SLASH /*UNISYS FORTRAN V3.8*/} <<Format = f;>>
+		|f:SLASH <<Format = f;>>
+		|f:expression <<Format = f;>>
+		;
+
+input_list: input_item (COMMA input_item)*
+	;
+input_item: (exp_operand | inp_implied_list)
+	;
+inp_implied_list:
+	IMPLIED_LP
+	(input_item COMMA)+ implied_loop
+	IMPLIED_RP
+	;
+
+output_list: output_item (COMMA output_item)*
+	;
+
+output_item: outp_implied_list|rvalue;
+
+outp_implied_list:
+	IMPLIED_LP
+	(output_item COMMA)+ implied_loop
+	IMPLIED_RP
+			;
+implied_loop:
+	IMPLIED_DO_VARIABLE EQUAL
+	integer_expr COMMA integer_expr
+	{COMMA integer_expr}
+	;
+
+open_statement:
+	#(OPEN {LABEL}
+	LP open_item (COMMA open_item)* RP
+	)
+	;
+
+open_item:
+		({UNIT		EQUAL} unit_id)
+		|(ERR		EQUAL CONSTINT)
+		|(FILE_WORD	EQUAL expression)
+		|(STATUS	EQUAL expression)
+		|(ACCESS	EQUAL expression)
+		|(FORM		EQUAL expression)
+		|(RECL		EQUAL expression)
+		|(IOSTAT	EQUAL exp_operand)
+		|(TITLE		EQUAL expression)
+		|(DISP		EQUAL expression)
+		|(SUBFILE	EQUAL integer_expr)
+		|(MAXRECSIZE	EQUAL integer_expr)
+		|(SAVEFACTOR	EQUAL integer_expr)
+		|(OPENTYPE	EQUAL expression)
+		;
+
+close_statement:
+	#(CLOSE {LABEL}
+	LP close_item (COMMA close_item)* RP
+	)
+	;
+
+close_item:
+		({UNIT		EQUAL} unit_id)
+		|(ERR		EQUAL CONSTINT)
+		|(STATUS	EQUAL close_name)
+		|(IOSTAT	EQUAL exp_operand)
+		|(DISP		EQUAL close_name)
+		|(SUBFILE	EQUAL integer_expr)
+		;
+
+close_name:
+	(IDENTIFIER
+	|QUOTED_STRING)
+	;
+
+call_statement:
+		#(CALL {LABEL}
+		FUNCTION_NAME
+		{call_arg_list})
+		;
+
+call_arg_list : LP {call_arg_item (COMMA call_arg_item)*} RP
+	;
+
+call_arg_item:((STAR |AMPERSAND) CONSTINT
+		|expression
+		)
+		;
+
+export_statement:
+	#(EXPORT (any_token)+ )
+	;
+
+subroutine_statement:#(SUBROUTINE {LABEL}
+	IDENTIFIER
+	{call_arg_list})
+	;
+
+entry_statement:
+	#(ENTRY {LABEL}
+	IDENTIFIER
+	{call_arg_list})
+	;
+
+function_statement:
+	#(FUNCTION {LABEL} {function_type}
+	IDENTIFIER LP {function_arg_list} RP)
+	;
+
+function_type:
+		(INTEGER
+		|REAL
+		|DOUBLE_PRECISION
+		|LOGICAL
+		|CHARACTER
+		|COMPLEX
+		|DOUBLE_COMPLEX
+		)
+		{STAR length_spec}
+		;
+function_arg_list: {SLASH} expression {SLASH}
+	(COMMA {SLASH} expression {SLASH})*
+	;
+
+length_spec:
+	LP (STAR |integer_expr) RP
+	|CONSTINT
+	;
+
+block_if_statement:
+	#(BLOCK_IF {LABEL}
+	LP expression RP THEN
+	block_if_block
+	{
+	((ELSE |ELSE_IF LP expression RP )
+	)
+	block_if_block
+	}
+	END_IF
+	);
+
+block_if_block:
+	(comment_line
+	|blank_line
+	|assignment_statement
+	|do_statement
+	|control_image
+	|format_statement
+	|read_statement
+	|write_statement
+	|open_statement
+	|close_statement
+	|inquire_statement
+	|change_statement
+	|find_statement	/*UNISYS FORTRAN V3.8*/
+	|call_statement
+	|block_if_statement
+	|arithm_if_statement
+	|log_if_statement
+	|unconditional_goto
+	|computed_goto
+	|assigned_goto
+	|continue_statement
+	|stop_statement
+	|return_statement
+	|backspace_statement
+	|rewind_statement
+	|endfile_statement
+	|assign_statement
+	)*
+	;
+
+log_if_statement:
+	#(LOGICAL_IF {LABEL} LP expression RP log_substatement)
+	;
+
+arithm_if_statement:
+	#(ARITHMETIC_IF {LABEL} LP expression RP CONSTINT COMMA CONSTINT COMMA CONSTINT)
+	;
+
+log_substatement:
+	/*call_statement
+	|*/
+	continue_statement
+	|assignment_statement
+	|do_statement
+	|unconditional_goto
+	|computed_goto
+	|assigned_goto
+	|read_statement
+	|write_statement
+	|open_statement
+	|close_statement
+	|inquire_statement
+	|change_statement
+	|find_statement	/*UNISYS FORTRAN V3.8*/
+	|call_statement
+	|end_statement
+	|stop_statement
+	|return_statement
+	|arithm_if_statement
+	|backspace_statement
+	|rewind_statement
+	|endfile_statement
+	|assign_statement
+	;
+
+continue_statement:	#(CONTINUE {LABEL})
+	;
+
+stop_statement: #(STOP {LABEL})
+	;
+
+end_statement: #(END {LABEL})
+	;
+
+return_statement: #(RETURN {LABEL})
+	;
+
+unconditional_goto:	#(UNCONDITIONAL_GOTO {LABEL} CONSTINT)
+	;
+
+computed_goto: #(COMPUTED_GOTO {LABEL} LP CONSTINT (COMMA CONSTINT)* RP
+	{COMMA} integer_expr
+	)
+	;
+
+assigned_goto: #(ASSIGNED_GOTO {LABEL}
+	INTEGER_ID {{COMMA}	LP CONSTINT (COMMA CONSTINT)* RP
+	}
+	)
+	;
+
+do_statement:
+	#(DO {LABEL} CONSTINT {COMMA} INTEGER_ID EQUAL
+	integer_expr COMMA integer_expr
+	{COMMA integer_expr}
+	)
+	;
+
+change_statement: #(CHANGE {LABEL} (any_token)*)
+	;
+
+ /*******************/
+ /*ASSIGN statement   */
+ /*******************/
+assign_statement: #(ASSIGN {LABEL} CONSTINT TO IDENTIFIER)
+	;
+
+format_statement: #(FORMAT {LABEL} LP format_spec RP)
+	;
+
+format_spec: format_item (format_item)*
+	;
+format_item: {CONSTINT} LP format_spec RP
+		|hollerith_editing
+		|quote_editinig				|tr_editing
+		|tl_editing					|t_editing
+		|x_editing					|colon_editing
+		|ss_editing					|s_editing
+		|p_editing 					|bn_editing
+		|bz_editing					|i_editing
+		|j_editing 					|f_editing
+		|e_editing					|d_editing
+		|g_editing 					|o_editing
+		|l_editing 					|a_editing
+		|z_editing					|sp_editing
+		|SLASH
+		/*UNISYS FORTRAN V3.8*/
+		|u_editing
+		;
+
+hollerith_editing: HOLLERITH_CONST
+	;
+quote_editinig: QUOTED_STRING;
+
+
+tr_editing: #(TR CONSTINT);
+tl_editing:	#(TL CONSTINT);
+t_editing:#(T CONSTINT);
+x_editing:#(X {repeat_count});
+ss_editing: SS;
+p_editing:#(P {SCALE_FACTOR});
+bz_editing:BZ;
+bn_editing:BN;
+j_editing:#(J field_width);
+e_editing:#(E {repeat_count}
+	field_width DEC_POINT 
+	decimal_places {E exponent_digits}
+	)
+	;
+g_editing:
+	#(G {repeat_count}
+	field_width DEC_POINT
+	decimal_places {G exponent_digits}
+	)
+	;
+
+l_editing:
+	#(L {repeat_count} field_width)
+	;
+z_editing:#(Z field_width);
+ /*UNISYS FORTRAN V3.8*/
+u_editing:#(U {field_width {COMMA decimal_places}});
+colon_editing: COLUMN;
+s_editing: S;
+i_editing:#(I {repeat_count} field_width
+	{DEC_POINT min_dig_required})
+	;
+f_editing:
+	#(F {repeat_count} field_width DEC_POINT decimal_places)
+	;
+d_editing:#(D {repeat_count} field_width DEC_POINT
+	decimal_places)
+	;
+o_editing:#(O field_width);
+a_editing:#(A {repeat_count} field_width);
+sp_editing:	SP;
+repeat_count: REPEAT_COUNT;
+field_width: FIELD_WIDTH;
+decimal_places: DECIMAL_PLACES;
+exponent_digits: EXPONENT_DIGITS;
+min_dig_required: MIN_DIG_REQUIRED;
+
+any_token: . ;

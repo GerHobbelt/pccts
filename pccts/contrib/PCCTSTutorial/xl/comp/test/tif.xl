@@ -1,0 +1,22 @@
+program testif =
+   var x, y: Integer;
+begin // testif
+   x := 3;
+   y := 4;
+
+   if x > y then
+      put("x is > y");
+   elsif x < y then
+      put("x is < y");
+   else
+      put("x is = y");
+   end if;
+
+   if x < y then
+      put("x is < y");
+   elsif x = y then
+      put("x is = y");
+   else
+      put("x is > y");
+   end if;
+end testif.

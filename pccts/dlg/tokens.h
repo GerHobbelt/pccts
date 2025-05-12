@@ -7,6 +7,9 @@
  * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
  * Purdue University Electrical Engineering
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc dlg_p.g -gh
+ *
  */
 #define zzEOF_TOKEN 1
 #define L_EOF 4
@@ -39,6 +42,12 @@
 #define CONTINUATION 31
 #define LIT 32
 #define REGCHAR 33
+
+
+#define zzSET_SIZE 8
+#define zzTOKEN_COUNT 46
+
+
 
 #ifdef __USE_PROTOS
 void grammar(void);
@@ -118,16 +127,19 @@ void anychar(void);
 extern void anychar();
 #endif
 
-#endif
-extern SetWordType zzerr1[];
-extern SetWordType zzerr2[];
-extern SetWordType zzerr3[];
-extern SetWordType setwd1[];
-extern SetWordType zzerr4[];
-extern SetWordType zzerr5[];
-extern SetWordType zzerr6[];
-extern SetWordType setwd2[];
-extern SetWordType zzerr7[];
-extern SetWordType zzerr8[];
-extern SetWordType zzerr9[];
-extern SetWordType setwd3[];
+extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 46 */];
+extern SetWordType zzerr1[zzSET_SIZE];
+extern SetWordType zzerr2[zzSET_SIZE];
+extern SetWordType zzerr3[zzSET_SIZE];
+extern SetWordType setwd1[zzTOKEN_COUNT];
+extern SetWordType zzerr4[zzSET_SIZE];
+extern SetWordType zzerr5[zzSET_SIZE];
+extern SetWordType zzerr6[zzSET_SIZE];
+extern SetWordType setwd2[zzTOKEN_COUNT];
+extern SetWordType zzerr7[zzSET_SIZE];
+extern SetWordType zzerr8[zzSET_SIZE];
+extern SetWordType zzerr9[zzSET_SIZE];
+extern SetWordType setwd3[zzTOKEN_COUNT];
+
+
+#endif /* tokens_h */

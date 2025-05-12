@@ -1,0 +1,183 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [correct3]
+         ( Body
+            ( Define
+               ( CONST [one] >>  Type: Integer >>  InitialValue: 1))
+            ( Define
+               ( CONST [two] >>  Type: Integer >>  InitialValue: 2))
+            ( Define
+               ( TYPE [IntArray] >>  Type: Integer
+                  ( Array >>  Type: Integer
+                     ( Lower
+                        ( INTLIT [1] >>  Type: Integer))
+                     ( Upper
+                        ( INTLIT [14] >>  Type: Integer)))))
+            ( Define
+               ( VAR [x] >>  Type: IntArray))
+            ( Define
+               ( VAR [y] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [1] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [2] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [3] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [4] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [5] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [6] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [7] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [8] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [9] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [10] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [11] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [12] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [13] >>  Type: Integer))
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Index >>  Type: Integer
+                  ( Ref x  >>  Type: IntArray)
+                  ( INTLIT [14] >>  Type: Integer))
+               ( INTLIT [2] >>  Type: Integer))
+            ( Assign
+               ( Ref y  >>  Type: Integer)
+               ( Op [*] >>  Type: Integer
+                  ( Op [+] >>  Type: Integer
+                     ( Value >>  Type: Integer
+                        ( Index >>  Type: Integer
+                           ( Ref x  >>  Type: IntArray)
+                           ( INTLIT [1] >>  Type: Integer)))
+                     ( Value >>  Type: Integer
+                        ( Index >>  Type: Integer
+                           ( Ref x  >>  Type: IntArray)
+                           ( INTLIT [2] >>  Type: Integer))))
+                  ( Op [*] >>  Type: Integer
+                     ( Op [+] >>  Type: Integer
+                        ( Value >>  Type: Integer
+                           ( Index >>  Type: Integer
+                              ( Ref x  >>  Type: IntArray)
+                              ( INTLIT [3] >>  Type: Integer)))
+                        ( Value >>  Type: Integer
+                           ( Index >>  Type: Integer
+                              ( Ref x  >>  Type: IntArray)
+                              ( INTLIT [4] >>  Type: Integer))))
+                     ( Op [*] >>  Type: Integer
+                        ( Op [+] >>  Type: Integer
+                           ( Value >>  Type: Integer
+                              ( Index >>  Type: Integer
+                                 ( Ref x  >>  Type: IntArray)
+                                 ( INTLIT [5] >>  Type: Integer)))
+                           ( Value >>  Type: Integer
+                              ( Index >>  Type: Integer
+                                 ( Ref x  >>  Type: IntArray)
+                                 ( INTLIT [6] >>  Type: Integer))))
+                        ( Op [*] >>  Type: Integer
+                           ( Op [+] >>  Type: Integer
+                              ( Value >>  Type: Integer
+                                 ( Index >>  Type: Integer
+                                    ( Ref x  >>  Type: IntArray)
+                                    ( INTLIT [7] >>  Type: Integer)))
+                              ( Value >>  Type: Integer
+                                 ( Index >>  Type: Integer
+                                    ( Ref x  >>  Type: IntArray)
+                                    ( INTLIT [8] >>  Type: Integer))))
+                           ( Op [*] >>  Type: Integer
+                              ( Op [+] >>  Type: Integer
+                                 ( Value >>  Type: Integer
+                                    ( Index >>  Type: Integer
+                                       ( Ref x  >>  Type: IntArray)
+                                       ( INTLIT [9] >>  Type: Integer)))
+                                 ( Value >>  Type: Integer
+                                    ( Index >>  Type: Integer
+                                       ( Ref x  >>  Type: IntArray)
+                                       ( INTLIT [10] >>  Type: Integer))))
+                              ( Op [*] >>  Type: Integer
+                                 ( Op [+] >>  Type: Integer
+                                    ( Value >>  Type: Integer
+                                       ( Index >>  Type: Integer
+                                          ( Ref x  >>  Type: IntArray)
+                                          ( INTLIT [11] >>  Type: Integer)))
+                                    ( Value >>  Type: Integer
+                                       ( Index >>  Type: Integer
+                                          ( Ref x  >>  Type: IntArray)
+                                          ( INTLIT [12] >>  Type: Integer))))
+                                 ( Op [+] >>  Type: Integer
+                                    ( Value >>  Type: Integer
+                                       ( Index >>  Type: Integer
+                                          ( Ref x  >>  Type: IntArray)
+                                          ( INTLIT [13] >>  Type: Integer)))
+                                    ( Value >>  Type: Integer
+                                       ( Index >>  Type: Integer
+                                          ( Ref x  >>  Type: IntArray)
+                                          ( INTLIT [14] >>  Type: Integer)))))))))))
+            ( Put
+               ( Op [+] >>  Type: Integer
+                  ( INTLIT [1] >>  Type: Integer)
+                  ( INTLIT [2] >>  Type: Integer)))
+            ( Put
+               ( Op [-] >>  Type: Integer
+                  ( INTLIT [1] >>  Type: Integer)))
+            ( NewLine)
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref y  >>  Type: Integer)))
+            ( NewLine))))
+

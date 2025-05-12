@@ -121,9 +121,9 @@ DumpSetWdForC( )
 	int i,c=1;
 
 	if ( setwd==NULL ) return;
-	fprintf(DefFile, "extern SetWordType setwd%d[];\n", wordnum);
+	fprintf(DefFile, "extern SetWordType setwd%d[zzTOKEN_COUNT];\n", wordnum);
 	fprintf(ErrFile,
-			"SetWordType setwd%d[%d] = {", wordnum, TokenNum-1);
+			"SetWordType setwd%d[zzTOKEN_COUNT /* %d */] = {", wordnum, TokenNum-1);
 	for (i=0; i<TokenNum-1; i++)
 	{
 		DAWDLE;
@@ -185,7 +185,7 @@ FillSet( s )
 set s;
 #endif
 {
-	SetWordType mask=(((unsigned)1)<<setnum);
+	SetWordType mask=(SetWordType)(((unsigned)1)<<setnum);
 	unsigned int e;
 
 	while ( !set_nil(s) )
@@ -569,17 +569,17 @@ const char *suffix;
 	endp = &(f->setword[f->n]);
 	esetnum++;
 	if ( name!=NULL )
-		fprintf(DefFile, "extern SetWordType %s%s[];\n", name, suffix);
+		fprintf(DefFile, "extern SetWordType %s%s[zzSET_SIZE];\n", name, suffix);
 	else
-		fprintf(DefFile, "extern SetWordType zzerr%d[];\n", esetnum);
+		fprintf(DefFile, "extern SetWordType zzerr%d[zzSET_SIZE];\n", esetnum);
 	if ( name!=NULL ) {
-		fprintf(ErrFile, "SetWordType %s%s[%d] = {",
+		fprintf(ErrFile, "SetWordType %s%s[zzSET_SIZE /* %d */] = {",
 				name,
                 suffix,
 				NumWords(TokenNum-1)*sizeof(unsigned));
 	}
 	else {
-		fprintf(ErrFile, "SetWordType zzerr%d[%d] = {",
+		fprintf(ErrFile, "SetWordType zzerr%d[zzSET_SIZE /* %d */] = {",
 				esetnum,
 				NumWords(TokenNum-1)*sizeof(unsigned));
 	}
@@ -641,7 +641,7 @@ const char *suffix;
 	esetnum++;
 
 	if ( name!=NULL ) {
-		fprintf(Parser_h, "\tstatic SetWordType %s%s[%d];\n", name, suffix,
+		fprintf(Parser_h, "\tstatic SetWordType %s%s[zzSET_SIZE /* %d */];\n", name, suffix,
 				NumWords(TokenNum-1)*sizeof(unsigned));
 		fprintf(Parser_c, "SetWordType %s::%s%s[%d] = {",
 				CurrentClassName,
@@ -650,11 +650,11 @@ const char *suffix;
 				NumWords(TokenNum-1)*sizeof(unsigned));
 	}
 	else {
-		fprintf(Parser_c, "SetWordType %s::err%d[%d] = {",
+		fprintf(Parser_c, "SetWordType %s::err%d[zzSET_SIZE /* %d */] = {",
 				CurrentClassName,
 				esetnum,
 				NumWords(TokenNum-1)*sizeof(unsigned));
-		fprintf(Parser_h, "\tstatic SetWordType err%d[%d];\n", esetnum,
+		fprintf(Parser_h, "\tstatic SetWordType err%d[zzSET_SIZE /* %d */];\n", esetnum,
 				NumWords(TokenNum-1)*sizeof(unsigned));
 	}
 
@@ -787,7 +787,7 @@ GenParser_c_Hdr()
 
 	/* Build constructors */
 	fprintf(Parser_c, "\n%s::", CurrentClassName);
-	fprintf(Parser_c,	"%s(ANTLRTokenBuffer *input) : %s(input,%d,%d,%d,%d)\n",
+	fprintf(Parser_c,	"%s(ANTLRTokenBuffer *input) : %s(input,%d,%d,%d,zzSET_SIZE /* %d */)\n",
 						CurrentClassName,
 						(BaseClassName == NULL ? "ANTLRParser" : BaseClassName),
 						OutputLL_k,
@@ -800,7 +800,7 @@ GenParser_c_Hdr()
       fprintf(Parser_c, "\ttraceOptionValueDefault=1;\t\t// MR10 turn trace ON\n");
     } else {
       fprintf(Parser_c, "\ttraceOptionValueDefault=0;\t\t// MR10 turn trace OFF\n");
-    };
+    }
 	fprintf(Parser_c, "}\n\n");
 	free ( (void *) hasAkaName);
 }
@@ -884,6 +884,13 @@ GenErrHdr( )
 	fprintf(ErrFile, " * with Purdue University Electrical Engineering\n");
 	fprintf(ErrFile, " * With AHPCRC, University of Minnesota\n");
 	fprintf(ErrFile, " * ANTLR Version %s\n", Version);
+	fprintf(ErrFile, " *\n");
+    fprintf(ErrFile, " *  ");
+    for (i=0 ; i < Save_argc ; i++) {
+      fprintf(ErrFile, " %s", Save_argv[i]);
+    }
+	fprintf(ErrFile, "\n");
+	fprintf(ErrFile, " *\n");
 	fprintf(ErrFile, " */\n\n");
 
   if ( FirstAction != NULL ) dumpAction( FirstAction, ErrFile, 0, -1, 0, 1);         /* MR11 MR15b */
@@ -913,24 +920,28 @@ GenErrHdr( )
 	if ( LexGen ) fprintf(ErrFile, "#define zzEOF_TOKEN %d\n", (TokenInd!=NULL?TokenInd[EofToken]:EofToken));
 #endif
 	fprintf(ErrFile, "#define zzSET_SIZE %d\n", NumWords(TokenNum-1)*sizeof(unsigned));
+    fprintf(ErrFile, "#define zzTOKEN_COUNT %d\n", TokenNum-1);  /* [i_a] */
 	if ( DemandLookahead ) fprintf(ErrFile, "#define DEMAND_LOOK\n");
 	fprintf(ErrFile, "#include \"antlr.h\"\n");
 	if ( GenAST ) fprintf(ErrFile, "#include \"ast.h\"\n");
 			
     if ( UserDefdTokens ) fprintf(ErrFile, "#include %s\n", UserTokenDefsFile);
-	/* still need this one as it has the func prototypes */
+	/* still need this one as it has the func prototypes -- [i_a] and misc definitions */
 	fprintf(ErrFile, "#include \"%s\"\n", DefFileName);
 	fprintf(ErrFile, "#include \"dlgdef.h\"\n");
+	fprintf(ErrFile, "#define ERR_H_GENERATE 1\n"); /* [i_a] trick to prevent multiple definitions of code in H file */
 	fprintf(ErrFile, "#include \"err.h\"\n\n");
 
 	/* Dump a zztokens for each automaton */
 	if ( strcmp(ParserName, DefaultParserName)!=0 )
 	{
-		fprintf(ErrFile, "ANTLRChar *%s_zztokens[%d]={\n", ParserName, TokenNum-1);
+	    fprintf(DefFile, "extern ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */];\n", ParserName, TokenNum-1);
+		fprintf(ErrFile, "ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */]={\n", ParserName, TokenNum-1);
 	}
 	else
 	{
-		fprintf(ErrFile, "ANTLRChar *zztokens[%d]={\n", TokenNum-1);
+    	fprintf(DefFile, "extern ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */];\n", TokenNum-1);
+		fprintf(ErrFile, "ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */]={\n", TokenNum-1);
 	}
 	fprintf(ErrFile, "\t/* 00 */\t\"Invalid\"");
 	for (i=1; i<TokenNum-1; i++)

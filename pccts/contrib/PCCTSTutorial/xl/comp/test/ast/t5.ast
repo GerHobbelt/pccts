@@ -1,0 +1,101 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [correct4]
+         ( Body
+            ( Define
+               ( CONST [i] >>  Type: Integer >>  InitialValue: 7))
+            ( Define
+               ( CONST [f] >>  Type: Boolean >>  InitialValue: 0))
+            ( Define
+               ( VAR [x] >>  Type: Integer))
+            ( Define
+               ( VAR [y] >>  Type: Integer))
+            ( Define
+               ( VAR [z] >>  Type: Integer))
+            ( Define
+               ( VAR [continue] >>  Type: Boolean))
+            ( Get
+               ( Ref x  >>  Type: Integer))
+            ( Assign
+               ( Ref z  >>  Type: Integer)
+               ( Op [mod] >>  Type: Integer
+                  ( Value >>  Type: Integer
+                     ( Ref x  >>  Type: Integer))
+                  ( INTLIT [2] >>  Type: Integer)))
+            ( Assign
+               ( Ref continue  >>  Type: Boolean)
+               ( Op [>] >>  Type: Boolean
+                  ( Value >>  Type: Integer
+                     ( Ref x  >>  Type: Integer))
+                  ( INTLIT [7] >>  Type: Integer)))
+            ( If
+               ( Op [<] >>  Type: Boolean
+                  ( Value >>  Type: Integer
+                     ( Ref x  >>  Type: Integer))
+                  ( INTLIT [0] >>  Type: Integer))
+               ( ThenPart
+                  ( Assign
+                     ( Ref y  >>  Type: Integer)
+                     ( Op [-] >>  Type: Integer
+                        ( INTLIT [1] >>  Type: Integer)))
+                  ( Loop
+                     ( Assign
+                        ( Ref x  >>  Type: Integer)
+                        ( Op [+] >>  Type: Integer
+                           ( Value >>  Type: Integer
+                              ( Ref x  >>  Type: Integer))
+                           ( Op [/] >>  Type: Integer
+                              ( INTLIT [7] >>  Type: Integer)
+                              ( INTLIT [3] >>  Type: Integer))))
+                     ( Exit
+                        ( Op [>] >>  Type: Boolean
+                           ( Value >>  Type: Integer
+                              ( Ref x  >>  Type: Integer))
+                           ( INTLIT [0] >>  Type: Integer)))))
+               ( ElsePart
+                  ( If
+                     ( Op [=] >>  Type: Boolean
+                        ( Value >>  Type: Integer
+                           ( Ref x  >>  Type: Integer))
+                        ( INTLIT [0] >>  Type: Integer))
+                     ( ThenPart
+                        ( Assign
+                           ( Ref y  >>  Type: Integer)
+                           ( INTLIT [0] >>  Type: Integer)))
+                     ( ElsePart
+                        ( Assign
+                           ( Ref y  >>  Type: Integer)
+                           ( INTLIT [1] >>  Type: Integer))))))
+            ( If
+               ( Op [and] >>  Type: Boolean
+                  ( Value >>  Type: Boolean
+                     ( Ref continue  >>  Type: Boolean))
+                  ( Op [not] >>  Type: Boolean
+                     ( INTLIT [0] >>  Type: Boolean)))
+               ( ThenPart
+                  ( Put
+                     ( STRINGLIT [TRUE ] >>  Type: String)))
+               ( ElsePart
+                  ( Put
+                     ( STRINGLIT [FALSE ] >>  Type: String))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref x  >>  Type: Integer)))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref y  >>  Type: Integer)))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref z  >>  Type: Integer)))
+            ( NewLine))))
+

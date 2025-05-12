@@ -1,0 +1,104 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>Organization</title>
+<style>
+<!--
+PRE { color: rgb(128,0,0) }
+CODE { color: rgb(128,0,0) }
+-->
+</style>
+
+
+<meta name="Microsoft Theme" content="expeditn 001, default"><meta name="Microsoft Border" content="tb, default"></head>
+
+<body background="../_themes/expeditn/exptextb.jpg" bgcolor="#FFFFFF" text="#000000" link="#006600" vlink="#669966" alink="#990000"><!--mstheme--><font face="book antiqua"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<h1 align="center"><font size="7" color="#800000"><strong>Organization</strong></font></h1>
+
+<p align="center"><a href="pccts2.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts4.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<p align="center">&nbsp;</p>
+
+<h3><!--mstheme--><font color="#996600">Structure of Our Compiler<!--mstheme--></font></h3>
+
+<p>So, now that we have a so-so idea of the language we are compiling, let's design our
+compiler and think about how we want to implement it.</p>
+
+<p>A basic compiler consists of several pieces. These pieces can be very independent, or
+very intertwined. I'll try an independent approach here...</p>
+
+<p>The compiler will take an input source file, and output some sort of executable. Let's
+break it down into tasks: 
+
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Lexical Analysis (scanning) <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Semantic Analysis (parsing) <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Tree Generation <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Code Generation <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Interpretation <!--mstheme--></font><!--msthemelist--></td></tr>
+<!--msthemelist--></table>
+
+<p>The approach I'll take is to generate a pseudo-machine code, and we'll write a simple
+interpreter at the end. This approach is similar to the Pascal P-Code machines and the
+current Java Virtual Machine approach...</p>
+
+<h4>Lexical Analysis</h4>
+
+<p>First, the compiler will read the input file and lump the characters together into
+tokens. Using PCCTS, this job is done by DLG. We'll write a DLG specification to set up
+our tokens.</p>
+
+<h4>Semantic Analysis</h4>
+
+<p>Next, we write grammar rules to pump into ANTLR. These rules will have action code (C++
+code) attached to them to specify what to do when we see certain patterns of tokens in the
+input file.</p>
+
+<h4>Tree Generation</h4>
+
+<p>This actually occurs along with the semantic analysis. We'll generate an Abstract
+Syntax Tree (AST) using PCCTS' built-in tree generation routines. This tree will act as
+the communication device between the parser and the code generator.</p>
+
+<h4>Code Generation</h4>
+
+<p>Once we have a tree, we'll walk it and write out code. (SAS note: Should I use
+Sorcerer, or just a tree walk, or both? -- TBD... decide when get to that point)</p>
+
+<h4>Interpretation</h4>
+
+<p>The interpreter for XL is really simple, and will allow us to test our compiled output
+without needing to learn specific machine code.</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h3><!--mstheme--><font color="#996600">Structure of this Tutorial<!--mstheme--></font></h3>
+
+<p>Now how will we build this compiler? Should we try to do everything at once so you get
+good and confused? Of course not!</p>
+
+<p>We'll break the work up into steps: 
+
+<ol>
+  <li>Build a Recognizer </li>
+  <li>Add a symbol table </li>
+  <li>Add type checking </li>
+  <li>Build an AST </li>
+  <li>Write a Tree Walker to generate code </li>
+  <li>Write an Interpreter </li>
+  <li>Test the output code </li>
+</ol>
+
+<p>Let's start our <a href="pccts4.htm">recognizer</a>! </p>
+
+<p align="center">&nbsp;
+<!--msnavigation--></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<p align="center"><a href="pccts2.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts4.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+
+<p align="center">This page was last updated on 09/06/97.</p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--mstheme--></font></body>
+</html>

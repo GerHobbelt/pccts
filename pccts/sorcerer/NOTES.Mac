@@ -1,0 +1,145 @@
+9 June 94
+Version 1.00B8 of SORCERER
+
+At the moment this help file is available via anonymous FTP at
+
+        Node: marvin.ecn.purdue.edu
+        File: pub/pccts/sorcerer/NOTES.Mac
+
+Mail corrections or additions to mbp@janus.com (Marlin Prowell)
+===============================================================================
+COMPILING SORCERER ON THE MACINTOSH
+
+This document describes how to create a running version of SORCERER on
+the Macintosh using either the Symantec C programming environment or
+the MPW development environment.  It was written by Marlin Prowell,
+and if you have questions about building Sorcerer on the Macintosh,
+you may direct them to mbp@janus.com.
+
+
+SYMANTEC C
+
+Note: If you are an experienced Symantec C user, these instructions
+will be too explicit.  I thought, better too much detail than too
+little.
+
+1.      Create an ANSI library that uses 4 bit integers.
+
+        a.      Go to the Symantec C folder named "Standard Libraries".
+        
+        b.      Duplicate the project named "ANSI".  Rename the
+                duplicated project to "ANSI-int4".  Open this
+                "ANSI-int4" project.
+
+        c.      In the Edit menu, select the choice Options..THINK C. 
+                This displays a dialog box.  In that dialog box, there
+                is a pop-up menu near the top. Select "Compiler
+                Settings".  Click the "4-byte ints" check box.  Click
+                the "OK" button at the bottom of the dialog box.
+
+        c.      Recompile the entire library, and exit the project.
+
+2.      Create a new Symantec C project in the same directory
+        as the source.
+
+3.      Make the following changes to the project:
+
+        a.      In the Edit menu, select "Options..THINK C...".  This
+                displays a dialog box.  In that dialog box, there is a
+                button labelled "ANSI Settings".  Click that button to
+                set the appropriate compiler settings for ANSI
+                conformance.
+        
+        b.      In the same dialog box, there is a pop-up menu near
+                the top.  Select "Language Settings".  Click the
+                "Language extensions" check box, and select the "THINK
+                C" radio button immediately underneath. This will
+                pre-define the symbol THINK_C, which we will use to
+                wrap the code that we add for the Macintosh.
+        
+        c.      In the same dialog box, there is a pop-up menu near
+                the top.  Select "Compiler Settings".  Click the
+                "4-byte ints" check box to compile the source with 32
+                bit integers.
+        
+        d.      In the same dialog box, there is a pop-up menu near
+                the top.  Select "Prefix".  Delete everything in the
+                text box.
+        
+        e.      Click "OK" to accept all the above changes.
+        
+        f.      In the "Project" menu, select "Set Project Type...". 
+                This displays a dialog box.  Select the "Far DATA" and
+                "Separate STRS" check boxes. Click "OK".
+
+4.      Add the following files to the project:
+
+                err.c, gen.c, globals.c, hash.c, look.c, main.c,
+                scan.c, set.c, sor.c
+                
+        Put all the files but sor.c in one segment; sor.c must be in a
+        second separate segment.
+
+5.      Add the "ANSI-int4" library built in step 1 to the project.
+
+6.      Compile the project.  Build a separate runnable
+        application.  It is easiest if you copy the application
+        to the directory where you wish to run SORCERER.
+        
+
+MPW
+
+With MPW, we build Sorcerer as a MPW tool.
+
+1.      In the Sorcerer source directory, make a directory named
+        obj.  This directory will hold the object modules.
+
+2.      Unpack the following file into the Sorcerer directory.  It
+        is a MPW make file named sor.make.
+
+3.      Start MPW, and build sor.  It is easiest if you copy the
+        tool to the directory where you wish to run SORCERER.
+
+The file sor.make.hqx follows:
+
+(This file must be converted with BinHex 4.0)
+:#(0[FLjYB@YP!&4&@&408&-J!3!!!!8'!!!"V&"#)b!J)%CTE'8k)#!J)#!J)(0
+[FLjYB@YP$5-J)#"8BA*RCA3k)#!J)#"cEh)0)b!J)&0[GA*MCA-k)#!J)'9bFLj
+M)'GPELjM)'GXEf*KE(-ZBb"SBA0S,Q-JE'p[DbjM)'eKD@iZBb"cBf&Z,Q-JFf9
+d,Q-JFfpb,Q-0)b!J)%0bC@&dC@3k)#!J)&4SGA*cC'&j,#"'C@*bG@&bH5!b0#`
+J-6Nj0#!a-$S`16Sd-b""63d0$8p#5N9$9&-J25#f$3N*1QpLDMTPFR)ZBbj[),B
+0#3NkEf*U1QGPELjM,QmJYJd*#6T[BQSkCfa[BQ&XFbjM,QmJYJd*#6T[BQSkD'&
+cD#jM,QmJYJd*#6T[BQSkE'p[DbjM,QmJYJd*#6T[BQSkE@&TELjM,QmJYJd*#6T
+[BQSkFf0KELjM,QmJYJd*#6T[BQSkFf9d,Q-ZEb#f$3N*1QpLDMTcEh)ZBbj[$3e
+6H@e2F(4TEfjc)$dJ,A0jE5"[EJe$6h"dD@pZFb!p)#eb)(Y6H@e2F(4TEfjcI5!
+YC#"IAe084%0IAb!YE@pNC@`JCQ&b$3dkEf*U1Q9bFLjM,QmJa#"cEh)ZE@&VC5"
+PFR)ZB`d*)%-JHd02F(4TEfjcI5"PFR)ZBb!YEb!kEf*U1Q9bFLjM,Qm0$6T[BQS
+kCf9Z,Q-ZEb$%)(0[FLjYB@YP)'GPELjM$3NJ3b"l3dp`G'P[ER0p)'GPELjM)#e
+[)$T[BQSkCf9Z,Q-ZE`d01QpLDMTRE'pLB@ac,Q-ZEb$%)(0[FLjYB@YP)'GXEf*
+KE(-ZB`d*)%-JHd02F(4TEfjcI5"RE'pLB@ac,Q-J,@mJ1QpLDMTRE'pLB@ac,Q-
+ZE`d01QpLDMTSBA0S,Q-ZEb$%)(0[FLjYB@YP)'KKFfJZB`d*)%-JHd02F(4TEfj
+cI5"SBA0S,Q-J,@mJ1QpLDMTSBA0S,Q-ZE`d01QpLDMTXEfpV,Q-ZEb$%)(0[FLj
+YB@YP)'a[EfXZB`d*)%-JHd02F(4TEfjcI5"XEfpV,Q-J,@mJ1QpLDMTXEfpV,Q-
+ZE`d01QpLDMTYB@PZ,Q-ZEb$%)(0[FLjYB@YP)'eKD@iZB`d*)%-JHd02F(4TEfj
+cI5"YB@PZ,Q-J,@mJ1QpLDMTYB@PZ,Q-ZE`d01QpLDMTcBf&Z,Q-ZEb$%)(0[FLj
+YB@YP)(0MB@iZB`d*)%-JHd02F(4TEfjcI5"cBf&Z,Q-J,@mJ1QpLDMTcBf&Z,Q-
+ZE`d01QpLDMTcCA3ZBbj[)-3JFfpb,QeKDf8JFf9d,Q-0#5"$)(Y$6h"dD@pZFhd
+JFf9d,Q-J,@mJ1QpLDMTcCA3ZBbj[$3dkEf*U1R0[FLjM,QmJa#"cEh)ZE@&VC5"
+cEh)ZB`d*)%-JHd02F(4TEfjcI5"cEh)ZBb!YEb!kEf*U1R0[FLjM,Qm0$A0[FL$
+%a#"cEh)ZE@&VC5"l6d*+48088hd0#8aTEQXJ,@e[C'9X)'CKFL!YBR)JEfiJ,@3
+J,@-J*de38b!R)#ed)%e38e3J,A0jE5"[EL!YE@BJYJd*#AY23NT&3e46I5#f$3N
+*)RY$6'PLFQ&bD@9cI5*6G'4$E'PL,QmJYJd*#5*l6'PLFQ&bD@9cI5*6G(9LFbj
+[),B0#3NLHdaTBR*KFQPPFhdL8R9ZG'PYC5j[),B0#3NLHdaTBR*KFQPPFhdL5@j
+dCA*QB@0P,QmJYJd*#5e[)(0[FJd*K!!!!3!!!!&Z!!!!EJ!!!$i*#5-JGh*TG'8
+JCQpbE@&dG'9N)'pLDQ9MG#"QD@aP$3KcEh)ZE@&VC5!#!!!!9%9B9%e38b!"!!%
+H!-!!!!!!!!"849K869"6)!%!!4i!`!!!!!!!!!!!!!!!!!!!!!!""kQ5,@F!!!8
+'!!!"V'9bF`d*5'9XF#"&DQ9MG!N*#5-JC@TPBh3JGQpXG@ePF`d*5'9XF#"&ER4
+KBJN*#5-JBfpZGQ9bG#"bG@jc)'pQ)(0`B@0PFb"dEb"dB@*c$3P)C@a`)%9aG@&
+X#3N*)b"MEfe`BA*P)'CTE'9c)'&ZC#"NDA*PBh4[FQPPF`d*5'8!!!")!!P0Efj
+KBfm!5!!JS5)!!!")!!!I!!!!!!!!!!!!3)$Gf!!'!!3!+J!N!eF#)!!U!!-$B`*
+pUK1+r3!!!qN!!!3X!!!!!!%!!!!!(J!U!#3$9`)J!#S!!`0M!Rd!!!!!!!!!!!!
+!!!!!!!!!!3!!!!&Z!!!!EJ!!!$i!-bAB*d`!!!!F!$i!!%e38e)!!3!+!qhrr`!
+!!!!!!!!!!r$rr`!!!%`!0B%-9XF:
+
+
+

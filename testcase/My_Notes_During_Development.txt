@@ -1,0 +1,766 @@
+7/may/1999 --------------------------------------------------------------------
+
+        - Hey, been a while since I last looked at PCCTS and my pet project #+INF
+          here. Guess it's OK to release as sample-code for PCCTS grammars
+          with fancy lexers, exceptions and the lot.
+
+          Moved the whole goop to UNIX and hacked myself a fast makefile based
+          on the one delivered with PCCTS:sorcerer.
+
+          Everything compiles wonderfully (of course ;-) ) with lotsa warnings
+          about unused vars in the generated code if you use GCC with
+          -Wall -pedantic and all that. Anyway, the test script parser works
+          again after one hour messing around :-)
+
+          Saw that bugs introduced to the 'sample.sc' sample script weren't 
+          always handled very clearly, with those 'suggestions/tracing' like GCC
+          offers you but what the heck: that's not what this is all about.
+
+          As time permits I'll warm up this pet project and make myself a
+          P-code compiler, just for the heck of it... Till then, this is my 
+          testcase for PCCTS 1.33 'C' mode.
+
+2/sep/1998 --------------------------------------------------------------------
+
+        - OK, revived the script PCCTS grammar; still compiles flawlessly. :-)
+          Have been messing around with exception handling and error diagnostics:
+
+          the '@' 'default exception handler' only works for tokens, NOT for 
+          rules! So it's not really useful to say something like this:
+
+            simple_rvalue_expr:
+                @INT_VALUE             
+              | @REAL_VALUE            
+              | @b:BOOLEAN_VALUE       
+              | @s:const_string_value  
+              | @elemental_variable    
+              | @f:VARIABLE            
+                LPARENS { @param_list } RPARENS      /* function call */
+              | @LPARENS         
+                  rvalue_expr
+                RPARENS
+                ;   
+
+          as only the tokens (INT_VALUE, REAL_VALUE, BOOLEAN_VALUE (a tokenset!),
+          VARIABLE, LPARENS(!), RPARENS(!)) are affected.
+          The sub-rules are processed as before, though no warning is issued for the 
+          '@' prefixes for 'const_string_value' and the others...
+
+          Hey, suddenly a very NASTY idea crosses my mind: as I've already wanted the
+          zzsyn() errordiagnostics ('expected one of ...') inside my exception handling 
+          stuff, I might follow a different track:
+
+          just re-#define zzsyn() for each function (or part of a function) by putting
+          special macro's in the init actions (<< ... >>) at the start of rules
+          or subrules! That way I can have the 'acceptance sets' for zzsyn() and my own
+          modified diagnostics very nicely! Something to look into as exception handling
+          doesn't provide me with access to these desired 'acceptance sets' (for telling 
+          the user about 'expected one of these: ...'.
+
+          Another way to achive the same goal (in an even nicer way WITH exceptions) 
+          is copying and modifying the
+
+zzmatch_wdfltsig(_t,_f)
+zzsetmatch_wdfltsig(tw,tt,wf)
+
+          #define's to not the default routines (same name with an extra underscore up 
+          front) but our own brand, which is a copy of those but with adapted error-
+          routines. (no stderr stuff).
+          
+          OR: we might 'fix' ANTLR (including code generator?) so that errors are not sent
+          to stderr by some printf's but are passed to user-defined callbacks! When we do 
+          THAT, we're absolutely clean (only we need to 'hack' the tool a bit I guess...
+          no problem, we've got the sources!)
+
+        - which reminds me: if we want PCCTS grammars to be reentrant in 'C', we need
+          to kick those global vars into some parser structure, which is going to be
+          passed around...
+
+
+
+
+
+17/june/1998 ------------------------------------------------------------------
+
+        - when you've a grammar with exception handling in it (anywhere!),
+          you won't get your general 'error action code' included at
+          a place where is can be reached, ie. action-code directly
+          following the terminating ';' of a rule is written to the C
+          output but HAS NO EFFECT!
+
+          I don't like that (but maybe later I do) but alas, you can easily 
+          move that code to the 'default:' clause of an exception statement.
+
+          --sample--
+
+            definitions:
+                DEFINITIONS 
+                ( structdef 
+                | const_init_type 
+                )+
+                ;
+                 <<
+                    /* this code is included in the C output but is useless */
+                    blablabla
+                 >>
+            exception
+              catch NoViableAlt:
+                 <<
+                    ...
+                 >>
+          
+          --sample--sanitized--
+          
+            void declarations(int *_retsignal)
+            {
+              zzmatch_wsig(DECLARATIONS, _handler);
+
+              ...
+
+              zzEXIT(zztasp1);
+              return;
+
+            fail:                                  /* !!! THIS CODE IS NEVER REACHED */
+              zzEXIT(zztasp1);                     /* !!! THIS CODE IS NEVER REACHED */
+  
+              /* this code is included in the C output but is useless */
+              blablabla                           /* !!! THIS CODE IS NEVER REACHED */
+
+              zzsyn(...);                         /* !!! THIS CODE IS NEVER REACHED */
+              zzresynch(...);                     /* !!! THIS CODE IS NEVER REACHED */
+
+            _handler:
+              /* !!! exception handling causes antlr to make code go here on error! */
+              switch ( _signal ) 
+              {
+              case NoSignal: break;  /* MR7 */
+
+              case NoViableAlt :
+                ... /* included action code from exception handling def. */
+                break;  /* MR7 */
+
+              default :
+                zzdflthandlers(_signal,_retsignal);
+              }
+            _adios:
+              return;
+            }
+
+          --sample--
+
+        - antlr.g has a little 'bug' (typo) for #pragma:
+
+          #pragma approx   /* OK */
+          #pragma LL(1)    /* not 'understood': write as LL1 */
+          #pragma LL(2)    /* not 'understood': write as LL2 */
+
+          fixed by specifying:
+
+          "LL\(1\)" instead of "LL(1)"; same for LL(2)
+
+
+        - exception[t] with action code referencing the attribute $t has $t 
+          not / not yet set to the proper value; use 
+
+            zzaCur
+
+          as the current active ATTRIBUTE... 
+          WARNING: this is ONLY valid for C code generated WITHOUT predicates.
+                   check gen.c for more details en all the generated variables
+                   when predicates are used and/or C++ code is generated.
+                   Whew!
+
+          a possible 'fix' is researched. Sample ANTLR generated code displaying
+          the bug(is it?):
+
+          --bug?--
+
+            script: 
+                SCRIPT t:title param_def_list 
+                  sections 
+                ENDSCRIPT 
+                SCRIPT_EOF
+                ;
+            exception [t]
+              catch MismatchedToken:
+              catch NoViableAlt:
+              catch NoSemViableAlt:
+              catch Unwind:
+                 <<
+                    zzMissTok = $t.token_id;
+                    zzFAIL(0
+                          ,&zzMissSet, &zzMissText, &zzBadTok, &zzBadText, &zzErrk);
+                    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+
+                    /* flush all: nobody can save you now :-) */
+                    zzconsumeUntilToken(SCRIPT_EOF);
+                    /* pass signal to caller */
+                    zzexportSignal;
+                 >>
+              catch UnsupportedStatement:
+              catch UnsupportedTypedef:
+                 << assert(!"May never happen!"); >>
+
+          --bug?--sanitized--
+
+            void script(int *_retsignal)
+            {
+              Attrib t;
+              int _signal=NoSignal;
+              *_retsignal = NoSignal;
+
+              zzmatch_wsig(SCRIPT, _handler);
+              title(&_signal); 
+              if (_signal) 
+              {
+                switch ( _signal )   /* [t] */
+                {
+                case MismatchedToken :
+                case NoViableAlt :
+                case NoSemViableAlt :
+                case Unwind :
+                  zzMissTok =  t.token_id;
+                  zzFAIL(0
+                        ,&zzMissSet, &zzMissText, &zzBadTok, &zzBadText, &zzErrk);
+                  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+      
+                  /* flush all: nobody can save you now :-) */
+                  zzconsumeUntilToken(SCRIPT_EOF);
+                  /* pass signal to caller */
+                  zzexportSignal;
+                  break;  /* MR7 */
+
+                case UnsupportedStatement :
+                case UnsupportedTypedef :
+                  assert(!"May never happen!");   
+                  break;  /* MR7 */
+
+                default :
+                  break;  /* MR7 */
+                }
+                if (_signal != NoSignal) goto _handler;  /* MR7 */
+              }
+              t = zzaCur;           /* <---------!!! shouldn't this one be placed BEFORE 'if (_signal)' ??? */
+              param_def_list(&_signal); if (_signal) goto _handler;
+              sections(&_signal); if (_signal) goto _handler;
+              zzmatch_wsig(ENDSCRIPT, _handler);
+              zzmatch_wsig(SCRIPT_EOF, _handler);
+              return;
+
+            _handler:
+              zzdflthandlers(_signal,_retsignal);
+              return;
+            }
+
+          --bug?--
+
+          Possible fix (though not 'beatiful' as it is quite brute force):
+            copy 'label handling' code (which handles all the clauses about 
+            C++ generating, AST use, etc. before 'label=zzaCur' like statement 
+            is written) BEFORE each DumpException() routine WITHIN the
+            generated 'if (_signal)' block.
+
+            Untested; not yet done; just an idea!
+
+
+
+        - found 'undocumented feature' for exception handling in ANTLR:
+   
+          - when rule alternatives are prefixed by '@', one gets a FREE
+            default exception handler called zz[set]match_wdfltsig()
+
+          - when a rule element (terminal token) is postfixed by '@' one gets 
+            a FREE default exception handler for that element.
+            One can place the '@' (check antlr.g!) immediately following
+            an AST tree-construction mark ('^' or '!') after the 'TERMINAL node'.
+
+          Examples so I'll remember how it looked once :-) :
+
+          --1--
+
+            structdef:
+                                         << zzsetSignal(UnsupportedTypedef); >>
+                                         /* we do not yet 'understand' this construct */
+                                         /* yet we provide a complete description though... */
+                def:DEFINE VARIABLE
+                AS 
+                ( type
+                | STRUCT@ (              /* <----- */
+                           vardecl 
+                         )+ 
+                  ENDSTRUCT
+                ) 
+                SEMICOLON
+                ;
+
+          --1--sanitized--
+
+            void structdef(int *_retsignal)
+            {
+              int _signal=NoSignal;
+              *_retsignal = NoSignal;
+
+              zzsetSignal(UnsupportedTypedef);
+
+              zzmatch_wsig(DEFINE, _handler);       /* exception? goto handler! */
+
+              zzmatch_wsig(VARIABLE, _handler);
+              zzmatch_wsig(AS, _handler);
+              LOOK(1);
+              if ( (LA(1)==ARRAY || ... || LA(1)==VARIABLE) ) 
+              {
+                type(&_signal); if (_signal) goto _handler;
+              }
+              else 
+              {
+                if ( (LA(1)==STRUCT) ) 
+                {
+                  zzmatch_wdfltsig(STRUCT,zzerr5); /* DEFAULT exception handler! */
+                  do 
+                  {
+                    vardecl(&_signal); if (_signal) goto _handler;
+                    zzLOOP(zztasp3);
+                    LOOK(1);
+                  } while ( ( LA(1)==VARIABLE) );
+                  zzmatch_wsig(ENDSTRUCT, _handler);
+                }
+                else 
+                {
+                  if (_sva) _signal=NoViableAlt;
+                  else _signal=NoSemViableAlt;
+                  goto _handler;  /* MR7 */
+                }
+              }
+              zzmatch_wsig(SEMICOLON, _handler);
+              return;
+       
+            _handler:
+              zzdflthandlers(_signal,_retsignal);
+              return;
+            }
+
+          --1-- 
+   
+          --2--
+
+            block_statement:
+                @BEGIN ( statement )+ END       /* <------ */
+                ;
+
+          --2--sanitized--
+
+            void block_statement(int *_retsignal)
+            {
+              int _signal=NoSignal;
+              *_retsignal = NoSignal;
+
+              zzmatch_wdfltsig(BEGIN,zzerr6);  /* !!! */
+
+              do 
+              {
+                statement(&_signal); if (_signal) goto _handler;
+                zzLOOP(zztasp2);
+                LOOK(1);
+              } while ( (LA(1)==BREAK || ... || LA(1)==VARIABLE) );
+
+              zzmatch_wdfltsig(END,zzerr7);  /* !!! */
+              return;
+
+            _handler:
+              zzdflthandlers(_signal,_retsignal);
+              return;
+            }
+
+          --2--
+
+
+          !!! WATCH OUT!!! Is this a bug or a FEATURE?!
+          --3--
+
+            integer_type:
+                @INTEGER { MULTIPLY INT_VALUE }  /* <-------- */
+                ;
+
+          --3--sanitized--
+
+            void integer_type(int *_retsignal)
+            {
+              int _signal=NoSignal;
+              *_retsignal = NoSignal;
+
+              zzmatch_wdfltsig(INTEGER,zzerr1);
+              LOOK(1);
+              if ( (LA(1)==MULTIPLY) ) 
+              {
+                zzmatch_wsig(MULTIPLY, _handler);   /* <-- .._wsig() instead of .._wdfltsig() !!! */
+                zzmatch_wsig(INT_VALUE, _handler);  /* <-- same here */
+              }
+              return;
+
+            _handler:
+              zzdflthandlers(_signal,_retsignal);
+              return;
+            }
+            /*
+             * Hmmm.... looks like ()*, ()+, {} constructs 'disable' the '@'
+             * feature temporarily...
+             */
+
+          --3--
+
+
+
+
+15/june/1998 ------------------------------------------------------------------
+
+        - should add 'typecast' a la 'C': automatic type conversion is nice
+          but I guess we'd better give a warning if such things happen.
+
+          For a more 'strict' behaviour, the 'typecast' comes in handy!
+
+
+
+
+14/june/1998 ------------------------------------------------------------------
+
+        - First ANTLR grammar has been built; parsing only, no neat error handling,
+          let alone code generation.
+
+          Looks good, though we still need to add symbol table stuff and semantic 
+          predicates to make the grammar work properly (differentiating between
+          a variable and a type, for instance).
+
+          I personally don't feel OK about all the features in this 'little big
+          language': I've thrown in a Basic-Look 
+  
+            for ... to ... step ... do ... next
+  
+          but ++, -- and various +=, -=, *=, etc. oparators give me the feeling 
+          this FOR statement is not fitting the language: one can easily emulate
+          it using either while or repeat loops and increment-shorthand statements
+          like
+  
+            i += 5;
+
+          Besides: REMOVING the FOR statement resolves the problem of the init-part:
+  
+            for lvalue_expr := value to ....
+                ^^^^^^^^^^^^^^^^^^^^
+  
+          Suppose someone writes stuff like this:
+  
+            for arr[i] := 1 to 10 do
+              i++;
+              ...;
+            next;
+
+          How do we CORRECTLY handle arr[i] (intuitively speaking)? Should arr[i] be
+          evaluated once, ie. we don't 'see' the change in 'i' during loop execution?
+          Or will we re-evaluate 'arr[i]' after every pass through the loop?
+
+          The latter style seems 'obvious' though it is contrary to 'simplicity of
+          reading' any possible sourcefile: code a large loop and you've 'obfuscated
+          code' on your hands here!
+
+          An alternative was to limit the init-part of FOR:
+
+            for variable := value to ...
+
+          but then again, this additional construct does not really add value as
+          while/repeat can do the same job as well.
+
+          Thus we arrive at the conclusion: REMOVE the FOR expression from the language!
+
+        - For the geeks: here's the FOR statement as it was:
+
+            | FOR lvalue_expr ASSIGN rvalue_expr TO rvalue_expr STEP rvalue_expr DO
+                /*
+                 * WARNING: 'lvalue_expr ASSIGN rvalue_expr' can cause discussion:
+                 *
+                 * suppose you write something like:
+                 *
+                 *   for arr.v[i] := 1 to 10 step 1 do
+                 *   { i++; }
+                 *   endfor;
+                 *
+                 *     ^^^---- !!!!! will 'for arr.v[i] ...' address the next 
+                 *                        element of arr.v[] next time?! or not?!
+                 *
+                 *   This is another way to ask: what to do with 'lvalue_expr'?: 
+                 *   single destination calculation at the start of the for ... 
+                 *   loop or FULL re-evaluation for every run through the loop.
+                 *
+                 *  old code was: 'VARIABLE ASSIGN rvalue_expr' which prevents 
+                 *  this discussion but limits the 'for' assignment to simple 
+                 *  variables...
+                 */
+                block_statement
+              ENDFOR SEMICOLON
+
+        - Same 'removal (yes/no)?' story for the switch() (select ... endselect)
+          statement: can't we do it all using just if/elif/else?
+
+          Yes, we can, select doesn't add value... unless we consider writing a 
+          highly specialized optimized P-code compiler which offers special constructs
+          for select...endselect written code. And THAT, my friends, is almost 
+          impossible as we allow 'rvalue_expr'ressions for each CASE label.
+
+          Thus: remove SELECT!
+
+        - For the geeks: the select statement gramamr section:
+
+            | SELECT LPARENS rvalue_expr RPARENS
+              BEGIN
+              ( CASE rvalue_expr COLON
+                  ( assignment_statement
+                  | conditional_statement
+                  | loop_statement
+                  | block_statement
+                  | label_statement
+                  | special_statement )*
+                  /*
+                   * How does the parser SEE the 'BREAK;' is NOT a statement BUT the LAST 'break_statement'? 
+                   *
+                   * Well... by simply saying we allow only ONE break=type statement in the 'root' level of
+                   * this statement block. Several 'BREAK;' lines following one another are useless anyway as 
+                   * control is passed to the end of SELECT by the FIRST break-type statement anyway!
+                   */
+                  ( return_statement
+                  | break_statement
+                  | /*
+                     * special break-statement which is ONLY valid in SELECT statement, just
+                     * before the next 'case'
+                     *
+                     * Or should we allow 'FALLTHROUGH;' within conditionals, loops, etc. placed within a SELECT?
+                     */
+                    FALLTHROUGH SEMICOLON )
+              | DEFAULT COLON
+                  ( assignment_statement
+                  | conditional_statement
+                  | loop_statement
+                  | block_statement
+                  | label_statement
+                  | special_statement )*
+                  /*
+                   * How does the parser SEE the 'BREAK;' is NOT a statement BUT the LAST 'break_statement'? 
+                   *
+                   * Well... by simply saying we allow only ONE break=type statement in the 'root' level of
+                   * this statement block. Several 'BREAK;' lines following one another are useless anyway as 
+                   * control is passed to the end of SELECT by the FIRST break-type statement anyway!
+                   */
+                  ( return_statement
+                  | break_statement
+                  | /*
+                     * special break-statement which is ONLY valid in SELECT statement, just
+                     * before the next 'case'
+                     *
+                     * Or should we allow 'FALLTHROUGH;' within conditionals, loops, etc. placed within a SELECT?
+                     */
+                    FALLTHROUGH SEMICOLON )
+              )+
+              END
+              ENDSELECT SEMICOLON
+
+        - We apparantly have been overly busy thinking up assignment shorthand expressions:
+          ASSIGN_BITWISE_NOT and ASSIGN_BOOLEAN_NOT have seen the light as genuine tokens.
+
+          How we would ever perform such an operation intuitively (both NOTs are for unary use only!)
+          is a question yet unanswered. We'll remove them from gperf tables and grammar description.
+
+        - We've seen another smart way to tell DLG to gobble C++ style comments using a single 
+          #token expression:
+
+            #token	"//~[\n]*\n"	<< zzskip (); zzline++; >>
+  
+          It doesn't support EOF ("@") as comment terminator though. I like it, but I won't put it in my
+          own grammar definition.
+
+        - I've tried to support the 'line continuation' way of specifying C strings. 
+          I won't try to do that any more, as I personally don't like it, and... it's too hard
+          to bother about it any longer. (You know, stuff like:
+
+            printf("Usage\n\
+        \n\
+        No usage here!\n");
+
+          which is mush more readable when written like this:
+
+            printf("Usage\n"
+                   "\n"
+                   "No usage here!\n");
+
+        - We should be reminded by this, that a 'string' may consists of several pieces!
+          Thus we don't have a single
+
+            STRING_VALUE
+
+          but we need to support
+
+            ( STRING_VALUE )+
+ 
+          everywhere! Better create a little rule for this one!
+
+        - C-strings don't support decimal \\-escaped characters like
+
+            "this is a weird char: \128\n"
+
+          All '\' escapes are OCTAL unless prefixed by 'x': we do the same in our grammar
+          now. (fixed)
+
+        - What's the difference between 'zzbegexpr' and 'zzlextext'? I guess I have to look into
+          that one...
+
+          Ah! 'zzbegexpr' always points to the start of your current #token regex, EVEN IF 
+          have called zzmore() before! While 'zzlextext' points to the start of the 'complete token'
+          ie. to the start of the text collected by the current #token AND the #tokens who'd
+          have called 'zzmore()' before!
+
+        - Don't use #errclass'es for proper error description strings of single tokens as in:
+
+            #errclass "Start of Scope Block"                  { BEGIN }
+
+          But put the descriptor strings directly where they're wanted:
+          for tokens:
+
+            #token BEGIN ("Start of Scope Block")             "{"
+
+          or even (when using gperf for keyword recognition):
+
+            #token ARRAY          ("array [keyword]")                  /* "array" */
+            #token DECLARATIONS   ("Variable Declarations Header")     /* "var" */
+
+          and for rules:
+
+            assignment     "assignment statement"   :
+              ...
+              ;
+
+        - How do we pass a 'signal' for exceptions from the lexer to the parser? (in 'C', the
+          /notes/... tell you a lot about C++ generated code, but are almost quiet about 'C'
+          code.)
+
+          To be researched...
+
+        - exception handling in the ANTLR grammar makes it look like we'll never call
+          ZZEXIT(...) during error-recovery!
+
+          As I've inspected the code, this is only important if we have zzd_attrib/zzd_ast 
+          Attrib/AST destructors floating around; BUT those will be destroyed lateron 
+          (deferred) as soon as we hit another ZZEXIT() or ZZLOOP() macro.
+
+          So we've only to expect trouble if we happen to fall out of the parser without
+          ever encountering a ZZEXIT() or ZZLOOP(): this can be solved by adding 
+          a global exception handler like this (don't include the default label!):
+
+            /* root exception handler: place BEFORE any rule in your grammar! */
+            exception
+              catch MismatchedToken:
+              catch NoViableAlt:
+              catch NoSemViableAlt:
+              catch Unwind:
+              /* default:   WARNING! don't include 'default:' clause as it will ALWAYS
+               *            'recover' from the singalled error: it (almost) does an 
+               *            implicit zzSuppressSignal (except that the 'exported signal'
+               *            is NOT reset!)
+               */
+                <<
+                  printf("ERROR: Global default exception handler\n"
+                         "       (token is '%s')\n"
+                         "       (signal is %d)\n"
+                        ,LATEXT(1)
+                        ,_signal);
+
+                  /* flush all: nobody can save you now :-) */
+                  zzconsumeUntilToken(zzEOF_TOKEN /* "@" */);
+                  /* pass signal to caller */
+                  zzexportSignal;
+
+                  /* perform cleanup after all: same as zzEXIT(zztasp1); after _fail: label. */
+                  zzEXIT(zzasp - 1); 
+                >>
+
+
+
+
+07/may/1998 -------------------------------------------------------------------
+
+        PCR script taal uitbreiden en algemeen maken.
+
+        Gewenste features:
+
+        - if/elif/else
+
+          elif introduceren zodat if/else diepte verlaagd kan worden.
+
+        - switch/case/default
+
+          Dit is een alternatief voor if/elif/else en is feitelijk redundant. Toch
+          gewenst.
+
+          Merk op dat hier discussie kan ontstaan of fall-through wel/niet default
+          gedrag is: m.a.w. introduceren wij het keyword BREAK en/of FALLTHROUGH ?
+          Persoonlijk denk ik dat 'consistentie' en 'robuustheid' impliceert dat
+          elke case/default met een van deze twee keywords moet worden afgesloten.
+
+        - for ... do ... done
+
+          maken we er een basic-style 'for' van: for i=n to m step x do ... done of
+          een C-style 'for': for ( init; condition; increment) do ... done;
+
+        - arrays
+
+          voorbeeld:
+  
+          VAR
+    
+            list: array [n..m] of string;
+
+          Keuze bij PCR: dynamic (un)sized arrays
+
+            list: ARRAY of string;
+
+        - subroutines
+
+          voorbeeld:
+
+            subroutine display(a: integer; b: string) returns string
+            var ...
+            begin ... end endsub;
+
+        - in/uitvoer parameters beter onderscheiden?
+
+          Gaan we de taal zodanig uitbreiden dat functie parameters BY REF kunnen
+          worden doorgegeven en BY VAL of iets dergelijks zodat duidelijk onderscheid 
+          gemaakt kan worden tussen input- en output-parameters.
+
+        - byte-code compiler/interpreter
+
+          Parser optimalisatie: De eerste pass de code tokenize'n naast de reguliere
+          execution. Volgende gangen kunnen direct de tokenized source verwerken.
+          Dit zorgt ervoor dat de lexer minder werk hoeft te doen.
+
+          Daarnaast kan de tokenizer extra 'optimalisaties' invoegen zoals 
+          sprongadressen voor if/else zodat bij 'execute==0' direct naar de volgende 
+          tak of naar einde (fi) gesprongen kan worden. Hierdoor hoeft parser minder 
+          tokens te verwerken.
+
+          We moeten even zien of de 'tokenize-slag' direct de script-string kan 
+          overschrijven: m.a.w. is elk token code KLEINER of gelijk in lengte aan het 
+          originale token?
+          Niet als we het 'if' token vervangen door een 1-byte token + 2-byte 
+          sprong-offset. Zo is er ook een probleem met variabele-namen: deze kunnen 
+          niet tot token-codes worden omgezet, tenzij we d'r iets van maken in de 
+          trant van een token=index in symbol-table.
+
+          Constants daarentegen hebben vaak meer ruimte nodig in de tokenized 
+          stream (literal string --> token-prefix + string).
+
+        - scripts voor embedded apps
+
+          parser+lexer zo klein maken dat 't met gemak in de FIT95 past.
+          Misschien moeten we in dit geval een remote script-compiler introduceren:
+          scripts kunnen hier dan geen subscripts genereren en sowieso uitvoeren.
+          M.i. ongewenst maar misschien noodzakelijk om alle code binnen de perken 
+          te houden.
+  
+-------------------------------------------------------------------------------

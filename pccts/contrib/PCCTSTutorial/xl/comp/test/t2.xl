@@ -1,0 +1,18 @@
+program correct2 =
+   // test identifiers for capitalization and length
+   var x : Integer := 0;
+   var ThisIsAVeryLongIdentifier :Integer;
+   var ThisIsAVeryLongIdentifierAlso :Integer;
+begin // correct2
+   x := 1;
+   put(x);
+   ThisIsAVeryLongIdentifier := 1;
+   ThisIsAVeryLongIdentifierAlso := 2;
+   if (ThisIsAVeryLongIdentifier /= 1) or
+      (ThisIsAVeryLongIdentifierAlso /= 2) then
+     put("Error");
+   else
+      put(ThisIsAVeryLongIdentifierAlso);
+   end if;
+   newLine;
+end correct2.

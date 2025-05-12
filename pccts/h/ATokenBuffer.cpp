@@ -27,7 +27,7 @@
  * 1989-2000
  */
 
-typedef int ANTLRTokenType;	// fool AToken.h into compiling
+/* typedef int ANTLRTokenType;	// fool AToken.h into compiling */
 
 class ANTLRParser;					/* MR1 */
 

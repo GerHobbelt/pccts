@@ -1,0 +1,578 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<html>
+
+<head>
+<title>Statements</title>
+<style>
+<!--
+PRE {color: maroon;}
+CODE {color: maroon;}
+}
+-->
+</style>
+
+
+<meta name="Microsoft Theme" content="expeditn 001, default"><meta name="Microsoft Border" content="tb, default"></head>
+
+<body background="../_themes/expeditn/exptextb.jpg" bgcolor="#FFFFFF" text="#000000" link="#006600" vlink="#669966" alink="#990000"><!--mstheme--><font face="book antiqua"><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<h1 align="center"><font size="7" color="#800000"><strong>Statements</strong></font></h1>
+
+<p align="center"><a href="pccts5.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts7.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><!--msnavigation--><td valign="top">
+
+<p align="center">&nbsp;</p>
+
+<p>There are seven statements in XL (I told you it was a small language): assignment,
+exit, procedure call, return, if-then, loop and I/O.</p>
+
+<!--mstheme--></font><pre>statement
+  : assignmentStatement
+  | exitStatement
+  | procedureCallStatement
+  | returnStatement
+  | ifStatement
+  | loopStatement
+  | ioStatement
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Assignment Statement<!--mstheme--></font></h2>
+
+<p>The assignment statement is pretty much like Pascal's assignment statement, except that
+there are no type conversions allowed.</p>
+
+<!--mstheme--></font><pre>assignmentStatement
+  : variableReference BECOMES expression SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Very simple, but the pieces (variable and expression) are somewhat complex -- we'll
+look at them after all the statements are done. We'll look at <code>variableReference</code>
+later...</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Exit Statement<!--mstheme--></font></h2>
+
+<p>The exit statement tells a loop it's done. It looks like</p>
+
+<!--mstheme--></font><pre>exitStatement
+  : EXIT WHEN expression SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Procedure Call Statement<!--mstheme--></font></h2>
+
+<p>A procedure call takes the form</p>
+
+<!--mstheme--></font><pre>procedureCallStatement
+  : IDENT {actualParameters} SEMI
+  ;
+
+actualParameters
+  : LPAREN { expression (COMMA expression)* } RPAREN
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>I extended XL just a bit for this. The original XL compiler I wrote had</p>
+
+<!--mstheme--></font><pre>actualParameters
+  : LPAREN expression (COMMA expression)* RPAREN
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which basically means that if you have parens, you <b>must</b> have at least one
+expression in them. I thought it would be nice to allow <b>myfunc()</b> as a valid
+procedure call.</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Return Statement<!--mstheme--></font></h2>
+
+<p>The XL return statement tells a procedure or function to return immediately. Keeping in
+mind that I did not implement functions (yet, at least), <b>return</b> cannot take an
+expression argument. Therefore, it's just</p>
+
+<!--mstheme--></font><pre>returnStatement
+  : RETURN SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">If Statement<!--mstheme--></font></h2>
+
+<p>The XL &quot;if-then-elsif-else-end if&quot; statement is a fairly simple <b>if</b>
+type statement. This is because it is defined as a closed <b>if</b> statement; that is,
+there is a definite &quot;I'm done&quot; part to the <b>if</b> statement. Those of you who
+are familiar with the &quot;dangling <b>else</b>&quot; conflict present in the C language
+may realize that if you close the <b>if</b> statement, the conflict disappears. First,
+I'll present the rule for XL, then I'll talk a bit about how to do the <b>if</b> statement
+for C.</p>
+
+<p>XL's <b>if</b> statement looks like:</p>
+
+<!--mstheme--></font><pre>ifStatement
+  : IF expression THEN
+      ( statement )*
+      ( ELSIF expression THEN
+        ( statement )*
+      )*
+      { ELSE ( statement )* }
+    END IF SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Which is the most straightforward way to write the rule. However, you may notice some
+redundancy in the rule -- there are two separate places where we'll need to deal with <b>expression</b>
+evaluation. Not a big deal now, but we'd need to duplicate code later. After staring at
+the rule for a bit, we might try splitting out the &quot;<b>expression</b> THEN possible
+ELSE&quot; stuff into a separate rule, and call it recursively if we get an ELSIF. In
+other words:</p>
+
+<!--mstheme--></font><pre>ifStatement
+  : IF ifPart END IF SEMI
+  ;
+
+ifPart
+  : expression THEN
+    ( statement )*
+    { ELSIF ifPart
+    | ELSE (statement)*
+    }
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Which is much less redundant.</p>
+
+<p>Earlier, I threatened to look at the &quot;dangling else&quot; problem. In PCCTS, this
+is an easy problem to solve. Basically, the problem is that in a statement like</p>
+
+<!--mstheme--></font><pre>if (x)
+    if (y)
+        myfunc();
+    else
+        yourfunc();
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>It isn't terribly apparent (to the compiler at least) which <b>if</b>-condition owns
+the &quot;else&quot; clause. The compiler can't tell if the inner <b>if</b> is an
+&quot;if-without-an-else&quot; inside an &quot;if-with-an-else,&quot; or vice-versa.</p>
+
+<p>On the other hand, the language designers decided that the else will be owned by its
+most recent <b>if</b> that can possibly own it. In this case, the <b>else</b> would
+clearly belong to the <b>(y)</b> condition. However, the compiler doesn't know this.</p>
+
+<p>In a yacc grammar, an if-statement for C might be written</p>
+
+<!--mstheme--></font><pre>ifStatement
+  : IF LPAREN expression RPAREN statementList
+  | IF LPAREN expression RPAREN statementList
+      ELSE statementList
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which causes yacc to report a &quot;shift/reduce&quot; conflict -- yacc can't tell if
+you intended to have an &quot;if-without-else&quot; (the first alternative) be nested
+inside an &quot;if-with-else&quot; (the second alternative.) It doesn't know if it should
+reduce the first alternative when it sees the ELSE, or whether it should keep looking
+(shift the ELSE.) Fortunately, yacc's default is to shift the else, basically grouping the
+ELSE with its closest IF, which is exactly what we want.</p>
+
+<p>To get yacc to stop reporting this (and explicitly specify which alternative we intend)
+requires the use of either some very messy (and hard-to-follow) rules, or explicit
+precedence assignment. Neither is pretty, or very readable for someone else.</p>
+
+<p>In PCCTS, the C if statement would look like</p>
+
+<!--mstheme--></font><pre>ifStatement
+  : IF LPAREN expression RPAREN (statement)*
+    { ELSE (statement)* }
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which, of course, causes ANTLR to report a conflict. To get rid of this conflict in
+PCCTS, we can use a syntactic predicate (aka &quot;guess&quot; mode) which basically says
+&quot;try this -- if it works, use it. Otherwise, try the next alt.&quot;</p>
+
+<p>Applying a nice syntactic predicate to the <code>ifStatement</code> rule above yields</p>
+
+<!--mstheme--></font><pre>ifStatement
+  : IF LPAREN expression RPAREN (statement)*
+    { (ELSE)? ELSE (statement)*}
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which can a bit easier to read if you break the {...} subrule into a
+&quot;this-or-nothing&quot; subrule.</p>
+
+<!--mstheme--></font><pre>ifStatement
+  : IF LPAREN expression RPAREN (statement)*
+    ( (ELSE)? ELSE (statement)*
+    | ( ) // nothing
+    )
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>The predicate says &quot;try matching an ELSE. If you can, then use the first alt.
+Otherwise, use the second alt (the &quot;nothing&quot; alternative.) Note that we will be
+using the more compact <b>{...}</b> form for our compiler.</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">Loop Statement<!--mstheme--></font></h2>
+
+<p>The loop statement in XL is pretty simple. (Anyone sick of the word &quot;simple&quot;
+yet? But it's true, really it is.) It's a set of statements enclosed by <b>loop</b> and <b>end</b>
+<b>loop</b>, with an optional <b>while</b> clause in front of it. It looks like</p>
+
+<!--mstheme--></font><pre>loopStatement
+  : {WHILE expression} LOOP
+        ( statement )*
+    END LOOP SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Not too bad, eh? Well, just to confuse matters a bit, what would happen if XL allowed
+an <b>END</b> statement, like in BASIC? (BASIC's <b>END</b> statement exits the program
+immediately.) Come to think of it, what the heck, let's add one!</p>
+
+<!--mstheme--></font><pre>endStatement
+  : END SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Now why would I be mentioning this here? Let's look at some XL sample code:</p>
+
+<!--mstheme--></font><pre>program sponge =
+    var x : integer := 1;
+
+    begin
+        while x &lt; 10 loop
+            x := x + 1;
+            end;
+        end loop
+    end sponge.
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Kind of contrived (and useless, I know), and simple, until you look closer...</p>
+
+<p>What happens when the parser sees the <b>end</b> inside the loop? Let's look at the <code>loopStatement</code>
+rule again (repeated here 'cause you're a programmer which means you're too lazy to turn
+back a page):</p>
+
+<!--mstheme--></font><pre>loopStatement
+  : {WHILE expression} LOOP
+        ( statement )*
+    END LOOP SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Assuming k=1 lookahead, we have a problem: how does the parser determine that the <b>end</b>
+in loop is an <code>endStatement</code> and not the <b>end</b> that is the first part of <b>end</b>
+<b>loop</b>? The answer is simple: with k=1 lookahead, it can't. It will always try to
+make it an <code>endStatement</code>, and will get a syntax error on <b>loop</b>. (Try
+this in the final recognizer, just for kicks.) You'll also get a conflict warning in
+ANTLR. (Note that you'll have the same conflict with <b>end if</b> in <code>ifStatement</code>
+-- our solution should, and will, handle both situations.)</p>
+
+<p>So how do we solve this? Two possibilities: use k=2 lookahead, or use a syntactic
+predicate.</p>
+
+<p>To use k=2 lookahead, you'd just need to specify <b>-k 2 </b>on the ANTLR command line.
+This will make the ANTLR run take a bit more time, but should only affect checks that
+require two-token lookahead.</p>
+
+<p>In our grammar, we only have one place (this one) that causes a conflict. (Remember
+that our <code>ifStatement</code> is closed with an <b>end</b> <b>if</b>, so there's no
+dangling <b>else</b> conflict.) So let's fix the problem in that spot using syntactic
+predicates. (I also want to cover syntactic predicates a bit, so I won't go with the
+easier -k 2 fix... In real life, I think it might make a slightly faster parser to use -k
+2 for this case. Syntactic predicates should probably be reserved for cases when you don't
+know how much lookaead you'll really need, or the known lookahead is lengthy.)</p>
+
+<p>We can tell ANTLR exactly how to distinguish an <code>endStatement</code> from the end
+of a loop. How? Simple (for me at least, 'cause I already know...):</p>
+
+<!--mstheme--></font><pre>statement
+  : (END SEMI)? endStatement
+  | assignmentStatement
+    . . .
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Now what the heck does that mean? Basically, it says &quot;try to match <b>END</b>,
+then <b>SEMI</b>.&quot; If it works, then we really want the <code>endStatement</code>. If
+we didn't get a match, try the next alternative, and so on...</p>
+
+<p>There's one problem that I have with the above statement. I don't like spelling out <b>END</b>
+<b>SEMI</b> in a rule other than <code>endStatement</code>. It just seems like bad
+isolation of rules. I'm a bit picky at times, though. What I'd rather do is say to myself,
+hmmm, <b>END</b> <b>SEMI</b> is an <code>endStatement</code>, so why not put that inside
+the ( )? -- like this:</p>
+
+<!--mstheme--></font><pre>statement
+  : (endStatement)? endStatement
+  | assignmentStatement
+    . . .
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>(Note: This will be a bit less efficient than spelling it out -- the &quot;guess&quot;
+that ANTLR will make will need to make a function call to <code>endStatement</code> to
+check for <b>END</b> <b>SEMI</b> rather than just directly check for <b>END</b> <b>SEMI</b>
+in the statement rule. However, as long as you don't do this too much, the penalty for a
+function call is minimal on most machines nowadays. Just keep it to a minimum!)</p>
+
+<p>Does that look redundant to you? It does to me. Fortunately, ANTLR provides a shortcut:
+if the contents of the syntactic predicate are the same as the thing it's predicting, you
+only need to specify the predicate:</p>
+
+<!--mstheme--></font><pre>statement
+  : (endStatement)?
+  | assignmentStatement
+    . . .
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Much better now, isn't it. Let's keep this in XL. I encourage you to play with the
+recognizer grammar a bit to explore this conflict and its solution.</p>
+
+<p>What if <code>endStatement</code> were a bit more involved, such as</p>
+
+<!--mstheme--></font><pre>endStatement
+  : END SEMI expression SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>(Kinda useless, but so are most examples.) All we need to predict it are the <b>END</b>
+and <b>SEMI</b>. If we keep the predicate as it is, <b>(endStatement)?</b>, the
+&quot;guess&quot; would keep going through expression (which could be pretty long) and the
+next SEMI. That would be mighty wasteful. So, in a case where we want to limit the
+lookahead, it's probably better to sacrifice readability a bit and limit the lookahead to
+just END SEMI:</p>
+
+<!--mstheme--></font><pre>statement
+  : (END SEMI)? endStatement
+  | assignmentStatement
+    . . .
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>(Look familiar?) You may ask &quot;why not just put the <b>(END SEMI)?</b> in the <code>endStatement</code>
+rule itself?&quot; Unfortunately, ANTLR complains about a rule like</p>
+
+<!--mstheme--></font><pre>endStatement
+  : (END SEMI)? END SEMI expression SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>basically telling you &quot;why bother with a predicate -- there's only one
+alternative!&quot; I think I'd prefer to be able to specify it like this, and have ANTLR
+hoist the predicate up into the statement rule (and possibly optimize it out of the <code>endStatement</code>
+rule altogether.) But let's work with the great tool we currently have, shall we?</p>
+
+<p>So, we end up with two new rules:</p>
+
+<!--mstheme--></font><pre>loopStatement
+  : {WHILE expression} LOOP
+        (statement)*
+    END LOOP SEMI
+  ;
+
+endStatement
+  : END SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>and we modify the <code>statement</code> rule to look like</p>
+
+<!--mstheme--></font><pre>statement
+  : (endStatement)?
+  | assignmentStatement
+  | exitStatement
+  | procedureCallStatement
+  | returnStatement
+  | ifStatement
+  | loopStatement
+  | ioStatement 
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>But is the order important in the <code>statement</code> rule? Of course, but it's not
+so obvious until you look at what the generated code will say. The following isn't actual
+generated code, but pseudocode that will show what happens in the statement rule:</p>
+
+<!--mstheme--></font><pre>statement
+{
+    if next token is END and guess(endStatement) worked
+        do endStatement
+    else if next token is IDENT
+        do assignmentStatement
+    else if next token is EXIT
+        do exitStatement
+    else if next token is IDENT
+        do procedureCallStatement
+    else if next token is RETURN
+        do returnStatement
+    else if next token is IF
+        do ifStatement
+    else if next token is (WHILE or LOOP)
+        do loopStatement
+    else if next token is (PUT or GET)
+        do ioStatement (defined later)
+}
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>A few things to notice here: 
+
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Most of the conditions in this code are simple, one-test comparisons <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">The condition for <code>endStatement</code> is much more complex <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Oooops! I see a conflict between <code>assignmentStatement</code> and <code>procedureCallStatement</code>
+    -- hold this thought for a minute... <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Notice that <code>loopStatement</code>'s lookup condition had two parts to it: WHILE or
+    LOOP -- this is because the WHILE section is optional, making the FIRST set for <code>loopStatement</code>
+    be {WHILE, LOOP} (<code>ioStatement</code> will be defined in a bit as a GET or PUT
+    call...) <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">All of the conditions are evaluated in the order that the rules are specified <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">All of the conditions except <code>assignmentStatement</code> and <code>procedureCallStatement</code>
+    have a unique test condition; their FIRST sets are disjoint <!--mstheme--></font><!--msthemelist--></td></tr>
+<!--msthemelist--></table>
+
+<p>Our goal when parsing is to make things as fast as possible. Therefore, based on the
+above information, we should 
+
+<!--msthemelist--><table border="0" cellpadding="0" cellspacing="0" width="100%">
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Order the rules such that the most likely/most used rules come first -- that means less
+    conditions to test <!--mstheme--></font><!--msthemelist--></td></tr>
+  <!--msthemelist--><tr><td valign="baseline" width="42"><img src="../_themes/expeditn/expbul1d.gif" width="20" height="20" hspace="11"></td><td valign="top" width="100%"><!--mstheme--><font face="book antiqua">Order the rules such that rules with nasty conditions come later. Note that if the nasty
+    condition is required to disambiguate two alternatives, it needs to be in the first of the
+    two alternatives <!--mstheme--></font><!--msthemelist--></td></tr>
+<!--msthemelist--></table>
+
+<p>If possible, determine which statements are more likely to be used. Do some statistical
+sampling of user code (if possible) and order the rules accordingly. In this case, I think
+it's less likely that the user would use an END statement, and on top of that, it's more
+complex, so let's put it at the bottom of the list.</p>
+
+<p>We also need to disambiguate <code>assigmentStatement</code> and <code>procedureCallStatement</code>.
+Recall that they look like:</p>
+
+<!--mstheme--></font><pre>assignmentStatement
+  : variable BECOMES expression SEMI
+  ;
+
+procedureCallStatement
+  : IDENT {actualParameters} SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>So, how do we tell them apart? First, let's look at the FIRST sets of each (the sets
+that contain all tokens that can be the first terminal in a rule.) Impossible until we
+define <code>variableReference</code>, so let's do that now (sorry about the jumping
+around here..)</p>
+
+<!--mstheme--></font><pre>variableReference
+  : IDENT
+    ( LBRACKET expression RBRACKET
+    | DOT IDENT
+    )*
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>which says a variable reference is an IDENT followed by any number of array or field
+dereferences.</p>
+
+<p>Without going into a long discussion about FIRST sets, what is the FIRST set of <code>assignmentStatement</code>?
+By inspection, it's whatever the FIRST set is of <code>variableReference</code>, which is
+{IDENT}. Again, by inspection, the FIRST set of <code>procedureCallStatement</code> is
+also {IDENT}. There, the conflict becomes very clear. On one token alone, IDENT, the
+parser cannot determine which rule is proper. Looking at the pseudocode above, it becomes
+obvious that the parser will, in fact, always choose whichever rule is specified first
+with a FIRST set of {IDENT}, which is bad. So, we need to add a predicate to one of the
+rules. But which one? Lets look at what would be needed for each. What makes each unique? <code>assignmentStatement</code>
+could start out with</p>
+
+<!--mstheme--></font><pre>IDENT BECOMES . . . // just ident := expression
+IDENT LBRACKET . . .     // starting with array reference
+IDENT DOT . . .          // starting with field reference
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>and <code>procedureCallStatement</code> could start out with (after looking at <code>actualParameters</code>)</p>
+
+<!--mstheme--></font><pre>IDENT SEMI    // No parameters (or parens)
+IDENT LPAREN . . . // parameters (or just parens)
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Obviously, they are unique with two tokens of lookahead. So, we're back to the decision
+of &quot;do we bump lookahead to k=2, or use predicates.&quot; k=2 would resolve the
+conflict, but my gut says we should use a syntactic predicate here. But which one?</p>
+
+<p>The predicates would look like:</p>
+
+<!--mstheme--></font><pre>statement
+  : . . .
+  |(IDENT (BECOMES|LBRACKET|DOT))? assignmentStatement
+  |(IDENT (SEMI|LPAREN))? procedureCallStatement
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Well, the predicate for <code>procedureCallStatement</code> is actually a bit simpler.
+We probably should use it and put its alternative ahead of the one for <code>assignmentStatement</code>.\
+If your research proves that <code>assignmentStatements</code> are found in code more
+often than <code>procedureCallStatements</code>, you may want to reconsider, though.</p>
+
+<p>So what do we end up with? Using our basic rule of &quot;keep the simple stuff near the
+top&quot; and adding syntactic predicates for <code>endStatement</code> and <code>procedureCallStatement</code>,
+we get (without taking into account statistical frequency of each statement):</p>
+
+<!--mstheme--></font><pre>statement
+  : exitStatement
+  | returnStatement
+  | ifStatement
+  | loopStatement
+  | ioStatement
+  | (IDENT (LPAREN|SEMI))? procedureCallStatement
+  | assignmentStatement
+  | (endStatement)?
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Now, on to our final statement...</p>
+
+<!--msthemeseparator--><p align="center"><img src="../_themes/expeditn/exphorsd.gif" width="300" height="10"></p>
+
+<h2><!--mstheme--><font color="#660033">I/O Statement<!--mstheme--></font></h2>
+
+<p>The I/O statement is really a procedure call to four predefined functions, <b>get</b>, <b>put</b>,
+<b>skipLine</b> and <b>newLine</b>. These really should be handled just like any other
+procedure call, but I'm putting them here just because that's how I did it the first time
+around, and because I don't want to mess with special pre-defined identifiers in the
+symbol table later...</p>
+
+<!--mstheme--></font><pre>ioStatement
+  : PUT LPAREN expression RPAREN SEMI
+  | GET LPAREN variable RPAREN SEMI
+  | SKIPLINE {LPAREN RPAREN} SEMI
+  | NEWLINE {LPAREN RPAREN} SEMI
+  ;
+      </pre><!--mstheme--><font face="book antiqua">
+
+<p>Note that I was nice and allow the user to put &quot;()&quot; after <b>skipLine</b> and
+<b>newLine</b>, just like we did for procedure calls in general. </p>
+
+<p>Easy enough. Now onto the sticky stuff: <a href="pccts7.htm">expressions</a>.</p>
+
+<p align="center">&nbsp; 
+<!--msnavigation--></td></tr><!--msnavigation--></table><!--msnavigation--><table border="0" cellpadding="0" cellspacing="0" width="100%"><tr><td><!--mstheme--><font face="book antiqua">
+
+<p align="center"><a href="pccts5.htm"><img src="../_derived/back_cmp_expeditn000_back.gif" width="100" height="20" border="0" alt="Back"></a><a href="../index.htm"><img src="../_derived/home_cmp_expeditn000_home.gif" width="100" height="20" border="0" alt="Home"></a><a href="index.htm"><img src="../_derived/up_cmp_expeditn000_up.gif" width="100" height="20" border="0" alt="Up"></a><a href="pccts7.htm"><img src="../_derived/next_cmp_expeditn000_next.gif" width="100" height="20" border="0" alt="Next"></a></p>
+
+<p align="center">This page was last updated on 09/08/97.</p>
+<!--mstheme--></font></td></tr><!--msnavigation--></table><!--mstheme--></font></body>
+</html>

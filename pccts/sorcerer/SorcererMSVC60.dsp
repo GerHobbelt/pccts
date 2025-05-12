@@ -41,6 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "."
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
+MTL=midl.exe
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /W3 /O2 /I "." /I "..\h" /I "..\support\set" /D "__STDC__" /D "NDEBUG" /D "LONGFILENAMES" /D "PC" /D ZZLEXBUFSIZE=65536 /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /FD /c
 # SUBTRACT CPP /YX
@@ -55,7 +56,7 @@ LINK32=link.exe
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Desc=Update executables in BIN directory
-PostBuild_Cmds=rename         ..\bin\Sorcerer.exe              Sorcerer_old.exe          	copy             ..\Sorcerer\Sorcerer.exe         ..\bin\ 
+PostBuild_Cmds=rename          ..\bin\Sorcerer.exe               Sorcerer_old.exe           	copy              ..\Sorcerer\Sorcerer.exe          ..\bin\ 
 # End Special Build Tool
 
 !ELSEIF  "$(CFG)" == "Sorcerer - Win32 Debug"
@@ -71,6 +72,7 @@ PostBuild_Cmds=rename         ..\bin\Sorcerer.exe              Sorcerer_old.exe 
 # PROP Intermediate_Dir "."
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
+MTL=midl.exe
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /W3 /Gm /ZI /Od /I "." /I "..\h" /I "..\support\set" /D "__STDC__" /D "LONGFILENAMES" /D "PC" /D ZZLEXBUFSIZE=65536 /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /FR /FD /c
 # SUBTRACT CPP /YX
@@ -85,7 +87,7 @@ LINK32=link.exe
 # Begin Special Build Tool
 SOURCE="$(InputPath)"
 PostBuild_Desc=Update executables in BIN directory
-PostBuild_Cmds=rename         ..\bin\Sorcerer.exe              Sorcerer_old.exe          	copy             ..\Sorcerer\Sorcerer.exe         ..\bin\ 
+PostBuild_Cmds=rename          ..\bin\Sorcerer.exe               Sorcerer_old.exe           	copy              ..\Sorcerer\Sorcerer.exe          ..\bin\ 
 # End Special Build Tool
 
 !ENDIF 
@@ -145,8 +147,8 @@ InputPath=.\sor.g
 InputName=sor
 
 BuildCmds= \
-	..\bin\antlr -gh -k 2 -gt $(InputName).g \
-	..\bin\dlg -C2 parser.dlg scan.c \
+	..\bin\antlr -gh -k 2 -gt -emsvc $(InputName).g \
+	..\bin\dlg -C2 -emsvc parser.dlg scan.c \
 	
 
 "parser.dlg" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -175,8 +177,8 @@ InputPath=.\sor.g
 InputName=sor
 
 BuildCmds= \
-	..\bin\antlr -gh -k 2 -gt $(InputName).g \
-	..\bin\dlg -C2 parser.dlg scan.c \
+	..\bin\antlr -gh -k 2 -gt -emsvc $(InputName).g \
+	..\bin\dlg -C2 -emsvc parser.dlg scan.c \
 	
 
 "parser.dlg" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"

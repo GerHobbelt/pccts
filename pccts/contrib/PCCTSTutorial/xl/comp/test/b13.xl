@@ -1,0 +1,25 @@
+// kind errors
+// Similar to test of p. 278 of Brinch Hansen
+program test8 =
+   constant a = Integer;
+   type T = array[2..1] of Integer;
+   type U = record
+               f : Integer;
+            end record;
+   x :Integer;
+   y:U;
+   z:FALSE;
+   
+   procedure p(var x : Integer; y : TRUE) =
+   begin     // p 
+      x:=1;
+   end p;
+   
+begin // test8
+   x[1] := 1;
+   x.f := 1;
+   p(FALSE,TRUE);
+   x:=p;
+   FALSE:=TRUE;
+   y.g := 1;
+end test8.

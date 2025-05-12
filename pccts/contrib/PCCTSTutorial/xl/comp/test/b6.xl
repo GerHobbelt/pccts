@@ -1,0 +1,6 @@
+program incorrect6 =
+   var x,y:Integer;
+begin   // incorrect6
+   y := -5;
+   x := y + z;   // z has not been declared
+end incorrect6.   

@@ -63,6 +63,7 @@
 #include <malloc.h>
 #endif
 #include <string.h>
+#include <limits.h>
 
 #include "set.h"
 
@@ -75,7 +76,12 @@ static unsigned bitmask[] = {
 	0x00000010, 0x00000020, 0x00000040, 0x00000080,
 	0x00000100, 0x00000200, 0x00000400, 0x00000800,
 	0x00001000, 0x00002000, 0x00004000, 0x00008000,
-#if !defined(PC) || defined(PC32)
+#if !defined(INT_MAX) && (!defined(PC) || defined(PC32))
+	0x00010000, 0x00020000, 0x00040000, 0x00080000,
+	0x00100000, 0x00200000, 0x00400000, 0x00800000,
+	0x01000000, 0x02000000, 0x04000000, 0x08000000,
+	0x10000000, 0x20000000, 0x40000000, 0x80000000
+#elif defined(INT_MAX) && !(INT_MAX < 0x8000UL) /* [i_a] fix for 16-bit compiler for embedded systems */
 	0x00010000, 0x00020000, 0x00040000, 0x00080000,
 	0x00100000, 0x00200000, 0x00400000, 0x00800000,
 	0x01000000, 0x02000000, 0x04000000, 0x08000000,
@@ -375,7 +381,7 @@ set b;
     if (count == 0) return 1;
     for (i=0; i < count; i++) {
       if (a.setword[i] != b.setword[i]) return 0;
-    };
+    }
     if (a.n < b.n) {
       for (i=count; i < b.n; i++) {
         if (b.setword[i] != 0) return 0;
@@ -388,7 +394,7 @@ set b;
       return 1;
     } else {
       return 1;
-    };
+    }
 }
 
 int
@@ -414,14 +420,14 @@ set b;
     count=MIN(a.n,b.n);
     for (i=0; i < count; i++) {
       if (a.setword[i] & ~b.setword[i]) return 0;
-    };
+    }
     if (a.n <= b.n) {
       return 1;
     } else {
       for (i=count; i<a.n ; i++) {
         if (a.setword[i]) return 0;
-      };
-    };
+      }
+    }
     return 1;
 }
 

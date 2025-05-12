@@ -41,7 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "Release"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MD /W4 /WX /GX /O2 /I "$(PCCTS)\sorcerer\h" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /FD /c
+# ADD CPP /nologo /MD /W4 /WX /GX /O2 /I "..\sorcerer\h" /I "..\h" /D "NDEBUG" /D "WIN32" /D "_WINDOWS" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409
@@ -70,7 +70,7 @@ PostBuild_Cmds=mkdir ..\lib	copy pccts_release.lib ..\lib\pccts_release.lib
 # PROP Intermediate_Dir "Debug"
 # PROP Target_Dir ""
 # ADD BASE CPP /nologo /W3 /GX /Z7 /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /YX /FD /c
-# ADD CPP /nologo /MDd /W4 /WX /GX /ZI /Od /I "$(PCCTS)\sorcerer\h" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /FR /FD /c
+# ADD CPP /nologo /MDd /W4 /WX /GX /ZI /Od /I "..\sorcerer\h" /I "..\h" /D "_DEBUG" /D "WIN32" /D "_WINDOWS" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409
 # ADD RSC /l 0x409

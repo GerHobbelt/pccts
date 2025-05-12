@@ -1,0 +1,44 @@
+program programexample =
+   // note re BH book    
+   constant arraysize : Integer := 10;
+   type Table = array[1..arraysize] of Integer;
+   var a:Table;
+   var i:Integer;
+   var x:Integer;
+   var yes:Boolean;
+   
+   procedure search(searchvalue:Integer;
+                    var found:Boolean;
+                    var index:Integer) =
+      var limit : Integer := arraysize;                    
+   begin
+      found := FALSE;
+      index := 1;
+      while index <= arraysize and not found loop
+         if a[index] = searchvalue then
+            found := TRUE;
+         else
+            index := index + 1;
+         end if;
+      end loop;
+   end search;
+   
+begin
+   i := 1;
+   while i <=arraysize loop
+      get(a[i]);
+      i := i + 1;
+   end loop;
+   loop
+      get(x);
+      exit when(x = 0);
+      search(x, yes, i);
+      put(x);
+      if yes then
+         put(i);
+      end if;
+      newLine;
+   end loop;
+end programexample.
+                    
+   

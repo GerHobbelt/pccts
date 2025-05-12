@@ -132,11 +132,11 @@ ActionNode *a;
 /* MR10 */              errFL(eMsgd("    the lookahead buffer size in C mode is %d token(s) (including the one just recognized)",
 /* MR10 */                        OutputLL_k),
 /* MR10 */                        FileStr[a->file],a->line);
-/* MR10 */            };
-/* MR10 */          };
-/* MR10 */        };
+/* MR10 */            }
+/* MR10 */          }
+/* MR10 */        }
 /* MR10 */        max_k= CLL_k;
-/* MR10 */    };
+/* MR10 */    }
 
 PREDENTRY_EXIT:
 	return max_k;
@@ -160,7 +160,7 @@ Junction *alt;
 
     if (MRhoisting) {
       return MR_find_in_aSubBlk(alt);
-    };
+    }
 	for (; p!=NULL; p=(Junction *)p->p2)
 	{
 		/* ignore empty alts */
@@ -269,48 +269,48 @@ Node *alt;
 	{
 		case nJunction :
 			j = (Junction *) alt;
-			fprintf(stderr, "Junction(in %s)", j->rname);
+			printf_stderr_continued( "Junction(in %s)", j->rname);
 			switch ( j->jtype )
 			{
 				case aSubBlk :
-					fprintf(stderr,"aSubBlk\n");
+					printf_stderr_continued("aSubBlk\n");
 					break;
 				case aOptBlk :
-					fprintf(stderr,"aOptBlk\n");
+					printf_stderr_continued("aOptBlk\n");
 					break;
 				case aLoopBegin :
-					fprintf(stderr,"aLoopBeginBlk\n");
+					printf_stderr_continued("aLoopBeginBlk\n");
 					break;
 				case aLoopBlk :
-					fprintf(stderr,"aLoopBlk\n");
+					printf_stderr_continued("aLoopBlk\n");
 					break;
 				case aPlusBlk :
-					fprintf(stderr,"aPlusBlk\n");
+					printf_stderr_continued("aPlusBlk\n");
 					break;
 				case EndBlk :
-					fprintf(stderr,"EndBlk\n");
+					printf_stderr_continued("EndBlk\n");
 					break;
 				case RuleBlk :
-					fprintf(stderr,"RuleBlk\n");
+					printf_stderr_continued("RuleBlk\n");
 					break;
 				case Generic :
-					fprintf(stderr,"Generic\n");
+					printf_stderr_continued("Generic\n");
 					break;
 				case EndRule :
-					fprintf(stderr,"EndRule\n");
+					printf_stderr_continued("EndRule\n");
 					break;
 			}
 			break;
 		case nRuleRef :
 			r = (RuleRefNode *) alt;
-			fprintf(stderr, "RuleRef(in %s)\n", r->rname);
+			printf_stderr_continued( "RuleRef(in %s)\n", r->rname);
 			break;
 		case nToken :
 			t = (TokNode *) alt;
-			fprintf(stderr, "TokenNode(in %s)%s\n", t->rname, TokenString(t->token));
+			printf_stderr_continued( "TokenNode(in %s)%s\n", t->rname, TokenString(t->token));
 			break;
 		case nAction :
-			fprintf(stderr, "Action\n");
+			printf_stderr_continued( "Action\n");
 			break;
 	}
 #endif
@@ -384,7 +384,7 @@ Node *alt;
 			{
 				Tree *t=NULL;
 #ifdef DBG_PRED
-				fprintf(stderr, "predicate: <<%s>>?\n", p->action);
+				printf_stderr_continued( "predicate: <<%s>>?\n", p->action);
 #endif
 				if ( p->guardpred!=NULL )
 				{
@@ -420,13 +420,13 @@ Node *alt;
     							TRAV(p->next,
     								 pred->k,
     								 &(pred->completionTree), t);
-                            };
+                            }
 							pred->tcontext = t;
                             MR_check_pred_too_long(pred,pred->completionTree);
 #ifdef DBG_PRED
-							fprintf(stderr, "LL(%d) context:", pred->k);
+							printf_stderr_continued( "LL(%d) context:", pred->k);
 							preorder(t);
-							fprintf(stderr, "\n");
+							printf_stderr_continued( "\n");
 #endif
 						}
 					}
@@ -449,9 +449,9 @@ Node *alt;
 								  pred->scontext[1]);
                             MR_check_pred_too_long(pred,pred->completionSet);
 #ifdef DBG_PRED
-							fprintf(stderr, "LL(1) context:");
+							printf_stderr_continued( "LL(1) context:");
 							s_fprT(stderr, pred->scontext[1]);
-							fprintf(stderr, "\n");
+							printf_stderr_continued( "\n");
 #endif
 						}
 					}
@@ -513,9 +513,9 @@ Node *alt;
 /* MR10 */             "RuleBlkWithHalt->end not RuleBlk or does not have halt set");
 /* MR10 */  if (MR_RuleBlkWithHalt != NULL) {
 /* MR10 */    MR_RuleBlkWithHalt->end->halt=FALSE;
-/* MR10 */  };
+/* MR10 */  }
 
-/***        fprintf(stderr,"\nSetting halt on junction #%d\n",r->end->seq);     ***/
+/***        printf_stderr_continued("\nSetting halt on junction #%d\n",r->end->seq);     ***/
 
             require(r->end->halt == FALSE,"rule->end->halt already set");
 
@@ -543,9 +543,9 @@ Node *alt;
 /* MR10 */             "RuleBlkWithHalt->end not RuleBlk or has no halt set");
 /* MR10 */  if (MR_RuleBlkWithHalt != NULL) {
 /* MR10 */    MR_RuleBlkWithHalt->end->halt=TRUE;
-/* MR10 */  };
+/* MR10 */  }
 
-/***        fprintf(stderr,"\nRestoring halt on junction #%d\n",r->end->seq);   ***/
+/***        printf_stderr_continued("\nRestoring halt on junction #%d\n",r->end->seq);   ***/
 
 			if ( a==NULL ) return NULL;
 
@@ -611,7 +611,7 @@ Predicate *a;
 	int k2;
 
 #ifdef DBG_PRED
-	fprintf(stderr, "enter complete_context_sets\n");
+	printf_stderr_continued( "enter complete_context_sets\n");
 #endif
 	for (; a!=NULL; a=a->right)
 	{
@@ -634,14 +634,14 @@ Predicate *a;
 		set_orin(&(a->completionSet), rk2);/* remember what we couldn't do */
 		set_free(rk2);
 #ifdef DBG_PRED
-		fprintf(stderr, "LL(1) context for %s(addr 0x%x) after ruleref:", a->expr, a);
+		printf_stderr_continued( "LL(1) context for %s(addr 0x%x) after ruleref:", a->expr, a);
 		s_fprT(stderr, a->scontext[1]);
-		fprintf(stderr, "\n");
+		printf_stderr_continued( "\n");
 #endif
 /*		complete_context_sets(p, a->down);*/
 	}
 #ifdef DBG_PRED
-	fprintf(stderr, "exit complete_context_sets\n");
+	printf_stderr_continued( "exit complete_context_sets\n");
 #endif
 }
 
@@ -659,7 +659,7 @@ Predicate *a;
 	Tree *u;
 
 #ifdef DBG_PRED
-	fprintf(stderr, "enter complete_context_trees\n");
+	printf_stderr_continued( "enter complete_context_trees\n");
 #endif
 	for (; a!=NULL; a=a->right)
 	{
@@ -686,14 +686,14 @@ Predicate *a;
 		set_orin(&(a->completionTree), rk2);/* remember what we couldn't do */
 		set_free(rk2);
 #ifdef DBG_PRED
-		fprintf(stderr, "LL(i<%d) context after ruleref:", LL_k);
+		printf_stderr_continued( "LL(i<%d) context after ruleref:", LL_k);
 		preorder(a->tcontext);
-		fprintf(stderr, "\n");
+		printf_stderr_continued( "\n");
 #endif
 /*		complete_context_trees(p, a->down);*/
 	}
 #ifdef DBG_PRED
-	fprintf(stderr, "exit complete_context_trees\n");
+	printf_stderr_continued( "exit complete_context_trees\n");
 #endif
 }
 
@@ -750,7 +750,7 @@ void predicate_free(p)
   } else {
     p->right=NULL;
     p->down=NULL;  /* MR13 *** debug */
-  };
+  }
 }
 
 /* MR10 predicate_dup() */
@@ -791,7 +791,7 @@ Predicate * predicate_dup_xxx(p,contextToo)
     q->scontext[1]=set_dup(p->scontext[1]);
     q->completionTree=set_dup(p->completionTree);
     q->completionSet=set_dup(p->completionSet);
-  };
+  }
 
   /* don't need to dup "redundant" */
 

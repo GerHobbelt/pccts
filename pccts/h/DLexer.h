@@ -154,7 +154,7 @@ more:
 /* MR1 */	     /* MR23 */ printMessage(stdout, "\ntoken name=%s",parser->parserTokenName(tk));
 /* MR1 */	   } else {
 /* MR1 */	     /* MR23 */ printMessage(stdout, "\ntoken nnumber=%d",tk);
-/* MR1 */	   };
+/* MR1 */	   }
 /* MR1 */	   /* MR23 */ printMessage(stdout, " lextext=(%s) mode=%d",
 /* MR1 */		 (_lextext[0]=='\n' && _lextext[1]==0) ?
 /* MR1 */			"newline" : _lextext,
@@ -166,13 +166,13 @@ more:
 /* MR1 */	       /* MR23 */ printMessage(stdout, " char=newline");
 /* MR1 */	     } else {
 /* MR1 */	       /* MR23 */ printMessage(stdout, " char=(%c)",ch);
-/* MR1 */	     };
-/* MR1 */	   };
+/* MR1 */	     }
+/* MR1 */	   }
 /* MR1 */	   /* MR23 */ printMessage(stdout, " %s\n",
 /* MR1 */		 (add_erase==1 ? "skip()" :
 /* MR1 */		  add_erase==2 ? "more()" :
 /* MR1 */		  ""));
-/* MR1 */        };
+/* MR1 */        }
 
 #endif
 

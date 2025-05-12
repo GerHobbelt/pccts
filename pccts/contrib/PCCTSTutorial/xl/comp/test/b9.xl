@@ -1,0 +1,5 @@
+program incorrect9 =
+   var b:Boolean;
+begin // incorrect9
+   b := false;   // false must be in all caps
+end incorrect9.

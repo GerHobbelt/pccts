@@ -48,7 +48,9 @@
  */
 
 #include <stdio.h>
+
 #include "pcctscfg.h"
+
 #include "set.h"
 #include "syn.h"
 #include "hash.h"
@@ -282,7 +284,7 @@ RemapForcedTokens()
 		q = (ForcedToken *) p->elem;
 		if ( q->tnum > max_token_number ) max_token_number = q->tnum;
 	}
-	fprintf(stderr, "max token number is %d\n", max_token_number);
+	printf_stderr_continued( "max token number is %d\n", max_token_number);
 
 	/* make token indirection array */
 	TokenInd = (int *) calloc(max_token_number+1, sizeof(int));
@@ -298,19 +300,19 @@ RemapForcedTokens()
 		int old_pos, t;
 
 		q = (ForcedToken *) p->elem;
-		fprintf(stderr, "%s forced to %d\n", q->token, q->tnum);
+		printf_stderr_continued( "%s forced to %d\n", q->token, q->tnum);
 		te = (TermEntry *) hash_get(Tname, q->token);
 		require(te!=NULL, "RemapForcedTokens: token not in hash table");
 		old_pos = te->token;
-		fprintf(stderr, "Before: TokenInd[old_pos==%d] is %d\n", old_pos, TokenInd[old_pos]);
-		fprintf(stderr, "Before: TokenInd[target==%d] is %d\n", q->tnum, TokenInd[q->tnum]);
+		printf_stderr_continued( "Before: TokenInd[old_pos==%d] is %d\n", old_pos, TokenInd[old_pos]);
+		printf_stderr_continued( "Before: TokenInd[target==%d] is %d\n", q->tnum, TokenInd[q->tnum]);
 		q = (ForcedToken *) p->elem;
 		t = TokenInd[old_pos];
 		TokenInd[old_pos] = q->tnum;
 		TokenInd[q->tnum] = t;
 		te->token = q->tnum;		/* update token type id symbol table */
-		fprintf(stderr, "After: TokenInd[old_pos==%d] is %d\n", old_pos, TokenInd[old_pos]);
-		fprintf(stderr, "After: TokenInd[target==%d] is %d\n", q->tnum, TokenInd[q->tnum]);
+		printf_stderr_continued( "After: TokenInd[old_pos==%d] is %d\n", old_pos, TokenInd[old_pos]);
+		printf_stderr_continued( "After: TokenInd[target==%d] is %d\n", q->tnum, TokenInd[q->tnum]);
 
 		/* Change the token number in the sym tab entry for the exprs
 		 * at the old position of the token id and the target position
@@ -326,7 +328,7 @@ RemapForcedTokens()
 					TermEntry *e = (TermEntry *) hash_get(lclass[i].htable, lclass[i].exprs[q->tnum]);
 					require(e!=NULL, "RemapForcedTokens: expr not in hash table");
 					e->token = old_pos;
-					fprintf(stderr, "found expr '%s' at target %d in lclass[%d]; changed to %d\n",
+					printf_stderr_continued( "found expr '%s' at target %d in lclass[%d]; changed to %d\n",
 							lclass[i].exprs[q->tnum], q->tnum, i, old_pos);
 				}
 			}
@@ -340,7 +342,7 @@ RemapForcedTokens()
 				TermEntry *e = (TermEntry *) hash_get(lclass[i].htable, lclass[i].exprs[old_pos]);
 				require(e!=NULL, "RemapForcedTokens: expr not in hash table");
 				e->token = q->tnum;
-				fprintf(stderr, "found expr '%s' for id %s in lclass[%d]; changed to %d\n",
+				printf_stderr_continued( "found expr '%s' for id %s in lclass[%d]; changed to %d\n",
 						lclass[i].exprs[old_pos], q->token, i, q->tnum);
 			}
 		}
@@ -380,7 +382,7 @@ Node *p;
 		case nToken :
 			if ( t->remapped ) return;	/* we've been here before */
 			t->remapped = 1;
-			fprintf(stderr, "remapping %d to %d\n", t->token, TokenInd[t->token]);
+			printf_stderr_continued( "remapping %d to %d\n", t->token, TokenInd[t->token]);
 			t->token = TokenInd[t->token];
 			RemapForcedTokensInSyntaxDiagram( t->next );
 			return;
@@ -629,9 +631,9 @@ list_free(list,freeData)
       next=p->next;
       if (freeData && p->elem != NULL) {
         free( (char *) p->elem);
-      };
+      }
       free( (char *) p);
-    };
+    }
     *list=NULL;
 }
 
@@ -708,7 +710,7 @@ int k;
 /* MR10 */       key[i+2] = (char) ( '0' + k/10);
 /* MR10 */       key[i+3] = (char) ( '0' + k % 10);
 /* MR10 */       key[i+4] = '\0';
-/* MR10 */     };
+/* MR10 */     }
 
 	return key;
 }
@@ -727,12 +729,12 @@ int k;
 	require(rule!=NULL, "FoPush: tried to push NULL rule");
 	require(k<=CLL_k,	"FoPush: tried to access non-existent stack");
 
-	/*fprintf(stderr, "FoPush(%s)\n", rule);*/
+	/*printf_stderr_continued( "FoPush(%s)\n", rule);*/
 	r = (RuleEntry *) hash_get(Rname, rule);
 	if ( r == NULL ) {fatal_internal( eMsg1("rule %s must be defined but isn't", rule) );}
 	if ( FoStack[k] == NULL )		/* Does the kth stack exist yet? */
 	{
-		/*fprintf(stderr, "allocating FoStack\n");*/
+		/*printf_stderr_continued( "allocating FoStack\n");*/
 		FoStack[k] = (int *) calloc(FoStackSize, sizeof(int));
 		require(FoStack[k]!=NULL, "FoPush: cannot allocate FOLLOW stack\n");
 	}
@@ -758,10 +760,10 @@ int k;
 	{
 		/*
 ****		int *p;
-****		fprintf(stderr, "FoStack[k=%d]:\n", k);
+****		printf_stderr_continued( "FoStack[k=%d]:\n", k);
 ****		for (p=FoStack[k]; p<=FoTOS[k]; p++)
 ****		{
-****			fprintf(stderr, "\t%s\n", RulePtr[*p]->rname);
+****			printf_stderr_continued( "\t%s\n", RulePtr[*p]->rname);
 ****		}
 		*/
 	}
@@ -777,7 +779,7 @@ int k;
 #endif
 {
 	require(k<=CLL_k, "FoPop: tried to access non-existent stack");
-	/*fprintf(stderr, "FoPop\n");*/
+	/*printf_stderr_continued( "FoPop\n");*/
 	require(FoTOS[k]>=FoStack[k]&&FoTOS[k]<=&(FoStack[k][FoStackSize-1]),
 			"FoPop: FoStack stack-ptr is playing out of its sandbox");
 	if ( FoTOS[k] == FoStack[k] ) FoTOS[k] = NULL;
@@ -816,7 +818,7 @@ int k;
 	require(rule!=NULL, "RegisterCycle: tried to register NULL rule");
 	require(k<=CLL_k,	"RegisterCycle: tried to access non-existent stack");
 
-	/*fprintf(stderr, "RegisterCycle(%s)\n", rule);*/
+	/*printf_stderr_continued( "RegisterCycle(%s)\n", rule);*/
 	/* Find cycle start */
 	r = (RuleEntry *) hash_get(Rname, rule);
 	require(r!=NULL,eMsg1("rule %s must be defined but isn't", rule));
@@ -825,9 +827,9 @@ int k;
 				  rule));
 /***	if ( FoTOS[k]<FoStack[k]||FoTOS[k]>&(FoStack[k][FoStackSize-1]) )
 ****	{
-****		fprintf(stderr, "RegisterCycle(%s): FoStack stack-ptr is playing out of its sandbox\n",
+****		printf_stderr_continued( "RegisterCycle(%s): FoStack stack-ptr is playing out of its sandbox\n",
 ****						rule);
-****		fprintf(stderr, "RegisterCycle: sp==0x%x out of bounds 0x%x...0x%x\n",
+****		printf_stderr_continued( "RegisterCycle: sp==0x%x out of bounds 0x%x...0x%x\n",
 ****						FoTOS[k], FoStack[k], &(FoStack[k][FoStackSize-1]));
 ****		exit(PCCTS_EXIT_FAILURE);
 ****	}
@@ -891,7 +893,7 @@ int k;
     unsigned    *cursor;        /* MR10 */
     unsigned    *origin;        /* MR10 */
 	
-	/*fprintf(stderr, "Resolving following cycles for %d\n", k);*/
+	/*printf_stderr_continued( "Resolving following cycles for %d\n", k);*/
 	while ( changed )
 	{
 		changed = 0;
@@ -899,15 +901,15 @@ int k;
 		for (p = Cycles[k]->next; p!=NULL; p=p->next)
 		{
 			c = (Cycle *) p->elem;
-			/*fprintf(stderr, "cycle %d: %s -->", i++, RulePtr[c->croot]->rname);*/
+			/*printf_stderr_continued( "cycle %d: %s -->", i++, RulePtr[c->croot]->rname);*/
 			/*s_fprT(stderr, c->cyclicDep);*/
-			/*fprintf(stderr, "\n");*/
+			/*printf_stderr_continued( "\n");*/
 			f = (CacheEntry *)
 					hash_get(Fcache, Fkey(RulePtr[c->croot]->rname,'o',k));
 			require(f!=NULL, eMsg1("FOLLOW(%s) must be in cache but isn't", RulePtr[c->croot]->rname) );
 			if ( (d=set_deg(f->fset)) > c->deg )
 			{
-				/*fprintf(stderr, "Fo(%s) has changed\n", RulePtr[c->croot]->rname);*/
+				/*printf_stderr_continued( "Fo(%s) has changed\n", RulePtr[c->croot]->rname);*/
 				changed = 1;
 				c->deg = d;		/* update cycle FOLLOW set degree */
 
@@ -919,7 +921,7 @@ int k;
 /********					r = set_int(c->cyclicDep);  *****/
 /********					set_rm(r, c->cyclicDep);    *****/
 
-					/*fprintf(stderr, "updating Fo(%s)\n", RulePtr[r]->rname);*/
+					/*printf_stderr_continued( "updating Fo(%s)\n", RulePtr[r]->rname);*/
 					g = (CacheEntry *)
 							hash_get(Fcache, Fkey(RulePtr[r]->rname,'o',k));
 					require(g!=NULL, eMsg1("FOLLOW(%s) must be in cache but isn't", RulePtr[r]->rname) );

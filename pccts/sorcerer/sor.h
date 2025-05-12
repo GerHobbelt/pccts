@@ -38,26 +38,26 @@
 #define MaxAtom			300
 
 #define fatal(err)		fatalFL(err, __FILE__, __LINE__)
-#define warnNoFL(err)	fprintf(stderr, "warning: %s\n", err);
+#define warnNoFL(err)	printf_stderr_continued( "warning: %s\n", err);
 #define warnFL(err,f,l)															\
-			{fprintf(stderr, ErrHdr, f, l);										\
-			fprintf(stderr, " warning: %s\n", err);}
+			{printf_stderr(f, l										\
+			              ," warning: %s\n", err);}
 #define warn(err)																\
-			{fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);				\
-			fprintf(stderr, " warning: %s\n", err);}
+			{printf_stderr(FileStr[CurFile], zzline				\
+			              ," warning: %s\n", err);}
 #define warnNoCR( err )															\
-			{fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);				\
-			fprintf(stderr, " warning: %s", err);}
-#define errNoFL(err)	{found_error=1; fprintf(stderr, "error: %s\n", err);}
+			{printf_stderr(FileStr[CurFile], zzline				\
+			              ," warning: %s", err);}
+#define errNoFL(err)	{found_error=1; printf_stderr_continued("error: %s\n", err);}
 #define errFL(err,f,l)															\
-			{found_error=1; fprintf(stderr, ErrHdr, f, l);										\
-			fprintf(stderr, " error: %s\n", err);}
+			{found_error=1; printf_stderr(f, l										\
+			                             ," error: %s\n", err);}
 #define err(err)																\
-			{found_error=1; fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);				\
-			fprintf(stderr, " error: %s\n", err);}
+			{found_error=1; printf_stderr(FileStr[CurFile], zzline				\
+			                             ," error: %s\n", err);}
 #define errNoCR( err )															\
-			{found_error=1; fprintf(stderr, ErrHdr, FileStr[CurFile], zzline);				\
-			fprintf(stderr, " error: %s", err);}
+			{found_error=1; printf_stderr(FileStr[CurFile], zzline				\
+			                    ," error: %s", err);}
 #define eMsg1(s,a)	eMsg3(s,a,NULL,NULL)
 #define eMsg2(s,a,b)	eMsg3(s,a,b,NULL)
 

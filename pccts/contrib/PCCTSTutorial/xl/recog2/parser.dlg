@@ -1,0 +1,358 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: xl.g
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-2001
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.33MR33
+ *
+ *   ..\..\..\..\bin\antlr.exe -emsvc -CC -e3 -gl xl.g
+ *
+ */
+
+#define ANTLR_VERSION	13333
+#include "tokens.h"
+#include "AToken.h"
+
+// any definitions that you need in the generated files
+>>
+
+<<%%parserclass XLParser>>
+
+
+%%START
+
+@
+	<<
+		return (ANTLRTokenType)1;
+	>>
+
+[\ \t\r]
+	<<
+    skip();  
+		return (ANTLRTokenType)2;
+	>>
+
+\n
+	<<
+    skip(); newline();  
+		return (ANTLRTokenType)3;
+	>>
+
+// ~[\n@]* [\n@]
+	<<
+    skip(); newline();  
+		return (ANTLRTokenType)4;
+	>>
+
+[0-9]+
+	<<
+		return INTLIT;
+	>>
+
+\' ~[] \'
+	<<
+		return CHARLIT;
+	>>
+
+\"
+	<<
+    // start STRINGLIT
+    skip();
+    mode(STRING);
+		return (ANTLRTokenType)7;
+	>>
+
+program
+	<<
+		return PROGRAM;
+	>>
+
+begin
+	<<
+		return BEGIN;
+	>>
+
+end
+	<<
+		return END;
+	>>
+
+var
+	<<
+		return VAR;
+	>>
+
+constant
+	<<
+		return CONSTANT;
+	>>
+
+type
+	<<
+		return TYPE;
+	>>
+
+record
+	<<
+		return RECORD;
+	>>
+
+array
+	<<
+		return ARRAY;
+	>>
+
+of
+	<<
+		return OF;
+	>>
+
+procedure
+	<<
+		return PROCEDURE;
+	>>
+
+put
+	<<
+		return PUT;
+	>>
+
+get
+	<<
+		return GET;
+	>>
+
+skipLine
+	<<
+		return SKIPLINE;
+	>>
+
+newLine
+	<<
+		return NEWLINE;
+	>>
+
+exit
+	<<
+		return EXIT;
+	>>
+
+when
+	<<
+		return WHEN;
+	>>
+
+return
+	<<
+		return RETURN;
+	>>
+
+if
+	<<
+		return IF;
+	>>
+
+then
+	<<
+		return THEN;
+	>>
+
+else
+	<<
+		return ELSE;
+	>>
+
+elsif
+	<<
+		return ELSIF;
+	>>
+
+while
+	<<
+		return WHILE;
+	>>
+
+loop
+	<<
+		return LOOP;
+	>>
+
+and
+	<<
+		return AND;
+	>>
+
+or
+	<<
+		return OR;
+	>>
+
+Integer
+	<<
+		return INTEGER;
+	>>
+
+Boolean
+	<<
+		return BOOLEAN;
+	>>
+
+.
+	<<
+		return DOT;
+	>>
+
+:=
+	<<
+		return BECOMES;
+	>>
+
+:
+	<<
+		return COLON;
+	>>
+
+;
+	<<
+		return SEMI;
+	>>
+
+,
+	<<
+		return COMMA;
+	>>
+
+=
+	<<
+		return EQUALS;
+	>>
+
+\[
+	<<
+		return LBRACKET;
+	>>
+
+\]
+	<<
+		return RBRACKET;
+	>>
+
+..
+	<<
+		return DOTDOT;
+	>>
+
+\(
+	<<
+		return LPAREN;
+	>>
+
+\)
+	<<
+		return RPAREN;
+	>>
+
+/=
+	<<
+		return NOT_EQUALS;
+	>>
+
+<
+	<<
+		return LT;
+	>>
+
+<=
+	<<
+		return LTE;
+	>>
+
+>
+	<<
+		return GT;
+	>>
+
+>=
+	<<
+		return GTE;
+	>>
+
+\+
+	<<
+		return PLUS;
+	>>
+
+\-
+	<<
+		return MINUS;
+	>>
+
+\*
+	<<
+		return TIMES;
+	>>
+
+/
+	<<
+		return DIV;
+	>>
+
+mod
+	<<
+		return MOD;
+	>>
+
+not
+	<<
+		return NOT;
+	>>
+
+[a-zA-Z] [a-zA-Z0-9]*
+	<<
+		return IDENT;
+	>>
+
+
+%%STRING
+
+@
+	<<
+		return (ANTLRTokenType)1;
+	>>
+
+\"\"
+	<<
+
+    more();
+    replchar('\"');
+		return (ANTLRTokenType)58;
+	>>
+
+\n
+	<<
+
+    replchar('\0');
+    newline();
+    mode(START);
+    /* error message */
+		return BADSTRING;
+	>>
+
+\"
+	<<
+
+    replchar('\0');
+    mode(START);
+		return STRINGLIT;
+	>>
+
+~[]
+	<<
+    more();  
+		return (ANTLRTokenType)61;
+	>>
+
+%%

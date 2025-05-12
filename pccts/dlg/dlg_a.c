@@ -1,3 +1,17 @@
+/*
+ * D L G tables
+ *
+ * Generated from: parser.dlg
+ *
+ * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz
+ * Purdue University Electrical Engineering
+ * DLG Version 1.33MR33
+ *
+ *   ..\bin\dlg -emsvc -C2 parser.dlg dlg_a.c
+ *
+ */
+
+
 
 /* parser.dlg -- DLG Description of scanner
  *
@@ -7,6 +21,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc dlg_p.g -gh
+ *
  */
 
 #define ANTLR_VERSION	13333
@@ -31,15 +48,6 @@ zzerraction()
 	zzadvance();
 	zzskip();
 }
-/*
- * D L G tables
- *
- * Generated from: parser.dlg
- *
- * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz
- * Purdue University Electrical Engineering
- * DLG Version 1.33MR33
- */
 
 #include "mode.h"
 
@@ -74,9 +82,9 @@ void  xxputc(int c) {						/* MR1 */
       if (class_stream != NULL) fputc(c,class_stream);		/* MR1 */
     } else {							/* MR1 */
       fputc(c,OUT);						/* MR1 */
-    };								/* MR1 */
+    }								/* MR1 */
   }  								/* MR1 */
-  
+
 #ifdef __USE_PROTOS
   void xxprintf(char *format,char *string) {			/* MR1 */
 #else
@@ -90,7 +98,7 @@ void  xxputc(int c) {						/* MR1 */
         fprintf(class_stream,format,string);			/* MR1 */
       } else {							/* MR1 */
         fprintf(OUT,format,string);					/* MR1 */
-      };								/* MR1 */
+      }								/* MR1 */
     }  								/* MR1 */
 
 static void act1()
@@ -139,7 +147,7 @@ static void act7()
     if (firstLexMember != 0) {			/* MR1 */
       firstLexMember=0;				/* MR1 */
       p_class_def1();				/* MR1 */
-    };						/* MR1 */
+    }						/* MR1 */
     zzmode(ACT);					/* MR1 */
 	}
 

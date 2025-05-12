@@ -1,0 +1,204 @@
+     0 i_program              12
+     2 i_goto                263(       267)
+     4 i_procedure             2
+     6 i_goto                220(       228)
+     8 i_procedure             2
+    10 i_localvar              3
+    12 i_variable              2         0
+    15 i_variable              1        -2
+    18 i_simple_value 
+    19 i_variable              1        -1
+    22 i_simple_value 
+    23 i_add          
+    24 i_constant              2
+    26 i_div          
+    27 i_constant              1
+    29 i_constant             10
+    31 i_bounds       
+    32 i_add          
+    33 i_simple_value 
+    34 i_simple_assign
+    35 i_variable              1         3
+    38 i_variable              1        -2
+    41 i_simple_value 
+    42 i_simple_assign
+    43 i_variable              1         4
+    46 i_variable              1        -1
+    49 i_simple_value 
+    50 i_simple_assign
+    51 i_variable              1         3
+    54 i_simple_value 
+    55 i_variable              1         4
+    58 i_simple_value 
+    59 i_le           
+    60 i_branch_false        165(       227)
+    62 i_variable              2         0
+    65 i_variable              1         3
+    68 i_simple_value 
+    69 i_constant              1
+    71 i_constant             10
+    73 i_bounds       
+    74 i_add          
+    75 i_simple_value 
+    76 i_localvar              3
+    78 i_simple_value 
+    79 i_lt           
+    80 i_branch_false         13(        95)
+    82 i_variable              1         3
+    85 i_variable              1         3
+    88 i_simple_value 
+    89 i_constant              1
+    91 i_add          
+    92 i_simple_assign
+    93 i_goto                -33(        62)
+    95 i_localvar              3
+    97 i_simple_value 
+    98 i_variable              2         0
+   101 i_variable              1         4
+   104 i_simple_value 
+   105 i_constant              1
+   107 i_constant             10
+   109 i_bounds       
+   110 i_add          
+   111 i_simple_value 
+   112 i_lt           
+   113 i_branch_false         13(       128)
+   115 i_variable              1         4
+   118 i_variable              1         4
+   121 i_simple_value 
+   122 i_constant              1
+   124 i_sub          
+   125 i_simple_assign
+   126 i_goto                -33(        95)
+   128 i_variable              1         3
+   131 i_simple_value 
+   132 i_variable              1         4
+   135 i_simple_value 
+   136 i_le           
+   137 i_branch_false         86(       225)
+   139 i_localvar              4
+   141 i_variable              2         0
+   144 i_variable              1         3
+   147 i_simple_value 
+   148 i_constant              1
+   150 i_constant             10
+   152 i_bounds       
+   153 i_add          
+   154 i_simple_value 
+   155 i_simple_assign
+   156 i_variable              2         0
+   159 i_variable              1         3
+   162 i_simple_value 
+   163 i_constant              1
+   165 i_constant             10
+   167 i_bounds       
+   168 i_add          
+   169 i_variable              2         0
+   172 i_variable              1         4
+   175 i_simple_value 
+   176 i_constant              1
+   178 i_constant             10
+   180 i_bounds       
+   181 i_add          
+   182 i_simple_value 
+   183 i_simple_assign
+   184 i_variable              2         0
+   187 i_variable              1         4
+   190 i_simple_value 
+   191 i_constant              1
+   193 i_constant             10
+   195 i_bounds       
+   196 i_add          
+   197 i_localvar              4
+   199 i_simple_value 
+   200 i_simple_assign
+   201 i_variable              1         3
+   204 i_variable              1         3
+   207 i_simple_value 
+   208 i_constant              1
+   210 i_add          
+   211 i_simple_assign
+   212 i_variable              1         4
+   215 i_variable              1         4
+   218 i_simple_value 
+   219 i_constant              1
+   221 i_sub          
+   222 i_simple_assign
+   223 i_goto                  0(       225)
+   225 i_goto               -176(        51)
+   227 i_return       
+   228 i_localvar             -2
+   230 i_simple_value 
+   231 i_localvar             -1
+   233 i_simple_value 
+   234 i_lt           
+   235 i_branch_false         29(       266)
+   237 i_proc_call             0      -232(         8)
+   240 i_pop                   0
+   242 i_localvar             -2
+   244 i_simple_value 
+   245 i_localvar              4
+   247 i_simple_value 
+   248 i_proc_call             1      -247(         4)
+   251 i_pop                   2
+   253 i_localvar              3
+   255 i_simple_value 
+   256 i_localvar             -1
+   258 i_simple_value 
+   259 i_proc_call             1      -258(         4)
+   262 i_pop                   2
+   264 i_goto                  0(       266)
+   266 i_return       
+   267 i_localvar             10
+   269 i_constant              1
+   271 i_simple_assign
+   272 i_localvar             10
+   274 i_simple_value 
+   275 i_constant             10
+   277 i_le           
+   278 i_branch_false         23(       303)
+   280 i_localvar              0
+   282 i_localvar             10
+   284 i_simple_value 
+   285 i_constant              1
+   287 i_constant             10
+   289 i_bounds       
+   290 i_add          
+   291 i_get_int      
+   292 i_localvar             10
+   294 i_localvar             10
+   296 i_simple_value 
+   297 i_constant              1
+   299 i_add          
+   300 i_simple_assign
+   301 i_goto                -31(       272)
+   303 i_constant              1
+   305 i_constant             10
+   307 i_proc_call             0      -306(         4)
+   310 i_pop                   2
+   312 i_localvar             10
+   314 i_constant              1
+   316 i_simple_assign
+   317 i_localvar             10
+   319 i_simple_value 
+   320 i_constant             10
+   322 i_le           
+   323 i_branch_false         25(       350)
+   325 i_localvar              0
+   327 i_localvar             10
+   329 i_simple_value 
+   330 i_constant              1
+   332 i_constant             10
+   334 i_bounds       
+   335 i_add          
+   336 i_simple_value 
+   337 i_put_int      
+   338 i_new_line     
+   339 i_localvar             10
+   341 i_localvar             10
+   343 i_simple_value 
+   344 i_constant              1
+   346 i_add          
+   347 i_simple_assign
+   348 i_goto                -33(       317)
+   350 i_halt         

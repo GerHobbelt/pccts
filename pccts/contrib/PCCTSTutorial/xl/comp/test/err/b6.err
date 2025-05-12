@@ -1,0 +1,4 @@
+line 5: syntax error at "z" -- undefined variable
+line 5: syntax error at "+" -- right side is not Integer
+	Type of right side was <<**Undefined**>>
+	Right side was <<**Undefined**>>

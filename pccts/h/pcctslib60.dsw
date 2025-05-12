@@ -7,10 +7,6 @@ Project: "pcctslib"=.\pcctslib60.dsp - Package Owner=<4>
 
 Package=<5>
 {{{
-    begin source code control
-    pcctslib60
-    ..
-    end source code control
 }}}
 
 Package=<4>

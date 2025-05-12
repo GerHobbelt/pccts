@@ -207,7 +207,6 @@ zzfree_ast(tree)
 AST *tree;
 #endif
 {
-
     AST *otree;
 
     if (tree == NULL) return;

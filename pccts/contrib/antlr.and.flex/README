@@ -1,0 +1,17 @@
+
+This is a quick hack that I developed to better understand how to make
+flex and antlr play together.  Since the darn thing took me the better
+part of one entire morning, I thought others might also benefit from my
+toils.  Hence, this message.  Be forwarned, this is only a hack that I've
+developed strictly for myself and, consequently, the makefile has some
+hardcoded paths that you'll have to change.  I do not pretend to be a
+programming expert nor a pccts expert, thus you should take all this with
+a grain of salt (or pepper or....).
+
+regards,
+p. wilsey
+phil.wilsey@uc.edu
+
+
+Note: 21 February 98
+Updated for 1.33MR11 by Tom Moog

@@ -1,0 +1,42 @@
+#header <<
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include "tokens.h"
+#include "AToken.h"
+typedef ANTLRCommonToken ANTLRToken;
+#include "AST.h"
+typedef AST SORAST;
+>>
+
+class EvalPoly {
+<<
+protected:
+	virtual float value(char *r) = 0;
+	virtual void store(char *r, float v) = 0;
+>>
+
+assign
+	:	<<float r;>>
+		#( ASSIGN id:ID poly>[r] )
+		<<
+		store(id->getText(), r);
+		printf("storing %f in %s\n", r, id->getText());
+		>>
+	;
+
+poly > [float r]
+	:	<<float p1,p2;>>
+		#( MULT poly>[p1] poly>[p2] )	<<r = p1*p2;>>
+
+	|	<<float p1,p2;>>
+		#( ADD poly>[p1] poly>[p2] )	<<r = p1+p2;>>
+
+	|	<<float p1,p2;>>
+		#( EXP poly>[p1] poly>[p2] )	<<r = pow(p1,p2);>>
+
+	|	id:ID							<<r = value(id->getText());>>
+	|	f:FLOAT							<<r = atof(f->getText());>>
+	;
+
+}

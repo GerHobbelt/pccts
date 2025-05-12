@@ -1,0 +1,212 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "ANTLR"=.\antlr\AntlrMSVC60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cperf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "CalcAST"=.\example\calcAST\CalcAST60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "DLG"=.\dlg\DlgMSVC60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name cperf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ANTLR
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "Sorcerer"=.\sorcerer\SorcererMSVC60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ANTLR
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DLG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cperf
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "TwoParsers"=.\contrib\PCCTS.Example.Using.Two.Parsers\TwoParsers\TwoParsersMSVC60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "cperf"="..\cperf-2.1a\cperfMSVC60.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "pcctslib"=.\h\pcctslib60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "simple"=.\example\simple\simple60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "support"=.\support\support_msvc60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "testcase"=..\testcase\testcaseMSVC60.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ANTLR
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name cperf
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name DLG
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name pcctslib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name Sorcerer
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name support
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CalcAST
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name simple
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name TwoParsers
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xl
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name xl2
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "xl"=.\contrib\PCCTSTutorial\xl\recog1\xl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "xl2"=.\contrib\PCCTSTutorial\xl\recog2\xl.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

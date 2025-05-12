@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding = "Windows-1252"?>
+<VisualStudioProject
+	ProjectType="Visual C++"
+	Version="7.00"
+	Name="ANTLR"
+	ProjectGUID="{757BA219-A898-43DC-A3EF-8F4FAD77359C}">
+	<Platforms>
+		<Platform
+			Name="Win32"/>
+	</Platforms>
+	<Configurations>
+		<Configuration
+			Name="Debug|Win32"
+			OutputDirectory=".\."
+			IntermediateDirectory=".\."
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				Optimization="0"
+				AdditionalIncludeDirectories=".,..\h,..\support\set"
+				PreprocessorDefinitions="__STDC__,LONGFILENAMES,PC,USER_ZZSYN,ZZLEXBUFSIZE=65536,_DEBUG,WIN32,_CONSOLE"
+				RuntimeLibrary="5"
+				EnableFunctionLevelLinking="TRUE"
+				PrecompiledHeaderFile=".\./AntlrMSVC70.pch"
+				AssemblerListingLocation=".\./"
+				ObjectFile=".\./"
+				ProgramDataBaseFileName=".\./"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="TRUE"
+				DebugInformationFormat="4"
+				CompileAs="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				OutputFile="./Antlr.exe"
+				LinkIncremental="2"
+				SuppressStartupBanner="TRUE"
+				GenerateDebugInformation="TRUE"
+				ProgramDatabaseFile=".\./Antlr.pdb"
+				SubSystem="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\./AntlrMSVC70.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copy antlr to ..\bin"
+				CommandLine="mkdir ..\bin
+copy ..\bin\antlr.exe antlr_old.exe
+copy antlr.exe        ..\bin\.
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="_DEBUG"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+		<Configuration
+			Name="Release|Win32"
+			OutputDirectory=".\."
+			IntermediateDirectory=".\."
+			ConfigurationType="1"
+			UseOfMFC="0"
+			ATLMinimizesCRunTimeLibraryUsage="FALSE"
+			CharacterSet="2">
+			<Tool
+				Name="VCCLCompilerTool"
+				InlineFunctionExpansion="1"
+				AdditionalIncludeDirectories=".,..\h,..\support\set"
+				PreprocessorDefinitions="__STDC__,NDEBUG,LONGFILENAMES,PC,USER_ZZSYN,ZZLEXBUFSIZE=65536,_DEBUG,WIN32,_CONSOLE"
+				StringPooling="TRUE"
+				RuntimeLibrary="4"
+				EnableFunctionLevelLinking="TRUE"
+				PrecompiledHeaderFile=".\./AntlrMSVC70.pch"
+				AssemblerListingLocation=".\./"
+				ObjectFile=".\./"
+				ProgramDataBaseFileName=".\./"
+				BrowseInformation="1"
+				WarningLevel="4"
+				SuppressStartupBanner="TRUE"
+				CompileAs="2"/>
+			<Tool
+				Name="VCCustomBuildTool"/>
+			<Tool
+				Name="VCLinkerTool"
+				AdditionalOptions="/MACHINE:I386"
+				AdditionalDependencies="odbc32.lib odbccp32.lib"
+				OutputFile="./Antlr.exe"
+				LinkIncremental="1"
+				SuppressStartupBanner="TRUE"
+				ProgramDatabaseFile=".\./Antlr.pdb"
+				SubSystem="1"/>
+			<Tool
+				Name="VCMIDLTool"
+				TypeLibraryName=".\./AntlrMSVC70.tlb"/>
+			<Tool
+				Name="VCPostBuildEventTool"
+				Description="Copy antlr to ..\bin directory"
+				CommandLine="mkdir ..\bin
+copy ..\bin\antlr.exe antlr_old.exe
+copy antlr.exe        ..\bin\.
+"/>
+			<Tool
+				Name="VCPreBuildEventTool"/>
+			<Tool
+				Name="VCPreLinkEventTool"/>
+			<Tool
+				Name="VCResourceCompilerTool"
+				PreprocessorDefinitions="NDEBUG"
+				Culture="1033"/>
+			<Tool
+				Name="VCWebServiceProxyGeneratorTool"/>
+			<Tool
+				Name="VCWebDeploymentTool"/>
+		</Configuration>
+	</Configurations>
+	<Files>
+		<Filter
+			Name="ANTLR 1.x grammar"
+			Filter="">
+			<File
+				RelativePath="antlr.dsc">
+			</File>
+			<File
+				RelativePath="antlr.dsc.MR33.txt">
+			</File>
+			<File
+				RelativePath="antlr.full.dsc">
+			</File>
+		</Filter>
+		<File
+			RelativePath=".\antlr.c">
+		</File>
+		<File
+			RelativePath=".\antlr.g">
+			<FileConfiguration
+				Name="Debug|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building ANTLR Parser from ANTLR Grammar"
+					CommandLine="..\bin\antlr -emsvc  -gh -ga -e3 $(InputName).g
+..\bin\dlg -emsvc -C2 parser.dlg scan.c
+..\bin\antlr -emsvc -gc -p -e3 -cr -ga -tab 2 -gk $(InputName).g  &gt; $(InputName).dsc
+..\bin\antlr -emsvc -gc -pa -e3 -cr -ga -tab 2 -gk -info ptfmo $(InputName).g  &gt; $(InputName).full.dsc
+"
+					Outputs="antlr.c;err.c;mode.h;scan.c;tokens.h;parser.dlg"/>
+			</FileConfiguration>
+			<FileConfiguration
+				Name="Release|Win32">
+				<Tool
+					Name="VCCustomBuildTool"
+					Description="Building ANTLR Parser from ANTLR Grammar"
+					CommandLine="..\bin\antlr -emsvc  -gh -ga -e3 $(InputName).g
+..\bin\dlg -emsvc -C2 parser.dlg scan.c
+..\bin\antlr -emsvc -gc -p -e3 -cr -ga -tab 2 -gk $(InputName).g  &gt; $(InputName).dsc
+..\bin\antlr -emsvc -gc -pa -e3 -cr -ga -tab 2 -gk -info ptfmo $(InputName).g  &gt; $(InputName).full.dsc
+"
+					Outputs="antlr.c;err.c;mode.h;scan.c;tokens.h;parser.dlg"/>
+			</FileConfiguration>
+		</File>
+		<File
+			RelativePath=".\bits.c">
+		</File>
+		<File
+			RelativePath=".\build.c">
+		</File>
+		<File
+			RelativePath=".\dumpnode.c">
+		</File>
+		<File
+			RelativePath=".\egman.c">
+		</File>
+		<File
+			RelativePath=".\err.c">
+		</File>
+		<File
+			RelativePath="..\h\err.h">
+		</File>
+		<File
+			RelativePath=".\fcache.c">
+		</File>
+		<File
+			RelativePath=".\fset.c">
+		</File>
+		<File
+			RelativePath=".\fset2.c">
+		</File>
+		<File
+			RelativePath=".\gen.c">
+		</File>
+		<File
+			RelativePath=".\generic.h">
+		</File>
+		<File
+			RelativePath=".\globals.c">
+		</File>
+		<File
+			RelativePath=".\hash.c">
+		</File>
+		<File
+			RelativePath=".\hash.h">
+		</File>
+		<File
+			RelativePath=".\lex.c">
+		</File>
+		<File
+			RelativePath=".\main.c">
+		</File>
+		<File
+			RelativePath=".\misc.c">
+		</File>
+		<File
+			RelativePath="mode.h">
+		</File>
+		<File
+			RelativePath=".\mrhoist.c">
+		</File>
+		<File
+			RelativePath=".\pred.c">
+		</File>
+		<File
+			RelativePath=".\proto.h">
+		</File>
+		<File
+			RelativePath=".\scan.c">
+		</File>
+		<File
+			RelativePath="..\support\set\set.c">
+		</File>
+		<File
+			RelativePath="stdpccts.h">
+		</File>
+		<File
+			RelativePath=".\syn.h">
+		</File>
+		<File
+			RelativePath="tokens.h">
+		</File>
+	</Files>
+	<Globals>
+	</Globals>
+</VisualStudioProject>

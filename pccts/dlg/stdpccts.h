@@ -7,6 +7,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc dlg_p.g -gh
+ *
  */
 
 #ifndef ANTLR_VERSION
@@ -19,6 +22,7 @@
 #include <ctype.h>
 #include "dlg.h"
 #define zzSET_SIZE 8
+#define zzTOKEN_COUNT 46
 #include "antlr.h"
 #include "tokens.h"
 #include "dlgdef.h"

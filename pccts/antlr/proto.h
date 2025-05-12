@@ -257,6 +257,7 @@ extern Junction *MR_RuleBlkWithHalt;            /* MR10 */
 extern PointerStack MR_BackTraceStack;          /* MR10 */
 extern PointerStack MR_PredRuleRefStack;        /* MR10 */
 extern PointerStack MR_RuleBlkWithHaltStack;    /* MR10 */
+/* extern PointerStack GuessNodeStack;             *//* [i_a] */
 
 /*									*/
 /* MR1	10-Apr-97  MR1  Previously unable to put right shift operator	    */
@@ -269,8 +270,16 @@ extern char *PRED_AND_LIST;                                         /* MR10 */
 
 #ifdef __VMS
 #define STRICMP strcasecmp /* MR21 */
+#elif defined(_MSC_VER)
+#define STRICMP _stricmp /* [i_a] because __STDC__ has been defined; this one must be used... */
 #else
 #define STRICMP stricmp /* MR21 */
+#endif
+
+#if defined(_MSC_VER)
+#define STRDUP _strdup /* [i_a] because __STDC__ has been defined; this one must be used... */
+#else
+#define STRDUP strdup 
 #endif
 
 /* MR26 */
@@ -281,7 +290,13 @@ extern Tree *tmake();
 #endif
 
 #ifdef __USE_PROTOS
+#if !defined(PC)
+/*
+   [i_a] clashes with Microsoft definition (and should be loaded from the system headerfiles
+   anyway, generally speaking ;-(
+ */
 extern int STRICMP(const char*, const char*);
+#endif
 extern void istackreset(void);
 extern int istacksize(void);
 extern void pushint(int);
@@ -376,6 +391,7 @@ extern char * mystrdup( char * );
 extern void genLexDescr( void );
 extern void dumpLexClasses( FILE * );
 extern void genDefFile( void );
+extern void genEndOfDefFile( void ); /* [i_a] */
 extern void DumpListOfParmNames( char *, FILE *, int );	/* MR5 janm 26-May-97 */
 extern int DumpNextNameInDef( char **, FILE * );
 extern void DumpOldStyleParms( char *, FILE * );
@@ -385,13 +401,13 @@ extern int strmember( char *, char * );
 extern void DumpRetValStruct( FILE *, char *, int );
 extern char * StripQuotes( char * );
 extern int main( int, char *[] );
-extern void readDescr( void );
+/* extern void readDescr( void ); [i_a] */
 extern FILE * NextFile( void );
 extern char * outnameX( char *, char *);
 extern char * outname( char * );
 extern void fatalFL( char *, char *, int );
 extern void fatal_intern( char *, char *, int );
-extern void cleanUp( void );
+/* extern void cleanUp( void ); [i_a] */
 extern char * eMsg3( char *, char *, char *, char * );
 extern char * eMsgd( char *, int );
 extern char * eMsgd2( char *, int, int );
@@ -465,7 +481,7 @@ extern void errNoFL(char *err);
 extern void errFL(char *err,char *f,int l);
 extern void err(char *err);
 extern void errNoCR( char *err );
-extern void genPredTree( Predicate *p, Node *j, int ,int);
+/* extern void genPredTree( Predicate *p, Node *j, int ,int); [i_a] */
 extern UserAction *newUserAction(char *);
 extern char *gate_symbol(char *name);
 extern char *makeAltID(int blockid, int altnum);
@@ -562,7 +578,13 @@ extern void DumpInitializers(FILE*, RuleEntry*, char*);              /* MR23 */
 extern int isTermEntryTokClass(TermEntry *);						 /* MR23 */
 extern int isEmptyAlt(Node *, Node *);                               /* MR23 */
 #else
+#if !defined(PC)
+/*
+   [i_a] clashes with Microsoft definition (and should be loaded from the system headerfiles
+   anyway, generally speaking ;-(
+ */
 extern int STRICMP();
+#endif
 extern void istackreset();
 extern int istacksize();
 extern void pushint();
@@ -657,6 +679,7 @@ extern char * mystrdup();
 extern void genLexDescr();
 extern void dumpLexClasses();
 extern void genDefFile();
+extern void genEndOfDefFile(); /* [i_a] */
 extern void DumpListOfParmNames();                    /* MR5 janm 26-May-97 */
 extern int DumpNextNameInDef();
 extern void DumpOldStyleParms();
@@ -666,13 +689,13 @@ extern int strmember();
 extern void DumpRetValStruct();
 extern char * StripQuotes();
 extern int main();
-extern void readDescr();
+/* extern void readDescr(); [i_a] */
 extern FILE * NextFile();
 extern char * outnameX();
 extern char * outname();
 extern void fatalFL();
 extern void fatal_intern();
-extern void cleanUp();
+/* extern void cleanUp(); [i_a] */
 extern char * eMsg3();
 extern char * eMsgd();
 extern char * eMsgd2();
@@ -746,7 +769,7 @@ extern void errNoFL();
 extern void errFL();
 extern void err();
 extern void errNoCR();
-extern void genPredTree();
+/* extern void genPredTree(); [i_a] */
 extern UserAction *newUserAction();
 extern char *gate_symbol();
 extern char *makeAltID();

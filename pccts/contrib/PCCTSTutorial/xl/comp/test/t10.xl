@@ -1,0 +1,30 @@
+// scope analysis
+program test4 =
+   var i : Integer;
+   type S = record
+               f,g: Boolean;
+            end record;
+   var v : S;
+   
+   procedure p(x:Integer) =
+      constant n : Integer := 10;
+      type T = array [1..n] of Integer;
+      var y,z:T;
+      
+      procedure q =
+      begin
+         z[n] := x;
+         v.g := FALSE;
+      end q;
+      
+   begin
+      y:=z;
+      q;
+      put(x);
+   end p;
+begin
+   v.f := TRUE;
+   get(i);
+   p(i);
+end test4.
+   

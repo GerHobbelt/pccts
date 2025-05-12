@@ -27,6 +27,8 @@
  * with Purdue University and AHPCRC, University of Minnesota
  * 1989-2001
  */
+#ifndef __pccts_generic_h__
+#define __pccts_generic_h__
 
 #define StrSame			0
 
@@ -284,3 +286,5 @@ typedef Graph Attrib;
 #include "proto.h"
 #include "pcctscfg.h"   /* MR14 */
 #include <string.h>
+
+#endif /* __pccts_generic_h__ */

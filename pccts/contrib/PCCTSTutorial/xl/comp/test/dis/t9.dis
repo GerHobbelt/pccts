@@ -1,0 +1,80 @@
+     0 i_program               9
+     2 i_goto                116(       120)
+     4 i_procedure             1
+     6 i_goto                 77(        85)
+     8 i_procedure             0
+    10 i_localvar             -1
+    12 i_constant              1
+    14 i_neg          
+    15 i_simple_assign
+    16 i_localvar             -1
+    18 i_localvar             -1
+    20 i_simple_value 
+    21 i_simple_assign
+    22 i_localvar             -1
+    24 i_constant              2
+    26 i_constant              1
+    28 i_sub          
+    29 i_constant              2
+    31 i_constant              1
+    33 i_add          
+    34 i_mult         
+    35 i_constant              2
+    37 i_div          
+    38 i_constant              2
+    40 i_mod          
+    41 i_simple_assign
+    42 i_localvar             -1
+    44 i_simple_value 
+    45 i_localvar             -1
+    47 i_simple_value 
+    48 i_lt           
+    49 i_branch_false         21(        72)
+    51 i_localvar             -1
+    53 i_simple_value 
+    54 i_localvar             -1
+    56 i_simple_value 
+    57 i_eq           
+    58 i_branch_false         10(        70)
+    60 i_localvar             -1
+    62 i_simple_value 
+    63 i_proc_call             1       -58(         8)
+    66 i_pop                   1
+    68 i_goto                -19(        51)
+    70 i_goto                 12(        84)
+    72 i_localvar             -1
+    74 i_simple_value 
+    75 i_localvar             -1
+    77 i_simple_value 
+    78 i_ne           
+    79 i_not          
+    80 i_branch_false          2(        84)
+    82 i_goto                  0(        84)
+    84 i_return       
+    85 i_localvar             -2
+    87 i_simple_value 
+    88 i_simple_value 
+    89 i_localvar             -2
+    91 i_simple_value 
+    92 i_simple_value 
+    93 i_ge           
+    94 i_branch_false          7(       103)
+    96 i_localvar             -1
+    98 i_constant              1
+   100 i_simple_assign
+   101 i_goto                  0(       103)
+   103 i_return       
+   104 i_procedure             2
+   106 i_localvar              3
+   108 i_constant              1
+   110 i_constant              1
+   112 i_constant              2
+   114 i_bounds       
+   115 i_add          
+   116 i_constant              5
+   118 i_simple_assign
+   119 i_return       
+   120 i_localvar              4
+   122 i_constant              6
+   124 i_simple_assign
+   125 i_halt         

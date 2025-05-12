@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML><HEAD>
+<meta http-equiv="Content-Language" content="en-us">
+<TITLE>A PCCTS Tutorial</TITLE>
+<META http-equiv=Content-Type content="text/html; charset=windows-1252">
+<META content="A Tutorial on the PCCTS Parser Generator" name=description>
+<META content=pccts,tutorial,information,parser,generator,compiler,tool 
+name=keywords>
+<link rel="stylesheet" href="./twc-1011.css" type="text/css">
+</HEAD>
+<BODY>
+      <H1 align=center><a href="http://javadude.com/articles/pcctstut/">A PCCTS Tutorial</a><BR></H1>
+      <H2 align=center>(Or how I learned to hack together a compiler using 
+      PCCTS...)</H2>
+      <H2 align=center>by Scott Stanchfield</H2>
+      <P align=center>
+</P>
+      <HR>
+
+      <H1>THIS IS THE PCCTS 1.33 TUTORIAL!</H1>
+      <H3><A href="http://javadude.com/articles/antlrtut/index.html">Look Here 
+      for the ANTLR 2.x Tutorial!</A></H3>
+      <H1>Source Code</H1>
+      <H2>Tutorial Examples and HTML</H2>
+      <P>Before starting the tutorial, I just wanted to point out that all the 
+      source code for the examples contained within is available via the 
+      following links.&nbsp; In addition, the entire HTML source for this 
+      tutorial (minus this paragraph as I'm too lazy to re-zip it right now) is 
+      also available as a zip.</P>
+      <H2>My Original Compiler Project</H2>
+      <P>Someone sent me a note asking for my original compiler project.&nbsp; I 
+      figured "what the heck" and dug it up and sent it to him.&nbsp; Then I 
+      figured "what the heck" again and decided to post it here.&nbsp; If you 
+      download this and try it and it still works, please let me know!</P>
+      <P>A few notes on this project's contents:</P>
+      <UL>
+        <LI>The project consisted of 
+        <UL>
+          <LI>A compiler, <TT>xl</TT>, which compiles <TT>*.xl</TT> files into 
+          <TT>*.o</TT> files 
+          <LI>An interpreter, <TT>go</TT>, which executes the <TT>*.o</TT> files 
+
+          <LI>A disassembler, <TT>dis</TT>, which disassembles <TT>*.o</TT> 
+          files (extra credit!) </LI></UL>
+        <LI>I have not touched it since the class, and I'm not terribly sure 
+        exactly what's there... 
+        <LI>I <EM>think</EM> I had ok comments in the code -- hopefully it's 
+        readable... 
+        <LI>Some of the code is rather wide -- sorry about this, but I set it up 
+        to print nicely landscape 
+        <LI>It doesn't exactly match the recognizer built for this tutorial (I 
+        started from scratch when doing the tutorial. 
+        <LI>Much of the source code in this zip is the actual PCCTS 1.20 support 
+        code (including a simple symbol table.)&nbsp; I think there shoud be 
+        everything present here to actually compile and run this, but I haven't 
+        tried it in years so I can't guarantee it. 
+        <LI>Keep in mind that I've learned a lot since I took the course, so 
+        some things in the course compiler may be weird. 
+        <LI>I used PCCTS 1.20 for the course, and some features like semantic 
+        predicates were not quite working right.&nbsp; Therefore I had to do a 
+        few things differently than I would had predicates worked 
+        properly.&nbsp; (Now 1.33 is available and works well.) 
+        <LI>I wrote the compiler project on an Amiga 2000.&nbsp; (Yup, that's 
+        right, I'm an Amiga fanatic.&nbsp; Unfortunately I had to turn to the 
+        dark side and use a PC for application/speed reasons.&nbsp; A 25MHz 
+        Amiga may have performed as well as a 66MHz PC, but now I've got a 
+        233MHz PII...) 
+        <UL>
+          <LI>I used the SAS/C/C++ compiler.&nbsp; The file SCOPTIONS is just a 
+          compiler option file 
+          <LI>The makefile <EM>should</EM> be pretty close to what you'd need on 
+          Unix (the Amiga really acted like a unix machine wrt how you run 
+          commands and compiling stuff.&nbsp; Using PCCTS was just a matter of 
+          changing the compiler name in the PCCTS makefile.&nbsp; 
+          Really!&nbsp;&nbsp; It was <EM>that</EM> easy) </LI></UL>
+        <LI>The test directory contains: 
+        <UL>
+          <LI><TT>*.xl</TT> files: the sample source files (I think they should 
+          be the same as the ones provided in this tut but I haven't checked.) 
+          <LI><TT>ast</TT> dir: outputs displaying the ASTs generated from the 
+          sources 
+          <LI><TT>dis</TT> dir: disassembly outputs 
+          <LI><TT>err</TT> dir: compiler messages for each source file 
+          <LI><TT>o</TT> dir: compiler-generated object files </LI></UL></LI></UL>
+      <H2>Source Code Links</H2>
+      <H3>PKZip/WinZip format (.zip)</H3>
+      <UL>
+        <LI><a href="recog1.zip">base 
+        recognizer</a> (7K) 
+        <LI><a href="recog2.zip">recognizer 
+        after cleanup</a> (7K) 
+        <LI><a href="tests.zip">sample XL 
+        code for testing</a> (10K) 
+        <LI><a href="pcctstut/">HTML</a>: unzipped in directory! 
+        (88K) 
+        <LI><a href="xl.zip">my 
+        full (original) compiler project</a> (111K) </LI></UL>
+      <H2>Tutorial Parts</H2>
+      <P>Jump to the tutorial <a href="pcctstut/index.html">here</a>.</P>
+      
+</BODY></HTML>

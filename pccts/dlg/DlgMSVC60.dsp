@@ -41,6 +41,7 @@ RSC=rc.exe
 # PROP Intermediate_Dir "."
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
+MTL=midl.exe
 # ADD BASE CPP /nologo /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
 # ADD CPP /nologo /W3 /O2 /I "..\h" /I "..\support\set" /D "__STDC__" /D "NDEBUG" /D "LONGFILENAMES" /D "PC" /D "USER_ZZSYN" /D ZZLEXBUFSIZE=65536 /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /FD /c
 # SUBTRACT CPP /YX
@@ -71,8 +72,9 @@ PostBuild_Cmds=mkdir ..\bin	copy ..\bin\dlg.exe dlg_old.exe	copy dlg.exe        
 # PROP Intermediate_Dir "."
 # PROP Ignore_Export_Lib 0
 # PROP Target_Dir ""
+MTL=midl.exe
 # ADD BASE CPP /nologo /W3 /Gm /GX /Zi /Od /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /D "_MBCS" /YX /FD /c
-# ADD CPP /nologo /W3 /Gm /ZI /Od /I "..\h" /I "..\support\set" /D "__STDC__" /D "LONGFILENAMES" /D "PC" /D "USER_ZZSYN" /D ZZLEXBUFSIZE=65536 /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /FR /FD /c
+# ADD CPP /nologo /W3 /Gm /ZI /Od /I "..\h" /I "..\support\set" /D "__STDC__" /D "LONGFILENAMES" /D "PC" /D "USER_ZZSYN" /D ZZLEXBUFSIZE=65536 /D "_DEBUG" /D "WIN32" /D "_CONSOLE" /D "_MBCS" /FD /c
 # SUBTRACT CPP /YX
 # ADD BASE RSC /l 0x409 /d "_DEBUG"
 # ADD RSC /l 0x409 /d "_DEBUG"
@@ -126,8 +128,8 @@ InputPath=.\dlg_p.g
 InputName=dlg_p
 
 BuildCmds= \
-	..\bin\antlr $(InputName).g  -gh \
-	..\bin\dlg -C2 parser.dlg dlg_a.c \
+	..\bin\antlr $(InputName).g  -gh -emsvc \
+	..\bin\dlg -C2 -emsvc parser.dlg dlg_a.c \
 	
 
 "dlg_a.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"
@@ -159,8 +161,8 @@ InputPath=.\dlg_p.g
 InputName=dlg_p
 
 BuildCmds= \
-	..\bin\antlr $(InputName).g  -gh \
-	..\bin\dlg -C2 parser.dlg dlg_a.c \
+	..\bin\antlr $(InputName).g  -gh -emsvc \
+	..\bin\dlg -C2 -emsvc parser.dlg dlg_a.c \
 	
 
 "dlg_a.c" : $(SOURCE) "$(INTDIR)" "$(OUTDIR)"

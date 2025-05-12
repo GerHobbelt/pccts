@@ -56,7 +56,7 @@
 #include "sym.h"
 #include "proto.h"
 
-static outfile = -1;
+static int outfile = -1;
 static char *current_rule;
 static ListNode *labels_for_func = NULL;
 static AST *whichRule;
@@ -98,6 +98,8 @@ gen_info_hdr( f )
 FILE *f;
 #endif
 {
+    int i;
+
 	fprintf(f, "/*\n");
 	fprintf(f, " * S O R C E R E R  T r a n s l a t i o n  H e a d e r\n");
 	fprintf(f, " *\n");
@@ -105,6 +107,13 @@ FILE *f;
 	fprintf(f, " * Parr Research Corporation, Intrepid Technology, University of Minnesota\n");
 	fprintf(f, " * 1992-1994\n");
 	fprintf(f, " * SORCERER Version %s\n", VersionText);
+    fprintf(f, " *\n");
+    fprintf(f, " *  ");
+    for (i=0 ; i < Save_argc ; i++) {
+      fprintf(f, " %s", Save_argv[i]);
+    }
+	fprintf(f, "\n");
+	fprintf(f, " *\n");
 	fprintf(f, " */\n");
 }
 
@@ -210,9 +219,9 @@ gen_hdr1( )
 		/* make a func to init the ref vars with inits */
 		fprintf(output, "\nvoid\n");
 		fprintf(output, "#ifdef __USE_PROTOS\n");
-		fprintf(output, "_refvar_inits(STreeParser *p)\n");
+        fprintf(output, "%s_refvar_inits(STreeParser *p)\n", (Prefix ? Prefix : ""));
 		fprintf(output, "#else\n");
-		fprintf(output, "_refvar_inits(p)\n");
+		fprintf(output, "%s_refvar_inits(p)\n", (Prefix ? Prefix : ""));
 		fprintf(output, "STreeParser *p;\n");
 		fprintf(output, "#endif\n");
 		fprintf(output, "{\n");

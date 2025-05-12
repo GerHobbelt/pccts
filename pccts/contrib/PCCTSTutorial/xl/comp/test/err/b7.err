@@ -1,0 +1,8 @@
+line 4: syntax error at "var" missing = in procedure declaration
+line 6: syntax error at "x" -- undefined variable
+line 6: syntax error at ")" -- cannot perform put on a value of this type
+	Expression was of type <<**Undefined**>>
+	Expression in error was: <<**Undefined**>>
+line 7: syntax error at "p" -- name referenced after end does not match subprogram declaration
+	Subprogram was declared with name incorrect7
+line 7: syntax error at ";" missing \. in program definition

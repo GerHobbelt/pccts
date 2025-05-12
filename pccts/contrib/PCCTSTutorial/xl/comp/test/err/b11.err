@@ -1,0 +1,19 @@
+line 6: syntax error at ":" missing identifier
+Error retrieving value of constant
+line 7: syntax error at "" -- type conflict in attempted initialization
+	Type of variables being declared: Integer
+	Type of initializer: 
+Error retrieving value of constant
+line 12: syntax error at "x" -- identifier redeclared
+line 14: syntax error at "a" -- undefined variable
+line 14: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Integer
+	Rvalue was of type <<**Undefined**>>
+	Lvalue was: x
+	Rvalue was: <<**Undefined**>>
+line 15: syntax error at "a" -- undefined variable
+line 15: syntax error at ";" -- type mismatch during assignment
+	Lvalue was of type Integer
+	Rvalue was of type <<**Undefined**>>
+	Lvalue was: y
+	Rvalue was: <<**Undefined**>>

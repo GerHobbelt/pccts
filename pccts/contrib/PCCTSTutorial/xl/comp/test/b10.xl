@@ -1,0 +1,17 @@
+// syntax errors
+// similar to test of p. 273 of Brinch Hansen
+program test3 =
+   constant a: Integer := 1;
+   constant b: Integer := 2;
+   constant c: Integer :=  ;
+   constant d: Integer := 4;
+   type S = recrod
+               f,g:Integer;   
+            end record;
+   type T = array [1..2] of Integer;
+   var x : Integer;
+begin   // test3
+   if = 2 then
+      x := 1;
+   end if;
+end test3.

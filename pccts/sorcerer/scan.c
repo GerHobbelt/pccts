@@ -1,3 +1,17 @@
+/*
+ * D L G tables
+ *
+ * Generated from: parser.dlg
+ *
+ * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz
+ * Purdue University Electrical Engineering
+ * DLG Version 1.33MR33
+ *
+ *   ..\bin\dlg -emsvc -C2 parser.dlg scan.c
+ *
+ */
+
+
 
 /* parser.dlg -- DLG Description of scanner
  *
@@ -7,6 +21,9 @@
  * Purdue University Electrical Engineering
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
+ *
+ *   ..\bin\antlr -emsvc -gh -k 2 -gt sor.g
+ *
  */
 
 #define ANTLR_VERSION	13333
@@ -57,15 +74,6 @@ zzerraction()
 	zzadvance();
 	zzskip();
 }
-/*
- * D L G tables
- *
- * Generated from: parser.dlg
- *
- * 1989-2001 by  Will Cohen, Terence Parr, and Hank Dietz
- * Purdue University Electrical Engineering
- * DLG Version 1.33MR33
- */
 
 #include "mode.h"
 
@@ -86,10 +94,10 @@ scarf_to_end_of_func_call()
 {
   static char func_call_str[MaxAtom+1];
   char *p;
-  
-	p = &func_call_str[0];
-  
-more:
+
+  p = &func_call_str[0];
+
+  more:
   if ( zzchar==')' ) { *p++ = zzchar; *p++ = '\0'; zzadvance(); return func_call_str; }
   if ( zzchar=='"' )
   {
@@ -98,11 +106,11 @@ more:
     {
       if ( zzchar=='\\' ) { *p++ = zzchar; zzadvance(); }
       *p++ = zzchar; zzadvance();
-    }
-  }
-  *p++ = zzchar; zzadvance();
-  goto more;
-}
+      }
+      }
+      *p++ = zzchar; zzadvance();
+      goto more;
+      }
 
 static void act1()
 { 
@@ -892,7 +900,7 @@ static void act70()
 static void act71()
 { 
 		NLA = 31;
-    
+
     if ( !(strcmp(zzbegexpr, "#ifdef")==0 ||
     strcmp(zzbegexpr, "#else")==0 ||
     strcmp(zzbegexpr, "#endif")==0 ||
@@ -926,7 +934,7 @@ static void act71()
 static void act72()
 { 
 		NLA = 32;
-    
+
     if ( GenCPP ) zzreplstr("new SORAST");
     else zzreplstr("ast_empty_node()");
     zzmore();
@@ -943,7 +951,7 @@ static void act73()
 static void act74()
 { 
 		NLA = 34;
-    
+
     pushint(']');
     if ( GenCPP ) zzreplstr("new SORAST(");
     else zzreplstr("ast_node(");
@@ -954,7 +962,7 @@ static void act74()
 static void act75()
 { 
 		NLA = 35;
-    
+
     pushint('}');
     if ( GenCPP ) zzreplstr("PCCTS_AST::make(");
     else zzreplstr("ast_make(");
@@ -972,7 +980,7 @@ static void act76()
 static void act77()
 { 
 		NLA = 37;
-    
+
     if ( istackempty() )
     zzmore();
     else if ( topint()==')' ) {
@@ -990,7 +998,7 @@ static void act77()
 static void act78()
 { 
 		NLA = 38;
-    
+
     pushint('|');	/* look for '|' to terminate simple [...] */
     zzmore();
 	}
@@ -999,7 +1007,7 @@ static void act78()
 static void act79()
 { 
 		NLA = 39;
-    
+
     pushint(')');
     zzmore();
 	}
@@ -1092,7 +1100,7 @@ static void act91()
 static void act92()
 { 
 		NLA = 52;
-    
+
     zzmore(); if ( !GenCPP ) zzreplstr("_parser->");
 	}
 
@@ -1100,7 +1108,7 @@ static void act92()
 static void act93()
 { 
 		NLA = 53;
-    
+
     if ( (GenCPP && strcmp(zzbegexpr,"ast_scan(")==0) ||
     (!GenCPP && strcmp(zzbegexpr,"ast_scan(")==0) ) {
       char *args=scarf_to_end_of_func_call();
@@ -1304,7 +1312,7 @@ static void act108()
 static void act109()
 { 
 		NLA = 103;
-    
+
 	}
 
 
@@ -1325,7 +1333,7 @@ static void act111()
 static void act112()
 { 
 		NLA = 106;
-    
+
 	}
 
 

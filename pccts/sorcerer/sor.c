@@ -6,7 +6,7 @@
  * With AHPCRC, University of Minnesota
  * ANTLR Version 1.33MR33
  *
- *   ..\bin\antlr -gh -k 2 -gt sor.g
+ *   ..\bin\antlr -emsvc -gh -k 2 -gt sor.g
  *
  */
 
@@ -46,6 +46,7 @@ extern int define_num;
 #include "ast.h"
 
 #define zzSET_SIZE 16
+#define zzTOKEN_COUNT 118
 #include "antlr.h"
 #include "tokens.h"
 #include "dlgdef.h"
@@ -129,34 +130,34 @@ FILE *f;
 #endif
 {
   AST *root = NULL;
-  
-	zzline = 1;
+
+  zzline = 1;
   ANTLR(sordesc(&root), f);
-  
-	if ( found_error ) return NULL;
-  
-	if ( print_guts ) {
-    fprintf(stderr, "Internal Represenation of Tree Grammar:\n");
+
+  if ( found_error ) return NULL;
+
+  if ( print_guts ) {
+    printf_stderr_continued( "Internal Represenation of Tree Grammar:\n");
     lisp(root, stderr);
-    fprintf(stderr, "\n");
+    printf_stderr_continued( "\n");
   }
-  
-	last_valid_token = token_type;
+
+  last_valid_token = token_type;
   end_of_input = token_type++;/* end of input token type is 1 + last real token */
   epsilon = token_type++;		/* epsilon token type is 2 + last real token */
   wild_card = token_type++;	/* wild_card_token is 3 + last real token */
   token_association(end_of_input, "$");
   token_association(epsilon, "[Ep]");
   token_association(wild_card, ".");
-  
-	zzdouble_link(root, NULL, NULL);
+
+  zzdouble_link(root, NULL, NULL);
   rules = root;
   if ( root!=NULL ) build_GLA(root);
-  
-	if ( print_guts ) {
-    fprintf(stderr, "Internal Represenation of Grammar Lookahead Automaton:\n");
+
+  if ( print_guts ) {
+    printf_stderr_continued( "Internal Represenation of Grammar Lookahead Automaton:\n");
     dump_GLAs(root);
-    fprintf(stderr, "\n");
+    printf_stderr_continued( "\n");
   }
   return root;
 }
@@ -173,153 +174,151 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  int he=0,to=0;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    int he=0,to=0;
     {
-    for (;;) {
-      if ( !((setwd1[LA(1)]&0x1))) break;
-      if ( (LA(1)==Header) ) {
-        header(zzSTR); zzlink(_root, &_sibling, &_tail);
-        he++;
-      }
-      else {
-        if ( (LA(1)==Tokdef) ) {
-          tokdef(zzSTR); zzlink(_root, &_sibling, &_tail);
-          to++;
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        for (;;) {
+          if ( !((setwd1[LA(1)]&0x1))) break;
+          if ( (LA(1)==Header) ) {
+            header(zzSTR); zzlink(_root, &_sibling, &_tail);
+            he++;
+          }
+          else {
+            if ( (LA(1)==Tokdef) ) {
+              tokdef(zzSTR); zzlink(_root, &_sibling, &_tail);
+              to++;
+            }
+            else break; /* MR6 code for exiting loop "for sure" */
+          }
+          zzLOOP(zztasp2);
         }
-        else break; /* MR6 code for exiting loop "for sure" */
+        zzEXIT(zztasp2);
       }
-      zzLOOP(zztasp2);
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  
-  if ( he==0 && !Inline && !GenCPP ) warnNoFL("missing #header statement");
-  if ( he>1 ) warnNoFL("extra #header statement");
-  if ( to>1 ) warnNoFL("extra #tokdef statement");
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+
+    if ( he==0 && !Inline && !GenCPP ) warnNoFL("missing #header statement");
+    if ( he>1 ) warnNoFL("extra #header statement");
+    if ( to>1 ) warnNoFL("extra #tokdef statement");
     {
-    while ( (LA(1)==Action) && (setwd1[LA(2)]&0x2) ) {
-      zzmatch(Action); 
-      list_add(&before_actions, actiondup(LATEXT(1)));
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==Action) && (setwd1[LA(2)]&0x2) ) {
+          zzmatch(Action); 
+          list_add(&before_actions, actiondup(LATEXT(1)));
  zzCONSUME;
 
-      zzLOOP(zztasp2);
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    if ( (LA(1)==81)
- ) {
-      class_def(zzSTR); zzlink(_root, &_sibling, &_tail);
-    }
-    else {
-      if ( (setwd1[LA(1)]&0x4) ) {
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
       }
-      else {zzFAIL(1,zzerr1,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
     {
-    while ( (LA(1)==Action) && (setwd1[LA(2)]&0x8) ) {
-      zzmatch(Action); 
-      
-      if ( CurClassName[0]!='\0' )
-      list_add(&class_actions, actiondup(LATEXT(1)));
-      else
-      list_add(&before_actions, actiondup(LATEXT(1)));
- zzCONSUME;
-
-      zzLOOP(zztasp2);
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    while ( (LA(1)==NonTerm) ) {
-      rule(zzSTR); zzlink(_root, &_sibling, &_tail);
-      zzLOOP(zztasp2);
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    while ( (LA(1)==Action) && (setwd1[LA(2)]&0x10) ) {
-      zzmatch(Action); 
-      
-      if ( CurClassName[0]!='\0' )
-      list_add(&class_actions, actiondup(LATEXT(1)));
-      else
-      list_add(&before_actions, actiondup(LATEXT(1)));
- zzCONSUME;
-
-      zzLOOP(zztasp2);
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    if ( (LA(1)==80)
- ) {
-      zzmatch(80); 
-      
-      if ( CurClassName[0]=='\0' )
-      err("missing class definition for trailing '}'");
- zzCONSUME;
-
-    }
-    else {
-      if ( (setwd1[LA(1)]&0x20) ) {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (LA(1)==81) ) {
+          class_def(zzSTR); zzlink(_root, &_sibling, &_tail);
+        }
+        else {
+          if ( (setwd1[LA(1)]&0x4) ) {
+          }
+          else {zzFAIL(1,zzerr1,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
       }
-      else {zzFAIL(1,zzerr2,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
     {
-    while ( (LA(1)==Action) ) {
-      zzmatch(Action); 
-      list_add(&after_actions, actiondup(LATEXT(1)));
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==Action) && (setwd1[LA(2)]&0x8) ) {
+          zzmatch(Action); 
+
+          if ( CurClassName[0]!='\0' )
+          list_add(&class_actions, actiondup(LATEXT(1)));
+          else
+          list_add(&before_actions, actiondup(LATEXT(1)));
  zzCONSUME;
 
-      zzLOOP(zztasp2);
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
     }
-    zzEXIT(zztasp2);
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==NonTerm) ) {
+          rule(zzSTR); zzlink(_root, &_sibling, &_tail);
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
     }
-  }
-  zzmatch(Eof);  zzCONSUME;
-  zzEXIT(zztasp1);
-  return;
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==Action) && (setwd1[LA(2)]&0x10) ) {
+          zzmatch(Action); 
+
+          if ( CurClassName[0]!='\0' )
+          list_add(&class_actions, actiondup(LATEXT(1)));
+          else
+          list_add(&before_actions, actiondup(LATEXT(1)));
+ zzCONSUME;
+
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (LA(1)==80) ) {
+          zzmatch(80); 
+
+          if ( CurClassName[0]=='\0' )
+          err("missing class definition for trailing '}'");
+ zzCONSUME;
+
+        }
+        else {
+          if ( (setwd1[LA(1)]&0x20) ) {
+          }
+          else {zzFAIL(1,zzerr2,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==Action) ) {
+          zzmatch(Action); 
+          list_add(&after_actions, actiondup(LATEXT(1)));
+ zzCONSUME;
+
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+    zzmatch(Eof);  zzCONSUME;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd1, 0x40);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd1, 0x40);
   }
 }
 
@@ -335,18 +334,18 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  zzmatch(Header);  zzCONSUME;
-  zzmatch(Action); 
-  header_action = actiondup(LATEXT(1));
+    zzmatch(Header);  zzCONSUME;
+    zzmatch(Action); 
+    header_action = actiondup(LATEXT(1));
  zzCONSUME;
 
-  zzEXIT(zztasp1);
-  return;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd1, 0x80);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd1, 0x80);
   }
 }
 
@@ -362,33 +361,33 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  zzmatch(Tokdef);  zzCONSUME;
-  zzmatch(RExpr); 
-  {
-    AST *dumb = NULL;
-    zzantlr_state st; FILE *f; struct zzdlg_state dst;
-    strcpy(tokdefs_file, LATEXT(1));
-    strcpy(tokdefs_file, tokdefs_file+1); /* remove quotes */
-    tokdefs_file[strlen(tokdefs_file)-1] = '\0';
-    zzsave_antlr_state(&st);
-    zzsave_dlg_state(&dst);
-    define_num=0;
-    f = fopen(tokdefs_file, "r");
-    if ( f==NULL ) {found_error=1; err(eMsg1("cannot open token defs file '%s'", tokdefs_file));}
-    else {ANTLRm(enum_file(&dumb), f, PARSE_ENUM_FILE);}
-    zzrestore_antlr_state(&st);
-    zzrestore_dlg_state(&dst);
-    UserDefdTokens = 1;
-  }
+    zzmatch(Tokdef);  zzCONSUME;
+    zzmatch(RExpr); 
+    {
+      AST *dumb = NULL;
+      zzantlr_state st; FILE *f; struct zzdlg_state dst;
+      strcpy(tokdefs_file, LATEXT(1));
+      strcpy(tokdefs_file, tokdefs_file+1); /* remove quotes */
+      tokdefs_file[strlen(tokdefs_file)-1] = '\0';
+      zzsave_antlr_state(&st);
+      zzsave_dlg_state(&dst);
+      define_num=0;
+      f = fopen(tokdefs_file, "r");
+      if ( f==NULL ) {found_error=1; err(eMsg1("cannot open token defs file '%s'", tokdefs_file));}
+      else {ANTLRm(enum_file(&dumb), f, PARSE_ENUM_FILE);}
+      zzrestore_antlr_state(&st);
+      zzrestore_dlg_state(&dst);
+      UserDefdTokens = 1;
+    }
  zzCONSUME;
 
-  zzEXIT(zztasp1);
-  return;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd2, 0x1);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd2, 0x1);
   }
 }
 
@@ -404,37 +403,37 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  zzmatch(81); zzastDPush; zzCONSUME;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    zzmatch(81); zzastDPush; zzCONSUME;
     {
-    if ( (LA(1)==NonTerm) ) {
-      zzmatch(NonTerm); zzastDPush;
-      strncpy(CurClassName,LATEXT(1),MaxAtom);
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (LA(1)==NonTerm) ) {
+          zzmatch(NonTerm); zzastDPush;
+          strncpy(CurClassName,LATEXT(1),MaxAtom);
  zzCONSUME;
 
-    }
-    else {
-      if ( (LA(1)==Token) ) {
-        zzmatch(Token); zzastDPush;
-        strncpy(CurClassName,LATEXT(1),MaxAtom);
+        }
+        else {
+          if ( (LA(1)==Token) ) {
+            zzmatch(Token); zzastDPush;
+            strncpy(CurClassName,LATEXT(1),MaxAtom);
  zzCONSUME;
 
+          }
+          else {zzFAIL(1,zzerr3,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
       }
-      else {zzFAIL(1,zzerr3,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  if ( !GenCPP ) { err("class meta-op used without C++ option"); }
-  zzmatch(OPT); zzastDPush; zzCONSUME;
-  zzEXIT(zztasp1);
-  return;
+    if ( !GenCPP ) { err("class meta-op used without C++ option"); }
+    zzmatch(OPT); zzastDPush; zzCONSUME;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd2, 0x2);
+    zzEXIT(zztasp1);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd2, 0x2);
   }
 }
 
@@ -450,125 +449,125 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  SymEntry *p; int trouble=0, no_copy=0;
-  zzmatch(NonTerm); zzsubroot(_root, &_sibling, &_tail);
-  
-  (*_root)->file = CurFile;
-  (*_root)->line = zzline;
-  CurRule = zzaArg(zztasp1,1 ).text;
-  p = (SymEntry *) hash_get(symbols, zzaArg(zztasp1,1 ).text);
-  if ( p==NULL ) {
-    p = (SymEntry *) hash_add(symbols, zzaArg(zztasp1,1 ).text, (Entry *) newSymEntry(zzaArg(zztasp1,1 ).text));
-    p->token = NonTerm;
-    p->defined = 1;
-    p->definition = (*_root);
-  }
-  else if ( p->token != NonTerm ) {
-    err(eMsg2("rule definition clashes with %s definition: '%s'", zztokens[p->token], p->str));
-    trouble = 1;
-  }
-  else {
-    if ( p->defined ) {
-      trouble = 1;
-      err(eMsg1("rule multiply defined: '%s'", zzaArg(zztasp1,1 ).text));
-    }
-    else {
+    SymEntry *p; int trouble=0, no_copy=0;
+    zzmatch(NonTerm); zzsubroot(_root, &_sibling, &_tail);
+
+    (*_root)->file = CurFile;
+    (*_root)->line = zzline;
+    CurRule = zzaArg(zztasp1,1 ).text;
+    p = (SymEntry *) hash_get(symbols, zzaArg(zztasp1,1 ).text);
+    if ( p==NULL ) {
+      p = (SymEntry *) hash_add(symbols, zzaArg(zztasp1,1 ).text, (Entry *) newSymEntry(zzaArg(zztasp1,1 ).text));
+      p->token = NonTerm;
       p->defined = 1;
       p->definition = (*_root);
     }
-  }
- zzCONSUME;
-
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    if ( (LA(1)==84)
- ) {
-      zzmatch(84); 
-      if (!trouble) (*_root)->no_copy=no_copy=1;
- zzCONSUME;
-
+    else if ( p->token != NonTerm ) {
+      err(eMsg2("rule definition clashes with %s definition: '%s'", zztokens[p->token], p->str));
+      trouble = 1;
     }
     else {
-      if ( (setwd2[LA(1)]&0x4) ) {
+      if ( p->defined ) {
+        trouble = 1;
+        err(eMsg1("rule multiply defined: '%s'", zzaArg(zztasp1,1 ).text));
       }
-      else {zzFAIL(1,zzerr4,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+      else {
+        p->defined = 1;
+        p->definition = (*_root);
+      }
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+ zzCONSUME;
+
     {
-    if ( (setwd2[LA(1)]&0x8) ) {
+      zzBLOCK(zztasp2);
+      zzMake0;
       {
-        zzBLOCK(zztasp3);
-        zzMake0;
-        {
-        if ( (LA(1)==85) ) {
-          zzmatch(85);  zzCONSUME;
+        if ( (LA(1)==84) ) {
+          zzmatch(84); 
+          if (!trouble) (*_root)->no_copy=no_copy=1;
+ zzCONSUME;
+
         }
         else {
-          if ( (LA(1)==PassAction) ) {
+          if ( (setwd2[LA(1)]&0x4) ) {
           }
-          else {zzFAIL(1,zzerr5,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+          else {zzFAIL(1,zzerr4,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
         }
-        zzEXIT(zztasp3);
-        }
+        zzEXIT(zztasp2);
       }
-      zzmatch(PassAction); 
-      if (!trouble) p->args = actiondup(LATEXT(1));
- zzCONSUME;
-
     }
-    else {
-      if ( (setwd2[LA(1)]&0x10)
- ) {
-      }
-      else {zzFAIL(1,zzerr6,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
     {
-    if ( (LA(1)==86) ) {
-      zzmatch(86);  zzCONSUME;
-      zzmatch(PassAction); 
-      if (!trouble) p->rt = actiondup(LATEXT(1));
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( 
+(setwd2[LA(1)]&0x8) ) {
+          {
+            zzBLOCK(zztasp3);
+            zzMake0;
+            {
+              if ( (LA(1)==85) ) {
+                zzmatch(85);  zzCONSUME;
+              }
+              else {
+                if ( (LA(1)==PassAction) ) {
+                }
+                else {zzFAIL(1,zzerr5,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+              }
+              zzEXIT(zztasp3);
+            }
+          }
+          zzmatch(PassAction); 
+          if (!trouble) p->args = actiondup(LATEXT(1));
  zzCONSUME;
 
-    }
-    else {
-      if ( (LA(1)==LABEL) ) {
+        }
+        else {
+          if ( (setwd2[LA(1)]&0x10) ) {
+          }
+          else {zzFAIL(1,zzerr6,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
       }
-      else {zzFAIL(1,zzerr7,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  zzmatch(LABEL);  zzCONSUME;
-  block(zzSTR, no_copy ); zzlink(_root, &_sibling, &_tail);
-  zzmatch(87); 
-  
-  if ( !trouble ) (*_root)->refvars = RefVars;
-  RefVars=NULL;
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (LA(1)==86) ) {
+          zzmatch(86);  zzCONSUME;
+          zzmatch(PassAction); 
+          if (!trouble) p->rt = actiondup(LATEXT(1));
  zzCONSUME;
 
-  
-  if ( trouble ) (*_root) = NULL;
-  CurRule = NULL;
-  zzEXIT(zztasp1);
-  return;
+        }
+        else {
+          if ( 
+(LA(1)==LABEL) ) {
+          }
+          else {zzFAIL(1,zzerr7,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+    zzmatch(LABEL);  zzCONSUME;
+    block(zzSTR, no_copy ); zzlink(_root, &_sibling, &_tail);
+    zzmatch(87); 
+
+    if ( !trouble ) (*_root)->refvars = RefVars;
+    RefVars=NULL;
+ zzCONSUME;
+
+
+    if ( trouble ) (*_root) = NULL;
+    CurRule = NULL;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd2, 0x20);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd2, 0x20);
   }
 }
 
@@ -585,31 +584,31 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  int line=zzline, file=CurFile;
-  alt(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    int line=zzline, file=CurFile;
+    alt(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
     {
-    while ( (LA(1)==88) ) {
-      zzmatch(88);  zzCONSUME;
-      alt(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-      zzLOOP(zztasp2);
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==88) ) {
+          zzmatch(88);  zzCONSUME;
+          alt(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  
-  (*_root) = zztmake( zzmk_ast(zzastnew(),BLOCK), (*_root) , NULL);
-  (*_root)->file = file;
-  (*_root)->line = line;
-  zzEXIT(zztasp1);
-  return;
+
+    (*_root) = zztmake( zzmk_ast(zzastnew(),BLOCK), (*_root) , NULL);
+    (*_root)->file = file;
+    (*_root)->line = line;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd2, 0x40);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd2, 0x40);
   }
 }
 
@@ -626,80 +625,79 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  int line=zzline, file=CurFile; int local_no_copy=0;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    int line=zzline, file=CurFile; int local_no_copy=0;
     {
-    if ( (LA(1)==84) ) {
-      zzmatch(84); 
-      local_no_copy=1;
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (LA(1)==84) ) {
+          zzmatch(84); 
+          local_no_copy=1;
  zzCONSUME;
 
-    }
-    else {
-      if ( (setwd2[LA(1)]&0x80)
- ) {
-      }
-      else {zzFAIL(1,zzerr8,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    if ( (setwd3[LA(1)]&0x1) ) {
-      {
-        zzBLOCK(zztasp3);
-        int zzcnt=1;
-        zzMake0;
-        {
-        do {
-          if ( (setwd3[LA(1)]&0x2) && (LA(2)==LABEL) ) {
-            labeled_element(zzSTR,  no_copy||local_no_copy ); zzlink(_root, &_sibling, &_tail);
-          }
-          else {
-            if ( (setwd3[LA(1)]&0x4) && (setwd3[LA(2)]&0x8) ) {
-              element(zzSTR,  no_copy||local_no_copy ); zzlink(_root, &_sibling, &_tail);
-            }
-            else {
-              if ( (LA(1)==BT) ) {
-                tree(zzSTR,  no_copy||local_no_copy ); zzlink(_root, &_sibling, &_tail);
-              }
-              /* MR10 ()+ */ else {
-                if ( zzcnt > 1 ) break;
-                else {zzFAIL(2,zzerr9,zzerr10,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-              }
-            }
-          }
-          zzcnt++; zzLOOP(zztasp3);
-        } while ( 1 );
-        zzEXIT(zztasp3);
         }
+        else {
+          if ( (setwd2[LA(1)]&0x80) ) {
+          }
+          else {zzFAIL(1,zzerr8,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
       }
     }
-    else {
-      if ( (setwd3[LA(1)]&0x10)
- ) {
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (setwd3[LA(1)]&0x1) ) {
+          {
+            zzBLOCK(zztasp3);
+            int zzcnt=1;
+            zzMake0;
+            {
+              do {
+                if ( (setwd3[LA(1)]&0x2) && 
+(LA(2)==LABEL) ) {
+                  labeled_element(zzSTR,  no_copy||local_no_copy ); zzlink(_root, &_sibling, &_tail);
+                }
+                else {
+                  if ( (setwd3[LA(1)]&0x4) && (setwd3[LA(2)]&0x8) ) {
+                    element(zzSTR,  no_copy||local_no_copy ); zzlink(_root, &_sibling, &_tail);
+                  }
+                  else {
+                    if ( (LA(1)==BT) ) {
+                      tree(zzSTR,  no_copy||local_no_copy ); zzlink(_root, &_sibling, &_tail);
+                    }
+                    /* MR10 ()+ */ else {
+                      if ( zzcnt > 1 ) break;
+                      else {zzFAIL(2,zzerr9,zzerr10,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                    }
+                  }
+                }
+                zzcnt++; zzLOOP(zztasp3);
+              } while ( 1 );
+              zzEXIT(zztasp3);
+            }
+          }
+        }
+        else {
+          if ( (setwd3[LA(1)]&0x10) ) {
+          }
+          else {zzFAIL(1,zzerr11,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
       }
-      else {zzFAIL(1,zzerr11,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  
-  (*_root) = zztmake( zzmk_ast(zzastnew(),ALT), (*_root) , NULL);
-  (*_root)->file = file;
-  (*_root)->line = line;
-  zzEXIT(zztasp1);
-  return;
+
+    (*_root) = zztmake( zzmk_ast(zzastnew(),ALT), (*_root) , NULL);
+    (*_root)->file = file;
+    (*_root)->line = line;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd3, 0x20);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd3, 0x20);
   }
 }
 
@@ -716,195 +714,195 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  /**** SymEntry *p; **** MR10 ****/ int file,line; int local_no_copy=0;
-  if ( (LA(1)==Token) ) {
-    token(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-  }
-  else {
-    if ( (LA(1)==NonTerm) ) {
-      file = CurFile; line=zzline;
-      zzmatch(NonTerm); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
-      {
-        zzBLOCK(zztasp2);
-        zzMake0;
-        {
-        if ( (LA(1)==84) ) {
-          zzmatch(84); 
-          local_no_copy = 1;
- zzCONSUME;
-
-        }
-        else {
-          if ( (setwd3[LA(1)]&0x40) ) {
-          }
-          else {zzFAIL(1,zzerr12,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-        }
-        zzEXIT(zztasp2);
-        }
-      }
-      {
-        zzBLOCK(zztasp2);
-        zzMake0;
-        {
-        if ( (setwd3[LA(1)]&0x80)
- ) {
-          {
-            zzBLOCK(zztasp3);
-            zzMake0;
-            {
-            if ( (LA(1)==85) ) {
-              zzmatch(85);  zzCONSUME;
-            }
-            else {
-              if ( (LA(1)==PassAction) ) {
-              }
-              else {zzFAIL(1,zzerr13,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-            zzEXIT(zztasp3);
-            }
-          }
-          zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
-          (*_root)->in = 1;
- zzCONSUME;
-
-        }
-        else {
-          if ( (setwd4[LA(1)]&0x1) ) {
-          }
-          else {zzFAIL(1,zzerr14,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-        }
-        zzEXIT(zztasp2);
-        }
-      }
-      {
-        zzBLOCK(zztasp2);
-        zzMake0;
-        {
-        if ( (LA(1)==86) ) {
-          zzmatch(86);  zzCONSUME;
-          zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
-          (*_root)->out = 1;
- zzCONSUME;
-
-        }
-        else {
-          if ( (setwd4[LA(1)]&0x2)
- ) {
-          }
-          else {zzFAIL(1,zzerr15,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-        }
-        zzEXIT(zztasp2);
-        }
-      }
-      (*_root)->file = file; (*_root)->line=line;
-      (*_root)->no_copy =  no_copy || local_no_copy;
+    /**** SymEntry *p; **** MR10 ****/ int file,line; int local_no_copy=0;
+    if ( (LA(1)==Token) ) {
+      token(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
     }
     else {
-      if ( (LA(1)==Action) ) {
+      if ( (LA(1)==NonTerm) ) {
         file = CurFile; line=zzline;
-        zzmatch(Action); zzsubchild(_root, &_sibling, &_tail);
-        zzastArg(1)->action = actiondup(LATEXT(1));
- zzCONSUME;
-
+        zzmatch(NonTerm); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
         {
           zzBLOCK(zztasp2);
           zzMake0;
           {
-          if ( (LA(1)==PRED_OP) ) {
-            zzmatch(PRED_OP); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
-          }
-          else {
-            if ( (setwd4[LA(1)]&0x4) ) {
+            if ( 
+(LA(1)==84) ) {
+              zzmatch(84); 
+              local_no_copy = 1;
+ zzCONSUME;
+
             }
-            else {zzFAIL(1,zzerr16,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            else {
+              if ( (setwd3[LA(1)]&0x40) ) {
+              }
+              else {zzFAIL(1,zzerr12,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            }
+            zzEXIT(zztasp2);
           }
-          zzEXIT(zztasp2);
+        }
+        {
+          zzBLOCK(zztasp2);
+          zzMake0;
+          {
+            if ( (setwd3[LA(1)]&0x80) ) {
+              {
+                zzBLOCK(zztasp3);
+                zzMake0;
+                {
+                  if ( (LA(1)==85) ) {
+                    zzmatch(85);  zzCONSUME;
+                  }
+                  else {
+                    if ( (LA(1)==PassAction) ) {
+                    }
+                    else {zzFAIL(1,zzerr13,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                  }
+                  zzEXIT(zztasp3);
+                }
+              }
+              zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
+              (*_root)->in = 1;
+ zzCONSUME;
+
+            }
+            else {
+              if ( 
+(setwd4[LA(1)]&0x1) ) {
+              }
+              else {zzFAIL(1,zzerr14,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            }
+            zzEXIT(zztasp2);
+          }
+        }
+        {
+          zzBLOCK(zztasp2);
+          zzMake0;
+          {
+            if ( (LA(1)==86) ) {
+              zzmatch(86);  zzCONSUME;
+              zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
+              (*_root)->out = 1;
+ zzCONSUME;
+
+            }
+            else {
+              if ( (setwd4[LA(1)]&0x2) ) {
+              }
+              else {zzFAIL(1,zzerr15,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            }
+            zzEXIT(zztasp2);
           }
         }
         (*_root)->file = file; (*_root)->line=line;
+        (*_root)->no_copy =  no_copy || local_no_copy;
       }
       else {
-        if ( (LA(1)==89) ) {
+        if ( (LA(1)==Action) ) {
           file = CurFile; line=zzline;
-          zzmatch(89);  zzCONSUME;
-          block(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-          zzmatch(90);  zzCONSUME;
+          zzmatch(Action); zzsubchild(_root, &_sibling, &_tail);
+          zzastArg(1)->action = actiondup(LATEXT(1));
+ zzCONSUME;
+
           {
             zzBLOCK(zztasp2);
             zzMake0;
             {
-            if ( (LA(1)==CLOSURE)
- ) {
-              zzmatch(CLOSURE); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
-            }
-            else {
-              if ( (LA(1)==POS_CLOSURE) ) {
-                zzmatch(POS_CLOSURE); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
+              if ( (LA(1)==PRED_OP) ) {
+                zzmatch(PRED_OP); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
               }
               else {
-                if ( (LA(1)==PRED_OP) ) {
-                  zzmatch(PRED_OP); zzsubroot(_root, &_sibling, &_tail);
-                  found_guess_block=1;
- zzCONSUME;
-
+                if ( 
+(setwd4[LA(1)]&0x4) ) {
                 }
-                else {
-                  if ( (setwd4[LA(1)]&0x8) ) {
-                  }
-                  else {zzFAIL(1,zzerr17,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-                }
+                else {zzFAIL(1,zzerr16,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
               }
-            }
-            zzEXIT(zztasp2);
+              zzEXIT(zztasp2);
             }
           }
           (*_root)->file = file; (*_root)->line=line;
         }
         else {
-          if ( (LA(1)==OPT) ) {
-            zzmatch(OPT); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
+          if ( (LA(1)==89) ) {
+            file = CurFile; line=zzline;
+            zzmatch(89);  zzCONSUME;
             block(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-            zzmatch(80);  zzCONSUME;
-          }
-          else {
-            if ( (LA(1)==WILD)
- ) {
-              file = CurFile; line=zzline;
-              zzmatch(WILD); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+            zzmatch(90);  zzCONSUME;
+            {
+              zzBLOCK(zztasp2);
+              zzMake0;
               {
-                zzBLOCK(zztasp2);
-                zzMake0;
-                {
-                if ( (LA(1)==84) ) {
-                  zzmatch(84); 
-                  local_no_copy = 1;
- zzCONSUME;
-
+                if ( (LA(1)==CLOSURE) ) {
+                  zzmatch(CLOSURE); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
                 }
                 else {
-                  if ( (setwd4[LA(1)]&0x10) ) {
+                  if ( (LA(1)==POS_CLOSURE) ) {
+                    zzmatch(POS_CLOSURE); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
                   }
-                  else {zzFAIL(1,zzerr18,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                  else {
+                    if ( (LA(1)==PRED_OP) ) {
+                      zzmatch(PRED_OP); zzsubroot(_root, &_sibling, &_tail);
+                      found_guess_block=1;
+ zzCONSUME;
+
+                    }
+                    else {
+                      if ( 
+(setwd4[LA(1)]&0x8) ) {
+                      }
+                      else {zzFAIL(1,zzerr17,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                    }
+                  }
                 }
                 zzEXIT(zztasp2);
-                }
               }
-              (*_root)->no_copy =  no_copy || local_no_copy;
-              (*_root)->file = file; (*_root)->line=line;
             }
-            else {zzFAIL(1,zzerr19,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            (*_root)->file = file; (*_root)->line=line;
+          }
+          else {
+            if ( (LA(1)==OPT) ) {
+              zzmatch(OPT); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
+              block(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+              zzmatch(80);  zzCONSUME;
+            }
+            else {
+              if ( (LA(1)==WILD) ) {
+                file = CurFile; line=zzline;
+                zzmatch(WILD); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                {
+                  zzBLOCK(zztasp2);
+                  zzMake0;
+                  {
+                    if ( (LA(1)==84) ) {
+                      zzmatch(84); 
+                      local_no_copy = 1;
+ zzCONSUME;
+
+                    }
+                    else {
+                      if ( (setwd4[LA(1)]&0x10) ) {
+                      }
+                      else {zzFAIL(1,zzerr18,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                    }
+                    zzEXIT(zztasp2);
+                  }
+                }
+                (*_root)->no_copy =  no_copy || local_no_copy;
+                (*_root)->file = file; (*_root)->line=line;
+              }
+              else {zzFAIL(1,zzerr19,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            }
           }
         }
       }
     }
-  }
-  zzEXIT(zztasp1);
-  return;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd4, 0x20);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd4, 0x20);
   }
 }
 
@@ -921,238 +919,239 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  Attrib label; int file,line; SymEntry *s; int local_no_copy=0;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    Attrib label; int file,line; SymEntry *s; int local_no_copy=0;
     {
-    if ( (LA(1)==Token) ) {
-      zzmatch(Token); 
-      label = zzaArg(zztasp2,1);
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( 
+(LA(1)==Token) ) {
+          zzmatch(Token); 
+          label = zzaArg(zztasp2,1);
  zzCONSUME;
 
-    }
-    else {
-      if ( (LA(1)==NonTerm) ) {
-        zzmatch(NonTerm); 
-        label = zzaArg(zztasp2,1);
+        }
+        else {
+          if ( (LA(1)==NonTerm) ) {
+            zzmatch(NonTerm); 
+            label = zzaArg(zztasp2,1);
  zzCONSUME;
 
+          }
+          else {zzFAIL(1,zzerr20,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
       }
-      else {zzFAIL(1,zzerr20,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
     }
-    zzEXIT(zztasp2);
+
+    s = (SymEntry *) hash_get(symbols, label.text);
+    if ( s==NULL ) {
+      s = (SymEntry *) hash_add(symbols, label.text, (Entry *) newSymEntry(label.text));
+      s->token = LABEL;
     }
-  }
-  
-  s = (SymEntry *) hash_get(symbols, label.text);
-  if ( s==NULL ) {
-    s = (SymEntry *) hash_add(symbols, label.text, (Entry *) newSymEntry(label.text));
-    s->token = LABEL;
-  }
-  else if ( s->token!=LABEL ) {
-    err(eMsg2("label definition clashes with %s definition: '%s'", zztokens[s->token], label.text));
-  }
-  zzmatch(LABEL);  zzCONSUME;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    else if ( s->token!=LABEL ) {
+      err(eMsg2("label definition clashes with %s definition: '%s'", zztokens[s->token], label.text));
+    }
+    zzmatch(LABEL);  zzCONSUME;
     {
-    file = CurFile; line=zzline;
-    if ( (LA(1)==Token)
- ) {
-      token(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-      strcpy(zzastArg(1)->label, label.text);
-      (*_root)->file = file; (*_root)->line=line;
-    }
-    else {
-      if ( (LA(1)==NonTerm) ) {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
         file = CurFile; line=zzline;
-        zzmatch(NonTerm); zzsubroot(_root, &_sibling, &_tail);
-        strcpy(zzastArg(1)->label, label.text);
- zzCONSUME;
-
-        {
-          zzBLOCK(zztasp3);
-          zzMake0;
-          {
-          if ( (LA(1)==84) ) {
-            zzmatch(84); 
-            local_no_copy = 1;
- zzCONSUME;
-
-          }
-          else {
-            if ( (setwd4[LA(1)]&0x40) ) {
-            }
-            else {zzFAIL(1,zzerr21,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-          }
-          zzEXIT(zztasp3);
-          }
-        }
-        {
-          zzBLOCK(zztasp3);
-          zzMake0;
-          {
-          if ( (setwd4[LA(1)]&0x80) ) {
-            {
-              zzBLOCK(zztasp4);
-              zzMake0;
-              {
-              if ( (LA(1)==85)
- ) {
-                zzmatch(85);  zzCONSUME;
-              }
-              else {
-                if ( (LA(1)==PassAction) ) {
-                }
-                else {zzFAIL(1,zzerr22,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-              }
-              zzEXIT(zztasp4);
-              }
-            }
-            zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
-            (*_root)->in = 1;
- zzCONSUME;
-
-          }
-          else {
-            if ( (setwd5[LA(1)]&0x1) ) {
-            }
-            else {zzFAIL(1,zzerr23,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-          }
-          zzEXIT(zztasp3);
-          }
-        }
-        {
-          zzBLOCK(zztasp3);
-          zzMake0;
-          {
-          if ( (LA(1)==86) ) {
-            zzmatch(86);  zzCONSUME;
-            zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
-            (*_root)->out = 1;
- zzCONSUME;
-
-          }
-          else {
-            if ( (setwd5[LA(1)]&0x2) ) {
-            }
-            else {zzFAIL(1,zzerr24,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-          }
-          zzEXIT(zztasp3);
-          }
-        }
-        (*_root)->file = file; (*_root)->line=line;
-        (*_root)->no_copy =  no_copy || local_no_copy;
-      }
-      else {
-        if ( (LA(1)==WILD)
- ) {
-          file = CurFile; line=zzline;
-          zzmatch(WILD); zzsubchild(_root, &_sibling, &_tail);
+        if ( (LA(1)==Token) ) {
+          token(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
           strcpy(zzastArg(1)->label, label.text);
- zzCONSUME;
-
-          {
-            zzBLOCK(zztasp3);
-            zzMake0;
-            {
-            if ( (LA(1)==84) ) {
-              zzmatch(84); 
-              local_no_copy = 1;
- zzCONSUME;
-
-            }
-            else {
-              if ( (setwd5[LA(1)]&0x4) ) {
-              }
-              else {zzFAIL(1,zzerr25,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-            zzEXIT(zztasp3);
-            }
-          }
-          (*_root)->no_copy =  no_copy || local_no_copy;
           (*_root)->file = file; (*_root)->line=line;
         }
         else {
-          if ( (setwd5[LA(1)]&0x8) ) {
+          if ( (LA(1)==NonTerm) ) {
+            file = CurFile; line=zzline;
+            zzmatch(NonTerm); zzsubroot(_root, &_sibling, &_tail);
+            strcpy(zzastArg(1)->label, label.text);
+ zzCONSUME;
+
             {
               zzBLOCK(zztasp3);
               zzMake0;
               {
-              if ( (LA(1)==88) ) {
-                zzmatch(88); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-              }
-              else {
-                if ( (LA(1)==87)
- ) {
-                  zzmatch(87); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                if ( (LA(1)==84) ) {
+                  zzmatch(84); 
+                  local_no_copy = 1;
+ zzCONSUME;
+
                 }
                 else {
-                  if ( (LA(1)==PassAction) ) {
-                    zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                  if ( 
+(setwd4[LA(1)]&0x40) ) {
                   }
-                  else {
-                    if ( (LA(1)==Action) ) {
-                      zzmatch(Action); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                    }
-                    else {
-                      if ( (LA(1)==Eof) ) {
-                        zzmatch(Eof); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                      }
-                      else {
-                        if ( (LA(1)==89) ) {
-                          zzmatch(89); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                        }
-                        else {
-                          if ( (LA(1)==OPT)
- ) {
-                            zzmatch(OPT); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                          }
-                          else {
-                            if ( (LA(1)==90) ) {
-                              zzmatch(90); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                            }
-                            else {
-                              if ( (LA(1)==80) ) {
-                                zzmatch(80); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                              }
-                              else {
-                                if ( (LA(1)==BT) ) {
-                                  zzmatch(BT); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
-                                }
-                                else {zzFAIL(1,zzerr26,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-                              }
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
+                  else {zzFAIL(1,zzerr21,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
                 }
-              }
-              zzEXIT(zztasp3);
+                zzEXIT(zztasp3);
               }
             }
-            
-            err("cannot label this grammar construct");
-            found_error = 1;
+            {
+              zzBLOCK(zztasp3);
+              zzMake0;
+              {
+                if ( (setwd4[LA(1)]&0x80) ) {
+                  {
+                    zzBLOCK(zztasp4);
+                    zzMake0;
+                    {
+                      if ( (LA(1)==85) ) {
+                        zzmatch(85);  zzCONSUME;
+                      }
+                      else {
+                        if ( (LA(1)==PassAction) ) {
+                        }
+                        else {zzFAIL(1,zzerr22,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                      }
+                      zzEXIT(zztasp4);
+                    }
+                  }
+                  zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
+                  (*_root)->in = 1;
+ zzCONSUME;
+
+                }
+                else {
+                  if ( (setwd5[LA(1)]&0x1) ) {
+                  }
+                  else {zzFAIL(1,zzerr23,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                }
+                zzEXIT(zztasp3);
+              }
+            }
+            {
+              zzBLOCK(zztasp3);
+              zzMake0;
+              {
+                if ( 
+(LA(1)==86) ) {
+                  zzmatch(86);  zzCONSUME;
+                  zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail);
+                  (*_root)->out = 1;
+ zzCONSUME;
+
+                }
+                else {
+                  if ( (setwd5[LA(1)]&0x2) ) {
+                  }
+                  else {zzFAIL(1,zzerr24,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                }
+                zzEXIT(zztasp3);
+              }
+            }
+            (*_root)->file = file; (*_root)->line=line;
+            (*_root)->no_copy =  no_copy || local_no_copy;
           }
-          else {zzFAIL(1,zzerr27,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+          else {
+            if ( (LA(1)==WILD) ) {
+              file = CurFile; line=zzline;
+              zzmatch(WILD); zzsubchild(_root, &_sibling, &_tail);
+              strcpy(zzastArg(1)->label, label.text);
+ zzCONSUME;
+
+              {
+                zzBLOCK(zztasp3);
+                zzMake0;
+                {
+                  if ( (LA(1)==84) ) {
+                    zzmatch(84); 
+                    local_no_copy = 1;
+ zzCONSUME;
+
+                  }
+                  else {
+                    if ( (setwd5[LA(1)]&0x4) ) {
+                    }
+                    else {zzFAIL(1,zzerr25,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                  }
+                  zzEXIT(zztasp3);
+                }
+              }
+              (*_root)->no_copy =  no_copy || local_no_copy;
+              (*_root)->file = file; (*_root)->line=line;
+            }
+            else {
+              if ( 
+(setwd5[LA(1)]&0x8) ) {
+                {
+                  zzBLOCK(zztasp3);
+                  zzMake0;
+                  {
+                    if ( (LA(1)==88) ) {
+                      zzmatch(88); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                    }
+                    else {
+                      if ( (LA(1)==87) ) {
+                        zzmatch(87); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                      }
+                      else {
+                        if ( (LA(1)==PassAction) ) {
+                          zzmatch(PassAction); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                        }
+                        else {
+                          if ( (LA(1)==Action) ) {
+                            zzmatch(Action); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                          }
+                          else {
+                            if ( 
+(LA(1)==Eof) ) {
+                              zzmatch(Eof); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                            }
+                            else {
+                              if ( (LA(1)==89) ) {
+                                zzmatch(89); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                              }
+                              else {
+                                if ( (LA(1)==OPT) ) {
+                                  zzmatch(OPT); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                                }
+                                else {
+                                  if ( (LA(1)==90) ) {
+                                    zzmatch(90); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                                  }
+                                  else {
+                                    if ( (LA(1)==80) ) {
+                                      zzmatch(80); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                                    }
+                                    else {
+                                      if ( 
+(LA(1)==BT) ) {
+                                        zzmatch(BT); zzsubchild(_root, &_sibling, &_tail); zzCONSUME;
+                                      }
+                                      else {zzFAIL(1,zzerr26,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    zzEXIT(zztasp3);
+                  }
+                }
+
+                err("cannot label this grammar construct");
+                found_error = 1;
+              }
+              else {zzFAIL(1,zzerr27,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            }
+          }
         }
+        zzEXIT(zztasp2);
       }
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  zzEXIT(zztasp1);
-  return;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd5, 0x10);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd5, 0x10);
   }
 }
 
@@ -1169,72 +1168,72 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  SymEntry *p; int file, line; int local_no_copy=0;
-  file = CurFile; line=zzline;
-  zzmatch(Token); zzsubchild(_root, &_sibling, &_tail);
-  (*_root)->file = file; (*_root)->line=line;
+    SymEntry *p; int file, line; int local_no_copy=0;
+    file = CurFile; line=zzline;
+    zzmatch(Token); zzsubchild(_root, &_sibling, &_tail);
+    (*_root)->file = file; (*_root)->line=line;
  zzCONSUME;
 
-  define_token(zzaArg(zztasp1,1 ).text);
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    define_token(zzaArg(zztasp1,1 ).text);
     {
-    if ( (LA(1)==91) ) {
-      zzmatch(91);  zzCONSUME;
-      zzmatch(Token);  zzCONSUME;
+      zzBLOCK(zztasp2);
+      zzMake0;
       {
-        zzBLOCK(zztasp3);
-        zzMake0;
-        {
-        if ( (LA(1)==84)
- ) {
-          zzmatch(84); 
-          local_no_copy=1;
+        if ( (LA(1)==91) ) {
+          zzmatch(91);  zzCONSUME;
+          zzmatch(Token);  zzCONSUME;
+          {
+            zzBLOCK(zztasp3);
+            zzMake0;
+            {
+              if ( (LA(1)==84) ) {
+                zzmatch(84); 
+                local_no_copy=1;
  zzCONSUME;
 
+              }
+              else {
+                if ( (setwd5[LA(1)]&0x20) ) {
+                }
+                else {zzFAIL(1,zzerr28,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+              }
+              zzEXIT(zztasp3);
+            }
+          }
+
+          if ( !UserDefdTokens ) {
+            err("range operator is illegal without #tokdefs directive");
+          }
+          else {
+            p = define_token(zzaArg(zztasp2,2 ).text);
+            require(p!=NULL, "token: hash table is broken");
+            (*_root)->upper_range = p->token_type;
+          }
         }
         else {
-          if ( (setwd5[LA(1)]&0x20) ) {
-          }
-          else {zzFAIL(1,zzerr28,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-        }
-        zzEXIT(zztasp3);
-        }
-      }
-      
-      if ( !UserDefdTokens ) {
-        err("range operator is illegal without #tokdefs directive");
-      }
-      else {
-        p = define_token(zzaArg(zztasp2,2 ).text);
-        require(p!=NULL, "token: hash table is broken");
-        (*_root)->upper_range = p->token_type;
-      }
-    }
-    else {
-      if ( (LA(1)==84) ) {
-        zzmatch(84); 
-        local_no_copy=1;
+          if ( (LA(1)==84) ) {
+            zzmatch(84); 
+            local_no_copy=1;
  zzCONSUME;
 
-      }
-      else {
-        if ( (setwd5[LA(1)]&0x40) ) {
+          }
+          else {
+            if ( 
+(setwd5[LA(1)]&0x40) ) {
+            }
+            else {zzFAIL(1,zzerr29,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+          }
         }
-        else {zzFAIL(1,zzerr29,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        zzEXIT(zztasp2);
       }
     }
-    zzEXIT(zztasp2);
-    }
-  }
-  (*_root)->no_copy =  no_copy||local_no_copy;
-  zzEXIT(zztasp1);
-  return;
+    (*_root)->no_copy =  no_copy||local_no_copy;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd5, 0x80);
+    zzEXIT(zztasp1);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd5, 0x80);
   }
 }
 
@@ -1251,152 +1250,29 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  Attrib label; SymEntry *p, *s; int local_no_copy=0; AST *t=NULL;
-  zzmatch(BT);  zzCONSUME;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    Attrib label; SymEntry *p, *s; int local_no_copy=0; AST *t=NULL;
+    zzmatch(BT);  zzCONSUME;
     {
-    if ( (LA(1)==Token) && (setwd6[LA(2)]&0x1) ) {
-      zzmatch(Token); zzsubroot(_root, &_sibling, &_tail);
-      t=zzastArg(1);
- zzCONSUME;
-
-      define_token(zzaArg(zztasp2,1 ).text);
+      zzBLOCK(zztasp2);
+      zzMake0;
       {
-        zzBLOCK(zztasp3);
-        zzMake0;
-        {
-        if ( (LA(1)==91)
- ) {
-          zzmatch(91);  zzCONSUME;
-          zzmatch(Token);  zzCONSUME;
-          {
-            zzBLOCK(zztasp4);
-            zzMake0;
-            {
-            if ( (LA(1)==84) ) {
-              zzmatch(84); 
-              local_no_copy=1;
+        if ( (LA(1)==Token) && (setwd6[LA(2)]&0x1) ) {
+          zzmatch(Token); zzsubroot(_root, &_sibling, &_tail);
+          t=zzastArg(1);
  zzCONSUME;
 
-            }
-            else {
-              if ( (setwd6[LA(1)]&0x2) ) {
-              }
-              else {zzFAIL(1,zzerr30,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-            zzEXIT(zztasp4);
-            }
-          }
-          
-          if ( !UserDefdTokens ) {
-            err("range operator is illegal without #tokdefs directive");
-          }
-          else {
-            p = define_token(zzaArg(zztasp3,2 ).text);
-            require(p!=NULL, "element: hash table is broken");
-            t->upper_range = p->token_type;
-          }
-        }
-        else {
-          if ( (LA(1)==84) ) {
-            zzmatch(84); 
-            local_no_copy=1;
- zzCONSUME;
-
-          }
-          else {
-            if ( (setwd6[LA(1)]&0x4) ) {
-            }
-            else {zzFAIL(1,zzerr31,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-          }
-        }
-        zzEXIT(zztasp3);
-        }
-      }
-      t->no_copy =  no_copy||local_no_copy; t->is_root = 1;
-    }
-    else {
-      if ( (LA(1)==WILD)
- ) {
-        zzmatch(WILD); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
-        {
-          zzBLOCK(zztasp3);
-          zzMake0;
-          {
-          if ( (LA(1)==84) ) {
-            zzmatch(84); 
-            local_no_copy = 1;
- zzCONSUME;
-
-          }
-          else {
-            if ( (setwd6[LA(1)]&0x8) ) {
-            }
-            else {zzFAIL(1,zzerr32,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-          }
-          zzEXIT(zztasp3);
-          }
-        }
-        zzastArg(1)->no_copy =  no_copy || local_no_copy; zzastArg(1)->is_root = 1;
-      }
-      else {
-        if ( (setwd6[LA(1)]&0x10) && (LA(2)==LABEL) ) {
+          define_token(zzaArg(zztasp2,1 ).text);
           {
             zzBLOCK(zztasp3);
             zzMake0;
             {
-            if ( (LA(1)==Token) ) {
-              zzmatch(Token); 
-              label = zzaArg(zztasp3,1);
- zzCONSUME;
-
-            }
-            else {
-              if ( (LA(1)==NonTerm)
- ) {
-                zzmatch(NonTerm); 
-                label = zzaArg(zztasp3,1);
- zzCONSUME;
-
-              }
-              else {zzFAIL(1,zzerr33,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-            zzEXIT(zztasp3);
-            }
-          }
-          
-          s = (SymEntry *) hash_get(symbols, label.text);
-          if ( s==NULL ) {
-            s = (SymEntry *) hash_add(symbols, label.text, (Entry *) newSymEntry(label.text));
-            s->token = LABEL;
-          }
-          else if ( s->token!=LABEL ) {
-            err(eMsg2("label definition clashes with %s definition: '%s'", zztokens[s->token], label.text));
-          }
-          zzmatch(LABEL);  zzCONSUME;
-          {
-            zzBLOCK(zztasp3);
-            zzMake0;
-            {
-            if ( (LA(1)==Token) ) {
-              zzmatch(Token); zzsubroot(_root, &_sibling, &_tail);
-              strcpy(zzastArg(1)->label, label.text); t = zzastArg(1);
- zzCONSUME;
-
-              define_token(zzaArg(zztasp3,1 ).text);
-              {
-                zzBLOCK(zztasp4);
-                zzMake0;
+              if ( (LA(1)==91) ) {
+                zzmatch(91);  zzCONSUME;
+                zzmatch(Token);  zzCONSUME;
                 {
-                if ( (LA(1)==91) ) {
-                  zzmatch(91);  zzCONSUME;
-                  zzmatch(Token);  zzCONSUME;
+                  zzBLOCK(zztasp4);
+                  zzMake0;
                   {
-                    zzBLOCK(zztasp5);
-                    zzMake0;
-                    {
                     if ( (LA(1)==84) ) {
                       zzmatch(84); 
                       local_no_copy=1;
@@ -1404,115 +1280,237 @@ AST **_root;
 
                     }
                     else {
-                      if ( (setwd6[LA(1)]&0x20) ) {
+                      if ( (setwd6[LA(1)]&0x2) ) {
                       }
-                      else {zzFAIL(1,zzerr34,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                      else {zzFAIL(1,zzerr30,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
                     }
-                    zzEXIT(zztasp5);
-                    }
+                    zzEXIT(zztasp4);
                   }
-                  
-                  if ( !UserDefdTokens ) {
-                    err("range operator is illegal without #tokdefs directive");
-                  }
-                  else {
-                    p = define_token(zzaArg(zztasp4,2 ).text);
-                    require(p!=NULL, "element: hash table is broken");
-                    t->upper_range = p->token_type;
-                  }
+                }
+
+                if ( !UserDefdTokens ) {
+                  err("range operator is illegal without #tokdefs directive");
                 }
                 else {
-                  if ( (LA(1)==84)
- ) {
-                    zzmatch(84); 
-                    local_no_copy=1;
- zzCONSUME;
-
-                  }
-                  else {
-                    if ( (setwd6[LA(1)]&0x40) ) {
-                    }
-                    else {zzFAIL(1,zzerr35,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-                  }
-                }
-                zzEXIT(zztasp4);
+                  p = define_token(zzaArg(zztasp3,2 ).text);
+                  require(p!=NULL, "element: hash table is broken");
+                  t->upper_range = p->token_type;
                 }
               }
-              t->no_copy =  no_copy||local_no_copy;
-            }
-            else {
-              if ( (LA(1)==WILD) ) {
-                zzmatch(WILD); zzsubroot(_root, &_sibling, &_tail);
-                strcpy(zzastArg(1)->label, label.text);
+              else {
+                if ( 
+(LA(1)==84) ) {
+                  zzmatch(84); 
+                  local_no_copy=1;
  zzCONSUME;
 
-                {
-                  zzBLOCK(zztasp4);
-                  zzMake0;
-                  {
-                  if ( (LA(1)==84) ) {
-                    zzmatch(84); 
-                    local_no_copy = 1;
- zzCONSUME;
-
-                  }
-                  else {
-                    if ( (setwd6[LA(1)]&0x80) ) {
-                    }
-                    else {zzFAIL(1,zzerr36,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-                  }
-                  zzEXIT(zztasp4);
-                  }
                 }
-                zzastArg(1)->no_copy =  no_copy || local_no_copy;
+                else {
+                  if ( (setwd6[LA(1)]&0x4) ) {
+                  }
+                  else {zzFAIL(1,zzerr31,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                }
               }
-              else {zzFAIL(1,zzerr37,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-            zzEXIT(zztasp3);
+              zzEXIT(zztasp3);
             }
           }
-          t->is_root = 1;
-        }
-        else {zzFAIL(2,zzerr38,zzerr39,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-      }
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    for (;;) {
-      if ( !((setwd7[LA(1)]&0x1)
-)) break;
-      if ( (setwd7[LA(1)]&0x2) && (LA(2)==LABEL) ) {
-        labeled_element(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
-      }
-      else {
-        if ( (setwd7[LA(1)]&0x4) && (setwd7[LA(2)]&0x8) ) {
-          element(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+          t->no_copy =  no_copy||local_no_copy; t->is_root = 1;
         }
         else {
-          if ( (LA(1)==BT) ) {
-            tree(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+          if ( (LA(1)==WILD) ) {
+            zzmatch(WILD); zzsubroot(_root, &_sibling, &_tail); zzCONSUME;
+            {
+              zzBLOCK(zztasp3);
+              zzMake0;
+              {
+                if ( (LA(1)==84) ) {
+                  zzmatch(84); 
+                  local_no_copy = 1;
+ zzCONSUME;
+
+                }
+                else {
+                  if ( (setwd6[LA(1)]&0x8) ) {
+                  }
+                  else {zzFAIL(1,zzerr32,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                }
+                zzEXIT(zztasp3);
+              }
+            }
+            zzastArg(1)->no_copy =  no_copy || local_no_copy; zzastArg(1)->is_root = 1;
           }
-          else break; /* MR6 code for exiting loop "for sure" */
+          else {
+            if ( 
+(setwd6[LA(1)]&0x10) && (LA(2)==LABEL) ) {
+              {
+                zzBLOCK(zztasp3);
+                zzMake0;
+                {
+                  if ( (LA(1)==Token) ) {
+                    zzmatch(Token); 
+                    label = zzaArg(zztasp3,1);
+ zzCONSUME;
+
+                  }
+                  else {
+                    if ( (LA(1)==NonTerm) ) {
+                      zzmatch(NonTerm); 
+                      label = zzaArg(zztasp3,1);
+ zzCONSUME;
+
+                    }
+                    else {zzFAIL(1,zzerr33,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                  }
+                  zzEXIT(zztasp3);
+                }
+              }
+
+              s = (SymEntry *) hash_get(symbols, label.text);
+              if ( s==NULL ) {
+                s = (SymEntry *) hash_add(symbols, label.text, (Entry *) newSymEntry(label.text));
+                s->token = LABEL;
+              }
+              else if ( s->token!=LABEL ) {
+                err(eMsg2("label definition clashes with %s definition: '%s'", zztokens[s->token], label.text));
+              }
+              zzmatch(LABEL);  zzCONSUME;
+              {
+                zzBLOCK(zztasp3);
+                zzMake0;
+                {
+                  if ( (LA(1)==Token) ) {
+                    zzmatch(Token); zzsubroot(_root, &_sibling, &_tail);
+                    strcpy(zzastArg(1)->label, label.text); t = zzastArg(1);
+ zzCONSUME;
+
+                    define_token(zzaArg(zztasp3,1 ).text);
+                    {
+                      zzBLOCK(zztasp4);
+                      zzMake0;
+                      {
+                        if ( (LA(1)==91) ) {
+                          zzmatch(91);  zzCONSUME;
+                          zzmatch(Token);  zzCONSUME;
+                          {
+                            zzBLOCK(zztasp5);
+                            zzMake0;
+                            {
+                              if ( 
+(LA(1)==84) ) {
+                                zzmatch(84); 
+                                local_no_copy=1;
+ zzCONSUME;
+
+                              }
+                              else {
+                                if ( (setwd6[LA(1)]&0x20) ) {
+                                }
+                                else {zzFAIL(1,zzerr34,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                              }
+                              zzEXIT(zztasp5);
+                            }
+                          }
+
+                          if ( !UserDefdTokens ) {
+                            err("range operator is illegal without #tokdefs directive");
+                          }
+                          else {
+                            p = define_token(zzaArg(zztasp4,2 ).text);
+                            require(p!=NULL, "element: hash table is broken");
+                            t->upper_range = p->token_type;
+                          }
+                        }
+                        else {
+                          if ( (LA(1)==84) ) {
+                            zzmatch(84); 
+                            local_no_copy=1;
+ zzCONSUME;
+
+                          }
+                          else {
+                            if ( (setwd6[LA(1)]&0x40) ) {
+                            }
+                            else {zzFAIL(1,zzerr35,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                          }
+                        }
+                        zzEXIT(zztasp4);
+                      }
+                    }
+                    t->no_copy =  no_copy||local_no_copy;
+                  }
+                  else {
+                    if ( (LA(1)==WILD) ) {
+                      zzmatch(WILD); zzsubroot(_root, &_sibling, &_tail);
+                      strcpy(zzastArg(1)->label, label.text);
+ zzCONSUME;
+
+                      {
+                        zzBLOCK(zztasp4);
+                        zzMake0;
+                        {
+                          if ( 
+(LA(1)==84) ) {
+                            zzmatch(84); 
+                            local_no_copy = 1;
+ zzCONSUME;
+
+                          }
+                          else {
+                            if ( (setwd6[LA(1)]&0x80) ) {
+                            }
+                            else {zzFAIL(1,zzerr36,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                          }
+                          zzEXIT(zztasp4);
+                        }
+                      }
+                      zzastArg(1)->no_copy =  no_copy || local_no_copy;
+                    }
+                    else {zzFAIL(1,zzerr37,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                  }
+                  zzEXIT(zztasp3);
+                }
+              }
+              t->is_root = 1;
+            }
+            else {zzFAIL(2,zzerr38,zzerr39,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+          }
         }
+        zzEXIT(zztasp2);
       }
-      zzLOOP(zztasp2);
     }
-    zzEXIT(zztasp2);
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        for (;;) {
+          if ( !((setwd7[LA(1)]&0x1))) break;
+          if ( (setwd7[LA(1)]&0x2) && (LA(2)==LABEL) ) {
+            labeled_element(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+          }
+          else {
+            if ( (setwd7[LA(1)]&0x4) && (setwd7[LA(2)]&0x8) ) {
+              element(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+            }
+            else {
+              if ( (LA(1)==BT) ) {
+                tree(zzSTR,  no_copy ); zzlink(_root, &_sibling, &_tail);
+              }
+              else break; /* MR6 code for exiting loop "for sure" */
+            }
+          }
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
     }
-  }
-  zzmatch(90);  zzCONSUME;
-  zzEXIT(zztasp1);
-  return;
+    zzmatch(90);  zzCONSUME;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  found_error=1;  
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd7, 0x10);
+    zzEXIT(zztasp1);
+    found_error=1;  
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd7, 0x10);
   }
 }
 
@@ -1528,71 +1526,70 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  SymEntry *p=NULL;
-  if ( (setwd7[LA(1)]&0x20) ) {
-    {
-      zzBLOCK(zztasp2);
-      zzMake0;
+    SymEntry *p=NULL;
+    if ( (setwd7[LA(1)]&0x20) ) {
       {
-      if ( (LA(1)==103)
- ) {
-        zzmatch(103); zzastDPush; zzCONSUME;
-        zzmatch(ID); zzastDPush; zzCONSUME;
+        zzBLOCK(zztasp2);
+        zzMake0;
         {
-          zzBLOCK(zztasp3);
-          zzMake0;
-          {
-          if ( (LA(1)==106) ) {
-            zzmatch(106); zzastDPush; zzCONSUME;
+          if ( 
+(LA(1)==103) ) {
+            zzmatch(103); zzastDPush; zzCONSUME;
             zzmatch(ID); zzastDPush; zzCONSUME;
+            {
+              zzBLOCK(zztasp3);
+              zzMake0;
+              {
+                if ( (LA(1)==106) ) {
+                  zzmatch(106); zzastDPush; zzCONSUME;
+                  zzmatch(ID); zzastDPush; zzCONSUME;
+                }
+                else {
+                  if ( (LA(1)==110) ) {
+                  }
+                  else {zzFAIL(1,zzerr40,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                }
+                zzEXIT(zztasp3);
+              }
+            }
           }
           else {
             if ( (LA(1)==110) ) {
             }
-            else {zzFAIL(1,zzerr40,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+            else {zzFAIL(1,zzerr41,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
           }
-          zzEXIT(zztasp3);
-          }
+          zzEXIT(zztasp2);
         }
       }
-      else {
-        if ( (LA(1)==110) ) {
-        }
-        else {zzFAIL(1,zzerr41,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-      }
-      zzEXIT(zztasp2);
-      }
-    }
-    {
-      zzBLOCK(zztasp2);
-      int zzcnt=1;
-      zzMake0;
       {
-      do {
-        _ast = NULL; enum_def(&_ast);
-        zzLOOP(zztasp2);
-      } while ( (LA(1)==110) );
-      zzEXIT(zztasp2);
+        zzBLOCK(zztasp2);
+        int zzcnt=1;
+        zzMake0;
+        {
+          do {
+            _ast = NULL; enum_def(&_ast);
+            zzLOOP(zztasp2);
+          } while ( (LA(1)==110) );
+          zzEXIT(zztasp2);
+        }
       }
-    }
-  }
-  else {
-    if ( (LA(1)==106)
- ) {
-      _ast = NULL; defines(&_ast);
     }
     else {
-      if ( (LA(1)==Eof) ) {
+      if ( (LA(1)==106) ) {
+        _ast = NULL; defines(&_ast);
       }
-      else {zzFAIL(1,zzerr42,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+      else {
+        if ( (LA(1)==Eof) ) {
+        }
+        else {zzFAIL(1,zzerr42,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+      }
     }
-  }
-  zzEXIT(zztasp1);
-  return;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd7, 0x40);
+    zzEXIT(zztasp1);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd7, 0x40);
   }
 }
 
@@ -1608,55 +1605,55 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  int maxt= -1; /**** char *t; **** MR10 ****/ SymEntry *p; int ignore=0;
-  {
-    zzBLOCK(zztasp2);
-    int zzcnt=1;
-    zzMake0;
+    int maxt= -1; /**** char *t; **** MR10 ****/ SymEntry *p; int ignore=0;
     {
-    do {
-      zzmatch(106); zzastDPush; zzCONSUME;
-      zzmatch(ID); zzastDPush;
-      
-      p = (SymEntry *) hash_get(symbols, zzaArg(zztasp2,2 ).text);
-      if ( p==NULL ) {
-        p = (SymEntry *) hash_add(symbols, zzaArg(zztasp2,2 ).text,
-        (Entry *) newSymEntry(zzaArg(zztasp2,2 ).text));
-        require(p!=NULL, "can't add to sym tab");
-        p->token = Token;
-        list_add(&token_list, (void *)p);
-        set_orel(p->token_type, &referenced_tokens);
-      }
-      else
+      zzBLOCK(zztasp2);
+      int zzcnt=1;
+      zzMake0;
       {
-        err(eMsg1("redefinition of token %s; ignored",zzaArg(zztasp2,2 ).text));
-        ignore = 1;
-      }
+        do {
+          zzmatch(106); zzastDPush; zzCONSUME;
+          zzmatch(ID); zzastDPush;
+
+          p = (SymEntry *) hash_get(symbols, zzaArg(zztasp2,2 ).text);
+          if ( p==NULL ) {
+            p = (SymEntry *) hash_add(symbols, zzaArg(zztasp2,2 ).text,
+            (Entry *) newSymEntry(zzaArg(zztasp2,2 ).text));
+            require(p!=NULL, "can't add to sym tab");
+            p->token = Token;
+            list_add(&token_list, (void *)p);
+            set_orel(p->token_type, &referenced_tokens);
+          }
+          else
+          {
+            err(eMsg1("redefinition of token %s; ignored",zzaArg(zztasp2,2 ).text));
+            ignore = 1;
+          }
  zzCONSUME;
 
-      zzmatch(INT); zzastDPush;
-      
-      if ( !ignore ) {
-        p->token_type = atoi(zzaArg(zztasp2,3 ).text);
-        token_association(p->token_type, p->str);
-        /*				fprintf(stderr, "#token %s=%d\n", p->str, p->token_type);*/
-        if ( p->token_type>maxt ) maxt=p->token_type;
-        ignore = 0;
-      }
+          zzmatch(INT); zzastDPush;
+
+          if ( !ignore ) {
+            p->token_type = atoi(zzaArg(zztasp2,3 ).text);
+            token_association(p->token_type, p->str);
+            /*				printf_stderr_continued( "#token %s=%d\n", p->str, p->token_type);*/
+            if ( p->token_type>maxt ) maxt=p->token_type;
+            ignore = 0;
+          }
  zzCONSUME;
 
-      zzLOOP(zztasp2);
-    } while ( (LA(1)==106) );
-    zzEXIT(zztasp2);
+          zzLOOP(zztasp2);
+        } while ( (LA(1)==106) );
+        zzEXIT(zztasp2);
+      }
     }
-  }
-  token_type = maxt + 1;
-  zzEXIT(zztasp1);
-  return;
+    token_type = maxt + 1;
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd7, 0x80);
+    zzEXIT(zztasp1);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd7, 0x80);
   }
 }
 
@@ -1672,197 +1669,196 @@ AST **_root;
   zzBLOCK(zztasp1);
   zzMake0;
   {
-  int maxt = -1, v= -1; /**** char *t; **** MR10 ****/ SymEntry *p; int ignore=0;
-  zzmatch(110); zzastDPush; zzCONSUME;
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
+    int maxt = -1, v= -1; /**** char *t; **** MR10 ****/ SymEntry *p; int ignore=0;
+    zzmatch(110); zzastDPush; zzCONSUME;
     {
-    if ( (LA(1)==ID) ) {
-      zzmatch(ID); zzastDPush; zzCONSUME;
-    }
-    else {
-      if ( (LA(1)==111) ) {
-      }
-      else {zzFAIL(1,zzerr43,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  zzmatch(111); zzastDPush; zzCONSUME;
-  zzmatch(ID); zzastDPush;
-  
-  p = (SymEntry *) hash_get(symbols, zzaArg(zztasp1,4 ).text);
-  if ( p==NULL ) {
-    p = (SymEntry *) hash_add(symbols, zzaArg(zztasp1,4 ).text,
-    (Entry *) newSymEntry(zzaArg(zztasp1,4 ).text));
-    require(p!=NULL, "can't add to sym tab");
-    p->token = Token;
-    list_add(&token_list, (void *)p);
-    set_orel(p->token_type, &referenced_tokens);
-  }
-  else
-  {
-    err(eMsg1("redefinition of token %s; ignored",zzaArg(zztasp1,4 ).text));
-    ignore = 1;
-  }
- zzCONSUME;
-
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    if ( (LA(1)==112)
- ) {
-      zzmatch(112); zzastDPush; zzCONSUME;
-      zzmatch(INT); zzastDPush;
-      v=atoi(zzaArg(zztasp2,2 ).text);
- zzCONSUME;
-
-    }
-    else {
-      if ( (setwd8[LA(1)]&0x1) ) {
-        v++;
-      }
-      else {zzFAIL(1,zzerr44,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  
-  if ( !ignore ) {
-    /*				fprintf(stderr, "#token %s=%d\n", p->str, v);*/
-    if ( v>maxt ) maxt=v;
-    p->token_type = v;
-    token_association(p->token_type, p->str);
-    ignore = 0;
-  }
-  {
-    zzBLOCK(zztasp2);
-    zzMake0;
-    {
-    while ( (LA(1)==113) ) {
-      zzmatch(113); zzastDPush; zzCONSUME;
+      zzBLOCK(zztasp2);
+      zzMake0;
       {
-        zzBLOCK(zztasp3);
-        zzMake0;
-        {
-        if ( (LA(1)==114) ) {
-          zzmatch(114); zzastDPush; zzCONSUME;
-          {
-            zzBLOCK(zztasp4);
-            zzMake0;
-            {
-            if ( (LA(1)==112) ) {
-              zzmatch(112); zzastDPush; zzCONSUME;
-              zzmatch(INT); zzastDPush; zzCONSUME;
-            }
-            else {
-              if ( (setwd8[LA(1)]&0x2)
- ) {
-              }
-              else {zzFAIL(1,zzerr45,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-            zzEXIT(zztasp4);
-            }
-          }
+        if ( (LA(1)==ID) ) {
+          zzmatch(ID); zzastDPush; zzCONSUME;
         }
         else {
-          if ( (LA(1)==115) ) {
-            zzmatch(115); zzastDPush; zzCONSUME;
+          if ( (LA(1)==111) ) {
+          }
+          else {zzFAIL(1,zzerr43,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+    zzmatch(111); zzastDPush; zzCONSUME;
+    zzmatch(ID); zzastDPush;
+
+    p = (SymEntry *) hash_get(symbols, zzaArg(zztasp1,4 ).text);
+    if ( p==NULL ) {
+      p = (SymEntry *) hash_add(symbols, zzaArg(zztasp1,4 ).text,
+      (Entry *) newSymEntry(zzaArg(zztasp1,4 ).text));
+      require(p!=NULL, "can't add to sym tab");
+      p->token = Token;
+      list_add(&token_list, (void *)p);
+      set_orel(p->token_type, &referenced_tokens);
+    }
+    else
+    {
+      err(eMsg1("redefinition of token %s; ignored",zzaArg(zztasp1,4 ).text));
+      ignore = 1;
+    }
+ zzCONSUME;
+
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        if ( (LA(1)==112) ) {
+          zzmatch(112); zzastDPush; zzCONSUME;
+          zzmatch(INT); zzastDPush;
+          v=atoi(zzaArg(zztasp2,2 ).text);
+ zzCONSUME;
+
+        }
+        else {
+          if ( (setwd8[LA(1)]&0x1) ) {
+            v++;
+          }
+          else {zzFAIL(1,zzerr44,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+
+    if ( !ignore ) {
+      /*				printf_stderr_continued( "#token %s=%d\n", p->str, v);*/
+      if ( v>maxt ) maxt=v;
+      p->token_type = v;
+      token_association(p->token_type, p->str);
+      ignore = 0;
+    }
+    {
+      zzBLOCK(zztasp2);
+      zzMake0;
+      {
+        while ( (LA(1)==113) ) {
+          zzmatch(113); zzastDPush; zzCONSUME;
+          {
+            zzBLOCK(zztasp3);
+            zzMake0;
             {
-              zzBLOCK(zztasp4);
-              zzMake0;
-              {
-              if ( (LA(1)==112) ) {
-                zzmatch(112); zzastDPush; zzCONSUME;
-                zzmatch(INT); zzastDPush; zzCONSUME;
+              if ( (LA(1)==114) ) {
+                zzmatch(114); zzastDPush; zzCONSUME;
+                {
+                  zzBLOCK(zztasp4);
+                  zzMake0;
+                  {
+                    if ( (LA(1)==112) ) {
+                      zzmatch(112); zzastDPush; zzCONSUME;
+                      zzmatch(INT); zzastDPush; zzCONSUME;
+                    }
+                    else {
+                      if ( (setwd8[LA(1)]&0x2) ) {
+                      }
+                      else {zzFAIL(1,zzerr45,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                    }
+                    zzEXIT(zztasp4);
+                  }
+                }
               }
               else {
-                if ( (setwd8[LA(1)]&0x4) ) {
-                }
-                else {zzFAIL(1,zzerr46,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-              }
-              zzEXIT(zztasp4);
-              }
-            }
-          }
-          else {
-            if ( (LA(1)==ID) ) {
-              zzmatch(ID); zzastDPush;
-              
-              p = (SymEntry *) hash_get(symbols, zzaArg(zztasp3,1 ).text);
-              if ( p==NULL ) {
-                p = (SymEntry *) hash_add(symbols, zzaArg(zztasp3,1 ).text,
-                (Entry *) newSymEntry(zzaArg(zztasp3,1 ).text));
-                require(p!=NULL, "can't add to sym tab");
-                p->token = Token;
-                list_add(&token_list, (void *)p);
-                set_orel(p->token_type, &referenced_tokens);
-              }
-              else
-              {
-                err(eMsg1("redefinition of token %s; ignored",zzaArg(zztasp3,1 ).text));
-                ignore = 1;
-              }
- zzCONSUME;
-
-              {
-                zzBLOCK(zztasp4);
-                zzMake0;
-                {
-                if ( (LA(1)==112)
- ) {
-                  zzmatch(112); zzastDPush; zzCONSUME;
-                  zzmatch(INT); zzastDPush;
-                  v=atoi(zzaArg(zztasp4,2 ).text);
- zzCONSUME;
-
+                if ( (LA(1)==115) ) {
+                  zzmatch(115); zzastDPush; zzCONSUME;
+                  {
+                    zzBLOCK(zztasp4);
+                    zzMake0;
+                    {
+                      if ( 
+(LA(1)==112) ) {
+                        zzmatch(112); zzastDPush; zzCONSUME;
+                        zzmatch(INT); zzastDPush; zzCONSUME;
+                      }
+                      else {
+                        if ( (setwd8[LA(1)]&0x4) ) {
+                        }
+                        else {zzFAIL(1,zzerr46,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                      }
+                      zzEXIT(zztasp4);
+                    }
+                  }
                 }
                 else {
-                  if ( (setwd8[LA(1)]&0x8) ) {
-                    v++;
-                  }
-                  else {zzFAIL(1,zzerr47,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-                }
-                zzEXIT(zztasp4);
-                }
-              }
-              
-              if ( !ignore ) {
-                /*						fprintf(stderr, "#token %s=%d\n", p->str, v);*/
-                if ( v>maxt ) maxt=v;
-                p->token_type = v;
-                token_association(p->token_type, p->str);
-                ignore = 0;
-              }
-            }
-            else {
-              if ( (setwd8[LA(1)]&0x10) ) {
-              }
-              else {zzFAIL(1,zzerr48,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
-            }
-          }
-        }
-        zzEXIT(zztasp3);
-        }
-      }
-      zzLOOP(zztasp2);
-    }
-    zzEXIT(zztasp2);
-    }
-  }
-  zzmatch(116); zzastDPush; zzCONSUME;
-  zzmatch(117); zzastDPush;
-  token_type = maxt + 1;
+                  if ( (LA(1)==ID) ) {
+                    zzmatch(ID); zzastDPush;
+
+                    p = (SymEntry *) hash_get(symbols, zzaArg(zztasp3,1 ).text);
+                    if ( p==NULL ) {
+                      p = (SymEntry *) hash_add(symbols, zzaArg(zztasp3,1 ).text,
+                      (Entry *) newSymEntry(zzaArg(zztasp3,1 ).text));
+                      require(p!=NULL, "can't add to sym tab");
+                      p->token = Token;
+                      list_add(&token_list, (void *)p);
+                      set_orel(p->token_type, &referenced_tokens);
+                    }
+                    else
+                    {
+                      err(eMsg1("redefinition of token %s; ignored",zzaArg(zztasp3,1 ).text));
+                      ignore = 1;
+                    }
  zzCONSUME;
 
-  zzEXIT(zztasp1);
-  return;
+                    {
+                      zzBLOCK(zztasp4);
+                      zzMake0;
+                      {
+                        if ( (LA(1)==112) ) {
+                          zzmatch(112); zzastDPush; zzCONSUME;
+                          zzmatch(INT); zzastDPush;
+                          v=atoi(zzaArg(zztasp4,2 ).text);
+ zzCONSUME;
+
+                        }
+                        else {
+                          if ( (setwd8[LA(1)]&0x8) ) {
+                            v++;
+                          }
+                          else {zzFAIL(1,zzerr47,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                        }
+                        zzEXIT(zztasp4);
+                      }
+                    }
+
+                    if ( !ignore ) {
+                      /*						printf_stderr_continued( "#token %s=%d\n", p->str, v);*/
+                      if ( v>maxt ) maxt=v;
+                      p->token_type = v;
+                      token_association(p->token_type, p->str);
+                      ignore = 0;
+                    }
+                  }
+                  else {
+                    if ( 
+(setwd8[LA(1)]&0x10) ) {
+                    }
+                    else {zzFAIL(1,zzerr48,&zzMissSet,&zzMissText,&zzBadTok,&zzBadText,&zzErrk); goto fail;}
+                  }
+                }
+              }
+              zzEXIT(zztasp3);
+            }
+          }
+          zzLOOP(zztasp2);
+        }
+        zzEXIT(zztasp2);
+      }
+    }
+    zzmatch(116); zzastDPush; zzCONSUME;
+    zzmatch(117); zzastDPush;
+    token_type = maxt + 1;
+ zzCONSUME;
+
+    zzEXIT(zztasp1);
+    return;
 fail:
-  zzEXIT(zztasp1);
-  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
-  zzresynch(setwd8, 0x20);
+    zzEXIT(zztasp1);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzresynch(setwd8, 0x20);
   }
 }
 
@@ -1880,20 +1876,20 @@ int etok;
 int k;
 SetWordType *eset;
 #endif
-{
-fprintf(stderr, ErrHdr, FileStr[CurFile]!=NULL?FileStr[CurFile]:"stdin", zzline);
-fprintf(stderr, " syntax error at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
-if ( !etok && !eset ) {fprintf(stderr, "\n"); return;}
-if ( k==1 ) fprintf(stderr, " missing");
-else
-{
-fprintf(stderr, "; \"%s\" not", bad_text);
-if ( zzset_deg(eset)>1 ) fprintf(stderr, " in");
-}
-if ( zzset_deg(eset)>0 ) zzedecode(eset);
-else fprintf(stderr, " %s", zztokens[etok]);
-if ( strlen(egroup) > (size_t)0 ) fprintf(stderr, " in %s", egroup);
-fprintf(stderr, "\n");
+{                            
+  printf_stderr(FileStr[CurFile]!=NULL?FileStr[CurFile]:"stdin", zzline
+  ," syntax error at \"%s\"", (tok==zzEOF_TOKEN)?"EOF":text);
+  if ( !etok && !eset ) {printf_stderr_continued("\n"); return;}
+  if ( k==1 ) printf_stderr_continued(" missing");
+  else
+  {
+    printf_stderr_continued("; \"%s\" not", bad_text);
+    if ( zzset_deg(eset)>1 ) printf_stderr_continued(" in");
+  }
+  if ( zzset_deg(eset)>0 ) zzedecode(eset);
+  else printf_stderr_continued(" %s", zztokens[etok]);
+  if ( strlen(egroup) > (size_t)0 ) printf_stderr_continued(" in %s", egroup);
+  printf_stderr_continued("\n");
 }
 
 SymEntry *
@@ -1904,23 +1900,23 @@ define_token(text)
 char *text;
 #endif
 {
-SymEntry *p;
+  SymEntry *p;
 
-	p = (SymEntry *) hash_get(symbols, text);
-if ( p==NULL ) {
-if ( UserDefdTokens ) {
-err(eMsg1("implicit token definition of '%s' not allowed with #tokdefs",text));
-}
-p = (SymEntry *) hash_add(symbols, text, (Entry *) newSymEntry(text));
-p->token = Token;
-p->token_type = token_type++;
-token_association(p->token_type, p->str);
-list_add(&token_list, (void *)p);
-set_orel(p->token_type, &referenced_tokens);
-}
-else {
-if ( p->token!=Token )
-err(eMsg2("token definition clashes with %s definition: '%s'", zztokens[p->token], text));
-}
-return p;
+  p = (SymEntry *) hash_get(symbols, text);
+  if ( p==NULL ) {
+    if ( UserDefdTokens ) {
+      err(eMsg1("implicit token definition of '%s' not allowed with #tokdefs",text));
+    }
+    p = (SymEntry *) hash_add(symbols, text, (Entry *) newSymEntry(text));
+    p->token = Token;
+    p->token_type = token_type++;
+    token_association(p->token_type, p->str);
+    list_add(&token_list, (void *)p);
+    set_orel(p->token_type, &referenced_tokens);
+  }
+  else {
+    if ( p->token!=Token )
+    err(eMsg2("token definition clashes with %s definition: '%s'", zztokens[p->token], text));
+  }
+  return p;
 }

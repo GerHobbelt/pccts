@@ -98,7 +98,10 @@ AST *zztmake();
 void zzlink(AST **, AST **, AST **);
 void zzsubchild(AST **, AST **, AST **);
 void zzsubroot(AST **, AST **, AST **);
-void zzpre_ast(AST *, void (*)(AST *), void (*)(AST *), void (*)(AST *));
+void zzpre_ast(AST *tree,
+               void (*func)(AST *),   /* apply this to each tree node */
+	       void (*before)(AST *), /* apply this to root of subtree before preordering it */
+	       void (*after)(AST *)); /* apply this to root of subtree after preordering it */
 void zzfree_ast(AST *);
 AST *zzdup_ast(AST *);
 void zztfree(AST *);

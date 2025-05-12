@@ -1,0 +1,25 @@
+/* rexx */
+/* loadngo -- run a compile of an xl program and run the output                                 */
+parse arg name opts                /* get the parameters                                        */
+address command
+if ~exists(name".xl") then         /* make sure the ".xl" file exists                           */
+   do
+      say name".xl not found"
+      exit
+   end
+
+say "Compiling..."               
+if exists(name".o") then            /* if the ".o" file already exists, delete it               */
+   "delete "name".o quiet"
+"xl "opts" -o "name".o <"name".xl"  /* compile the ".xl" file                                   */
+if exists(name".o") then            /* if a ".o" file exists, run it                            */
+   do
+      say "Running..."
+      "go "name".o"
+   end
+else                                /* otherwise, display an error message                      */
+   do
+      say ""
+      say ">>>>>> "name" not run due to compilation error(s)."
+   end
+exit

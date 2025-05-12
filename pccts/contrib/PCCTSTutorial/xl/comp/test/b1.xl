@@ -1,0 +1,5 @@
+program incorrect1 =
+   var x:Integer;
+begin // incorrect1
+   x := TRUE;  // assign Boolean value to an Integer
+end incorrect1.

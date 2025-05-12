@@ -1,0 +1,7 @@
+SCC = This is a Source Code Control file
+
+[astlib.mak]
+SCC_Project_Name = "$/prj_vc/projects/pccts/contrib/samples/f77", XOAAAAAA
+
+[f77bcc.mak]
+SCC_Project_Name = "$/prj_vc/projects/pccts/contrib/samples/f77", XOAAAAAA

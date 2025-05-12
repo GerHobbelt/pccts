@@ -1,0 +1,1106 @@
+#header <<
+	#define CASTBase_h	/*To eliminate castbase.h*/
+	#include <assert.h>
+	#include "stdpccts.h"
+	/* Only requirements are that the user define what an AST is; it must have
+	 * right, down pointers and a token field.  After that, the user can put it
+	 * what he/she wants
+	 */
+
+	typedef AST SORAST;
+
+	#ifdef __STDC__
+	#include "stdlib.h"
+	#else
+	#include "malloc.h"
+	#endif
+
+	extern void f77NewLine(int indent);
+	extern void f77PutText(const char *text);
+	extern void f77PrintLine(void);
+	extern void f77PutLabel(const char *text);
+
+	extern int Indentation;
+	extern int DontStartNewLine;
+
+
+
+
+extern void f77PutText(const char *text); /* f77print.cpp */
+
+>>
+
+<<
+
+/* define error routines here or include sorcerer.c */
+#include "errsupport.c"
+
+int Indentation = 1; /*Indentation is 1 in order to start in column 7*/
+
+void F77TreePrinter(AST *root)
+{
+	SORAST *ast_root = root; /*Copy it here. For some reason it gets overwriten by program.*/
+	STreeParser myparser;
+	STreeParserInit(o_, &myparser); /* calls the 'f77out.sor' program() rule! --> use f77out.sor _refvar_inits()! */
+
+    /* gen code */
+    o_program(&myparser, &root);
+}
+
+>>
+
+program:<<>>
+	{comment_block}
+	{file_block}
+	{block_globals_block {comment_block}}
+	main_program {comment_block}
+	(subroutine_block {comment_block})*
+	;
+
+main_program:
+	{decl_block}
+	{exec_block}
+	end_statement
+	;
+
+subroutine_block:<<STreeParser Parser;>>
+	(subroutine_statement|function_statement)
+	{comment_block}
+	{decl_block}
+	{exec_block}
+	end_statement
+	;
+
+decl_block:
+	decl_statement
+	(decl_statement
+	|comment_line
+	|blank_line
+	|control_image
+	)*
+	;
+
+decl_statement:
+	common_statement
+	|data_statement
+	|character_statement
+	|integer_statement
+	|real_statement
+	|logical_statement
+	|precision_statement
+	|dimension_statement
+	|equivalence_statement
+	|external_statement
+	|intrinsic_statement
+	|save_statement
+	|parameter_statement
+	|implicit_statement
+	;
+
+comment_block:
+	(comment_line
+	|blank_line
+	|control_image
+	)+
+	;
+
+exec_statement:
+	continue_statement
+	|assignment_statement
+	|do_statement
+	|unconditional_goto
+	|computed_goto
+	|assigned_goto
+	|read_statement
+	|write_statement
+	|open_statement
+	|close_statement
+	|inquire_statement
+	|change_statement
+	|find_statement	/*UNISYS FORTRAN V3.8*/
+	|call_statement
+	|block_if_statement
+	|arithm_if_statement
+	|log_if_statement
+	|stop_statement
+	|return_statement
+	|format_statement
+	|backspace_statement
+	|rewind_statement
+	|endfile_statement
+	|assign_statement
+	;
+
+exec_block:
+	exec_statement
+	(exec_statement
+	|comment_line
+	|entry_statement
+	|blank_line
+	|control_image
+	)*
+	;
+
+block_globals_block:
+	block_globals_statement
+	{file_block}
+	{export_statement {comment_block}}
+	end_statement
+	;
+
+file_block:
+	file_statement
+	(file_statement
+	|comment_line
+	|blank_line
+	|control_image
+	)*
+	;
+
+comment_line:<<f77NewLine(0);>>
+	#(c:COMMENT_LINE
+	<<
+	f77PutText("C");
+	f77PutText(c->f77NodeText);
+	>>
+	)
+	<<f77PrintLine();>>;
+
+blank_line:<<f77NewLine(0);>>
+	#(c:BLANK_LINE
+	<<
+	f77PutText(c->f77NodeText);
+	>>
+	)
+	<<f77PrintLine();>>;
+
+block_globals_statement: <<f77NewLine(Indentation);>>
+	#(BLOCK_GLOBALS {label} <<f77PutText("BLOCK GLOBALS");>>)
+	<<f77PrintLine();>>;
+
+common_statement: <<f77NewLine(Indentation);>>
+	#(COMMON {label} <<f77PutText("COMMON ");>>
+	block_item	(comma block_item)*
+	)
+	<<f77PrintLine();>>;
+
+block_item :
+	lvalue
+	|DIV <<f77PutText("/");>> {identifier} DIV <<f77PutText("/");>> lvalue
+	|CONCAT <<f77PutText("//");>> lvalue
+	;
+
+ /*******************/
+ /*SAVE statement   */
+ /*******************/
+save_statement: <<f77NewLine(Indentation);>>
+ #(SAVE {label} <<f77PutText("SAVE");>> lp save_item (comma save_item)* rp)
+	;
+save_item:<<char buffer[100];>>
+	(DIV i:IDENTIFIER DIV /*Common block designator*/
+		<<
+		sprintf(buffer, "/%s/", i->f77NodeText);
+		f77PutText(buffer);
+		>>
+	|i:IDENTIFIER
+		<<
+		f77PutText(buffer);
+		>>
+	)
+	;
+
+ /*******************/
+ /*PARAMETER statement   */
+ /*******************/
+parameter_statement: <<f77NewLine(Indentation);>>
+	#(PARAMETER {label} <<f77PutText("PARAMETER");>> lp para_item (comma para_item)* rp)
+	<<f77PrintLine();>>;
+
+para_item: c:CONSTANT_NAME <<f77PutText(c->f77NodeText);>> EQUAL <<f77PutText("=");>> expression
+	;
+
+ /*******************/
+ /*EXTERNAL statement   */
+ /*******************/
+external_statement: <<f77NewLine(Indentation);>>
+	#(EXTERNAL {label} <<f77PutText("EXTERNAL ");>> function_name (comma function_name)*)
+	<<f77PrintLine();>>;
+
+function_name: f:FUNCTION_NAME <<f77PutText(f->f77NodeText);>>
+	;
+
+ /*******************/
+ /*INTRINSIC statement   */
+ /*******************/
+intrinsic_statement: <<f77NewLine(Indentation);>>
+	#(INTRINSIC {label} <<f77PutText("INTRINSIC ");>> function_name (comma function_name)*)
+	<<f77PrintLine();>>;
+
+ /*******************/
+ /*IMPLICIT statement   */
+ /*******************/
+implicit_statement: <<f77NewLine(Indentation);>>
+	#(IMPLICIT {label} <<f77PutText("IMPLICIT ");>> implicit_item (comma implicit_item)*)
+	<<f77PrintLine();>>;
+
+implicit_item: implicit_type lp letter_spec (comma letter_spec)* rp
+	;
+
+implicit_type: <<char buffer[100];>>
+		(INTEGER			<<f77PutText("INTEGER");>>
+		|REAL				<<f77PutText("REAL");>>
+		|DOUBLE_PRECISION	<<f77PutText("DOUBLE PRECISION");>>
+		|LOGICAL			<<f77PutText("LOGICAL");>>
+		|CHARACTER			<<f77PutText("CHARACTER");>>
+		|COMPLEX			<<f77PutText("COMPLEX");>>
+		|DOUBLE_COMPLEX		<<f77PutText("DOUBLE COMPLEX");>>
+		)
+		{STAR c:CONSTINT
+						<<
+						sprintf(buffer,"*%s", c->f77NodeText);
+						f77PutText(buffer);
+						>>}
+		;
+
+letter_spec:<<char buffer[100];>>
+	i:IDENTIFIER <<sprintf(buffer,"%s",i->f77NodeText);>>
+	{MIN i:IDENTIFIER
+					<<
+					strcat(buffer,"-");
+					strcat(buffer,i->f77NodeText);
+					>>
+	}
+	<<f77PutText(buffer);>>;
+
+data_statement: <<f77NewLine(Indentation);>>
+	#(DATA <<f77PutText("DATA ");>> (any_token)+ )
+	<<f77PrintLine();>>;
+
+inquire_statement: <<f77NewLine(Indentation);>>
+	#(INQUIRE <<f77PutText("INQUIRE ");>> (any_token)+ )
+	<<f77PrintLine();>>;
+
+assignment_statement: <<f77NewLine(Indentation);>>
+	#(
+	e:EQUAL
+	{label}
+	(lvalue
+	|f:FUNCTION_NAME 	<<f77PutText(f->f77NodeText);>> /*This is allowed in a FUNCTION definition.*/
+	) <<f77PutText(e->f77NodeText);>>
+	rvalue
+	)
+	<<f77PrintLine();>>;
+
+lvalue:
+		int_lvalue
+		|real_lvalue
+		|char_lvalue
+		|log_lvalue
+		|double_lvalue
+		;
+
+rvalue:	expression
+	;
+
+array_reference:
+	int_array_ref
+	|real_array_ref
+	|char_array_ref
+	|double_array_ref
+	|log_array_ref
+	;
+
+int_lvalue: 
+	int_array_ref
+	|i:INTEGER_ID <<f77PutText(i->f77NodeText);>>
+	;
+
+real_lvalue: 
+	real_array_ref
+	|i:REAL_ID	<<f77PutText(i->f77NodeText);>>
+	;
+
+char_lvalue: 
+	char_array_ref
+	|i:CHARACTER_ID <<f77PutText(i->f77NodeText);>>
+	|substring
+	;
+
+double_lvalue: 
+	double_array_ref
+	|i:DOUBLE_PRECISION_ID <<f77PutText(i->f77NodeText);>>
+	;
+
+log_lvalue: 
+	log_array_ref
+	|i:LOGICAL_ID <<f77PutText(i->f77NodeText);>>
+	;
+
+int_array_ref:
+	#(a:INTEGER_ARRAY_ID <<f77PutText(a->f77NodeText);>> {lp expression
+	(comma expression)* rp})
+	;
+
+real_array_ref:
+	#(a:REAL_ARRAY_ID <<f77PutText(a->f77NodeText);>> {lp expression
+	(comma expression)* rp})
+	;
+
+char_array_ref:
+	#(a:CHARACTER_ARRAY_ID <<f77PutText(a->f77NodeText);>> {lp expression
+	(comma expression)* rp})
+	;
+
+log_array_ref:
+	#(a:LOGICAL_ARRAY_ID <<f77PutText(a->f77NodeText);>> {lp expression
+	(comma expression)* rp})
+	;
+
+double_array_ref:
+	#(a:DOUBLE_PRECISION_ARRAY_ID <<f77PutText(a->f77NodeText);>> {lp expression
+	(comma expression)* rp})
+	;
+
+array_name:
+	(a:INTEGER_ARRAY_ID <<f77PutText(a->f77NodeText);>>
+	|a:REAL_ARRAY_ID <<f77PutText(a->f77NodeText);>>
+	|a:CHARACTER_ARRAY_ID <<f77PutText(a->f77NodeText);>>
+	|a:LOGICAL_ARRAY_ID <<f77PutText(a->f77NodeText);>>
+	|a:DOUBLE_PRECISION_ARRAY_ID <<f77PutText(a->f77NodeText);>>
+	)
+	;
+
+function_reference:
+	#(a:FUNCTION_NAME <<f77PutText(a->f77NodeText);>> lp
+	expression
+	(comma
+	expression)*
+	rp
+	)
+	;
+
+expression:
+	real_expression
+	|exp_operand
+	;
+
+real_expression:
+	#(UNARY_PLU <<f77PutText("+");>> expression)
+	|#(NOT <<f77PutText(".NOT.");>> expression)
+	|#(UNARY_MIN <<f77PutText("-");>> expression)
+	|#(PLU expression	<<f77PutText("+");>> expression)
+	|#(MIN expression	<<f77PutText("-");>> expression)
+	|#(MUL expression	<<f77PutText("*");>> expression)
+	|#(DIV expression	<<f77PutText("/");>> expression)
+	|#(POW expression	<<f77PutText("**");>> expression)
+	|#(AND expression	<<f77PutText(".AND.");>> expression)
+	|#(OR expression	<<f77PutText(".OR.");>> expression)
+	|#(NEQV expression	<<f77PutText(".NEQV.");>> expression)
+	|#(EQV expression	<<f77PutText(".EQV.");>> expression)
+	|#(LT expression 	<<f77PutText(".LT.");>> expression)
+	|#(LE expression 	<<f77PutText(".LE.");>> expression)
+	|#(EQ expression 	<<f77PutText(".EQ.");>> expression)
+	|#(NE expression 	<<f77PutText(".NE.");>> expression)
+	|#(GT expression 	<<f77PutText(".GT.");>> expression)
+	|#(GE expression 	<<f77PutText(".GE.");>> expression)
+	|#(IS expression 	<<f77PutText(".IS.");>> expression)
+	|#(CONCAT expression <<f77PutText("//");>> expression)
+	;
+
+exp_operand:
+	array_reference
+	|function_reference
+	|i:INTEGER_ID	<<f77PutText(i->f77NodeText);>>
+	|i:REAL_ID		<<f77PutText(i->f77NodeText);>>
+	|d:DOUBLE_PRECISION_ID		<<f77PutText(d->f77NodeText);>>
+	|i:CONSTINT	<<f77PutText(i->f77NodeText);>>
+	|h:HEX_CONST	<<f77PutText(h->f77NodeText);>>
+	|b:BASIC_REAL	<<f77PutText(b->f77NodeText);>>
+	|r:REAL_EXPO	<<f77PutText(r->f77NodeText);>>
+	|i:LOGICAL_ID	<<f77PutText(i->f77NodeText);>>
+	|i:T_TRUE		<<f77PutText(".TRUE.");>>
+	|i:T_FALSE		<<f77PutText(".FALSE.");>>
+	|substring
+	|c:CHARACTER_ID		<<f77PutText(c->f77NodeText);>>
+	|(<<char buffer[100];>> h:HOLLERITH_CONST
+		<<
+		sprintf(buffer, "%dH%s", strlen(h->f77NodeText), h->f77NodeText);
+		f77PutText(h->f77NodeText);
+		>>)
+	|(<<char buffer[100];>> quoted_string)
+	|lp expression rp
+	;
+
+
+integer_expr:
+	#(UNARY_PLU <<f77PutText("+");>> integer_expr)
+	|#(UNARY_MIN <<f77PutText("-");>> integer_expr)
+	|#(PLU integer_expr <<f77PutText("+");>> (integer_expr|quoted_string))
+	|#(MIN integer_expr <<f77PutText("-");>> (integer_expr|quoted_string))
+	|#(MUL integer_expr <<f77PutText("*");>> integer_expr)
+	|#(DIV integer_expr <<f77PutText("/");>> integer_expr)
+	|lp integer_expr rp
+	|int_array_ref
+	|function_reference
+	|i:INTEGER_ID	<<f77PutText(i->f77NodeText);>>
+	|i:CONSTINT		<<f77PutText(i->f77NodeText);>>
+	|h:HEX_CONST	<<f77PutText(h->f77NodeText);>>
+	|r:REAL_ID		<<f77PutText(r->f77NodeText);>>/*UNISYS FORTRAN allows this!*/
+	;
+
+substring: 
+	a:CHARACTER_SUBSTRING <<f77PutText(a->f77NodeText);>>
+	lp {expression}
+	COLUMN <<f77PutText(":");>>
+	{expression}
+	rp
+	;
+
+control_image: <<f77NewLine(0);>>
+	#(CONTROL_IMAGE <<f77PutText("C$");>> /*We print it as a comment line*/
+	(<<f77PutText(" ");>> any_token)*
+	)
+	<<f77PrintLine();>>;
+
+file_statement: <<f77NewLine(0);>>
+	#(f:FILEKEYWORD <<f77PutText("FILE ");>>
+	const_int lp file_item (comma file_item)* rp)
+	<<f77PrintLine();>>;
+
+file_item:
+		KIND EQUAL <<f77PutText("KIND= ");>> any_token
+		|TITLE EQUAL <<f77PutText("FILE= ");>> any_token /*Conversion: UNISYS TITLE->ANSI FILE*/
+		|FILETYPE EQUAL <<f77PutText("FILETYPE= ");>> any_token
+		|NEWFILE EQUAL <<f77PutText("NEWFILE= ");>> any_token
+		|MYUSE EQUAL <<f77PutText("MYUSE= ");>> any_token
+		|MAXRECSIZE <<f77PutText("RECL= ");>> EQUAL any_token /*Conversion: UNISYS MAXRECSIZE->ANSI RECL*/
+		|SAVEFACTOR <<f77PutText("SAVEFACTOR= ");>> EQUAL any_token
+		|BLOCKSIZE <<f77PutText("BLOCKSIZE= ");>> EQUAL any_token
+		|SECURITYTYPE EQUAL <<f77PutText("SECURITYTYPE= ");>> any_token
+		|AREAS EQUAL <<f77PutText("AREAS= ");>> any_token
+		|AREASIZE EQUAL <<f77PutText("AREASIZE= ");>> any_token
+		|PROTECTION EQUAL <<f77PutText("PROTECTION= ");>> any_token
+		|UNITS EQUAL <<f77PutText("UNITS= ");>> any_token
+		|UPDATEFILE EQUAL <<f77PutText("UPDATEFILE= ");>> any_token
+		|FILE_WORD EQUAL <<f77PutText("FILE= ");>> any_token
+		|STATUS EQUAL <<f77PutText("STATEUS= ");>> any_token
+		|ACCESS EQUAL <<f77PutText("ACCESS= ");>> any_token
+		|FORM EQUAL <<f77PutText("FORM= ");>> any_token
+		|RECL EQUAL <<f77PutText("RECL= ");>> any_token
+		|BLANK EQUAL <<f77PutText("BLANK= ");>> any_token
+		;
+
+	/*UNISYS FORTRAN V3.8*/
+find_statement: <<f77NewLine(Indentation);>>
+	#(FIND {label} <<f77PutText("FIND ");>> lp findlist rp
+	)
+	<<f77PrintLine();>>;
+
+findlist:
+	(#(COMMA unit_id <<f77PutText(",");>> REC EQUAL <<f77PutText("REC=");>> integer_expr))
+	|(#(APOSTROPHY unit_id <<f77PutText(",");>> integer_expr))
+	|(#(UNIT EQUAL <<f77PutText("UNIT=");>> unit_id comma REC EQUAL <<f77PutText("REC=");>> integer_expr))
+	|(#(REC EQUAL <<f77PutText("REC=");>> integer_expr comma UNIT EQUAL <<f77PutText("UNIT=");>> unit_id))
+	;
+
+	/*END UNISYS FORTRAN V3.8*/
+
+character_statement: <<f77NewLine(Indentation);>>
+	#(CHARACTER {label} <<f77PutText("CHARACTER ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+integer_statement: <<f77NewLine(Indentation);>>
+	#(INTEGER {label} <<f77PutText("INTEGER ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+real_statement: <<f77NewLine(Indentation);>>
+	#(REAL {label} <<f77PutText("REAL ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+logical_statement: <<f77NewLine(Indentation);>>
+	#(LOGICAL {label} <<f77PutText("LOGICAL ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+precision_statement: <<f77NewLine(Indentation);>>
+	#(DOUBLE_PRECISION {label} <<f77PutText("DOUBLE PRECISION ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+dimension_statement: <<f77NewLine(Indentation);>>
+	#(DIMENSION {label} <<f77PutText("DIMENSION ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+equivalence_statement: <<f77NewLine(Indentation);>>
+	#(EQUIVALENCE {label} <<f77PutText("EQUIVALENCE ");>>
+	(any_token)*
+	)
+	<<f77PrintLine();>>;
+
+
+backspace_statement: <<f77NewLine(Indentation);>>
+	#(BACKSPACE {label} <<f77PutText("READ ");>> io_specifier)
+	<<f77PrintLine();>>;
+
+endfile_statement: <<f77NewLine(Indentation);>>
+	#(ENDFILE {label} <<f77PutText("ENDFILE ");>> io_specifier)
+	<<f77PrintLine();>>;
+
+rewind_statement: <<f77NewLine(Indentation);>>
+	#(REWIND {label} <<f77PutText("REWIND ");>> io_specifier)
+	<<f77PrintLine();>>;
+
+ /*This is the same for BACKSPACE, ENDFILE and REWIND. Save some code size.*/
+io_specifier:
+	IO_SPEC_LP <<f77PutText("(");>>
+	{UNIT EQUAL <<f77PutText("UNIT=");>>} unit_id
+	(#(ERR comma EQUAL <<f77PutText("ERR=");>> const_int)
+	|#(IOSTAT comma EQUAL <<f77PutText("IOSTAT=");>> exp_operand)
+	)*
+	IO_SPEC_RP <<f77PutText(")");>>
+	|unit_id
+	;
+
+read_statement: <<f77NewLine(Indentation);>>
+	#(READ {label} <<f77PutText("READ ");>> control_info input_list)
+	<<f77PrintLine();>>;
+
+write_statement: <<f77NewLine(Indentation);>>
+	#(WRITE {label} <<f77PutText("WRITE ");>> control_info {output_list})
+	<<f77PrintLine();>>;
+
+control_info:
+		lp (
+		#(COMMA unit_id <<f77PutText(",");>> format_id) |
+		#(APOSTROPHY unit_id <<f77PutText("\'");>> integer_expr) |
+		#(EQUAL UNIT <<f77PutText("=");>> unit_id) |
+		unit_id
+		) (the_remainder)* rp
+		;
+
+the_remainder: comma
+		(FMT	 	EQUAL <<f77PutText("FMT=");>> format_id
+		|IO_DATA	EQUAL <<f77PutText("DATA=");>> integer_expr
+		|REC 		EQUAL <<f77PutText("REC=");>> integer_expr
+		|END 		EQUAL <<f77PutText("END=");>> const_int
+		|ERR 		EQUAL <<f77PutText("ERR=");>> const_int
+		|IOSTAT 	EQUAL <<f77PutText("IOSTAT=");>> exp_operand
+		|URGENT 	EQUAL <<f77PutText("URGENT=");>> expression
+		|format_id
+		)
+		;
+
+
+unit_id: STAR <<f77PutText("*");>>
+		|expression /*Integer or character expressions allowed.*/
+		;
+
+format_id:
+		(STAR <<f77PutText("*");>>  {SLASH <<f77PutText("/");>> /*UNISYS FORTRAN V3.8*/})
+		|SLASH <<f77PutText("/");>>
+		|expression
+		;
+
+input_list: input_item (comma input_item)*
+	;
+input_item: (exp_operand | inp_implied_list)
+	;
+inp_implied_list:
+	IMPLIED_LP <<f77PutText("(");>>
+	(input_item comma)+ implied_loop
+	IMPLIED_RP <<f77PutText(")");>>
+	;
+
+output_list: output_item (comma output_item)*
+	;
+
+output_item: outp_implied_list|rvalue;
+
+outp_implied_list:
+	IMPLIED_LP <<f77PutText("(");>>
+	(output_item comma)+ implied_loop
+	IMPLIED_RP <<f77PutText(")");>>
+			;
+implied_loop:
+	i:IMPLIED_DO_VARIABLE <<f77PutText(i->f77NodeText);>> equal
+	integer_expr comma integer_expr
+	{comma integer_expr}
+	;
+
+open_statement: <<f77NewLine(Indentation);>>
+	#(OPEN {label} <<f77PutText("OPEN ");>>
+	lp open_item (comma open_item)* rp
+	)
+	<<f77PrintLine();>>;
+
+open_item:
+		({UNIT		EQUAL <<f77PutText("UNIT=");>>}		unit_id)
+		|(ERR		EQUAL <<f77PutText("ERR=");>>		const_int)
+		|(FILE_WORD	EQUAL <<f77PutText("FILE=");>>		expression)
+		|(STATUS	EQUAL <<f77PutText("STATUS=");>>	expression)
+		|(ACCESS	EQUAL <<f77PutText("ACCESS=");>>	expression)
+		|(FORM		EQUAL <<f77PutText("FORM=");>>		expression)
+		|(RECL		EQUAL <<f77PutText("RECL=");>>		expression)
+		|(IOSTAT	EQUAL <<f77PutText("IOSTAT=");>>	exp_operand)
+		|(TITLE		EQUAL <<f77PutText("FILE=");>>		expression) /*Conversion: UNISYS TITLE->ANSI FILE*/
+		|(DISP		EQUAL <<f77PutText("STATUS=");>>	expression) /*Conversion: UNISYS DISP->ANSI STATUS*/
+		|(SUBFILE	EQUAL <<f77PutText("SUBFILE=");>>	integer_expr)
+		|(MAXRECSIZE	EQUAL <<f77PutText("RECL=");>>integer_expr) /*Conversion: UNISYS MAXRECSIZE->ANSI RECL*/
+		|(SAVEFACTOR	EQUAL <<f77PutText("SAVEFACTOR=");>>integer_expr)
+		|(OPENTYPE	EQUAL <<f77PutText("OPENTYPE=");>>	expression)
+		;
+
+close_statement: <<f77NewLine(Indentation);>>
+	#(CLOSE {label} <<f77PutText("CLOSE ");>>
+	lp close_item (comma close_item)* rp
+	)
+	<<f77PrintLine();>>;
+
+close_item:
+		({UNIT		EQUAL <<f77PutText("UNIT=");>>}		unit_id)
+		|(ERR		EQUAL <<f77PutText("ERR=");>>		const_int)
+		|(STATUS	EQUAL <<f77PutText("STATUS=");>>	close_name)
+		|(IOSTAT	EQUAL <<f77PutText("IOSTAT=");>>	exp_operand)
+		|(DISP		EQUAL <<f77PutText("STATUS=");>>	close_name) /*Conversion: UNISYS DISP->ANSI STATUS*/
+		|(SUBFILE	EQUAL <<f77PutText("SUBFILE=");>>	integer_expr)
+		;
+
+close_name:
+	(identifier 
+	|quoted_string)
+	;
+
+call_statement: <<f77NewLine(Indentation);>>
+		#(CALL {label} <<f77PutText("CALL ");>>
+		f:FUNCTION_NAME <<f77PutText(f->f77NodeText);>>
+		{call_arg_list})
+		<<f77PrintLine();>>;
+
+call_arg_list : lp {call_arg_item (comma call_arg_item)*} rp
+	;
+
+call_arg_item:((STAR <<f77PutText("*");>> |AMPERSAND <<f77PutText("&");>>) c:CONSTINT <<f77PutText(c->f77NodeText);>>
+		|expression
+		/*|p:PROCEDURE_NAME <<f77PutText(p->f77NodeText);>>*/
+		)
+		;
+
+export_statement: <<f77NewLine(Indentation);>>
+	#(EXPORT <<f77PutText("EXPORT ");>> (any_token)+ )
+	<<f77PrintLine();>>;
+
+subroutine_statement: <<f77NewLine(Indentation);>>
+	#(SUBROUTINE {label} <<f77PutText("SUBROUTINE ");>>
+	identifier
+	{call_arg_list})
+	<<f77PrintLine();>>;
+
+entry_statement: <<f77NewLine(Indentation);>>
+	#(ENTRY {label} <<f77PutText("ENTRY ");>>
+	identifier
+	{call_arg_list})
+	<<f77PrintLine();>>;
+
+function_statement: <<f77NewLine(Indentation);>>
+	#(FUNCTION {label} {function_type} <<f77PutText("FUNCTION ");>>
+	identifier lp {function_arg_list} rp)
+	<<f77PrintLine();>>;
+
+function_type:
+		(i:INTEGER				<<f77PutText(i->f77NodeText);>>
+		|i:REAL					<<f77PutText(i->f77NodeText);>>
+		|i:DOUBLE_PRECISION		<<f77PutText(i->f77NodeText);>>
+		|i:LOGICAL				<<f77PutText(i->f77NodeText);>>
+		|i:CHARACTER			<<f77PutText(i->f77NodeText);>>
+		|i:COMPLEX				<<f77PutText(i->f77NodeText);>>
+		|i:DOUBLE_COMPLEX 		<<f77PutText(i->f77NodeText);>>
+		)
+		{STAR  <<f77PutText("*");>> length_spec}
+		;
+function_arg_list: {SLASH <<f77PutText("/");>>} expression {SLASH <<f77PutText("/");>>}
+	(comma {SLASH <<f77PutText("/");>>} expression {SLASH <<f77PutText("/");>>})*
+	;
+
+length_spec:
+	lp (STAR <<f77PutText("*");>>|integer_expr) rp
+	|c:CONSTINT <<f77PutText(c->f77NodeText);>>
+	;
+
+block_if_statement: <<f77NewLine(Indentation);>>
+	#(BLOCK_IF {label} <<f77PutText("IF ");>>
+	lp expression rp THEN
+	<<
+	f77PutText(" THEN");
+	f77PrintLine();
+	Indentation++;
+	>>
+	block_if_block
+	<<Indentation--;>>
+	{
+	(<<f77NewLine(Indentation);>>
+	(ELSE <<f77PutText("ELSE");>> |ELSE_IF <<f77PutText("ELSE IF");>> lp expression rp )
+	<<f77PrintLine();>>
+	)
+	<<Indentation++;>>
+	block_if_block
+	<<Indentation--;>>
+	}
+	END_IF
+	<<
+	f77NewLine(Indentation);
+	f77PutText("ENDIF");
+	f77PrintLine();
+	>>
+	);
+
+block_if_block:
+	(comment_line
+	|blank_line
+	|assignment_statement
+	|do_statement
+	|control_image
+	|format_statement
+	|read_statement
+	|write_statement
+	|open_statement
+	|close_statement
+	|inquire_statement
+	|change_statement
+	|find_statement	/*UNISYS FORTRAN V3.8*/
+	|call_statement
+	|block_if_statement
+	|arithm_if_statement
+	|log_if_statement
+	|unconditional_goto
+	|computed_goto
+	|assigned_goto
+	|continue_statement
+	|stop_statement
+	|return_statement
+	|backspace_statement
+	|rewind_statement
+	|endfile_statement
+	|assign_statement
+	)*
+	;
+
+log_if_statement: <<f77NewLine(Indentation);>>
+	#(LOGICAL_IF {label} <<f77PutText("IF ");>>
+	lp
+	expression
+	rp
+	<<DontStartNewLine = TRUE;>>
+	log_substatement
+	<<DontStartNewLine = FALSE;>>
+	)
+	/*<<f77PrintLine();>>*/;
+
+arithm_if_statement: <<f77NewLine(Indentation);>>
+	#(ARITHMETIC_IF {label} <<f77PutText("IF ");>>
+	lp
+	expression
+	rp
+	a:CONSTINT <<f77PutText(a->f77NodeText);>> comma
+	b:CONSTINT <<f77PutText(b->f77NodeText);>> comma
+	c:CONSTINT <<f77PutText(c->f77NodeText);>>
+	)
+	<<f77PrintLine();>>;
+
+log_substatement:
+	/*call_statement
+	|*/
+	continue_statement
+	|assignment_statement
+	|do_statement
+	|unconditional_goto
+	|computed_goto
+	|assigned_goto
+	|read_statement
+	|write_statement
+	|open_statement
+	|close_statement
+	|inquire_statement
+	|change_statement
+	|find_statement	/*UNISYS FORTRAN V3.8*/
+	|call_statement
+	|end_statement
+	|stop_statement
+	|return_statement
+	|arithm_if_statement
+	|backspace_statement
+	|rewind_statement
+	|endfile_statement
+	|assign_statement
+	;
+
+continue_statement: <<f77NewLine(Indentation);>>
+	#(CONTINUE {label} <<f77PutText("CONTINUE ");>>)
+	<<f77PrintLine();>>;
+
+stop_statement: <<f77NewLine(Indentation);>>
+	#(STOP {label} <<f77PutText("STOP ");>>)
+	<<f77PrintLine();>>;
+
+end_statement: <<f77NewLine(Indentation);>>
+	#(END {label} <<f77PutText("END ");>>)
+	<<f77PrintLine();>>;
+
+return_statement: <<f77NewLine(Indentation);>>
+	#(RETURN {label} <<f77PutText("RETURN ");>>)
+	<<f77PrintLine();>>;
+
+unconditional_goto: <<f77NewLine(Indentation);>>
+	#(UNCONDITIONAL_GOTO {label} <<f77PutText("GOTO ");>>
+	c:CONSTINT <<f77PutText(c->f77NodeText);>>
+	)
+	<<f77PrintLine();>>;
+
+computed_goto: <<f77NewLine(Indentation);>>
+	#(COMPUTED_GOTO {label} <<f77PutText("GOTO ");>>
+	lp
+	a:CONSTINT <<f77PutText(a->f77NodeText);>>
+	(comma b:CONSTINT <<f77PutText(b->f77NodeText);>>)*
+	rp
+	{comma} integer_expr
+	)
+	<<f77PrintLine();>>;
+
+assigned_goto: <<f77NewLine(Indentation);>>
+	#(ASSIGNED_GOTO {label} <<f77PutText("GOTO ");>>
+	i:INTEGER_ID <<f77PutText(i->f77NodeText);>>
+	{{comma}
+	lp a:CONSTINT <<f77PutText(a->f77NodeText);>>
+	(comma b:CONSTINT <<f77PutText(b->f77NodeText);>>)*
+	rp
+	}
+	)
+	<<f77PrintLine();>>;
+
+do_statement: <<char buffer[100]; f77NewLine(Indentation);>>
+	#(DO {label} a:CONSTINT {comma} b:INTEGER_ID EQUAL
+	<<
+	sprintf(buffer, "DO %s %s = ",a->f77NodeText,b->f77NodeText);
+	f77PutText(buffer);
+	>>
+	integer_expr comma integer_expr
+	{comma integer_expr}
+	)
+	<<f77PrintLine();>>;
+
+change_statement: <<f77NewLine(Indentation);>>
+	#(CHANGE {label} <<f77PutText("CHANGE");>>
+	(any_token)* )
+	<<f77PrintLine();>>;
+
+ /*******************/
+ /*ASSIGN statement   */
+ /*******************/
+assign_statement: <<f77NewLine(Indentation);>>
+	#(ASSIGN {label} <<f77PutText("ASSIGN ");>>
+	const_int TO <<f77PutText("TO ");>> identifier)
+	;
+
+format_statement: <<f77NewLine(Indentation);>>
+	#(FORMAT {label} <<f77PutText("FORMAT");>> lp format_spec rp)
+	<<f77PrintLine();>>;
+
+format_spec: format_item (<<f77PutText(",");>> format_item)*
+	;
+format_item: {const_int} lp format_spec rp
+		|hollerith_editing
+		|quote_editinig				|tr_editing
+		|tl_editing					|t_editing
+		|x_editing					|colon_editing
+		|ss_editing					|s_editing
+		|p_editing 					|bn_editing
+		|bz_editing					|i_editing
+		|j_editing 					|f_editing
+		|e_editing					|d_editing
+		|g_editing 					|o_editing
+		|l_editing 					|a_editing
+		|z_editing					|sp_editing
+		|SLASH <<f77PutText("/");>>
+		/*UNISYS FORTRAN V3.8*/
+		|u_editing
+		;
+
+hollerith_editing:<<char buffer[100];>>
+	h:HOLLERITH_CONST
+	<<
+	sprintf(buffer, "%dH%s", strlen(h->f77NodeText),h->f77NodeText);
+	f77PutText(buffer);
+	>>;
+quote_editinig: quoted_string;
+
+
+tr_editing:<<char buffer[100];>>
+	#(TR c:CONSTINT
+	<<
+	sprintf(buffer, "TR%s", c->f77NodeText);
+	f77PutText(buffer);
+	>>
+	);
+tl_editing:<<char buffer[100];>>
+	#(TL c:CONSTINT
+	<<
+	sprintf(buffer, "TL%s", c->f77NodeText);
+	f77PutText(buffer);
+	>>
+	);
+t_editing:<<char buffer[100];>>
+	#(T c:CONSTINT
+	<<
+	sprintf(buffer, "T%s", c->f77NodeText);
+	f77PutText(buffer);
+	>>
+	);
+x_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(X {repeat_count[buffer]}
+	<<
+	strcat(buffer, "X");
+	f77PutText(buffer);
+	>>
+	);
+
+ss_editing:
+	SS <<f77PutText("SS");>>
+	;
+p_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(P {s:SCALE_FACTOR	<<strcpy(buffer, s->f77NodeText);>>}
+	<<
+	strcat(buffer, "P");
+	f77PutText(buffer);
+	>>
+	)
+	;
+bz_editing:
+	BZ <<f77PutText("BZ");>>
+	;
+bn_editing:
+	BN <<f77PutText("BN");>>
+	;
+j_editing:<<char buffer[100];>>
+	#(J <<strcpy(buffer, "J");>> field_width[buffer])
+	<<f77PutText(buffer);>>
+	;
+e_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(E {repeat_count[buffer]} <<strcat(buffer, "E");>>
+	field_width[buffer] DEC_POINT <<strcat(buffer, ".");>>
+	decimal_places[buffer] {E <<strcat(buffer, "E");>> exponent_digits[buffer]}
+	)
+	<<f77PutText(buffer);>>
+	;
+g_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(G {repeat_count[buffer]} <<strcat(buffer, "G");>>
+	field_width[buffer] DEC_POINT <<strcat(buffer, ".");>>
+	decimal_places[buffer] {G <<strcat(buffer, "G");>> exponent_digits[buffer]}
+	)
+	<<f77PutText(buffer);>>
+	;
+
+l_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(L {repeat_count[buffer]} <<strcat(buffer, "L");>> field_width[buffer])
+	<<f77PutText(buffer);>>
+	;
+z_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(Z <<strcpy(buffer, "Z");>> field_width[buffer])
+	<<f77PutText(buffer);>>
+	;
+ /*UNISYS FORTRAN V3.8*/
+u_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(U <<strcpy(buffer, "U");>> {field_width[buffer] {COMMA <<strcat(buffer, ",");>>
+	decimal_places[buffer]}})
+	<<f77PutText(buffer);>>
+	;
+colon_editing:		COLUMN <<f77PutText(":");>>;
+s_editing:			S <<f77PutText("S");>>;
+i_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(I {repeat_count[buffer]} <<strcat(buffer, "I");>>
+	field_width[buffer] {DEC_POINT <<strcat(buffer,".");>> min_dig_required[buffer]}
+	)
+	<<f77PutText(buffer);>>
+	;
+f_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(F {repeat_count[buffer]} <<strcat(buffer, "F");>>
+	field_width[buffer] DEC_POINT <<strcat(buffer,".");>> decimal_places[buffer]
+	)
+	<<f77PutText(buffer);>>
+	;
+d_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(D {repeat_count[buffer]} <<strcat(buffer, "D");>>
+	field_width[buffer] DEC_POINT <<strcat(buffer,".");>> decimal_places[buffer]
+	)
+	<<f77PutText(buffer);>>
+	;
+o_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(O <<strcpy(buffer, "O");>> field_width[buffer])
+	<<f77PutText(buffer);>>
+	;
+a_editing:<<char buffer[100]; buffer[0] = '\0';>>
+	#(A {repeat_count[buffer]} <<strcat(buffer,"A");>> field_width[buffer])
+	<<f77PutText(buffer);>>
+	;
+sp_editing:	SP <<f77PutText("SP");>>;
+
+
+repeat_count[char *buffer]: r:REPEAT_COUNT
+	<<
+	strcpy(buffer, r->f77NodeText);
+	>>
+	;
+field_width[char *buffer]: f:FIELD_WIDTH <<strcat(buffer, f->f77NodeText);>>
+	;
+decimal_places[char *buffer]: d:DECIMAL_PLACES  <<strcat(buffer, d->f77NodeText);>>
+	;
+exponent_digits[char *buffer]:  e:EXPONENT_DIGITS <<strcat(buffer, e->f77NodeText);>>
+	;
+min_dig_required[char *buffer]:   m:MIN_DIG_REQUIRED <<strcat(buffer, m->f77NodeText);>>
+	;
+
+label: l:LABEL <<f77PutLabel( l->f77NodeText);>>
+	;
+comma: COMMA <<f77PutText(",");>>;
+lp: LP <<f77PutText("(");>>;
+rp: RP <<f77PutText(")");>>;
+equal: EQUAL <<f77PutText("=");>>;
+const_int: c:CONSTINT <<f77PutText(c->f77NodeText);>>;
+
+identifier: i:IDENTIFIER	<<f77PutText(i->f77NodeText);>>
+	;
+quoted_string:<<char buffer[100];>>
+		q:QUOTED_STRING
+		<<
+		sprintf(buffer, "\'%s\'", q->f77NodeText);
+		f77PutText(buffer);
+		>>;
+
+any_token:<<char buffer[100];>> t:.
+	<<
+	switch(t->token) {
+	case QUOTED_STRING:
+		sprintf(buffer, "\'%s\'", t->f77NodeText);
+		f77PutText(buffer);
+		break;
+	case HOLLERITH_CONST:
+		sprintf(buffer, "%dH%s", strlen(t->f77NodeText), t->f77NodeText);
+		f77PutText(buffer);
+		break;
+	default:
+		f77PutText(t->f77NodeText);
+		break;
+		}
+	>>
+	;
+any_statement:  <<f77NewLine(Indentation);>>
+	(t:. <<f77PutText(t->f77NodeText);>> any_token)+
+	<<f77PrintLine();>>;

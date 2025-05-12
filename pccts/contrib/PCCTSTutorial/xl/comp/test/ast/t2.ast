@@ -1,0 +1,51 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [correct2]
+         ( Body
+            ( Define
+               ( VAR [x] >>  Type: Integer >>  InitialValue: 0))
+            ( Define
+               ( VAR [ThisIsAVeryLongIdentifier] >>  Type: Integer))
+            ( Define
+               ( VAR [ThisIsAVeryLongIdentifierAlso] >>  Type: Integer))
+            ( Assign
+               ( Ref x  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref x  >>  Type: Integer)))
+            ( Assign
+               ( Ref ThisIsAVeryLongIdentifier  >>  Type: Integer)
+               ( INTLIT [1] >>  Type: Integer))
+            ( Assign
+               ( Ref ThisIsAVeryLongIdentifierAlso  >>  Type: Integer)
+               ( INTLIT [2] >>  Type: Integer))
+            ( If
+               ( Op [or] >>  Type: Boolean
+                  ( Op [/=] >>  Type: Boolean
+                     ( Value >>  Type: Integer
+                        ( Ref ThisIsAVeryLongIdentifier  >>  Type: Integer))
+                     ( INTLIT [1] >>  Type: Integer))
+                  ( Op [/=] >>  Type: Boolean
+                     ( Value >>  Type: Integer
+                        ( Ref ThisIsAVeryLongIdentifierAlso  >>  Type: Integer))
+                     ( INTLIT [2] >>  Type: Integer)))
+               ( ThenPart
+                  ( Put
+                     ( STRINGLIT [Error] >>  Type: String)))
+               ( ElsePart
+                  ( Put
+                     ( Value >>  Type: Integer
+                        ( Ref ThisIsAVeryLongIdentifierAlso  >>  Type: Integer)))))
+            ( NewLine))))
+

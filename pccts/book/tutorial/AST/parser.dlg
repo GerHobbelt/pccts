@@ -1,0 +1,72 @@
+<<
+/* parser.dlg -- DLG Description of scanner
+ *
+ * Generated from: poly.g
+ *
+ * Terence Parr, Will Cohen, and Hank Dietz: 1989-1994
+ * Purdue University Electrical Engineering
+ * With AHPCRC, University of Minnesota
+ * ANTLR Version 1.33
+ */
+
+#include "tokens.h"
+#include "AToken.h"
+#include "ASTBase.h"
+
+// must be visible to all generated files; hence, must be in #header action
+#include "AToken.h"
+typedef ANTLRCommonToken ANTLRToken;
+#include "MyEvalPoly.h"
+>>
+
+
+%%START
+
+@
+	<<
+		return (ANTLRTokenType)1;
+	>>
+
+[\ \t]+
+	<<
+		skip();  
+		return (ANTLRTokenType)2;
+	>>
+
+\n
+	<<
+		skip(); newline();  
+		return (ANTLRTokenType)3;
+	>>
+
+[a-z]
+	<<
+		return ID;
+	>>
+
+[0-9]+ { . [0-9]+ }
+	<<
+		return FLOAT;
+	>>
+
+^
+	<<
+		return EXP;
+	>>
+
+=
+	<<
+		return ASSIGN;
+	>>
+
+\+
+	<<
+		return ADD;
+	>>
+
+;
+	<<
+		return (ANTLRTokenType)10;
+	>>
+
+%%

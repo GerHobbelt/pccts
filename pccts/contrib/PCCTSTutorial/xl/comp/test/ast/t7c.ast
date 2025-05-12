@@ -1,0 +1,46 @@
+
+   ( File
+      ( Define
+         ( TYPE [Integer]))
+      ( Define
+         ( TYPE [String]))
+      ( Define
+         ( TYPE [Boolean]))
+      ( Define
+         ( CONST [TRUE] >>  Type: Boolean >>  InitialValue: 1))
+      ( Define
+         ( CONST [FALSE] >>  Type: Boolean >>  InitialValue: 0))
+      ( Program [correct6]
+         ( Body
+            ( Define
+               ( VAR [i] >>  Type: Integer))
+            ( Define
+               ( Procedure [p]
+                  ( Parms
+                     ( Define
+                        ( VAR [x] >>  Type: Integer)))
+                  ( Body
+                     ( Put
+                        ( Value >>  Type: Integer
+                           ( Ref x  >>  Type: Integer)))
+                     ( Assign
+                        ( Ref x  >>  Type: Integer)
+                        ( INTLIT [6] >>  Type: Integer))
+                     ( Put
+                        ( Value >>  Type: Integer
+                           ( Ref i  >>  Type: Integer)))
+                     ( Assign
+                        ( Ref i  >>  Type: Integer)
+                        ( INTLIT [7] >>  Type: Integer)))))
+            ( Assign
+               ( Ref i  >>  Type: Integer)
+               ( INTLIT [5] >>  Type: Integer))
+            ( ProcedureCall
+               ( Ref p )
+               ( Parms
+                  ( Value >>  Type: Integer
+                     ( Ref i  >>  Type: Integer))))
+            ( Put
+               ( Value >>  Type: Integer
+                  ( Ref i  >>  Type: Integer))))))
+

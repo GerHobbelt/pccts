@@ -30,6 +30,10 @@
  * 1989-2001
  */
 
+#ifndef __pccts_syn_h__
+#define __pccts_syn_h__
+
+
 #include "set.h"
 
 #define NumNodeTypes	4
@@ -387,4 +391,7 @@ typedef struct _junct {
 #endif
 
 typedef struct { Node *left, *right;} Graph;
+
+
+#endif  /* __pccts_syn_h__ */
 

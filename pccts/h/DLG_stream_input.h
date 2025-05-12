@@ -43,18 +43,18 @@ public:
 	:	input(p_input_stream)
 	{
 		// nothing to do!
-	};
+	}
 	
 						DLG_stream_input(const DLG_stream_input & a_recopier)
 	:	input(a_recopier.input)
 	{
 		// nothing to do!
-	};
+	}
 	
 	virtual				~DLG_stream_input()
 	{
 		this->purge();	// bloody templarized lookup...
-	};
+	}
 	
 	DLG_stream_input	operator = (const DLG_stream_input & a_affecter)
 	{
@@ -64,7 +64,7 @@ public:
 		}
 
 		return(*this);
-	};
+	}
 	
 	virtual int			nextChar()
 	{
@@ -80,7 +80,7 @@ public:
 		{
 			return(EOF);
 		}
-	};
+	}
 	
 protected:
 	
@@ -91,7 +91,7 @@ private:
 	void	purge()
 	{
 		// nothing to do!
-	};
+	}
 };
 
 #endif /* _DLG_STREAM_INPUT_H */
