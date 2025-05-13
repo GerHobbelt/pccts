@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{6383927d-6c64-4072-b543-b5fd7d79c51d}</UniqueIdentifier>
+      <Extensions>.h</Extensions>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{0454c23b-0a4e-4cb7-a2c2-120194b12375}</UniqueIdentifier>
+      <Extensions>c,cpp</Extensions>
+    </Filter>
+    <Filter Include="PCCTS%27 clients files">
+      <UniqueIdentifier>{6f9cd1dd-deca-4a5c-93b0-fd0b68680755}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="rexpr\rexpr.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="set\set.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="sym\template.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\AParser.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\ASTBase.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\ATokPtr.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\AToken.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\ATokenBuffer.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\ATokenStream.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\DLexerBase.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\PBlackBox.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\PCCTSAST.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\SList.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\antlr.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\ast.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\charbuf.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\charptr.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\dlgauto.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\dlgdef.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\err.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\int.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\h\pcctscfg.h">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="rexpr\rexpr.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="set\set.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="sym\sym.c">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\AParser.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\ASTBase.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\ATokPtr.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\ATokenBuffer.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\DLexer.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\DLexerBase.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\PCCTSAST.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\SList.cpp">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\ast.c">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\h\charptr.c">
+      <Filter>PCCTS%27 clients files</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

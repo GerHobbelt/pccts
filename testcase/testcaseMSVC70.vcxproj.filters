@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="C Sources">
+      <UniqueIdentifier>{d4c260af-bb99-48ad-8070-d0cb4e63b65b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{263d77c8-4980-4298-b8aa-109f676a9a0b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{544e7b4b-8687-48a0-84f9-a3e641b4b51f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Tests">
+      <UniqueIdentifier>{0f95870c-713b-43b8-bbb0-b9287fd8705d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archiving">
+      <UniqueIdentifier>{fb5a2142-86e4-4ebd-ba75-59e6fc65ad0c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="debug.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="err.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="keywords.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="lexer.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="main.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pccts\support\rexpr\rexpr.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="scan.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="script.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pccts\support\set\set.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="support.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="..\pccts\support\sym\sym.c">
+      <Filter>C Sources</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="script.dsc">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="script.full.dsc">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="prof.bat">
+      <Filter>Tests</Filter>
+    </None>
+    <None Include="sample.sc">
+      <Filter>Tests</Filter>
+    </None>
+    <None Include="..\ARCHIVE.BAT">
+      <Filter>Archiving</Filter>
+    </None>
+    <None Include="..\CLEANUP.BAT">
+      <Filter>Archiving</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\pccts\h\antlr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="attrib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\dlgauto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\dlgdef.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\err.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="mode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\pccts_stdarg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\pccts_stdio.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\pccts_stdlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\pccts_string.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\h\pcctscfg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\support\rexpr\rexpr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\pccts\support\set\set.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdpccts.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sym.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tokens.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="i_a_script.gperf">
+      <Filter>C Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="parser.dlg">
+      <Filter>C Sources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="script.g">
+      <Filter>C Sources</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

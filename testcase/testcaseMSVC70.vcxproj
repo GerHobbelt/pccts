@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectName>testcase</ProjectName>
+    <ProjectGuid>{ED864B60-FEE4-43A1-A0DE-7EC4B1C20D15}</ProjectGuid>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v143</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>17.0.35913.81</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>.\Debug\</OutDir>
+    <IntDir>.\Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>.\Release\</OutDir>
+    <IntDir>.\Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.;..\pccts\h;..\pccts\support\set;..\pccts\support\rexpr;..\pccts\support\sym;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;WIN32;_CONSOLE;__USE_PROTOS;USER_ZZSYN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/testcaseMSVC70.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
+      <ObjectFileName>.\Debug/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Debug/testcaseMSVC70.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/testcaseMSVC70.pdb</ProgramDatabaseFile>
+      <GenerateMapFile>true</GenerateMapFile>
+      <MapFileName>.\Debug/testcaseMSVC70.map</MapFileName>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <Midl>
+      <TypeLibraryName>.\Debug/testcaseMSVC70.tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>.;..\pccts\h;..\pccts\support\set;..\pccts\support\rexpr;..\pccts\support\sym;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>NDEBUG;WIN32;_CONSOLE;__USE_PROTOS;USER_ZZSYN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeaderOutputFile>.\Release/testcaseMSVC70.pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
+      <ObjectFileName>.\Release/</ObjectFileName>
+      <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>.\Release/testcaseMSVC70.exe</OutputFile>
+      <ProgramDatabaseFile>.\Release/testcaseMSVC70.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <Midl>
+      <TypeLibraryName>.\Release/testcaseMSVC70.tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\pccts\support\rexpr\rexpr.c" />
+    <ClCompile Include="..\pccts\support\set\set.c" />
+    <ClCompile Include="..\pccts\support\sym\sym.c" />
+    <ClCompile Include="debug.c" />
+    <ClCompile Include="err.c" />
+    <ClCompile Include="keywords.c" />
+    <ClCompile Include="lexer.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="scan.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="script.c" />
+    <ClCompile Include="support.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\ARCHIVE.BAT" />
+    <None Include="..\CLEANUP.BAT" />
+    <CustomBuild Include="i_a_script.gperf">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compile GPERF keyword hash table spec</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\cperf-2.1a\gperf -VpotTD -e%40 -j1 -k1,3,4,5,7,$ -aCdgH decode_keyword -N                   in_reserved_keyword_set  i_a_script.gperf keywords.c
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">keywords.c;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compile GPERF keyword hash table spec</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\cperf-2.1a\gperf -VpotT -e%40 -lj1 -k1,5,$ -aCdgH decode_keyword -N                   in_reserved_keyword_set  i_a_script.gperf keywords.c
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">keywords.c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="parser.dlg">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compiling with DLG</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\pccts\bin\dlg -emsvc -C2 -ga -Wambiguity -i -ci parser.dlg scan.c
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">scan.c;mode.h;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compiling with DLG</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\pccts\bin\dlg -emsvc -C2 -ga -Wambiguity -i -ci parser.dlg scan.c
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">scan.c;mode.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="prof.bat" />
+    <None Include="sample.sc" />
+    <None Include="script.dsc" />
+    <None Include="script.full.dsc" />
+    <CustomBuild Include="script.g">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compile with ANTLR</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\pccts\bin\antlr -emsvc -gd -gs -gh -e3 -cr -ga -k 2 -tab 2 -w2  -gk -rl 2000 %(Filename).g
+..\pccts\bin\antlr -gc -p -e3 -cr -ga -k 2 -tab 2 -gk  -w2  -rl 2000 %(Filename).g  &gt; %(Filename).dsc
+..\pccts\bin\antlr -gc -pa -e3 -cr -ga -k 2 -tab 2 -gk  -w2 -info ptfmo -rl 2000 %(Filename).g  &gt; %(Filename).full.dsc
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parser.dlg;script.c;tokens.h;err.c;script.dsc;script.full.dsc;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Compile with ANTLR</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\pccts\bin\antlr -emsvc -gd -gs -gh -e3 -cr -ga -k 2 -tab 2 -w2  -gk -rl 2000 %(Filename).g
+..\pccts\bin\antlr -gc -p -e3 -cr -ga -k 2 -tab 2 -gk  -w2  -rl 2000 %(Filename).g  &gt; %(Filename).dsc
+..\pccts\bin\antlr -gc -pa -e3 -cr -ga -k 2 -tab 2 -gk  -w2 -info ptfmo -rl 2000 %(Filename).g  &gt; %(Filename).full.dsc
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parser.dlg;script.c;tokens.h;err.c;script.dsc;script.full.dsc;%(Outputs)</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\pccts\h\antlr.h" />
+    <ClInclude Include="..\pccts\h\dlgauto.h" />
+    <ClInclude Include="..\pccts\h\dlgdef.h" />
+    <ClInclude Include="..\pccts\h\err.h" />
+    <ClInclude Include="..\pccts\h\pcctscfg.h" />
+    <ClInclude Include="..\pccts\h\pccts_stdarg.h" />
+    <ClInclude Include="..\pccts\h\pccts_stdio.h" />
+    <ClInclude Include="..\pccts\h\pccts_stdlib.h" />
+    <ClInclude Include="..\pccts\h\pccts_string.h" />
+    <ClInclude Include="..\pccts\support\rexpr\rexpr.h" />
+    <ClInclude Include="..\pccts\support\set\set.h" />
+    <ClInclude Include="attrib.h" />
+    <ClInclude Include="mode.h" />
+    <ClInclude Include="stdpccts.h" />
+    <ClInclude Include="sym.h" />
+    <ClInclude Include="tokens.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

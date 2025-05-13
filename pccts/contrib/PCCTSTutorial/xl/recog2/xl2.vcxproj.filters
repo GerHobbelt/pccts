@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0e830679-c404-4d18-bba4-6d98454e085c}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;hpj;bat;for;f90</Extensions>
+    </Filter>
+    <Filter Include="Library files">
+      <UniqueIdentifier>{c2f53f0f-ff97-4c52-870c-c2f330780df6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DLGLexer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="XLParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="xl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\h\AParser.cpp">
+      <Filter>Library files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\h\ASTBase.cpp">
+      <Filter>Library files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\h\ATokenBuffer.cpp">
+      <Filter>Library files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\h\BufFileInput.cpp">
+      <Filter>Library files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\h\DLexerBase.cpp">
+      <Filter>Library files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\h\SList.cpp">
+      <Filter>Library files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="xl.g">
+      <Filter>Source Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{cc382e5c-d4be-40ec-aa52-3099774e6c36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{faab4e7f-6b25-45c3-8372-91937d96ab2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Documentation">
+      <UniqueIdentifier>{2474d30a-680e-4c55-8ed5-56bf2f40dc2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Examples">
+      <UniqueIdentifier>{a33a6a70-0543-41b7-8cf3-9fe3bf3680a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\boolarray.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\getopt.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\hashtable.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\iterator.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\keylist.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\listnode.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\options.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\perfect.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\readline.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\stderr.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\version.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\xmalloc.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\boolarray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\hashtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\keylist.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\listnode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\options.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\perfect.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\prototype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\readline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\stderr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="COPYING">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="ChangeLog">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="README">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="README-FIRST">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="gperf.1">
+      <Filter>Documentation</Filter>
+    </None>
+    <None Include="tests\ada.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\adapredefined.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\c++.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\c-parse.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\c.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\gpc.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\gplus.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\modula2.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\modula3.gperf">
+      <Filter>Examples</Filter>
+    </None>
+    <None Include="tests\pascal.gperf">
+      <Filter>Examples</Filter>
+    </None>
+  </ItemGroup>
+</Project>
