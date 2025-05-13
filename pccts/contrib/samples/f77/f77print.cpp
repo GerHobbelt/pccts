@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <string.h>
-#include <fstream.h>
+#include <fstream>
+#include <iostream>
 
 #define INDENT_SIZE 4
 #define F77_LINE_SIZE 72
@@ -8,6 +9,8 @@
 	#define TRUE (1 == 1)
 	#define FALSE (1 == 0)
 #endif
+
+using namespace std;
 
 char f77LineBuffer[F77_LINE_SIZE+sizeof('\n')+sizeof('\0')];
 char *f77LineBufferPtr;
