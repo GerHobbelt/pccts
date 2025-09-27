@@ -3882,7 +3882,7 @@ RuleEntry *r;
         /* NOTICE: this is done only here, for the method definition, but  */
         /*         not for the method declaration inside the class         */
         /*         definition. This is exactly the behaviour defined in    */
-        /*         C++ standard for default paramters.                     */
+        /*         C++ standard for default parameters.                     */
 
 	DumpANSIFunctionArgDef(output,q, 0 /* emit initializers ? */);
 	_gen("\n");
