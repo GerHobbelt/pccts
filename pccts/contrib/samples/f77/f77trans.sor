@@ -647,15 +647,15 @@ io_specifier:
 	|unit_id
 	;
 
-read_statement > [SORAST *Format]: <<Format = NULL;>>
+read_statement > [SORAST *Format = NULL]:
 	#(READ {LABEL} control_info > [Format] input_list)
 	;
 
-write_statement > [SORAST *Format]: <<Format = NULL;>>
+write_statement > [SORAST *Format = NULL]:
 	#(WRITE {LABEL} control_info > [Format] {output_list})
 	;
 
-control_info > [SORAST *Format]: <<Format = NULL;>>
+control_info > [SORAST *Format = NULL]:
 		LP (
 		#(COMMA unit_id format_id > [Format]) |
 		#(APOSTROPHY unit_id integer_expr) |
@@ -669,7 +669,7 @@ control_info > [SORAST *Format]: <<Format = NULL;>>
 		)* RP
 		;
 
-the_remainder > [SORAST *Format]: <<Format = NULL;>>
+the_remainder > [SORAST *Format = NULL]:
 		COMMA
 		(FMT	 	EQUAL format_id > [Format]
 		|IO_DATA	EQUAL integer_expr
@@ -686,7 +686,7 @@ the_remainder > [SORAST *Format]: <<Format = NULL;>>
 unit_id: STAR|expression
 		;
 
-format_id > [SORAST *Format]: <<Format = NULL;>>
+format_id > [SORAST *Format = NULL]:
 		f:STAR {SLASH /*UNISYS FORTRAN V3.8*/} <<Format = f;>>
 		|f:SLASH <<Format = f;>>
 		|f:expression <<Format = f;>>
