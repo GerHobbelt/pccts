@@ -82,7 +82,7 @@ extern ListNode *ContextGuardPredicateList;     /* MR13 */
 extern ListNode *CurActionLabels;
 extern int numericActionLabel;        /* MR10 << ... $1 ... >> or << ... $1 ... >>?   */
 extern ListNode *NumericPredLabels;   /* MR10 << ... $1 ... >>?  ONLY                 */
-extern const char *FileStr[];
+extern char *FileStr[];
 extern int NumFiles;
 extern int EpToken;
 extern int WildCardToken;

@@ -33,7 +33,7 @@ char	*VersionNumber = "13333";   /* mrxxx */
 char	*VersionText = "13333";     /* mrxxx */
 int     Save_argc = 0;                                                  
 char ** Save_argv = 0;                                                  
-const char    *FileStr[MaxNumFiles];/* Ptr to array of file names on command-line */
+char    *FileStr[MaxNumFiles];/* Ptr to array of file names on command-line */
 int     NumFiles=0;         /* current grammar file number */
 int     action_file;        /* used to track start of action */
 int     action_line;

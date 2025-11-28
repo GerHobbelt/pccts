@@ -310,7 +310,7 @@ Junction *OuterAltStart = NULL; /* For chaining exception groups        MR7 */
 int		NumRules=0;			/* Rules are from 1 to n */
 FILE	*output=NULL;		/* current parser output file */
 FILE	*input=NULL;		/* current grammar input file */
-const char	*FileStr[MaxNumFiles];/* Ptr to array of file names on command-line */
+char	*FileStr[MaxNumFiles];/* Ptr to array of file names on command-line */
 int		NumFiles=0;			/* current grammar file number */
 #ifdef __cplusplus
 void	(**fpTrans)(...),	/* array of ptrs to funcs that translate nodes */
