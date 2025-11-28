@@ -187,14 +187,34 @@ copy             ..\Sorcerer\Sorcerer.exe         ..\bin\
   <ItemGroup>
     <CustomBuild Include="sor.g">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating Parser</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\bin\antlr -emsvc -gh -k 2 -gt %(Filename).g
+..\bin\dlg -emsvc -C2 parser.dlg scan.c
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parser.dlg;mode.h;stdpccts.h;sor.c;scan.c;err.c;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating Parser</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\bin\antlr -emsvc -gh -k 2 -gt %(Filename).g
+..\bin\dlg -emsvc -C2 parser.dlg scan.c
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parser.dlg;mode.h;stdpccts.h;sor.c;scan.c;err.c;%(Outputs)</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="hash.h" />
+    <ClInclude Include="h\astlib.h" />
+    <ClInclude Include="h\SASTBase.h" />
+    <ClInclude Include="h\SCommonAST.h" />
+    <ClInclude Include="h\sintstack.h" />
+    <ClInclude Include="h\sorcerer.h" />
+    <ClInclude Include="h\sorlist.h" />
+    <ClInclude Include="h\sstack.h" />
+    <ClInclude Include="h\STreeParser.h" />
+    <ClInclude Include="lib\CASTBase.h" />
+    <ClInclude Include="mode.h" />
+    <ClInclude Include="proto.h" />
+    <ClInclude Include="sor.h" />
+    <ClInclude Include="stdpccts.h" />
+    <ClInclude Include="sym.h" />
+    <ClInclude Include="tokens.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

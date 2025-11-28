@@ -166,7 +166,7 @@ extern RefVarRec *refVarRec(char *);
 extern char *cvt_token_str(char *, char *);
 extern char *id_in_decl( char *decl );
 extern void dump_prefixed_decl( char *prefix, char *s, FILE *f );
-extern void ensure_no_C_file_collisions(char *class_c_file);
+extern void ensure_no_C_file_collisions(const char *class_c_file);
 extern void GenCPPClassHeader(void);
 extern void GenCPPClassCode(void);
 #else
