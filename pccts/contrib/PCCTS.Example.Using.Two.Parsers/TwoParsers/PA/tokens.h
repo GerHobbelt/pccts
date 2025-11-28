@@ -11,7 +11,11 @@
  *   ..\..\..\bin\antlr.exe -emsvc -CC Pa\A.g -glms -o Pa
  *
  */
-enum ANTLRTokenType {
+enum ANTLRTokenType
+#if defined(__cplusplus)
+	: int
+#endif
+{
 	Eof=1,
 	Number=2,
 	Word=3,
@@ -19,7 +23,8 @@ enum ANTLRTokenType {
 	Other=5,
 	Newline=6,
 	DLGminToken=0,
-	DLGmaxToken=9999};
+	DLGmaxToken=9999
+};
 
 
 #define zzSET_SIZE 4

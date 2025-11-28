@@ -21,7 +21,7 @@
 //   20-Jul-1998    MR14a - Reorder initialization list for ctor.
 //
 
-enum ANTLRTokenType {TER_HATES_CPP=0, SO_DO_OTHERS=9999 };
+enum ANTLRTokenType : int {TER_HATES_CPP=0, SO_DO_OTHERS=9999 };
 
 #include "pcctscfg.h"
 #include "pccts_assert.h"

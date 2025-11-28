@@ -11,7 +11,11 @@
  *   ..\..\bin\antlr.exe -emsvc -CC simple.g -glms -ge -gs -gh -e3 -cr -ga -k 2 -tab 2 -gk -w2 -rl 200000 -emsvc
  *
  */
-enum ANTLRTokenType {
+enum ANTLRTokenType
+#if defined(__cplusplus)
+	: int
+#endif
+{
 	Eof=1,
 	Number=2,
 	Word=3,

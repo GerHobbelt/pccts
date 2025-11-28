@@ -102,6 +102,7 @@ protected:
 
 public:
 	STreeParser() { guessing = 0; }
+	virtual ~STreeParser() = default;
 	virtual void panic(char *err);
 	void save_state(STreeParser *);
 	void restore_state(STreeParser *);

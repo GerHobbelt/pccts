@@ -56,6 +56,8 @@ public:
 /* user must subclass this */
 class DllExportPCCTS DLGInputStream {
 public:
+	virtual ~DLGInputStream() = default;
+
 	virtual int nextChar() = 0;
 };
 

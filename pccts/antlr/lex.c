@@ -302,7 +302,7 @@ genDefFile( )
 	{
 		int first=1;
 
-		if ( GenCC ) fprintf(DefFile, "enum ANTLRTokenType {\n");
+		if ( GenCC ) fprintf(DefFile, "enum ANTLRTokenType\n#if defined(__cplusplus)\n    : int\n#endif\n{\n");
 		for (i=1; i<TokenNum; i++)
 		{
 			/* Don't do EpToken or expr w/o labels */

@@ -11,7 +11,11 @@
  *   ..\..\..\bin\antlr.exe -emsvc -CC Pb\B.g -glms -o Pb
  *
  */
-enum ANTLRTokenType {
+enum ANTLRTokenType
+#if defined(__cplusplus)
+	: int
+#endif
+{
 	Eof=1,
 	Number=2,
 	Word=3,

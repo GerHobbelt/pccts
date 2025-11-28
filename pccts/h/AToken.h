@@ -53,7 +53,7 @@ typedef char ANTLRChar;
 
 //#include ATOKPTR_H   not tested yet, leave out
 class ANTLRAbstractToken;
-enum ANTLRTokenType; /* [i_a] added */
+enum ANTLRTokenType : int; /* [i_a] added */
 typedef ANTLRAbstractToken *_ANTLRTokenPtr;
 
 class ANTLRAbstractToken {
