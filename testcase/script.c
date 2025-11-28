@@ -230,7 +230,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"script");
+  zzTRACEIN("script");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -241,7 +241,7 @@ int *_retsignal;
     zzmatch_wsig(ENDSCRIPT, _handler);
     zzmatch_wsig(SCRIPT_EOF, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"script");
+    zzTRACEOUT("script");
     return;
   }
 _handler:
@@ -249,7 +249,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"script");
+  zzTRACEOUT("script");
   return;
 }
 
@@ -265,13 +265,13 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"title");
+  zzTRACEIN("title");
   zzMake0;
   *_retsignal = NoSignal;
   {
     zzmatch_wsig(VARIABLE, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"title");
+    zzTRACEOUT("title");
     return;
   }
   /* exception handlers */
@@ -309,7 +309,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"title");
+  zzTRACEOUT("title");
   return;
 }
 
@@ -325,7 +325,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"sections");
+  zzTRACEIN("sections");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -368,7 +368,7 @@ int *_retsignal;
     }
     implementation(&_signal); if (_signal) goto _handler;
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"sections");
+    zzTRACEOUT("sections");
     return;
   }
 _handler:
@@ -376,7 +376,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"sections");
+  zzTRACEOUT("sections");
   return;
 }
 
@@ -392,7 +392,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"definitions");
+  zzTRACEIN("definitions");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -428,7 +428,7 @@ LA(1)==DEFINE) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"definitions");
+    zzTRACEOUT("definitions");
     return;
   }
   /* exception handlers */
@@ -501,7 +501,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"definitions");
+  zzTRACEOUT("definitions");
   return;
 }
 
@@ -518,7 +518,7 @@ int *_retsignal;
   Attrib def;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"structdef");
+  zzTRACEIN("structdef");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -569,7 +569,7 @@ LA(1)==BOOLEAN || LA(1)==INTEGER || LA(1)==REAL || LA(1)==STRING || LA(1)==VARIA
     zzcopy_attr(&zzaRet, & def);
     
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"structdef");
+    zzTRACEOUT("structdef");
     return;
   }
 _handler:
@@ -577,7 +577,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"structdef");
+  zzTRACEOUT("structdef");
   return;
 }
 
@@ -593,14 +593,14 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"const_init_type_def");
+  zzTRACEIN("const_init_type_def");
   zzMake0;
   *_retsignal = NoSignal;
   {
     const_init_type(&_signal); if (_signal) goto _handler;
     zzmatch_wsig(SEMICOLON, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"const_init_type_def");
+    zzTRACEOUT("const_init_type_def");
     return;
   }
 _handler:
@@ -608,7 +608,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"const_init_type_def");
+  zzTRACEOUT("const_init_type_def");
   return;
 }
 
@@ -624,7 +624,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"subroutine");
+  zzTRACEIN("subroutine");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -637,7 +637,7 @@ int *_retsignal;
     sections(&_signal); if (_signal) goto _handler;
     zzmatch_wsig(ENDSUB, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"subroutine");
+    zzTRACEOUT("subroutine");
     return;
   }
   /* exception handlers */
@@ -670,7 +670,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"subroutine");
+  zzTRACEOUT("subroutine");
   return;
 }
 
@@ -686,7 +686,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"param_def_list");
+  zzTRACEIN("param_def_list");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -754,7 +754,7 @@ int *_retsignal;
     }
     zzmatch_wsig(RPARENS, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"param_def_list");
+    zzTRACEOUT("param_def_list");
     return;
   }
 _handler:
@@ -762,7 +762,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"param_def_list");
+  zzTRACEOUT("param_def_list");
   return;
 }
 
@@ -778,7 +778,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"param_def");
+  zzTRACEIN("param_def");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -797,7 +797,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"param_def");
+    zzTRACEOUT("param_def");
     return;
   }
 _handler:
@@ -805,7 +805,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"param_def");
+  zzTRACEOUT("param_def");
   return;
 }
 
@@ -821,7 +821,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"declarations");
+  zzTRACEIN("declarations");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -840,7 +840,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"declarations");
+    zzTRACEOUT("declarations");
     return;
   }
 _handler:
@@ -848,7 +848,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"declarations");
+  zzTRACEOUT("declarations");
   return;
 }
 
@@ -864,7 +864,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"vardecl");
+  zzTRACEIN("vardecl");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -895,7 +895,7 @@ LA(1)==CONST) ) {
     }
     zzmatch_wsig(SEMICOLON, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"vardecl");
+    zzTRACEOUT("vardecl");
     return;
   }
 _handler:
@@ -903,7 +903,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"vardecl");
+  zzTRACEOUT("vardecl");
   return;
 }
 
@@ -919,7 +919,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"sub_param_type");
+  zzTRACEIN("sub_param_type");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -959,7 +959,7 @@ LA(1)==BOOLEAN || LA(1)==INTEGER || LA(1)==REAL || LA(1)==STRING || LA(1)==VARIA
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"sub_param_type");
+    zzTRACEOUT("sub_param_type");
     return;
   }
 _handler:
@@ -967,7 +967,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"sub_param_type");
+  zzTRACEOUT("sub_param_type");
   return;
 }
 
@@ -983,7 +983,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"return_type");
+  zzTRACEIN("return_type");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1009,7 +1009,7 @@ LA(1)==VOID) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"return_type");
+    zzTRACEOUT("return_type");
     return;
   }
 _handler:
@@ -1017,7 +1017,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"return_type");
+  zzTRACEOUT("return_type");
   return;
 }
 
@@ -1033,7 +1033,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"type");
+  zzTRACEIN("type");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1076,7 +1076,7 @@ LA(1)==STRING) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"type");
+    zzTRACEOUT("type");
     return;
   }
 _handler:
@@ -1084,7 +1084,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"type");
+  zzTRACEOUT("type");
   return;
 }
 
@@ -1100,7 +1100,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"integer_type");
+  zzTRACEIN("integer_type");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1120,7 +1120,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"integer_type");
+    zzTRACEOUT("integer_type");
     return;
   }
 _handler:
@@ -1128,7 +1128,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"integer_type");
+  zzTRACEOUT("integer_type");
   return;
 }
 
@@ -1144,7 +1144,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"const_init_type");
+  zzTRACEIN("const_init_type");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1196,7 +1196,7 @@ LA(1)==CONST) && (LA(2)==VARIABLE) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"const_init_type");
+    zzTRACEOUT("const_init_type");
     return;
   }
   /* exception handlers */
@@ -1244,7 +1244,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"const_init_type");
+  zzTRACEOUT("const_init_type");
   return;
 }
 
@@ -1261,7 +1261,7 @@ int *_retsignal;
   Attrib str;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"const_string_value");
+  zzTRACEIN("const_string_value");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1307,7 +1307,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"const_string_value");
+    zzTRACEOUT("const_string_value");
     return;
   }
 _handler:
@@ -1315,7 +1315,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"const_string_value");
+  zzTRACEOUT("const_string_value");
   return;
 }
 
@@ -1331,7 +1331,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"implementation");
+  zzTRACEIN("implementation");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1354,7 +1354,7 @@ LA(1)==WHILE || LA(1)==BEGIN || LA(1)==VARIABLE) );
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"implementation");
+    zzTRACEOUT("implementation");
     return;
   }
 _handler:
@@ -1362,7 +1362,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"implementation");
+  zzTRACEOUT("implementation");
   return;
 }
 
@@ -1378,7 +1378,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"statement");
+  zzTRACEIN("statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1437,7 +1437,7 @@ LA(2)==VARIABLE) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"statement");
+    zzTRACEOUT("statement");
     return;
   }
   /* exception handlers */
@@ -1471,7 +1471,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"statement");
+  zzTRACEOUT("statement");
   return;
 }
 
@@ -1487,7 +1487,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"return_statement");
+  zzTRACEIN("return_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1495,7 +1495,7 @@ int *_retsignal;
     zzmatch_wsig(RETURN, _handler);
     zzmatch_wsig(SEMICOLON, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"return_statement");
+    zzTRACEOUT("return_statement");
     return;
   }
 _handler:
@@ -1503,7 +1503,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"return_statement");
+  zzTRACEOUT("return_statement");
   return;
 }
 
@@ -1519,7 +1519,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"label_statement");
+  zzTRACEIN("label_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1543,7 +1543,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"label_statement");
+    zzTRACEOUT("label_statement");
     return;
   }
 _handler:
@@ -1551,7 +1551,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"label_statement");
+  zzTRACEOUT("label_statement");
   return;
 }
 
@@ -1567,7 +1567,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"break_statement");
+  zzTRACEIN("break_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1590,7 +1590,7 @@ LA(1)==CONTINUE) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"break_statement");
+    zzTRACEOUT("break_statement");
     return;
   }
 _handler:
@@ -1598,7 +1598,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"break_statement");
+  zzTRACEOUT("break_statement");
   return;
 }
 
@@ -1614,7 +1614,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"special_statement");
+  zzTRACEIN("special_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1639,7 +1639,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"special_statement");
+    zzTRACEOUT("special_statement");
     return;
   }
 _handler:
@@ -1647,7 +1647,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"special_statement");
+  zzTRACEOUT("special_statement");
   return;
 }
 
@@ -1664,7 +1664,7 @@ int *_retsignal;
   Attrib op;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"assignment_statement");
+  zzTRACEIN("assignment_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1740,7 +1740,7 @@ LA(1)==MINUS) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"assignment_statement");
+    zzTRACEOUT("assignment_statement");
     return;
   }
 _handler:
@@ -1748,7 +1748,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"assignment_statement");
+  zzTRACEOUT("assignment_statement");
   return;
 }
 
@@ -1764,7 +1764,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"conditional_statement");
+  zzTRACEIN("conditional_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1812,7 +1812,7 @@ int *_retsignal;
     TRACE(("end of if() mark"));
     
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"conditional_statement");
+    zzTRACEOUT("conditional_statement");
     return;
   }
 _handler:
@@ -1820,7 +1820,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"conditional_statement");
+  zzTRACEOUT("conditional_statement");
   return;
 }
 
@@ -1836,7 +1836,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"loop_statement");
+  zzTRACEIN("loop_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1875,7 +1875,7 @@ LA(1)==WHILE) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"loop_statement");
+    zzTRACEOUT("loop_statement");
     return;
   }
 _handler:
@@ -1883,7 +1883,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"loop_statement");
+  zzTRACEOUT("loop_statement");
   return;
 }
 
@@ -1899,7 +1899,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"bracketed_conditional_expr");
+  zzTRACEIN("bracketed_conditional_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1907,7 +1907,7 @@ int *_retsignal;
     rvalue_expr(&_signal); if (_signal) goto _handler;
     zzmatch_wsig(RPARENS, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"bracketed_conditional_expr");
+    zzTRACEOUT("bracketed_conditional_expr");
     return;
   }
 _handler:
@@ -1915,7 +1915,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"bracketed_conditional_expr");
+  zzTRACEOUT("bracketed_conditional_expr");
   return;
 }
 
@@ -1931,7 +1931,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"block_statement");
+  zzTRACEIN("block_statement");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -1953,7 +1953,7 @@ LA(1)==WHILE || LA(1)==BEGIN || LA(1)==VARIABLE) );
     }
     zzmatch_wsig(END, _handler);
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"block_statement");
+    zzTRACEOUT("block_statement");
     return;
   }
 _handler:
@@ -1961,7 +1961,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"block_statement");
+  zzTRACEOUT("block_statement");
   return;
 }
 
@@ -1977,14 +1977,14 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"lvalue_expr");
+  zzTRACEIN("lvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
     elemental_variable(&_signal); if (_signal) goto _handler;
     TRACE(("lvalue determined"));
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"lvalue_expr");
+    zzTRACEOUT("lvalue_expr");
     return;
   }
 _handler:
@@ -1992,7 +1992,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"lvalue_expr");
+  zzTRACEOUT("lvalue_expr");
   return;
 }
 
@@ -2009,7 +2009,7 @@ int *_retsignal;
   Attrib basevar;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"elemental_variable");
+  zzTRACEIN("elemental_variable");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2065,7 +2065,7 @@ int *_retsignal;
     "no array or struct element decoding yet"
     , basevar.dupped_string_value));
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"elemental_variable");
+    zzTRACEOUT("elemental_variable");
     return;
   }
 _handler:
@@ -2073,7 +2073,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"elemental_variable");
+  zzTRACEOUT("elemental_variable");
   return;
 }
 
@@ -2089,13 +2089,13 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"rvalue_expr");
+  zzTRACEIN("rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
     compare_or_rvalue_expr(&_signal); if (_signal) goto _handler;
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"rvalue_expr");
+    zzTRACEOUT("rvalue_expr");
     return;
   }
 _handler:
@@ -2103,7 +2103,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"rvalue_expr");
+  zzTRACEOUT("rvalue_expr");
   return;
 }
 
@@ -2119,7 +2119,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_or_rvalue_expr");
+  zzTRACEIN("compare_or_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2142,7 +2142,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_or_rvalue_expr");
+    zzTRACEOUT("compare_or_rvalue_expr");
     return;
   }
 _handler:
@@ -2150,7 +2150,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_or_rvalue_expr");
+  zzTRACEOUT("compare_or_rvalue_expr");
   return;
 }
 
@@ -2166,7 +2166,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_and_rvalue_expr");
+  zzTRACEIN("compare_and_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2189,7 +2189,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_and_rvalue_expr");
+    zzTRACEOUT("compare_and_rvalue_expr");
     return;
   }
 _handler:
@@ -2197,7 +2197,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_and_rvalue_expr");
+  zzTRACEOUT("compare_and_rvalue_expr");
   return;
 }
 
@@ -2213,7 +2213,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"bitwise_or_rvalue_expr");
+  zzTRACEIN("bitwise_or_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2236,7 +2236,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"bitwise_or_rvalue_expr");
+    zzTRACEOUT("bitwise_or_rvalue_expr");
     return;
   }
 _handler:
@@ -2244,7 +2244,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"bitwise_or_rvalue_expr");
+  zzTRACEOUT("bitwise_or_rvalue_expr");
   return;
 }
 
@@ -2260,7 +2260,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"bitwise_xor_rvalue_expr");
+  zzTRACEIN("bitwise_xor_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2283,7 +2283,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"bitwise_xor_rvalue_expr");
+    zzTRACEOUT("bitwise_xor_rvalue_expr");
     return;
   }
 _handler:
@@ -2291,7 +2291,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"bitwise_xor_rvalue_expr");
+  zzTRACEOUT("bitwise_xor_rvalue_expr");
   return;
 }
 
@@ -2307,7 +2307,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"bitwise_and_rvalue_expr");
+  zzTRACEIN("bitwise_and_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2330,7 +2330,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"bitwise_and_rvalue_expr");
+    zzTRACEOUT("bitwise_and_rvalue_expr");
     return;
   }
 _handler:
@@ -2338,7 +2338,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"bitwise_and_rvalue_expr");
+  zzTRACEOUT("bitwise_and_rvalue_expr");
   return;
 }
 
@@ -2354,7 +2354,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_ne_rvalue_expr");
+  zzTRACEIN("compare_ne_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2377,7 +2377,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_ne_rvalue_expr");
+    zzTRACEOUT("compare_ne_rvalue_expr");
     return;
   }
 _handler:
@@ -2385,7 +2385,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_ne_rvalue_expr");
+  zzTRACEOUT("compare_ne_rvalue_expr");
   return;
 }
 
@@ -2401,7 +2401,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_eq_rvalue_expr");
+  zzTRACEIN("compare_eq_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2424,7 +2424,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_eq_rvalue_expr");
+    zzTRACEOUT("compare_eq_rvalue_expr");
     return;
   }
 _handler:
@@ -2432,7 +2432,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_eq_rvalue_expr");
+  zzTRACEOUT("compare_eq_rvalue_expr");
   return;
 }
 
@@ -2448,7 +2448,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_ge_rvalue_expr");
+  zzTRACEIN("compare_ge_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2471,7 +2471,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_ge_rvalue_expr");
+    zzTRACEOUT("compare_ge_rvalue_expr");
     return;
   }
 _handler:
@@ -2479,7 +2479,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_ge_rvalue_expr");
+  zzTRACEOUT("compare_ge_rvalue_expr");
   return;
 }
 
@@ -2495,7 +2495,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_gt_rvalue_expr");
+  zzTRACEIN("compare_gt_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2518,7 +2518,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_gt_rvalue_expr");
+    zzTRACEOUT("compare_gt_rvalue_expr");
     return;
   }
 _handler:
@@ -2526,7 +2526,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_gt_rvalue_expr");
+  zzTRACEOUT("compare_gt_rvalue_expr");
   return;
 }
 
@@ -2542,7 +2542,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_le_rvalue_expr");
+  zzTRACEIN("compare_le_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2565,7 +2565,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_le_rvalue_expr");
+    zzTRACEOUT("compare_le_rvalue_expr");
     return;
   }
 _handler:
@@ -2573,7 +2573,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_le_rvalue_expr");
+  zzTRACEOUT("compare_le_rvalue_expr");
   return;
 }
 
@@ -2589,7 +2589,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"compare_lt_rvalue_expr");
+  zzTRACEIN("compare_lt_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2612,7 +2612,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"compare_lt_rvalue_expr");
+    zzTRACEOUT("compare_lt_rvalue_expr");
     return;
   }
 _handler:
@@ -2620,7 +2620,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"compare_lt_rvalue_expr");
+  zzTRACEOUT("compare_lt_rvalue_expr");
   return;
 }
 
@@ -2636,7 +2636,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"rshift_rvalue_expr");
+  zzTRACEIN("rshift_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2659,7 +2659,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"rshift_rvalue_expr");
+    zzTRACEOUT("rshift_rvalue_expr");
     return;
   }
 _handler:
@@ -2667,7 +2667,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"rshift_rvalue_expr");
+  zzTRACEOUT("rshift_rvalue_expr");
   return;
 }
 
@@ -2683,7 +2683,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"lshift_rvalue_expr");
+  zzTRACEIN("lshift_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2706,7 +2706,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"lshift_rvalue_expr");
+    zzTRACEOUT("lshift_rvalue_expr");
     return;
   }
 _handler:
@@ -2714,7 +2714,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"lshift_rvalue_expr");
+  zzTRACEOUT("lshift_rvalue_expr");
   return;
 }
 
@@ -2730,7 +2730,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"substract_rvalue_expr");
+  zzTRACEIN("substract_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2753,7 +2753,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"substract_rvalue_expr");
+    zzTRACEOUT("substract_rvalue_expr");
     return;
   }
 _handler:
@@ -2761,7 +2761,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"substract_rvalue_expr");
+  zzTRACEOUT("substract_rvalue_expr");
   return;
 }
 
@@ -2777,7 +2777,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"add_rvalue_expr");
+  zzTRACEIN("add_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2800,7 +2800,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"add_rvalue_expr");
+    zzTRACEOUT("add_rvalue_expr");
     return;
   }
 _handler:
@@ -2808,7 +2808,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"add_rvalue_expr");
+  zzTRACEOUT("add_rvalue_expr");
   return;
 }
 
@@ -2824,7 +2824,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"modulo_rvalue_expr");
+  zzTRACEIN("modulo_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2847,7 +2847,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"modulo_rvalue_expr");
+    zzTRACEOUT("modulo_rvalue_expr");
     return;
   }
 _handler:
@@ -2855,7 +2855,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"modulo_rvalue_expr");
+  zzTRACEOUT("modulo_rvalue_expr");
   return;
 }
 
@@ -2871,7 +2871,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"divide_rvalue_expr");
+  zzTRACEIN("divide_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2894,7 +2894,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"divide_rvalue_expr");
+    zzTRACEOUT("divide_rvalue_expr");
     return;
   }
 _handler:
@@ -2902,7 +2902,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"divide_rvalue_expr");
+  zzTRACEOUT("divide_rvalue_expr");
   return;
 }
 
@@ -2918,7 +2918,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"multiply_rvalue_expr");
+  zzTRACEIN("multiply_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2941,7 +2941,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"multiply_rvalue_expr");
+    zzTRACEOUT("multiply_rvalue_expr");
     return;
   }
 _handler:
@@ -2949,7 +2949,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"multiply_rvalue_expr");
+  zzTRACEOUT("multiply_rvalue_expr");
   return;
 }
 
@@ -2965,7 +2965,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"power_rvalue_expr");
+  zzTRACEIN("power_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -2988,7 +2988,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"power_rvalue_expr");
+    zzTRACEOUT("power_rvalue_expr");
     return;
   }
 _handler:
@@ -2996,7 +2996,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"power_rvalue_expr");
+  zzTRACEOUT("power_rvalue_expr");
   return;
 }
 
@@ -3013,7 +3013,7 @@ int *_retsignal;
   Attrib op;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"unary_rvalue_expr");
+  zzTRACEIN("unary_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -3039,7 +3039,7 @@ LA(1)==LPARENS || LA(1)==STRING_VALUE || LA(1)==INT_VALUE || LA(1)==REAL_VALUE |
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"unary_rvalue_expr");
+    zzTRACEOUT("unary_rvalue_expr");
     return;
   }
 _handler:
@@ -3047,7 +3047,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"unary_rvalue_expr");
+  zzTRACEOUT("unary_rvalue_expr");
   return;
 }
 
@@ -3064,7 +3064,7 @@ int *_retsignal;
   Attrib b, s, f;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"simple_rvalue_expr");
+  zzTRACEIN("simple_rvalue_expr");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -3156,7 +3156,7 @@ LA(1)==VARIABLE) ) {
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"simple_rvalue_expr");
+    zzTRACEOUT("simple_rvalue_expr");
     return;
   }
 _handler:
@@ -3164,7 +3164,7 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"simple_rvalue_expr");
+  zzTRACEOUT("simple_rvalue_expr");
   return;
 }
 
@@ -3180,7 +3180,7 @@ int *_retsignal;
   int _sva=1;
   int _signal=NoSignal;
   zzBLOCK(zztasp1);
-  zzTRACEIN((ANTLRChar *)"param_list");
+  zzTRACEIN("param_list");
   zzMake0;
   *_retsignal = NoSignal;
   {
@@ -3203,7 +3203,7 @@ int *_retsignal;
       }
     }
     zzEXIT(zztasp1);
-    zzTRACEOUT((ANTLRChar *)"param_list");
+    zzTRACEOUT("param_list");
     return;
   }
 _handler:
@@ -3211,6 +3211,6 @@ _handler:
   if (_signal==NoSignal) {
     zzEXIT(zztasp1);
   }
-  zzTRACEOUT((ANTLRChar *)"param_list");
+  zzTRACEOUT("param_list");
   return;
 }
