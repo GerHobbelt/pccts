@@ -282,7 +282,7 @@ void zzskip()
 
 /* don't erase what is in the zzlextext buffer, add on to it */
 #ifdef __USE_PROTOS
-void zzmore()
+void zzmore(void)
 #else
 void zzmore()
 #endif
@@ -317,13 +317,13 @@ zzchar_t c;
 /* replace the string s for the reg. expr last matched and in the buffer */
 void
 #ifdef __USE_PROTOS
-zzreplstr(register zzchar_t *s)
+zzreplstr(const zzchar_t *s)
 #else
 zzreplstr(s)
-register zzchar_t *s;
+const zzchar_t *s;
 #endif
 {
-	register zzchar_t *l= &zzlextext[zzbufsize -1];
+	zzchar_t *l= &zzlextext[zzbufsize -1];
 
 	zznextpos = zzbegexpr;
 	if (s){
@@ -348,7 +348,7 @@ void zzgettok(void)
 void zzgettok()
 #endif
 {
-	register int state, newstate;
+	int state, newstate;
 	/* last space reserved for the null char */
 	zzchar_t *lastpos;  /* MR27 Remove register since address operator used. */
 

@@ -75,7 +75,7 @@ static int cistrequ(a,b)
 }
 
 #ifdef __USE_PROTOS
-static void ProcessArgs(int, char **, Opt *);
+static void ProcessArgs(int, const char **, const Opt *);
 #else
 static void ProcessArgs();
 #endif
@@ -259,11 +259,11 @@ char *t;
 /* extern void fatal(char *message, int line_no); */
 void 
 #ifdef __USE_PROTOS
-p_response_file(int *argc_ptr, char ***argv_ptr, char *s, char *t)
+p_response_file(int *argc_ptr, const char ***argv_ptr, char *s, char *t)
 #else
 p_response_file(argc_ptr, argv_ptr, s, t)
 int *argc_ptr;
-char ***argv_ptr;
+const char ***argv_ptr;
 char *s;
 char *t;
 #endif
@@ -407,7 +407,7 @@ char *t;
 
 
 static void
-pstdin()
+pstdin(void)
 {
 	if ( DontAcceptStdin )
 	{
@@ -423,19 +423,19 @@ pstdin()
 }
 
 static void
-pGuts()
+pGuts(void)
 {
 	print_guts = 1;
 }
 
 static void
-pTrans()
+pTrans(void)
 {
 	transform = 1;
 }
 
 static void
-pInline()
+pInline(void)
 {
 	if ( def_token_file!=NULL )
 	{
@@ -449,7 +449,7 @@ pInline()
 }
 
 static void
-pCPP()
+pCPP(void)
 {
 	GenCPP = 1;
 }
@@ -457,7 +457,7 @@ pCPP()
 /* MR23 */
 
 static void
-pNoCtor()
+pNoCtor(void)
 {
 	NoCtor = 1;
 	if ( ! GenCPP )
@@ -691,13 +691,13 @@ topint( )
 /* sprintf up to 3 strings */
 char *
 #ifdef __USE_PROTOS
-eMsg3( char *s, char *a1, char *a2, char *a3 )
+eMsg3(const char *s, const char *a1, const char *a2, const char *a3 )
 #else
 eMsg3( s, a1, a2, a3 )
-char *s;
-char *a1;
-char *a2;
-char *a3;
+const char *s;
+const char *a1;
+const char *a2;
+const char *a3;
 #endif
 {
     static char buf[250];           /* DANGEROUS as hell !!!!!! */
@@ -708,10 +708,10 @@ char *a3;
 
 char *
 #ifdef __USE_PROTOS
-eMsgd( char *s, int d )
+eMsgd(const char *s, int d )
 #else
 eMsgd( s, d )
-char *s;
+const char *s;
 int d;
 #endif
 {
@@ -723,11 +723,11 @@ int d;
 
 void
 #ifdef __USE_PROTOS
-fatalFL( char *err_, char *f, int l )
+fatalFL(const char *err_, const char *f, int l )
 #else
 fatalFL( err_, f, l )
-char *err_;
-char *f;
+const char *err_;
+const char *f;
 int l;
 #endif
 {
@@ -775,12 +775,12 @@ void *e;
 
 static void
 #ifdef __USE_PROTOS
-ProcessArgs( int argc, char **argv, Opt *options )
+ProcessArgs( int argc, const char **argv, const Opt *options )
 #else
 ProcessArgs( argc, argv, options )
 int argc;
-char **argv;
-Opt *options;
+const char **argv;
+const Opt *options;
 #endif
 {
 	Opt *p;

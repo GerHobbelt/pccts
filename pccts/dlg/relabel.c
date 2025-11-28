@@ -196,7 +196,7 @@ nfa_node *start;
 #endif
 {
 	set new_label;
-	register int i;
+	int i;
 
 	/* only do node if it hasn't been done before */
 	if (start && start->nfa_set != operation_no){

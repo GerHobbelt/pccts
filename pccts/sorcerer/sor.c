@@ -317,7 +317,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd1, 0x40);
   }
 }
@@ -344,7 +344,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd1, 0x80);
   }
 }
@@ -386,7 +386,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x1);
   }
 }
@@ -432,7 +432,7 @@ AST **_root;
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x2);
   }
 }
@@ -566,7 +566,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x20);
   }
 }
@@ -607,7 +607,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x40);
   }
 }
@@ -696,7 +696,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd3, 0x20);
   }
 }
@@ -901,7 +901,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd4, 0x20);
   }
 }
@@ -1150,7 +1150,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd5, 0x10);
   }
 }
@@ -1232,7 +1232,7 @@ AST **_root;
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd5, 0x80);
   }
 }
@@ -1509,7 +1509,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     found_error=1;  
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd7, 0x10);
   }
 }
@@ -1588,7 +1588,7 @@ AST **_root;
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd7, 0x40);
   }
 }
@@ -1652,7 +1652,7 @@ AST **_root;
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd7, 0x80);
   }
 }
@@ -1857,7 +1857,7 @@ AST **_root;
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd8, 0x20);
   }
 }
@@ -1867,10 +1867,10 @@ fail:
 */
 void
 #ifdef __USE_PROTOS
-zzsyn(char *text, int tok, char *egroup, SetWordType *eset, int etok, int k, char *bad_text)
+zzsyn(const char *text, int tok, const char *egroup, SetWordType *eset, int etok, int k, const char *bad_text)
 #else
 zzsyn(text, tok, egroup, eset, etok, k, bad_text)
-char *text, *egroup, *bad_text;
+const char *text, *egroup, *bad_text;
 int tok;
 int etok;
 int k;

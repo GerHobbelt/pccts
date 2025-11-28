@@ -145,7 +145,7 @@ va_dcl
 #endif
 {
 	va_list ap;
-	register SORAST *child, *sibling=NULL, *tail = NULL, *w;
+	SORAST *child, *sibling=NULL, *tail = NULL, *w;
 	SORAST *root;
 
 #ifdef PCCTS_USE_STDARG

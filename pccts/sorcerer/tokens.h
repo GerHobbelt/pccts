@@ -124,7 +124,7 @@ void enum_def(AST**_root);
 extern void enum_def();
 #endif
 
-extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 118 */];
+extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* 118 */];
 extern SetWordType zzerr1[zzSET_SIZE];
 extern SetWordType zzerr2[zzSET_SIZE];
 extern SetWordType setwd1[zzTOKEN_COUNT];

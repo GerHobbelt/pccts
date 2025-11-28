@@ -353,10 +353,10 @@ protected:                                              // MR8
 
 #define zzRULE \
 		SetWordType *zzMissSet=NULL; ANTLRTokenType zzMissTok=(ANTLRTokenType)0;	\
-		_ANTLRTokenPtr zzBadTok=NULL; ANTLRChar *zzBadText=(ANTLRChar *)"";	\
+		_ANTLRTokenPtr zzBadTok=NULL; const ANTLRChar *zzBadText="";	\
 		int zzErrk=1,zzpf=0; \
         zzTRACEdata \
-		ANTLRChar *zzMissText=(ANTLRChar *)"";
+		const ANTLRChar *zzMissText="";
 
 #endif
 

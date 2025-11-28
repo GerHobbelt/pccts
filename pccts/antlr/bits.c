@@ -935,13 +935,13 @@ GenErrHdr( )
 	/* Dump a zztokens for each automaton */
 	if ( strcmp(ParserName, DefaultParserName)!=0 )
 	{
-	    fprintf(DefFile, "extern ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */];\n", ParserName, TokenNum-1);
-		fprintf(ErrFile, "ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */]={\n", ParserName, TokenNum-1);
+	    fprintf(DefFile, "extern const ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */];\n", ParserName, TokenNum-1);
+		fprintf(ErrFile, "const const ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */]={\n", ParserName, TokenNum-1);
 	}
 	else
 	{
-    	fprintf(DefFile, "extern ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */];\n", TokenNum-1);
-		fprintf(ErrFile, "ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */]={\n", TokenNum-1);
+    	fprintf(DefFile, "extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */];\n", TokenNum-1);
+		fprintf(ErrFile, "const const ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */]={\n", TokenNum-1);
 	}
 	fprintf(ErrFile, "\t/* 00 */\t\"Invalid\"");
 	for (i=1; i<TokenNum-1; i++)

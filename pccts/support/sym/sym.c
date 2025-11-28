@@ -166,11 +166,11 @@ void zzs_add(char *key,Sym *rec)
 #else
 void zzs_add(key, rec)
 char *key;
-register Sym *rec;
+Sym *rec;
 #endif
 {
-	register unsigned int h=0;
-	register char *p=key;
+	unsigned int h=0;
+	char *p=key;
 	
 	HASH(p, h);
 	rec->hash = h;					/* save hash code for fast comp later */
@@ -191,9 +191,9 @@ Sym * zzs_get(key)
 char *key;
 #endif
 {
-	register unsigned int h=0;
-	register char *p=key;
-	register Sym *q;
+	unsigned int h=0;
+	char *p=key;
+	Sym *q;
 	
 	HASH(p, h);
 	
@@ -218,13 +218,13 @@ char *key;
 void zzs_del(Sym *p)
 #else
 void zzs_del(p)
-register Sym *p;
+Sym *p;
 #endif
 {
 	if ( p == NULL ) {fprintf(stderr, "zzs_del(NULL)\n"); exit(1);}
 	if ( p->prev == NULL )	/* Head of list */
 	{
-		register Sym **t = p->head;
+		Sym **t = p->head;
 		
 		if ( t == NULL ) return;	/* not part of symbol table */
 		(*t) = p->next;
@@ -273,10 +273,10 @@ Sym **scope;
 Sym * zzs_rmscope(Sym **scope)
 #else
 Sym * zzs_rmscope(scope)
-register Sym **scope;
+Sym **scope;
 #endif
 {
-	register Sym *p;
+	Sym *p;
 	Sym *start;
 
 	if ( scope == NULL ) return(NULL);
@@ -294,13 +294,13 @@ void zzs_stat()
 {
 	static unsigned short count[20];
 	unsigned int i,n=0,low=0, hi=0;
-	register Sym **p;
+	Sym **p;
 	float avg=0.0;
 	
 	for (i=0; i<20; i++) count[i] = 0;
 	for (p=table; p<&(table[size]); p++)
 	{
-		register Sym *q = *p;
+		Sym *q = *p;
 		unsigned int len;
 		
 		if ( q != NULL && low==0 ) low = p-table;
@@ -383,10 +383,10 @@ char *text;
 char * zzs_strdup(char *s)
 #else
 char * zzs_strdup(s)
-register char *s;
+char *s;
 #endif
 {
-	register char *start=strp;
+	char *start=strp;
 
 	while ( *s != '\0' )
 	{

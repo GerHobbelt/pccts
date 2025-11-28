@@ -240,7 +240,7 @@ void p_class_def2()
 	fprintf(class_stream, "\tvoid     advance(void);\n");
 	fprintf(class_stream, "protected:\n");
 	for (i=1; i<=action_no; ++i) {
-		fprintf(class_stream, "\tANTLRTokenType act%d();\n", i);
+		fprintf(class_stream, "\tANTLRTokenType act%d(void);\n", i);
 	}
 
 	for(m=0; m<(mode_counter-1); ++m){
@@ -440,8 +440,8 @@ void p_node_table(void)
 void p_node_table()
 #endif
 {
-	register int	i;
-	register int	m = 0;
+	int	i;
+	int	m = 0;
 
 	for(m=0; m<(mode_counter-1); ++m){
 		for(i=dfa_basep[m]; i<dfa_basep[m+1]; ++i)
@@ -459,8 +459,8 @@ void p_single_node(i,classes)
 int i,classes;
 #endif
 {
-	register int	j;
-	register int	trans, items_on_line;
+	int	j;
+	int	trans, items_on_line;
 
 #if 1
 	/* extra state (classes+1) for invalid characters */
@@ -499,7 +499,7 @@ void p_dfa_table(void)
 void p_dfa_table()
 #endif
 {
-	register int	i;
+	int	i;
 
 	fprintf(OUT, "\n%sDfaState *%sdfa[%d] = {\n",
 		gen_cpp?ClassName("::"):"",gen_cpp?ClassName("::"):"", dfa_allocated);
@@ -517,8 +517,8 @@ void p_accept_table(void)
 void p_accept_table()
 #endif
 {
-	register int	i = 1;
-	register int	items_on_line = 0;
+	int	i = 1;
+	int	items_on_line = 0;
 	int		true_interactive = TRUE;
 
 	/* make sure element for one past (zzerraction) -WEC 12/16/92 */
@@ -599,7 +599,7 @@ void p_action_table(void)
 void p_action_table()
 #endif
 {
-	register int	i;
+	int	i;
 	char* theClassName = ClassName("");
 
 	if ( gen_cpp )
@@ -636,8 +636,8 @@ void p_shift_table(m)						/* MR1 */
 int m;
 #endif
 {
-	register int	i = 0, j;
-	register int	items_on_line = 0;
+	int	i = 0, j;
+	int	items_on_line = 0;
 
 	fprintf(OUT, "%s unsigned char %sshift%d[%d] = {\n  ",
 		gen_cpp?"":"static",
@@ -667,7 +667,7 @@ void p_base_table(void)
 void p_base_table()
 #endif
 {
-	register int m;
+	int m;
 
 	fprintf(OUT, "%sDfaState %sdfa_base[] = {\n",
 			gen_cpp?ClassName("::"):"static ",
@@ -685,7 +685,7 @@ void p_class_table()						/* MR1 */
 #endif
 {
 #if 0
-	register int m;
+	int m;
 
 	fprintf(OUT,"%s int %sdfa_class_no[] = {\n",
 			gen_cpp?"":"static",
@@ -703,7 +703,7 @@ void p_bshift_table(void)					/* MR1 */
 void p_bshift_table()						/* MR1 */
 #endif
 {
-	register int m;
+	int m;
 
 	fprintf(OUT,"%s unsigned char *%sb_class_no[] = {\n",
 		gen_cpp?"":"static",
@@ -720,7 +720,7 @@ void p_alternative_table(void)				/* MR1 */
 void p_alternative_table()					/* MR1 */
 #endif
 {
-	register int i;
+	int i;
 
 	if ( !gen_cpp ) fprintf(OUT, "#define ZZINTERACTIVE\n\n");
 	if ( gen_cpp )
@@ -757,14 +757,14 @@ int m;
 }
 
 #ifdef __USE_PROTOS
-char * ClassName(char *suffix)
+char * ClassName(const char *suffix)
 #else
 char * ClassName(suffix)
-char *suffix;
+const char *suffix;
 #endif
 {
 	static char buf[200];
-	extern char *class_name;
+	extern const char *class_name;
 
 	sprintf(buf, "%s%s", class_name, suffix);
 	return buf;

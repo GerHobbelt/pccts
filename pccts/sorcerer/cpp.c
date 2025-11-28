@@ -31,7 +31,7 @@
 #include "pcctscfg.h"
 #include "proto.h"
 
-void GenCPPClassHeader()
+void GenCPPClassHeader(void)
 {
 	FILE *Parser_h;
 	char CPPParser_h_Name[MaxFileName+1];
@@ -110,7 +110,7 @@ void GenCPPClassHeader()
 	fclose(Parser_h);
 }
 
-void GenCPPClassCode()
+void GenCPPClassCode(void)
 {
 	FILE *Parser_c;
 	char CPPParser_C_Name[MaxFileName+1];

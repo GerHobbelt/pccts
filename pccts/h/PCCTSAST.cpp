@@ -95,7 +95,7 @@ PCCTS_AST *PCCTS_AST::
 make(PCCTS_AST *rt, ...)
 {
 	va_list ap;
-	register PCCTS_AST *child, *sibling=NULL, *tail=NULL /*MR23*/, *w;
+	PCCTS_AST *child, *sibling=NULL, *tail=NULL /*MR23*/, *w;
 	PCCTS_AST *root;
 
 	va_start(ap, rt);

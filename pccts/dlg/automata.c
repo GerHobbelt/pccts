@@ -59,7 +59,7 @@ make_dfa_model_node(width)
 int width;
 #endif
 {
-	register int i;
+	int i;
 	dfa_model_node = (dfa_node*) malloc(sizeof(dfa_node)
 			 + sizeof(int)*width);
 	dfa_model_node->node_no = -1; /* impossible value for real dfa node */
@@ -82,8 +82,8 @@ new_dfa_node(nfa_states)
 set nfa_states;
 #endif
 {
-	register int j;
-	register dfa_node *t;
+	int j;
+	dfa_node *t;
 	static int dfa_size=0;	/* elements dfa_array[] can hold */
 
 	++dfa_allocated;
@@ -128,8 +128,8 @@ nfa_to_dfa(start)
 nfa_node *start;
 #endif
 {
-	register dfa_node *d_state, *trans_d_state;
-	register int a;
+	dfa_node *d_state, *trans_d_state;
+	int a;
 	set t;
 	int last_done;
 	unsigned *nfa_list;
@@ -184,7 +184,7 @@ clear_hash(void)
 clear_hash()
 #endif
 {
-	register int i;
+	int i;
 
 	for(i=0; i<HASH_SIZE; ++i)
 		dfa_hash[i] = 0;
@@ -199,9 +199,9 @@ fprint_hash_stats(f)
 FILE *f;
 #endif
 {
-	register hash_list *p;
-	register int i,j;
-	register total;
+	hash_list *p;
+	int i,j;
+	int total;
 
 	total=0;
 	for(i=0; i<HASH_SIZE; ++i){
@@ -233,7 +233,7 @@ dfastate(nfa_states)
 set nfa_states;
 #endif
 {
-	register hash_list *p;
+	hash_list *p;
 	int bin;
 
 	/* hash using set and see if it exists */
@@ -256,16 +256,16 @@ set nfa_states;
 /* this reach assumes the closure has been done already on set */
 int 
 #ifdef __USE_PROTOS
-reach(unsigned *nfa_list, register int a, unsigned *reach_list)
+reach(unsigned *nfa_list, int a, unsigned *reach_list)
 #else
 reach(nfa_list, a, reach_list)
 unsigned *nfa_list;
-register int a;
+int a;
 unsigned *reach_list;
 #endif
 {
-	register unsigned *e;
-	register nfa_node *node;
+	unsigned *e;
+	nfa_node *node;
 	int t=0;
 
 	e = nfa_list;
@@ -295,8 +295,8 @@ set *b;
 unsigned *reach_list;
 #endif
 {
-	register nfa_node *node,*n;	/* current node being examined */
-	register unsigned *e;
+	nfa_node *node,*n;	/* current node being examined */
+	unsigned *e;
 
 	++operation_no;
 #if 0
@@ -338,7 +338,7 @@ int o;	/* marker to avoid cycles */
 set *b;
 #endif
 {
-	register nfa_node *n;	/* current node being examined */
+	nfa_node *n;	/* current node being examined */
 
 	/* mark it done */
 	node->nfa_set = o;

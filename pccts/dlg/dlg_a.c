@@ -178,7 +178,7 @@ static void act11()
 { 
 		NLA = ACTION;
     if (func_action)
-    fprintf(OUT,"\n%s %sact%d()\n{ ",
+    fprintf(OUT,"\n%s %sact%d(void)\n{ ",
     gen_cpp?"ANTLRTokenType":"static void",
     gen_cpp?ClassName("::"):"", ++action_no);
     zzmode(ACT); zzskip();

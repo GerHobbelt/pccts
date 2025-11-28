@@ -95,7 +95,7 @@ extern void zzrdstr( zzchar_t * );
 extern void	zzgettok(void);	/* get next token */
 extern void	zzreplchar(zzchar_t c);/* replace last recognized reg. expr. with
 					a character */
-extern void	zzreplstr(zzchar_t *s);/* replace last recognized reg. expr. with
+extern void	zzreplstr(const zzchar_t *s);/* replace last recognized reg. expr. with
 					a string */
 extern void zzsave_dlg_state(struct zzdlg_state *);
 extern void zzrestore_dlg_state(struct zzdlg_state *);

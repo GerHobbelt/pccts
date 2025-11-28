@@ -176,7 +176,7 @@ void enum_def(char * fname);
 extern void enum_def();
 #endif
 
-extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 157 */];
+extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* 157 */];
 extern SetWordType zzerr1[zzSET_SIZE];
 extern SetWordType zzerr2[zzSET_SIZE];
 extern SetWordType zzerr3[zzSET_SIZE];

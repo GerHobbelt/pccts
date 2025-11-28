@@ -356,7 +356,7 @@ int m;
 
 static void fetch_next_char(void)
 {
-	register zzchar_t *lastpos;
+	zzchar_t *lastpos;
 
 	lastpos = &zzlextext[zzbufsize-1];
 
@@ -398,7 +398,7 @@ zzgettok()
   }
   else
   {
-	  register zzchar_t *lastpos;
+	  zzchar_t *lastpos;
 
 	  lastpos = &zzlextext[zzbufsize-1];
 

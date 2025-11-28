@@ -41,7 +41,7 @@
 int	err_found = 0;			/* indicates whether problem found */
 
 #ifdef __USE_PROTOS
-void internal_error(char *s, char *file,int line)    /* MR9 23-Sep-97 */
+void internal_error(const char *s, const char *file,int line)    /* MR9 23-Sep-97 */
 #else
 void internal_error(s,file,line)    /* MR9 23-Sep-97 */
 char *s,*file;
@@ -160,7 +160,7 @@ char *name;
 
 
 #ifdef __USE_PROTOS
-void fatal(char *message,int line_no)
+void fatal(const char *message,int line_no)
 #else
 void fatal(message,line_no)
 char *message;
@@ -184,10 +184,10 @@ int line_no;
 }
 
 #ifdef __USE_PROTOS
-void warning(char *message,int line_no)
+void warning(const char *message,int line_no)
 #else
 void warning(message,line_no)
-char *message;
+const char *message;
 int line_no;
 #endif
 {
@@ -206,7 +206,7 @@ char *OutMetaName(n)
 char *n;
 #endif
 {	
-    static char *dir_sym = DirectorySymbol;
+    static const char *dir_sym = DirectorySymbol;
     static char newname[MaxFileName+1];
     char *p;
 

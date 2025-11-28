@@ -68,7 +68,7 @@ typedef struct _Opt {
 		} Opt;
 
 #ifdef __USE_PROTOS
-extern void ProcessArgs(int, char **, Opt *);
+extern void ProcessArgs(int, const char **, const Opt *);
 #else
 extern void ProcessArgs();
 #endif
@@ -429,14 +429,14 @@ char *t;
 
 
 
-/* extern void fatal(char *message, int line_no); */
+/* extern void fatal(const char *message, int line_no); */
 void 
 #ifdef __USE_PROTOS
-p_response_file(int *argc_ptr, char ***argv_ptr, char *s, char *t)
+p_response_file(int *argc_ptr, const char ***argv_ptr, char *s, char *t)
 #else
 p_response_file(argc_ptr, argv_ptr, s, t)
 int *argc_ptr;
-char ***argv_ptr;
+const char ***argv_ptr;
 char *s;
 char *t;
 #endif
@@ -444,7 +444,7 @@ char *t;
   FILE *f;
   char *buf;
   long int len;
-  char **newargv;
+  const char **newargv;
   int newargc;
   char *dst;
   char *src;
@@ -691,7 +691,7 @@ char *t;
 	}
 }
 
-Opt options[] = {
+const Opt options[] = {
 #ifdef __cplusplus
     { "-CC", 0, (void (*)(...)) pCC,	"Generate C++ output (default=FALSE)"},
     { "-ck", 1, (void (*)(...)) pCk,	"Set compressed lookahead depth; fast approximate lookahead"},
@@ -1338,10 +1338,10 @@ NextFile( )
 
 char *
 #ifdef __USE_PROTOS
-outname( char *fs )
+outname(const char *fs )
 #else
 outname( fs )
-char *fs;
+const char *fs;
 #endif
 {
     if ( GenCC) {
@@ -1353,11 +1353,11 @@ char *fs;
 
 char *
 #ifdef __USE_PROTOS
-outnameX( char *fs ,char *suffix)
+outnameX(const char *fs , const char *suffix)
 #else
 outnameX( fs , suffix )
-char *fs;
-char *suffix;
+const char *fs;
+const char *suffix;
 #endif
 {
 	static char buf[MaxFileName+1];
@@ -1376,11 +1376,11 @@ char *suffix;
 
 void
 #ifdef __USE_PROTOS
-fatalFL( char *err_, char *f, int l )
+fatalFL(const char *err_, const char *f, int l )
 #else
 fatalFL( err_, f, l )
-char *err_;
-char *f;
+const char *err_;
+const char *f;
 int l;
 #endif
 {
@@ -1391,11 +1391,11 @@ int l;
 
 void
 #ifdef __USE_PROTOS
-fatal_intern( char *err_, char *f, int l )
+fatal_intern(const char *err_, const char *f, int l )
 #else
 fatal_intern( err_, f, l )
-char *err_;
-char *f;
+const char *err_;
+const char *f;
 int l;
 #endif
 {
@@ -1420,13 +1420,13 @@ cleanUp( )
 /* sprintf up to 3 strings */
 char *
 #ifdef __USE_PROTOS
-eMsg3( char *s, char *a1, char *a2, char *a3 )
+eMsg3(const char *s, const char *a1, const char *a2, const char *a3 )
 #else
 eMsg3( s, a1, a2, a3 )
-char *s;
-char *a1;
-char *a2;
-char *a3;
+const char *s;
+const char *a1;
+const char *a2;
+const char *a3;
 #endif
 {
 	static char buf[250];			/* DANGEROUS as hell !!!!!! */
@@ -1438,10 +1438,10 @@ char *a3;
 /* sprintf a decimal */
 char *
 #ifdef __USE_PROTOS
-eMsgd( char *s, int d )
+eMsgd(const char *s, int d )
 #else
 eMsgd( s, d )
-char *s;
+const char *s;
 int d;
 #endif
 {
@@ -1453,10 +1453,10 @@ int d;
 
 char *
 #ifdef __USE_PROTOS
-eMsgd2( char *s, int d1,int d2)
+eMsgd2(const char *s, int d1,int d2)
 #else
 eMsgd2( s, d1, d2 )
-char *s;
+const char *s;
 int d1;
 int d2;
 #endif
@@ -1476,7 +1476,7 @@ FILE *f;
 set e;
 #endif
 {
-	register unsigned *p;
+	unsigned *p;
 	unsigned *q;
 
 	if ( set_nil(e) ) return;
@@ -1589,15 +1589,15 @@ topint( )
 
 void
 #ifdef __USE_PROTOS
-ProcessArgs( int argc, char **argv, Opt *options )
+ProcessArgs( int argc, const char **argv, const Opt *options )
 #else
 ProcessArgs( argc, argv, options )
 int argc;
-char **argv;
-Opt *options;
+const char **argv;
+const Opt *options;
 #endif
 {
-	Opt *p;
+	const Opt *p;
 	require(argv!=NULL, "ProcessArgs: command line NULL");
 
 	while ( argc-- > 0 )
@@ -1790,10 +1790,10 @@ char *n;
 
 static void
 #ifdef __USE_PROTOS
-ensure_no_C_file_collisions(char *class_c_file)
+ensure_no_C_file_collisions(const char *class_c_file)
 #else
 ensure_no_C_file_collisions(class_c_file)
-char *class_c_file;
+const char *class_c_file;
 #endif
 {
 	int i;
@@ -1816,10 +1816,10 @@ char *class_c_file;
 
 void
 #ifdef __USE_PROTOS
-warnNoFL(char *err)
+warnNoFL(const char *err)
 #else
 warnNoFL(err)
-char *err;
+const char *err;
 #endif
 {
 	printf_stderr_continued( "warning: %s\n", err);
@@ -1827,12 +1827,12 @@ char *err;
 
 void
 #ifdef __USE_PROTOS
-warnFL(char *err,char *f,int l)
+warnFL(const char *err, const char *f,int l)
 #else
 warnFL(err,f,l)
-char *f;
+const char *f;
 int l;
-char *err;
+const char *err;
 #endif
 {
 	printf_stderr(f, l, " warning: %s\n", err);
@@ -1840,10 +1840,10 @@ char *err;
 
 void
 #ifdef __USE_PROTOS
-warn(char *err)												
+warn(const char *err)
 #else
 warn(err)												
-char *err;
+const char *err;
 #endif
 {
 	/* back up the file number if we hit an error at the end of the last file */
@@ -1853,10 +1853,10 @@ char *err;
 
 void
 #ifdef __USE_PROTOS
-warnNoCR( char *err )
+warnNoCR(const char *err )
 #else
 warnNoCR( err )											
-char *err;
+const char *err;
 #endif
 {
 	/* back up the file number if we hit an error at the end of the last file */
@@ -1866,10 +1866,10 @@ char *err;
 
 void
 #ifdef __USE_PROTOS
-errNoFL(char *err)
+errNoFL(const char *err)
 #else
 errNoFL(err)
-char *err;
+const char *err;
 #endif
 {
 	printf_stderr_continued( "error: %s\n", err);
@@ -1877,11 +1877,11 @@ char *err;
 
 void
 #ifdef __USE_PROTOS
-errFL(char *err,char *f,int l)
+errFL(const char *err, const char *f,int l)
 #else
 errFL(err,f,l)
-char *err;
-char *f;
+const char *err;
+const char *f;
 int l;
 #endif
 {
@@ -1890,10 +1890,10 @@ int l;
 
 void
 #ifdef __USE_PROTOS
-err(char *err)												
+err(const char *err)
 #else
 err(err)												
-char *err;
+const char *err;
 #endif
 {
 	/* back up the file number if we hit an error at the end of the last file */
@@ -1903,10 +1903,10 @@ char *err;
 
 void
 #ifdef __USE_PROTOS
-errNoCR( char *err )											
+errNoCR(const char *err )
 #else
 errNoCR( err )											
-char *err;
+const char *err;
 #endif
 {
 	/* back up the file number if we hit an error at the end of the last file */

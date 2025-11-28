@@ -177,7 +177,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd58, 0x4);
   }
 }
@@ -274,7 +274,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd58, 0x80);
   }
 }
@@ -604,7 +604,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd60, 0x1);
   }
 }
@@ -662,7 +662,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd60, 0x4);
   }
 }
@@ -805,7 +805,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd60, 0x10);
   }
 }
@@ -845,7 +845,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd60, 0x20);
   }
 }
@@ -894,7 +894,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd60, 0x40);
   }
 }
@@ -962,7 +962,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd61, 0x4);
   }
 }
@@ -1048,7 +1048,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd61, 0x20);
   }
 }
@@ -1127,7 +1127,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd61, 0x40);
   }
 }
@@ -1186,7 +1186,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd61, 0x80);
   }
 }
@@ -1369,7 +1369,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd62, 0x10);
   }
 }
@@ -1449,7 +1449,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd62, 0x20);
   }
 }
@@ -1749,7 +1749,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd63, 0x1);
   }
 }
@@ -1828,7 +1828,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd63, 0x2);
   }
 }
@@ -1988,7 +1988,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd63, 0x10);
   }
 }
@@ -2035,7 +2035,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd63, 0x20);
   }
 }
@@ -2114,7 +2114,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd63, 0x40);
   }
 }
@@ -2562,7 +2562,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd64, 0x4);
   }
 }
@@ -2608,7 +2608,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd64, 0x8);
   }
 }
@@ -2660,7 +2660,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd64, 0x10);
   }
 }
@@ -2711,7 +2711,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd64, 0x20);
   }
 }
@@ -2762,7 +2762,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd64, 0x40);
   }
 }
@@ -2945,7 +2945,7 @@ option2==0)                  ) {zzfailed_pred("  option2==0",0 /* report */, { 0
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd65, 0x8);
   }
 }
@@ -3025,7 +3025,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd65, 0x10);
   }
 }
@@ -3144,7 +3144,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd66, 0x8);
   }
 }
@@ -3266,7 +3266,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd66, 0x10);
   }
 }
@@ -3304,7 +3304,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd66, 0x20);
   }
 }
@@ -3383,7 +3383,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd66, 0x40);
   }
 }
@@ -3488,7 +3488,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd67, 0x1);
   }
 }
@@ -3532,7 +3532,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd67, 0x2);
   }
 }
@@ -3572,7 +3572,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd67, 0x8);
   }
 }
@@ -3927,7 +3927,7 @@ AST **_root;
 fail:
     zzEXIT(zztasp1);
     if ( zzguessing ) zzGUESS_FAIL;
-    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd70, 0x1);
   }
 }

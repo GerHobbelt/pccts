@@ -13,11 +13,11 @@ struct reserved_word { char *name; short int token_id; };
   inline
 #endif
 const struct reserved_word *
-in_reserved_keyword_set (register const char *str, register int len);
+in_reserved_keyword_set (const char *str, int len);
 
 
 /* return 0 if no valid keyword was matched. */
-short int get_reserved_keyword(const char *str, register int len)
+short int get_reserved_keyword(const char *str, int len)
 {
   const struct reserved_word *p = NULL;
                                                                              

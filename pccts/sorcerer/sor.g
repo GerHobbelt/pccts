@@ -974,10 +974,10 @@ enum_def!
  */
 void
 #ifdef __USE_PROTOS
-zzsyn(char *text, int tok, char *egroup, SetWordType *eset, int etok, int k, char *bad_text)
+zzsyn(const char *text, int tok, const char *egroup, SetWordType *eset, int etok, int k, const char *bad_text)
 #else
 zzsyn(text, tok, egroup, eset, etok, k, bad_text)
-char *text, *egroup, *bad_text;
+const char *text, *egroup, *bad_text;
 int tok;
 int etok;
 int k;

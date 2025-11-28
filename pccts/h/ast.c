@@ -254,7 +254,7 @@ va_dcl
 #endif
 {
 	va_list ap;
-	register AST *child, *sibling=NULL, *tail=NULL /* MR20 */, *w;
+	AST *child, *sibling=NULL, *tail=NULL /* MR20 */, *w;
 	AST *root;
 
 #ifdef PCCTS_USE_STDARG

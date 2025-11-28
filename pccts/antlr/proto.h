@@ -403,14 +403,14 @@ extern char * StripQuotes( char * );
 extern int main( int, char *[] );
 /* extern void readDescr( void ); [i_a] */
 extern FILE * NextFile( void );
-extern char * outnameX( char *, char *);
-extern char * outname( char * );
-extern void fatalFL( char *, char *, int );
-extern void fatal_intern( char *, char *, int );
+extern char * outnameX(const char *, const char *);
+extern char * outname(const char * );
+extern void fatalFL(const char *, const char *, int );
+extern void fatal_intern(const char *, const char *, int );
 /* extern void cleanUp( void ); [i_a] */
-extern char * eMsg3( char *, char *, char *, char * );
-extern char * eMsgd( char *, int );
-extern char * eMsgd2( char *, int, int );
+extern char * eMsg3(const char *, const char *, const char *, const char * );
+extern char * eMsgd(const char *, int );
+extern char * eMsgd2(const char *, int, int );
 extern void s_fprT( FILE *, set );
 extern char * TerminalString( int );
 extern void lexclass( char * );
@@ -473,14 +473,14 @@ extern void GenRuleMemberDeclarationsForCC(FILE *, Junction *);
 extern int addForcedTname( char *, int );
 extern char *OutMetaName(char *);
 extern void OutFirstSetSymbol(Junction *q, char *);                 /* MR21 */
-extern void warnNoFL(char *err);
-extern void warnFL(char *err,char *f,int l);
-extern void warn(char *err);
-extern void warnNoCR( char *err );
-extern void errNoFL(char *err);
-extern void errFL(char *err,char *f,int l);
-extern void err(char *err);
-extern void errNoCR( char *err );
+extern void warnNoFL(const char *err);
+extern void warnFL(const char *err, const char *f,int l);
+extern void warn(const char *err);
+extern void warnNoCR(const char *err );
+extern void errNoFL(const char *err);
+extern void errFL(const char *err, const char *f,int l);
+extern void err(const char *err);
+extern void errNoCR(const char *err );
 /* extern void genPredTree( Predicate *p, Node *j, int ,int); [i_a] */
 extern UserAction *newUserAction(char *);
 extern char *gate_symbol(char *name);

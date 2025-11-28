@@ -55,7 +55,7 @@ typedef struct _set {
 /* make arg1 a set big enough to hold max elem # of arg2 */
 #define set_new(a,_max) \
 if (((a).setword=(unsigned *)calloc(NumWords(_max),BytesPerWord))==NULL) \
-        fprintf(stderr, "set_new: Cannot allocate set with max of %d\n", _max); \
+        fprintf(stderr, "set_new: Cannot allocate set with max of %zu\n", (size_t)_max); \
         (a).n = NumWords(_max);
 
 #define set_free(a)									\
@@ -77,17 +77,17 @@ extern unsigned set_int( set );
 extern int set_el( unsigned, set );
 extern int set_nil( set );
 extern char * set_str( set );
-extern set set_val( register char * );
+extern set set_val( char * );
 extern void set_orel( unsigned, set * );
 extern void set_orin( set *, set );
 extern void set_andin( set *, set );
 extern void set_rm( unsigned, set );
 extern void set_clr( set );
 extern set set_dup( set );
-extern void set_PDQ( set, register unsigned * );
+extern void set_PDQ( set, unsigned * );
 extern unsigned *set_pdq( set );
-extern void _set_pdq( set a, register unsigned *q );
-extern unsigned int set_hash( set, register unsigned int );
+extern void _set_pdq( set a, unsigned *q );
+extern unsigned int set_hash( set, unsigned int );
 #else
 extern void set_size();
 extern unsigned int set_deg();

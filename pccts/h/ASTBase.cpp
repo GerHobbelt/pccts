@@ -131,7 +131,7 @@ ASTBase *
 ASTBase::tmake(ASTBase *root, ...)
 {
 	va_list ap;
-	register ASTBase *child, *sibling=NULL, *tail=NULL /*MR23*/, *w;
+	ASTBase *child, *sibling=NULL, *tail=NULL /*MR23*/, *w;
 
 	va_start(ap, root);
 

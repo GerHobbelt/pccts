@@ -112,7 +112,7 @@ extern int CurrentStatement;
 #define ERR_H_GENERATE 1
 #include "err.h"
 
-ANTLRChar *zztokens[zzTOKEN_COUNT /* 260 */]={
+const ANTLRChar *zztokens[zzTOKEN_COUNT /* 260 */]={
 	/* 00 */	"Invalid",
 	/* 01 */	"@",
 	/* 02 */	"SKIP_TOKEN",

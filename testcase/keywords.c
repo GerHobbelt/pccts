@@ -71,7 +71,7 @@ maximum possible size of generated hash table is 398
  ***************************************************************************/
 
 
- /* starting time is 17:26:17 */
+ /* starting time is 18:14:37 */
 
 
 /***************************************************************************
@@ -158,11 +158,11 @@ struct reserved_word { char *name; short int token_id; };
   inline
 #endif
 const struct reserved_word *
-in_reserved_keyword_set (register const char *str, register int len);
+in_reserved_keyword_set (const char *str, int len);
 
 
 /* return 0 if no valid keyword was matched. */
-short int get_reserved_keyword(const char *str, register int len)
+short int get_reserved_keyword(const char *str, int len)
 {
   const struct reserved_word *p = NULL;
                                                                              
@@ -187,7 +187,7 @@ short int get_reserved_keyword(const char *str, register int len)
   inline
 #endif
 static int
-decode_keyword (register const char *str, register int len)
+decode_keyword (const char *str, int len)
 {
   static const unsigned char hash_table[] =
   {
@@ -218,7 +218,7 @@ decode_keyword (register const char *str, register int len)
      54, 54, 54, 54, 54, 54, 54, 54, 54, 54, /* 0xF0 [ ] .. 0xF9 [ ] */
      54, 54, 54, 54, 54, 54,                 /* 0xFA [ ] .. 0xFF [ ] */
   };
-  register int hval = len;
+  int hval = len;
 
   switch (hval)
   {
@@ -243,7 +243,7 @@ decode_keyword (register const char *str, register int len)
   inline
 #endif
 const struct reserved_word *
-in_reserved_keyword_set (register const char *str, register int len)
+in_reserved_keyword_set (const char *str, int len)
 {
 
   static const struct reserved_word  wordlist[] =
@@ -297,7 +297,7 @@ in_reserved_keyword_set (register const char *str, register int len)
   if (len <= MAX_WORD_LENGTH
       && len >= MIN_WORD_LENGTH)
   {
-    register int key = decode_keyword (str, len);
+    int key = decode_keyword (str, len);
 
     if (key <= MAX_HASH_VALUE
         && key >= MIN_HASH_VALUE)
@@ -589,5 +589,5 @@ end table dumping
  ***************************************************************************/
 
 
-  /* ending time is 17:26:17 */
+  /* ending time is 18:14:37 */
 

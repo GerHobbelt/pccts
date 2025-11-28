@@ -3720,7 +3720,7 @@ do {    /* MR10     Change recursion into iteration         */
 	    else
 	    {
 		    gen1("zzsyn(zzMissText, zzBadTok, %s, zzMissSet, zzMissTok, zzErrk, zzBadText);\n",
-			    r->egroup==NULL?"(ANTLRChar *)\"\"":r->egroup);
+			    r->egroup==NULL?"\"\"":r->egroup);
 	    }
 	    gen3("%sresynch(setwd%d, 0x%x);\n", GenCC?"":"zz", wordnum, 1<<setnum);
 

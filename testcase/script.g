@@ -627,7 +627,7 @@ exception
                                 zzMissTok = zzaCur.token_id; /* zzMissTok = 0??? */
                                 zzFAIL(0
                                       ,&zzMissSet, &zzMissText, &zzBadTok, &zzBadText, &zzErrk);
-                                zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+                                zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 #endif
 
                                 /* flush all: nobody can save you now :-) */

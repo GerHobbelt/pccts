@@ -131,7 +131,7 @@ void xxprintf(format,string) 					/* MR1 */
 
 #token ACTION		"\<\<"
 		<< if (func_action)
-			fprintf(OUT,"\n%s %sact%d()\n{ ",
+			fprintf(OUT,"\n%s %sact%d(void)\n{ ",
 					gen_cpp?"ANTLRTokenType":"static void",
 					gen_cpp?ClassName("::"):"", ++action_no);
 		   zzmode(ACT); zzskip();
@@ -332,8 +332,8 @@ atom_list	: << set_free($$.label); >>
 				(near_atom <<set_orin(&($$.label),$1.label);>>)*
 		;
 
-near_atom	: << register int i;
-		     register int i_prime;
+near_atom	: << int i;
+		     int i_prime;
 		  >>
 		  anychar
 			<<$$.letter=$1.letter; $$.label=set_of($1.letter);
@@ -377,7 +377,7 @@ near_atom	: << register int i;
 			}
 		;
 
-atom		: << register int i_prime;>>
+atom		: << int i_prime;>>
 		  anychar
 		  <<$$.label = set_of($1.letter);
 		    i_prime = $1.letter + MIN_CHAR;
@@ -454,7 +454,7 @@ new_nfa_node(void)
 new_nfa_node()
 #endif
 {
-	register nfa_node *t;
+	nfa_node *t;
 	static int nfa_size=0;	/* elements nfa_array[] can hold */
 
 	++nfa_allocated;
@@ -569,7 +569,7 @@ int first_node;
 int last_node;
 #endif
 {
-	register int i;
+	int i;
 	nfa_node *t;
 
 	for (i=first_node; i<=last_node; ++i){
@@ -599,10 +599,10 @@ int last_node;
  */
 void
 #ifdef __USE_PROTOS
-zzsyn(char *text, int tok, char *egroup, SetWordType *eset, int etok, int k, char *bad_text)
+zzsyn(const char *text, int tok, const char *egroup, SetWordType *eset, int etok, int k, const char *bad_text)
 #else
 zzsyn(text, tok, egroup, eset, etok, k, bad_text)
-char *text, *egroup, *bad_text;
+const char *text, *egroup, *bad_text;
 int tok;
 int etok;
 int k;

@@ -584,7 +584,7 @@ print_switch (void)
   printf ("  if (len <= MAX_WORD_LENGTH\n"
           "      && len >= MIN_WORD_LENGTH)\n"
           "  {\n"
-          "    register int key = %s (str, len);\n"
+          "    int key = %s (str, len);\n"
           "\n"
           "    if (key <= MAX_HASH_VALUE\n"
           "        && key >= MIN_HASH_VALUE)\n"
@@ -882,14 +882,14 @@ print_hash_function (int max_hash_value)
   
   printf (OPTION_ENABLED (option, ANSI) 
           ? "static int\n"
-            "%s (register const char *str, register int len)\n"
+            "%s (const char *str, int len)\n"
             "{\n"
             "  static %sunsigned %s hash_table[] =\n"
             "  {"
           : "static int\n"
             "%s (str, len)\n"
-            "  register char *str;\n"
-            "  register unsigned int  len;\n"
+            "  char *str;\n"
+            "  unsigned int  len;\n"
             "{\n"
             "  static %sunsigned %s hash_table[] =\n"
             "  {",
@@ -981,7 +981,7 @@ print_hash_function (int max_hash_value)
         {                    
           printf ("\n"
                   "  };\n"
-                  "  register int hval = %s;\n"
+                  "  int hval = %s;\n"
                   "\n"
                   "  switch (%s)\n"
                   "  {\n"
@@ -1036,11 +1036,11 @@ print_lookup_function (void)
 { 
   printf ("  if (len <= MAX_WORD_LENGTH && len >= MIN_WORD_LENGTH)\n"
           "  {\n"
-          "    register int key = %s (str, len);\n"
+          "    int key = %s (str, len);\n"
           "\n"
           "    if (key <= MAX_HASH_VALUE && key >= MIN_HASH_VALUE)\n"
           "    {\n"
-          "      register %schar *s = wordlist[key]", 
+          "      %schar *s = wordlist[key]", 
           GET_HASH_NAME (option), OPTION_ENABLED (option, CONST) ? "const " : "");
   if (key_list.array_type != default_array_type)
     printf (".%s", GET_KEY_NAME (option));
@@ -1102,12 +1102,12 @@ print_output (void)
   /* Use ANSI function prototypes. */
   printf (OPTION_ENABLED (option, ANSI)
           ? "%s%s\n"
-            "%s (register const char *str, register int len)\n"
+            "%s (const char *str, int len)\n"
             "{\n"
           : "%s%s\n"
             "%s (str, len)\n"
-            "  register char *str;\n"
-            "  register unsigned int len;\n"
+            "  char *str;\n"
+            "  unsigned int len;\n"
             "{\n", 
             OPTION_ENABLED (option, CONST) ? "const " : "", 
             key_list.return_type, GET_FUNCTION_NAME (option));

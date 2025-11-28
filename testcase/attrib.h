@@ -78,7 +78,7 @@ void i_a_zzdef0_attr(Attrib *attr);
 void i_a_zzcopy_attr(Attrib *dst, const Attrib *src);
 
 
-short int get_reserved_keyword(const char *str, register int len);
+short int get_reserved_keyword(const char *str, int len);
 
 
 /* EXCEPTION_HANDLING          n   Causes Antlr to supply exception related code. */

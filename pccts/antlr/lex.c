@@ -836,7 +836,7 @@ char *s;
 char *e;
 #endif
 {
-    register char *p;
+    char *p;
     require(s!=NULL&&e!=NULL, "strmember: NULL string");
 
     if ( *e=='\0' ) return 1;   /* empty string is always member */

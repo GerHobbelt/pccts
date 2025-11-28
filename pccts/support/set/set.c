@@ -130,17 +130,17 @@ set a;
 	   that all word bits are used in the set
 	   and that SETSIZE(a) is a multiple of WORDSIZE.
 	*/
-	register unsigned *p = &(a.setword[0]);
-	register unsigned *endp = NULL; /* MR27 Avoid false memory check report */
-	register unsigned degree = 0;
+	unsigned *p = &(a.setword[0]);
+	unsigned *endp = NULL; /* MR27 Avoid false memory check report */
+	unsigned degree = 0;
 
 	CHK(a);
 	if ( a.n == 0 ) return(0);
 	endp = &(a.setword[a.n]);
 	while ( p < endp )
 	{
-		register unsigned t = *p;
-		register unsigned *b = &(bitmask[0]);
+		unsigned t = *p;
+		unsigned *b = &(bitmask[0]);
 		do {
 			if (t & *b) ++degree;
 		} while (++b < &(bitmask[WORDSIZE]));
@@ -164,7 +164,7 @@ set c;
 	set *big;
 	set t;
 	unsigned int m,n;
-	register unsigned *r, *p, *q, *endp;
+	unsigned *r, *p, *q, *endp;
 
 	CHK(b); CHK(c);
 	t = empty;
@@ -199,7 +199,7 @@ set c;
 	/* resultant set size is min(b, c); */
 	set t;
 	unsigned int n;
-	register unsigned *r, *p, *q, *endp;
+	unsigned *r, *p, *q, *endp;
 
 	CHK(b); CHK(c);
 	t = empty;
@@ -230,7 +230,7 @@ set c;
 	/* resultant set size is size(b) */
 	set t;
 	unsigned int n;
-	register unsigned *r, *p, *q, *endp;
+	unsigned *r, *p, *q, *endp;
 
 	CHK(b); CHK(c);
 	t = empty;
@@ -292,8 +292,8 @@ set *a;
 unsigned int n;
 #endif
 {
-	register unsigned *p;
-	register unsigned *endp;
+	unsigned *p;
+	unsigned *endp;
 	unsigned int size;
 	
 	CHK((*a));
@@ -342,9 +342,9 @@ set a;
 	/* size of resultant set is size(a) */
 	/* ~empty = empty cause we don't know how bit to make set */
 	set t;
-	register unsigned *r;
-	register unsigned *p = a.setword;
-	register unsigned *endp = &(a.setword[a.n]);
+	unsigned *r;
+	unsigned *p = a.setword;
+	unsigned *endp = &(a.setword[a.n]);
 
 	CHK(a);
 	t = empty;
@@ -440,8 +440,8 @@ set b;
 #endif
 {
 	/* Fast pick any element of the set b */
-	register unsigned *p = b.setword;
-	register unsigned *endp = &(b.setword[b.n]);
+	unsigned *p = b.setword;
+	unsigned *endp = &(b.setword[b.n]);
 
 	CHK(b);
 	if ( b.n == 0 ) return( nil );
@@ -449,8 +449,8 @@ set b;
 	do {
 		if (*p) {
 			/* Found a non-empty word of the set */
-			register unsigned i = ((p - b.setword) << LogWordSize);
-			register unsigned t = *p;
+			unsigned i = ((p - b.setword) << LogWordSize);
+			unsigned t = *p;
 			p = &(bitmask[0]);
 			while (!(*p & t)) {
 				++i; ++p;
@@ -490,8 +490,8 @@ set a;
 #endif
 {
 	/* Fast check for nil set */
-	register unsigned *p = a.setword;
-	register unsigned *endp;
+	unsigned *p = a.setword;
+	unsigned *endp;
 
 	CHK(a);
 	if ( a.n == 0 ) return(1);
@@ -522,16 +522,16 @@ set a;
 	   Trailing 0 bits are removed from the string.
 	   if no bits are on or set is empty, "" is returned.
 	*/
-	register unsigned *p = a.setword;
-	register unsigned *endp = &(a.setword[a.n]);
+	unsigned *p = a.setword;
+	unsigned *endp = &(a.setword[a.n]);
 	static char str_tmp[StrSize+1];
-	register char *q = &(str_tmp[0]);
+	char *q = &(str_tmp[0]);
 
 	CHK(a);
 	if ( a.n==0 ) {*q=0; return( &(str_tmp[0]) );}
 	do {
-		register unsigned t = *p;
-		register unsigned *b = &(bitmask[0]);
+		unsigned t = *p;
+		unsigned *b = &(bitmask[0]);
 		do {
 			*(q++) = (char) ((t & *b) ? '1' : '0');
 		} while (++b < &(bitmask[WORDSIZE]));
@@ -546,10 +546,10 @@ set a;
 
 set
 #ifdef __USE_PROTOS
-set_val( register char *s )
+set_val( char *s )
 #else
 set_val( s )
-register char *s;
+char *s;
 #endif
 {
 	/* Fast convert set ASCII char string into a set.
@@ -558,13 +558,13 @@ register char *s;
 	   The resulting set size is just big enough to hold all elements.
 	*/
 	static set a;
-	register unsigned *p, *endp;
+	unsigned *p, *endp;
 
 	set_new(a, strlen(s));
 	p = a.setword;
 	endp = &(a.setword[a.n]);
 	do {
-		register unsigned *b = &(bitmask[0]);
+		unsigned *b = &(bitmask[0]);
 		/* Start with a word with no bits on */
 		*p = 0;
 		do {
@@ -614,7 +614,7 @@ set b;
 	/* Fast set union operation */
 	/* size(a) is max(a, b); */
 	unsigned int m;
-	register unsigned *p,
+	unsigned *p,
 					  *q    = b.setword,
 					  *endq; /* MR20 */
 
@@ -644,7 +644,7 @@ set b;
 	/* Fast set intersection operation */
 	/* size(a) is max(a, b); */
 	unsigned int m;
-	register unsigned *p,
+	unsigned *p,
 					  *q    = b.setword,
 					  *endq = &(b.setword[b.n]);
 
@@ -682,8 +682,8 @@ set a;
 #endif
 {
 	/* Does not effect size of set */
-	register unsigned *p = a.setword;
-	register unsigned *endp;
+	unsigned *p = a.setword;
+	unsigned *endp;
 	
 	CHK(a);
 	if ( a.n == 0 ) return;
@@ -702,7 +702,7 @@ set a;
 #endif
 {
 	set b;
-	register unsigned *p,
+	unsigned *p,
 					  *q    = a.setword,
 					  *endq; /* MR20 */
 	
@@ -746,23 +746,23 @@ set a;
  */
 void
 #ifdef __USE_PROTOS
-_set_pdq( set a, register unsigned *q )
+_set_pdq( set a, unsigned *q )
 #else
 _set_pdq( a, q )
 set a;
-register unsigned *q;
+unsigned *q;
 #endif
 {
-	register unsigned *p = a.setword,
+	unsigned *p = a.setword,
 					  *endp = &(a.setword[a.n]);
-	register unsigned e=0;
+	unsigned e=0;
 
 	CHK(a);
 	/* are there any space (possibility of elements)? */
 	if ( a.n == 0 ) return;
 	do {
-		register unsigned t = *p;
-		register unsigned *b = &(bitmask[0]);
+		unsigned t = *p;
+		unsigned *b = &(bitmask[0]);
 		do {
 			if ( t & *b ) *q++ = e;
 			++e;
@@ -800,17 +800,17 @@ set a;
  */
 unsigned int
 #ifdef __USE_PROTOS
-set_hash( set a, register unsigned int mod )
+set_hash( set a, unsigned int mod )
 #else
 set_hash( a, mod )
 set a;
-register unsigned int mod;
+unsigned int mod;
 #endif
 {
 	/* Fast hash of set a (assumes all bits used) */
-	register unsigned *p = &(a.setword[0]);
-	register unsigned *endp = &(a.setword[a.n]);
-	register unsigned i = 0;
+	unsigned *p = &(a.setword[0]);
+	unsigned *endp = &(a.setword[a.n]);
+	unsigned i = 0;
 
 	CHK(a);
 	while (p<endp){

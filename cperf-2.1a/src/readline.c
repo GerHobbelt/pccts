@@ -32,8 +32,8 @@ static char *
 readln_aux (int chunks) 
 {
   char buf[CHUNK_SIZE];
-  register char *bufptr = buf;
-  register char *ptr;
+  char *bufptr = buf;
+  char *ptr;
   int c;
 
   while ((c = getchar ()) != EOF && c != '\n' && c!= '\r') /* fill the current buffer */

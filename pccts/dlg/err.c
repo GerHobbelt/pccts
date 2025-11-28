@@ -27,7 +27,7 @@
 #define ERR_H_GENERATE 1
 #include "err.h"
 
-ANTLRChar *zztokens[zzTOKEN_COUNT /* 46 */]={
+const ANTLRChar *zztokens[zzTOKEN_COUNT /* 46 */]={
 	/* 00 */	"Invalid",
 	/* 01 */	"@",
 	/* 02 */	"[\\r\\t\\ ]+",

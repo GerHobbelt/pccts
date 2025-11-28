@@ -142,35 +142,35 @@ extern FILE	*input_stream;	/* where description read from */
 extern FILE	*output_stream; /* where to put the output */
 extern FILE	*mode_stream;	/* where to put the mode output */
 extern FILE	*class_stream;
-extern char	*mode_file;	/* name of file for mode output */
+extern const char	*mode_file;	/* name of file for mode output */
 extern int	gen_ansi;	/* produce ansi compatible code */
 extern int	case_insensitive;/* ignore case of input spec. */
 extern int	warn_ambig;	/* show if regular expressions ambiguous */
 extern int	gen_cpp;
 extern char *cl_file_str;
 extern int	firstLexMember;	/* MR1 */
-extern char *OutputDirectory;
-extern char	*class_name;
+extern const char *OutputDirectory;
+extern const char	*class_name;
 
 /******************** Functions ******************************/
 #ifdef __USE_PROTOS
 extern char 	*dlg_malloc(int, char *, int); /* wrapper malloc */
 extern char 	*dlg_calloc(int, int, char *, int); /* wrapper calloc */
-extern int	reach(unsigned *, register int, unsigned *);
+extern int	reach(unsigned *, int, unsigned *);
 extern set	closure(set *, unsigned *);
 extern dfa_node *new_dfa_node(set);
 extern nfa_node *new_nfa_node(void);
 extern dfa_node *dfastate(set);
 extern dfa_node **nfa_to_dfa(nfa_node *);
-extern void	internal_error(char *, char *, int);    /* MR9 23-Sep-97 */
+extern void	internal_error(const char *, const char *, int);    /* MR9 23-Sep-97 */
 extern FILE	*read_stream(char *);	/* opens file for reading */
 extern FILE	*write_stream(char *);	/* opens file for writing */
 extern void	make_nfa_model_node(void);
 extern void	make_dfa_model_node(int);
-extern char *ClassName(char *);
+extern char *ClassName(const char *);
 extern char *OutMetaName(char *);
-extern void error(char*, int);
-extern void warning(char*, int);
+extern void error(const char*, int);
+extern void warning(const char*, int);
 extern void p_top_head(FILE *out);               /* [i_a] */
 extern void p_head(void);
 extern void p_class_hdr(void);

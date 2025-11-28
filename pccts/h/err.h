@@ -179,7 +179,7 @@ zzedecode(a);
 
 void
 #ifdef __USE_PROTOS
-zzsyn(char *text, int tok, char *egroup, SetWordType *eset, int etok, int k, char *bad_text);
+zzsyn(const char *text, int tok, const char *egroup, SetWordType *eset, int etok, int k, const char *bad_text);
 #else
 zzsyn(text, tok, egroup, eset, etok, k, bad_text);
 #endif
@@ -209,7 +209,7 @@ zzset_deg(a);
 
 int
 #ifdef __USE_PROTOS
-_zzmatch(int _t, char **zzBadText, char **zzMissText,
+_zzmatch(int _t, const char **zzBadText, const char **zzMissText,
 		int *zzMissTok, int *zzBadTok,
 		SetWordType **zzMissSet);
 #else
@@ -229,7 +229,7 @@ _zzmatch_wsig(_t);
 
 int
 #ifdef __USE_PROTOS
-_zzmatch(int _t, char **zzBadText, char **zzMissText,
+_zzmatch(int _t, const char **zzBadText, const char **zzMissText,
 		 int *zzMissTok, int *zzBadTok, SetWordType **zzMissSet);
 #else
 _zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet);
@@ -251,7 +251,7 @@ _zzmatch_wsig(_t);
 
 int
 #ifdef __USE_PROTOS
-_zzmatch(int _t, char **zzBadText, char **zzMissText,
+_zzmatch(int _t, const char **zzBadText, const char **zzMissText,
 		int *zzMissTok, int *zzBadTok,
 		SetWordType **zzMissSet);
 #else
@@ -294,7 +294,7 @@ zzfill_inf_look();
 
 int
 #ifdef __USE_PROTOS
-_zzsetmatch(SetWordType *e, char **zzBadText, char **zzMissText,
+_zzsetmatch(SetWordType *e, const char **zzBadText, const char **zzMissText,
 			int *zzMissTok, int *zzBadTok,
 			SetWordType **zzMissSet,
 			SetWordType *zzTokclassErrset /* MR23 */);
@@ -706,14 +706,14 @@ zzedecode(a)
 SetWordType *a;
 #endif
 {
-	register SetWordType *p = a;
-	register SetWordType *endp = &(p[zzSET_SIZE]);
-	register unsigned e = 0;
+	SetWordType *p = a;
+	SetWordType *endp = &(p[zzSET_SIZE]);
+	unsigned e = 0;
 
 	if ( zzset_deg(a)>1 ) fprintf(stderr, " {");
 	do {
-		register SetWordType t = *p;
-		register SetWordType *b = &(bitmask[0]);
+		SetWordType t = *p;
+		SetWordType *b = &(bitmask[0]);
 		do {
 			if ( t & *b ) fprintf(stderr, " %s", zztokens[e]);
 			e++;
@@ -726,7 +726,7 @@ SetWordType *a;
 /* standard error reporting function */
 void
 #ifdef __USE_PROTOS
-zzsyn(char *text, int tok, char *egroup, SetWordType *eset, int etok, int k, char *bad_text)
+zzsyn(const char *text, int tok, const char *egroup, SetWordType *eset, int etok, int k, const char *bad_text)
 #else
 zzsyn(text, tok, egroup, eset, etok, k, bad_text)
 char *text, *egroup, *bad_text;
@@ -778,15 +778,15 @@ SetWordType *a;
 	   of elements present in the set.  Assumes
 	   that all word bits are used in the set
 	*/
-	register SetWordType *p = a;
-	register SetWordType *endp = &(a[zzSET_SIZE]);
-	register int degree = 0;
+	SetWordType *p = a;
+	SetWordType *endp = &(a[zzSET_SIZE]);
+	int degree = 0;
 
 	if ( a == NULL ) return 0;
 	while ( p < endp )
 	{
-		register SetWordType t = *p;
-		register SetWordType *b = &(bitmask[0]);
+		SetWordType t = *p;
+		SetWordType *b = &(bitmask[0]);
 		do {
 			if (t & *b) ++degree;
 		} while (++b < &(bitmask[sizeof(SetWordType)*8]));
@@ -801,14 +801,14 @@ SetWordType *a;
 #ifdef LL_K
 int
 #ifdef __USE_PROTOS
-_zzmatch(int _t, char **zzBadText, char **zzMissText,
+_zzmatch(int _t, const char **zzBadText, const char **zzMissText,
 		int *zzMissTok, int *zzBadTok,
 		SetWordType **zzMissSet)
 #else
 _zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet)
 int _t;
-char **zzBadText;
-char **zzMissText;
+const char **zzBadText;
+const char **zzMissText;
 int *zzMissTok, *zzBadTok;
 SetWordType **zzMissSet;
 #endif
@@ -852,13 +852,13 @@ int _t;
 
 int
 #ifdef __USE_PROTOS
-_zzmatch(int _t, char **zzBadText, char **zzMissText,
+_zzmatch(int _t, const char **zzBadText, const char **zzMissText,
 		 int *zzMissTok, int *zzBadTok, SetWordType **zzMissSet)
 #else
 _zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet)
 int _t;
-char **zzBadText;
-char **zzMissText;
+const char **zzBadText;
+const char **zzMissText;
 int *zzMissTok, *zzBadTok;
 SetWordType **zzMissSet;
 #endif
@@ -898,14 +898,14 @@ int _t;
 
 int
 #ifdef __USE_PROTOS
-_zzmatch(int _t, char **zzBadText, char **zzMissText,
+_zzmatch(int _t, const char **zzBadText, const char **zzMissText,
 		int *zzMissTok, int *zzBadTok,
 		SetWordType **zzMissSet)
 #else
 _zzmatch(_t, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet)
 int _t;
-char **zzBadText;
-char **zzMissText;
+const char **zzBadText;
+const char **zzMissText;
 int *zzMissTok, *zzBadTok;
 SetWordType **zzMissSet;
 #endif
@@ -1065,15 +1065,15 @@ zzfill_inf_look()
 
 int
 #ifdef __USE_PROTOS
-_zzsetmatch(SetWordType *e, char **zzBadText, char **zzMissText,
+_zzsetmatch(SetWordType *e, const char **zzBadText, const char **zzMissText,
 			int *zzMissTok, int *zzBadTok,
 			SetWordType **zzMissSet,
 			SetWordType *zzTokclassErrset /* MR23 */)
 #else
 _zzsetmatch(e, zzBadText, zzMissText, zzMissTok, zzBadTok, zzMissSet, zzTokclassErrset /* MR23 */)
 SetWordType *e;
-char **zzBadText;
-char **zzMissText;
+const char **zzBadText;
+const char **zzMissText;
 int *zzMissTok, *zzBadTok;
 SetWordType **zzMissSet;
 SetWordType *zzTokclassErrset;

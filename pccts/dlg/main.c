@@ -49,9 +49,9 @@ int     Save_argc = 0;
 char ** Save_argv = 0;                                                  
 int	numfiles = 0;
 char	*file_str[2] = {NULL, NULL};
-char	*mode_file = "mode.h";
-char	*class_name = DEFAULT_CLASSNAME;
-char	*OutputDirectory = TopDirectory;
+const char	*mode_file = "mode.h";
+const char	*class_name = DEFAULT_CLASSNAME;
+const char	*OutputDirectory = TopDirectory;
 
 /* Option variables */
 int comp_level = 0;
@@ -81,7 +81,7 @@ void p_comp1(void)		{comp_level = 1;}
 void p_comp2(void)		{comp_level = 2;}
 void p_stdio(void)		{ file_str[numfiles++] = NULL;}
 void p_file(char *s) 	{ file_str[numfiles++] = s;}
-void p_cl_name(char *s, char *t)
+void p_cl_name(char *s, const char *t)
 	{
 		if ( gen_cpp ) {
 			class_name = t;
@@ -90,8 +90,8 @@ void p_cl_name(char *s, char *t)
 			warning("-cl only valid in C++ mode; -cl ignored...",0);
 		}
 	}
-void p_mode_file(char *s, char *t){mode_file=t;}
-void p_outdir(char *s,char *t) {OutputDirectory=t;}
+void p_mode_file(char *s, const char *t){mode_file=t;}
+void p_outdir(char *s, const char *t) {OutputDirectory=t;}
 void p_ansi(void)		{gen_ansi = TRUE;}
 void p_interactive(void)	{interactive = TRUE;}
 void p_case_s(void)		{ case_insensitive = FALSE; }
@@ -166,15 +166,15 @@ char *t;
 
 
 
-extern void fatal(char *message, int line_no);
+extern void fatal(const char *message, int line_no);
 
 void
 #ifdef __USE_PROTOS
-p_response_file(int *argc_ptr, char ***argv_ptr, char *s, char *t)
+p_response_file(int *argc_ptr, const char ***argv_ptr, char *s, char *t)
 #else
 p_response_file(argc_ptr, argv_ptr, s, t)
 int *argc_ptr;
-char ***argv_ptr;
+const char ***argv_ptr;
 char *s;
 char *t;
 #endif
@@ -182,7 +182,7 @@ char *t;
   FILE *f;
   char *buf;
   long int len;
-  char **newargv;
+  const char **newargv;
   int newargc;
   char *dst;
   char *src;
@@ -281,7 +281,7 @@ char *t;
   *dst++ = 0; /* write extra NUL sentinel at end of list */
 
   /* now merge new/old argv elems */
-  newargv = (char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
+  newargv = (const char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
   if (!newargv)
   {
     fatal("Cannot allocate response file processing buffer...",0);
@@ -330,7 +330,7 @@ typedef struct {
 			char *descr;
 		} Opt;
 
-Opt options[] = {
+const Opt options[] = {
 	{ "-CC", 0, (WildFunc)p_cpp, "Generate C++ output" },
 	{ "-C0", 0, (WildFunc)p_comp0, "No compression (default)" },
 	{ "-C1", 0, (WildFunc)p_comp1, "Compression level 1" },
@@ -353,15 +353,15 @@ Opt options[] = {
  };
 
 #ifdef __USE_PROTOS
-void ProcessArgs(int argc, char **argv, Opt *options)
+void ProcessArgs(int argc, const char **argv, const Opt *options)
 #else
 void ProcessArgs(argc, argv, options)
 int argc;
-char **argv;
-Opt *options;
+const char **argv;
+const Opt *options;
 #endif
 {
-	Opt *p;
+	const Opt *p;
 	
 	while ( argc-- > 0 )
 	{
@@ -427,7 +427,7 @@ char *argv[];
 		&(version[0]));
 	if ( argc == 1 )
 	{
-		Opt *p = options;
+		const Opt *p = options;
 		printf_stderr_continued("%s [options] f1 f2 ... fn\n",argv[0]);
 		while ( *(p->option) != '*' )
 		{
@@ -489,7 +489,7 @@ init(void)
 init()
 #endif
 {
-	register int i;
+	int i;
 
 #ifdef SPECIAL_INITS
 	special_inits();					/* MR1 */
