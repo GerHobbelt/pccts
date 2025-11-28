@@ -108,7 +108,7 @@ P::statement(ASTBase **_root)
   zzTRACEOUT("statement");
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x1);
   zzTRACEOUT("statement");
 }
@@ -156,7 +156,7 @@ P::expr1(ASTBase **_root)
   zzTRACEOUT("expr1");
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x2);
   zzTRACEOUT("expr1");
 }
@@ -204,7 +204,7 @@ P::expr2(ASTBase **_root)
   zzTRACEOUT("expr2");
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x4);
   zzTRACEOUT("expr2");
 }
@@ -244,7 +244,7 @@ LA(1)==Number) ) {
   zzTRACEOUT("expr3");
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x8);
   zzTRACEOUT("expr3");
 }

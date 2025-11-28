@@ -69,7 +69,7 @@ XLParser::program(void)
   zzmatch(1); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x1);
 }
 
@@ -107,7 +107,7 @@ XLParser::subprogramBody(void)
   zzmatch(IDENT); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x10);
 }
 
@@ -135,7 +135,7 @@ XLParser::basicDecl(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x20);
 }
 
@@ -171,7 +171,7 @@ XLParser::varDecl(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x40);
 }
 
@@ -196,7 +196,7 @@ XLParser::constDecl(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x80);
 }
 
@@ -218,7 +218,7 @@ XLParser::identList(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x1);
 }
 
@@ -246,7 +246,7 @@ XLParser::constantValue(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x4);
 }
 
@@ -280,7 +280,7 @@ XLParser::typeDecl(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x8);
 }
 
@@ -307,7 +307,7 @@ XLParser::arrayDecl(void)
   typeName();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x10);
 }
 
@@ -329,7 +329,7 @@ XLParser::integerConstant(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x20);
 }
 
@@ -360,7 +360,7 @@ XLParser::recordDecl(void)
   zzmatch(RECORD); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x40);
 }
 
@@ -388,7 +388,7 @@ XLParser::typeName(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x80);
 }
 
@@ -422,7 +422,7 @@ XLParser::procedureDecl(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x1);
 }
 
@@ -448,7 +448,7 @@ XLParser::formalParameters(void)
   zzmatch(RPAREN); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x2);
 }
 
@@ -477,7 +477,7 @@ XLParser::parameterSpec(void)
   typeName();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x4);
 }
 
@@ -537,7 +537,7 @@ XLParser::statement(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x80);
 }
 
@@ -556,7 +556,7 @@ XLParser::assignmentStatement(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x1);
 }
 
@@ -573,7 +573,7 @@ XLParser::exitStatement(void)
   expression();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x2);
 }
 
@@ -600,7 +600,7 @@ XLParser::procedureCallStatement(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x4);
 }
 
@@ -636,7 +636,7 @@ XLParser::actualParameters(void)
   zzmatch(RPAREN); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x10);
 }
 
@@ -651,7 +651,7 @@ XLParser::returnStatement(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x20);
 }
 
@@ -672,7 +672,7 @@ XLParser::ifStatement(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x40);
 }
 
@@ -721,7 +721,7 @@ XLParser::ifPart(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x8);
 }
 
@@ -761,7 +761,7 @@ XLParser::loopStatement(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x40);
 }
 
@@ -776,7 +776,7 @@ XLParser::endStatement(void)
   zzmatch(SEMI); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x80);
 }
 
@@ -812,7 +812,7 @@ XLParser::variableReference(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x2);
 }
 
@@ -896,7 +896,7 @@ XLParser::ioStatement(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x4);
 }
 
@@ -928,7 +928,7 @@ XLParser::primitiveElement(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x40);
 }
 
@@ -948,7 +948,7 @@ XLParser::booleanNegationExpression(void)
   primitiveElement();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x80);
 }
 
@@ -968,7 +968,7 @@ XLParser::signExpression(void)
   booleanNegationExpression();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd7, 0x2);
 }
 
@@ -990,7 +990,7 @@ XLParser::multiplyingExpression(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd7, 0x8);
 }
 
@@ -1012,7 +1012,7 @@ XLParser::addingExpression(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd7, 0x20);
 }
 
@@ -1034,7 +1034,7 @@ XLParser::relationalExpression(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd7, 0x80);
 }
 
@@ -1056,6 +1056,6 @@ XLParser::expression(void)
   }
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd8, 0x2);
 }

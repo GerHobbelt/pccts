@@ -70,7 +70,7 @@ XLParser::program(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x1);
 }
 
@@ -104,7 +104,7 @@ XLParser::subprogramBody(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x4);
 }
 
@@ -133,7 +133,7 @@ XLParser::basicDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x8);
 }
 
@@ -169,7 +169,7 @@ XLParser::varDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x10);
 }
 
@@ -195,7 +195,7 @@ XLParser::constDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x20);
 }
 
@@ -218,7 +218,7 @@ XLParser::identList(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x40);
 }
 
@@ -247,7 +247,7 @@ XLParser::constantValue(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x1);
 }
 
@@ -281,7 +281,7 @@ XLParser::typeDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x2);
 }
 
@@ -309,7 +309,7 @@ XLParser::arrayDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x4);
 }
 
@@ -332,7 +332,7 @@ XLParser::integerConstant(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x8);
 }
 
@@ -364,7 +364,7 @@ XLParser::recordDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x10);
 }
 
@@ -393,7 +393,7 @@ XLParser::typeName(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x20);
 }
 
@@ -427,7 +427,7 @@ XLParser::procedureDecl(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x40);
 }
 
@@ -454,7 +454,7 @@ XLParser::formalParameters(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd2, 0x80);
 }
 
@@ -484,7 +484,7 @@ XLParser::parameterSpec(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x1);
 }
 
@@ -560,7 +560,7 @@ XLParser::statement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x8);
 }
 
@@ -600,7 +600,7 @@ XLParser::statementList(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x40);
 }
 
@@ -620,7 +620,7 @@ XLParser::assignmentStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd3, 0x80);
 }
 
@@ -640,7 +640,7 @@ XLParser::exitStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x1);
 }
 
@@ -668,7 +668,7 @@ XLParser::procedureCallStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x2);
 }
 
@@ -705,7 +705,7 @@ XLParser::actualParameters(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x8);
 }
 
@@ -721,7 +721,7 @@ XLParser::returnStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x10);
 }
 
@@ -743,7 +743,7 @@ XLParser::ifStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x20);
 }
 
@@ -783,7 +783,7 @@ XLParser::ifPart(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x40);
 }
 
@@ -819,7 +819,7 @@ XLParser::loopStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd4, 0x80);
 }
 
@@ -835,7 +835,7 @@ XLParser::endStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x1);
 }
 
@@ -872,7 +872,7 @@ XLParser::variableReference(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x4);
 }
 
@@ -955,7 +955,7 @@ XLParser::ioStatement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x8);
 }
 
@@ -988,7 +988,7 @@ XLParser::primitiveElement(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x20);
 }
 
@@ -1009,7 +1009,7 @@ XLParser::booleanNegationExpression(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd5, 0x40);
 }
 
@@ -1030,7 +1030,7 @@ XLParser::signExpression(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x1);
 }
 
@@ -1053,7 +1053,7 @@ XLParser::multiplyingExpression(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x4);
 }
 
@@ -1076,7 +1076,7 @@ XLParser::addingExpression(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x10);
 }
 
@@ -1099,7 +1099,7 @@ XLParser::relationalExpression(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd6, 0x40);
 }
 
@@ -1122,6 +1122,6 @@ XLParser::expression(void)
   return;
 fail:
   if ( guessing ) zzGUESS_FAIL;
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd7, 0x1);
 }

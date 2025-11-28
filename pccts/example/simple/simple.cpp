@@ -104,6 +104,6 @@ LA(1)==Number) ) {
   zzmatch(Eof); consume();
   return;
 fail:
-  syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+  syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
   resynch(setwd1, 0x1);
 }
