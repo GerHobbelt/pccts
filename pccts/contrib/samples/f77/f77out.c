@@ -2661,7 +2661,7 @@ void o_exp_operand(STreeParser *_parser, SORAST **_root)
 			h=(SORAST *)_t;
 			_RIGHT;
 			
-			sprintf(buffer, "%dH%s", strlen(h->f77NodeText), h->f77NodeText);
+			sprintf(buffer, "%zuH%s", strlen(h->f77NodeText), h->f77NodeText);
 			f77PutText(h->f77NodeText);
 		}
 		else {
@@ -6999,7 +6999,7 @@ void o_hollerith_editing(STreeParser *_parser, SORAST **_root)
 		h=(SORAST *)_t;
 		_RIGHT;
 		
-		sprintf(buffer, "%dH%s", strlen(h->f77NodeText),h->f77NodeText);
+		sprintf(buffer, "%zuH%s", strlen(h->f77NodeText),h->f77NodeText);
 		f77PutText(buffer);
 	}
 	else {
@@ -7894,7 +7894,7 @@ void o_any_token(STreeParser *_parser, SORAST **_root)
 			f77PutText(buffer);
 			break;
 			case HOLLERITH_CONST:
-			sprintf(buffer, "%dH%s", strlen(t->f77NodeText), t->f77NodeText);
+			sprintf(buffer, "%zuH%s", strlen(t->f77NodeText), t->f77NodeText);
 			f77PutText(buffer);
 			break;
 			default:

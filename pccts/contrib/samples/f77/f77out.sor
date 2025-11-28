@@ -424,7 +424,7 @@ exp_operand:
 	|c:CHARACTER_ID		<<f77PutText(c->f77NodeText);>>
 	|(<<char buffer[100];>> h:HOLLERITH_CONST
 		<<
-		sprintf(buffer, "%dH%s", strlen(h->f77NodeText), h->f77NodeText);
+		sprintf(buffer, "%zuH%s", strlen(h->f77NodeText), h->f77NodeText);
 		f77PutText(h->f77NodeText);
 		>>)
 	|(<<char buffer[100];>> quoted_string)
@@ -937,7 +937,7 @@ format_item: {const_int} lp format_spec rp
 hollerith_editing:<<char buffer[100];>>
 	h:HOLLERITH_CONST
 	<<
-	sprintf(buffer, "%dH%s", strlen(h->f77NodeText),h->f77NodeText);
+	sprintf(buffer, "%zuH%s", strlen(h->f77NodeText),h->f77NodeText);
 	f77PutText(buffer);
 	>>;
 quote_editinig: quoted_string;
@@ -1092,7 +1092,7 @@ any_token:<<char buffer[100];>> t:.
 		f77PutText(buffer);
 		break;
 	case HOLLERITH_CONST:
-		sprintf(buffer, "%dH%s", strlen(t->f77NodeText), t->f77NodeText);
+		sprintf(buffer, "%zuH%s", strlen(t->f77NodeText), t->f77NodeText);
 		f77PutText(buffer);
 		break;
 	default:

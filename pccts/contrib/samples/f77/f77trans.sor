@@ -53,7 +53,7 @@
 	if(FoundPointer->token == UntilNode) {							\
 		FoundPointer=NULL;											\
 		}															\
-	if(FoundPointer->left == NULL) {/*Begining of file.*/			\
+	if(FoundPointer->left == NULL) {/*Beginning of file.*/			\
 		FoundPointer=NULL;											\
 		}
 
@@ -117,7 +117,7 @@ void F77SearchPerform(SORAST *root, int statement_id, void (*parse_function)(SOR
 	}
 
 void FormatedIO(SORAST *root) {
-	SORAST *format, *l_root = root;
+	SORAST *format = NULL, *l_root = root;
 	STreeParser l_parser;
 	STreeParserInit(x_, &l_parser); /* calls the 'f77trans.sor' program() rule! --> use f77trans.sor _refvar_inits()! */
 	assert((l_root->token == READ) || (l_root->token == WRITE));
@@ -647,11 +647,11 @@ io_specifier:
 	|unit_id
 	;
 
-read_statement > [SORAST *Format]:
+read_statement > [SORAST *Format]: <<Format = NULL;>>
 	#(READ {LABEL} control_info > [Format] input_list)
 	;
 
-write_statement > [SORAST *Format]:
+write_statement > [SORAST *Format]: <<Format = NULL;>>
 	#(WRITE {LABEL} control_info > [Format] {output_list})
 	;
 
@@ -686,7 +686,7 @@ the_remainder > [SORAST *Format]: <<Format = NULL;>>
 unit_id: STAR|expression
 		;
 
-format_id > [SORAST *Format]:
+format_id > [SORAST *Format]: <<Format = NULL;>>
 		f:STAR {SLASH /*UNISYS FORTRAN V3.8*/} <<Format = f;>>
 		|f:SLASH <<Format = f;>>
 		|f:expression <<Format = f;>>
