@@ -9,7 +9,7 @@
 #include "P.h"
 
 void P::syn(ANTLRAbstractToken *	tok,
-	    ANTLRChar *			egroup,
+	    const ANTLRChar *			egroup,
 	    SetWordType *		eset,
 	    ANTLRTokenType		etok,
 	    int				k)

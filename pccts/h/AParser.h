@@ -252,7 +252,7 @@ public:
 	void noGarbageCollectTokens()	{ inputTokens->noGarbageCollectTokens(); }
 	void garbageCollectTokens()		{ inputTokens->garbageCollectTokens(); }
 
-    virtual void syn(_ANTLRTokenPtr tok, ANTLRChar *egroup,
+    virtual void syn(_ANTLRTokenPtr tok, const ANTLRChar *egroup,
 					 SetWordType *eset, ANTLRTokenType etok, int k);
 	virtual void saveState(ANTLRParserState *);     // MR9 27-Sep-97 make virtual
 	virtual void restoreState(ANTLRParserState *);  // MR9 27-Sep-97 make virtual

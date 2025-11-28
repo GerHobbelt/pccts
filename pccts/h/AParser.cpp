@@ -421,7 +421,7 @@ resynch(SetWordType *wd,SetWordType mask)
 */
            
 void ANTLRParser::
-syn(_ANTLRTokenPtr /*tok MR23*/, ANTLRChar *egroup, SetWordType *eset,
+syn(_ANTLRTokenPtr /*tok MR23*/, const ANTLRChar *egroup, SetWordType *eset,
 	ANTLRTokenType etok, int k)
 {
 	int line;
