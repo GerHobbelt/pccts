@@ -237,6 +237,17 @@
     <ClInclude Include="sym.h" />
     <ClInclude Include="tokens.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\cperf-2.1a\cperf_MSVC2022.vcxproj">
+      <Project>{02114d7a-e56e-4615-877a-23d26894113d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pccts\antlr\Antlr_MSVC2022.vcxproj">
+      <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\pccts\dlg\Dlg_MSVC2022.vcxproj">
+      <Project>{a2af3c41-6605-49b1-a484-dfec76363492}</Project>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
