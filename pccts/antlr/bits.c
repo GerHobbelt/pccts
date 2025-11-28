@@ -936,12 +936,12 @@ GenErrHdr( )
 	if ( strcmp(ParserName, DefaultParserName)!=0 )
 	{
 	    fprintf(DefFile, "extern const ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */];\n", ParserName, TokenNum-1);
-		fprintf(ErrFile, "const const ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */]={\n", ParserName, TokenNum-1);
+		fprintf(ErrFile, "const ANTLRChar *%s_zztokens[zzTOKEN_COUNT /* %d */]={\n", ParserName, TokenNum-1);
 	}
 	else
 	{
     	fprintf(DefFile, "extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */];\n", TokenNum-1);
-		fprintf(ErrFile, "const const ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */]={\n", TokenNum-1);
+		fprintf(ErrFile, "const ANTLRChar *zztokens[zzTOKEN_COUNT /* %d */]={\n", TokenNum-1);
 	}
 	fprintf(ErrFile, "\t/* 00 */\t\"Invalid\"");
 	for (i=1; i<TokenNum-1; i++)
