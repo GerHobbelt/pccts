@@ -187,14 +187,12 @@ copy             ..\Sorcerer\Sorcerer.exe         ..\bin\
   <ItemGroup>
     <CustomBuild Include="sor.g">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating Parser</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\bin\antlr -emsvc -gh -k 2 -gt %(Filename).g
-..\bin\dlg -emsvc -C2 parser.dlg scan.c
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">parser.dlg;mode.h;stdpccts.h;sor.c;scan.c;err.c;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating Parser</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\bin\antlr -emsvc -gh -k 2 -gt %(Filename).g
-..\bin\dlg -emsvc -C2 parser.dlg scan.c
-</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">parser.dlg;mode.h;stdpccts.h;sor.c;scan.c;err.c;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
