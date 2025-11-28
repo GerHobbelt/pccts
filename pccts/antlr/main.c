@@ -2183,7 +2183,7 @@ va_dcl
     {
       /* move remaining data to front: */
       p = str;
-      for (str = printf_stderr_cfgdata.msgbuf; *str++ = *p++; )
+      for (str = printf_stderr_cfgdata.msgbuf; ((*str++ = *p++)); )
         ;
       *str = 0;
       break;
@@ -2263,7 +2263,7 @@ va_dcl
       if (str != printf_stderr_cfgdata.msgbuf)
       {
         p = str;
-        for (str = printf_stderr_cfgdata.msgbuf; *str++ = *p++; )
+        for (str = printf_stderr_cfgdata.msgbuf; ((*str++ = *p++)); )
           ;
         *str = 0;
       }

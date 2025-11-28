@@ -44,14 +44,10 @@ hash_pjw (char *str)
   for (temp = str; *temp; temp++) 
     {
       h = (h << 4) + (*temp * 13);
-#if defined(__BORLANDC__)
-#pragma warn -pia
-#endif
-      if (g = h & 0xf0000000)
+	  // fix warning C4706: assignment used as a condition
+	  g = h & 0xf0000000;
+      if (g)
         {
-#if defined(__BORLANDC__)
-#pragma warn .pia
-#endif
           h ^= (g >> 24);
           h ^= g;
         }

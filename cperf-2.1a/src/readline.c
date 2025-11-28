@@ -41,7 +41,8 @@ readln_aux (int chunks)
       *bufptr++ = c;
       if (bufptr - buf >= CHUNK_SIZE) /* prepend remainder to ptr buffer */
         {
-          if (ptr = readln_aux (chunks + 1))
+		  ptr = readln_aux(chunks + 1);
+		  if (ptr)
 
             for (; bufptr != buf; *--ptr = *--bufptr);
 
@@ -54,7 +55,8 @@ readln_aux (int chunks)
 
   c = (chunks * CHUNK_SIZE + bufptr - buf) + 1;
 
-  if (ptr = (char *)buffered_malloc (c))
+  ptr = (char*)buffered_malloc(c);
+  if (ptr)
     {
 
       for (*(ptr += (c - 1)) = '\0'; bufptr != buf; *--ptr = *--bufptr)
