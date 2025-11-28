@@ -861,8 +861,8 @@ nfa_node *p;
 {
   if (p){
     f == stderr 
-    ? printf_stderr_continued("%x (%d)", p, p->node_no)
-    : fprintf(f, "%x (%d)", p, p->node_no);
+    ? printf_stderr_continued("%p (%d)", p, p->node_no)
+    : fprintf(f, "%p (%d)", p, p->node_no);
   }else{
     f == stderr 
     ? printf_stderr_continued("(nil)")
