@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="A">
+      <UniqueIdentifier>{615c36ba-0110-48d5-b455-334468002bb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="A\Generated A">
+      <UniqueIdentifier>{aed5e8e9-a3c6-4a69-98df-c47659a89449}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="B">
+      <UniqueIdentifier>{c54ecd2b-6f6f-429b-af2a-1255275278f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="B\Generated B">
+      <UniqueIdentifier>{715abb74-4b89-4339-abe6-9f1078689a2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Application">
+      <UniqueIdentifier>{1de2af54-1d22-4065-ba86-1faca7cd68c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library code">
+      <UniqueIdentifier>{9033b07e-88ea-4d45-9343-0b0f36bb2193}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="PA\A.cpp">
+      <Filter>A\Generated A</Filter>
+    </ClCompile>
+    <ClCompile Include="PA\DlgA.cpp">
+      <Filter>A\Generated A</Filter>
+    </ClCompile>
+    <ClCompile Include="PA\ParserA.cpp">
+      <Filter>A\Generated A</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\B.cpp">
+      <Filter>B\Generated B</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\DlgB.cpp">
+      <Filter>B\Generated B</Filter>
+    </ClCompile>
+    <ClCompile Include="Pb\ParserB.cpp">
+      <Filter>B\Generated B</Filter>
+    </ClCompile>
+    <ClCompile Include="InvokeA.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="InvokeB.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Application</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\AParser.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\ASTBase.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\ATokenBuffer.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\BufFileInput.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\DLexerBase.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\PCCTSAST.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\h\SList.cpp">
+      <Filter>Library code</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="PA\DlgA.h">
+      <Filter>A\Generated A</Filter>
+    </ClInclude>
+    <ClInclude Include="PA\ParserA.h">
+      <Filter>A\Generated A</Filter>
+    </ClInclude>
+    <ClInclude Include="PA\tokens.h">
+      <Filter>A\Generated A</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\DlgB.h">
+      <Filter>B\Generated B</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\ParserB.h">
+      <Filter>B\Generated B</Filter>
+    </ClInclude>
+    <ClInclude Include="Pb\tokens.h">
+      <Filter>B\Generated B</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\h\ATokPtrImpl.h">
+      <Filter>Library code</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="PA\A.g">
+      <Filter>A</Filter>
+    </CustomBuild>
+    <CustomBuild Include="Pb\B.g">
+      <Filter>B</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

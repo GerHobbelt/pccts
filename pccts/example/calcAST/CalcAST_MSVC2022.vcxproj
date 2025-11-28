@@ -12,7 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{2BB9DCB8-F5DD-4DBA-BED8-FE4BFDD1CB41}</ProjectGuid>
+    <ProjectName>CalcAST</ProjectName>
+    <ProjectGuid>{F2AAE043-21B9-4DA3-BD4B-71FB2730E9CB}</ProjectGuid>
     <SccProjectName />
     <SccLocalPath />
   </PropertyGroup>
@@ -21,11 +22,13 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -38,7 +41,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>17.0.35913.81</_ProjectFileVersion>
+    <_ProjectFileVersion>17.0.36717.7</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>.\Debug\</OutDir>
@@ -53,14 +56,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>.;..\..\..\..\h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PrecompiledHeader />
-      <PrecompiledHeaderOutputFile>.\Debug/xl2.pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>.;..\..\h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;PCCTS_USE_NAMESPACE_STD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>.\Debug/CalcAST60.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Debug/</AssemblerListingLocation>
       <ObjectFileName>.\Debug/</ObjectFileName>
       <ProgramDataBaseFileName>.\Debug/</ProgramDataBaseFileName>
+      <BrowseInformation>true</BrowseInformation>
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
@@ -68,16 +71,14 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>xl2.exe</OutputFile>
+      <OutputFile>.\Debug/CalcAST60.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/xl2.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Debug/CalcAST60.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <Midl>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <TypeLibraryName>.\Debug/xl2.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Debug/CalcAST60.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -87,13 +88,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>.;..\..\..\..\h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.;..\..\h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <StringPooling>true</StringPooling>
-      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader />
-      <PrecompiledHeaderOutputFile>.\Release/xl2.pch</PrecompiledHeaderOutputFile>
+      <PrecompiledHeaderOutputFile>.\Release/CalcAST60.pch</PrecompiledHeaderOutputFile>
       <AssemblerListingLocation>.\Release/</AssemblerListingLocation>
       <ObjectFileName>.\Release/</ObjectFileName>
       <ProgramDataBaseFileName>.\Release/</ProgramDataBaseFileName>
@@ -103,15 +104,13 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>xl2.exe</OutputFile>
+      <OutputFile>.\Release\CalcAST.exe</OutputFile>
       <SuppressStartupBanner>true</SuppressStartupBanner>
-      <ProgramDatabaseFile>.\Release/xl2.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\Release/CalcAST.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
     </Link>
     <Midl>
-      <MkTypLibCompatible>true</MkTypLibCompatible>
-      <TypeLibraryName>.\Release/xl2.tlb</TypeLibraryName>
+      <TypeLibraryName>.\Release/CalcAST60.tlb</TypeLibraryName>
     </Midl>
     <ResourceCompile>
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -119,26 +118,37 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\h\AParser.cpp" />
-    <ClCompile Include="..\..\..\..\h\ASTBase.cpp" />
-    <ClCompile Include="..\..\..\..\h\ATokenBuffer.cpp" />
-    <ClCompile Include="..\..\..\..\h\BufFileInput.cpp" />
-    <ClCompile Include="..\..\..\..\h\DLexerBase.cpp" />
-    <ClCompile Include="..\..\..\..\h\SList.cpp" />
+    <ClCompile Include="..\..\h\AParser.cpp" />
+    <ClCompile Include="..\..\h\ASTBase.cpp" />
+    <ClCompile Include="..\..\h\ATokenBuffer.cpp" />
+    <ClCompile Include="..\..\h\BufFileInput.cpp" />
+    <ClCompile Include="..\..\h\DLexerBase.cpp" />
+    <ClCompile Include="..\..\h\PCCTSAST.cpp" />
+    <ClCompile Include="..\..\h\SList.cpp" />
+    <ClCompile Include="calcex2.cpp" />
     <ClCompile Include="DLGLexer.cpp" />
-    <ClCompile Include="xl.cpp" />
-    <ClCompile Include="XLParser.cpp" />
+    <ClCompile Include="mathAST.cpp" />
+    <ClCompile Include="myAST.cpp" />
+    <ClCompile Include="myPanic.cpp" />
+    <ClCompile Include="mySyn.cpp" />
+    <ClCompile Include="myTokenBuffer.cpp" />
+    <ClCompile Include="noleakAST.cpp" />
+    <ClCompile Include="numToken.cpp" />
+    <ClCompile Include="P.cpp" />
+    <ClCompile Include="simpleToken.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="xl.g">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">PCCTS Stuff</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\..\bin\antlr.exe -emsvc -CC -e3 -gl xl.g
-..\..\..\..\bin\dlg.exe -emsvc -CC parser.dlg</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">XLParser.cpp;XLParser.h;DLGLexer.cpp;DLGLexer.h;tokens.h;xl.cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">PCCTS Stuff</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\..\bin\antlr.exe -emsvc -CC -e3 -gl xl.g
-..\..\..\..\bin\dlg.exe -emsvc -CC parser.dlg</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">XLParser.cpp;XLParser.h;DLGLexer.cpp;DLGLexer.h;tokens.h;xl.cpp;%(Outputs)</Outputs>
+    <CustomBuild Include="calcex2.g">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generate antlr files</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\bin\antlr.exe -emsvc -CC -gt -gs calcex2.g  -gd
+..\..\bin\dlg.exe -emsvc -CC -C2 -i parser.dlg
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">calcex2.cpp;P.cpp;P.h;parser.dlg;tokens.h;DLGLexer.h;DLGLexer.cpp;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generate antlr files</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\bin\antlr.exe -emsvc -CC -gt -gs calcex2.g  -gd
+..\..\bin\dlg.exe -emsvc -CC -C2 -i parser.dlg
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">calcex2.cpp;P.cpp;P.h;parser.dlg;tokens.h;DLGLexer.h;DLGLexer.cpp;%(Outputs)</Outputs>
     </CustomBuild>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

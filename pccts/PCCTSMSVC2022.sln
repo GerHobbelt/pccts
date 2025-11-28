@@ -2,15 +2,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36109.1 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANTLR", "antlr\AntlrMSVC70.vcxproj", "{757BA219-A898-43DC-A3EF-8F4FAD77359C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANTLR", "antlr\Antlr_MSVC2022.vcxproj", "{757BA219-A898-43DC-A3EF-8F4FAD77359C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLG", "dlg\DlgMSVC70.vcxproj", "{A2AF3C41-6605-49B1-A484-DFEC76363492}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLG", "dlg\Dlg_MSVC2022.vcxproj", "{A2AF3C41-6605-49B1-A484-DFEC76363492}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sorcerer", "sorcerer\SorcererMSVC70.vcxproj", "{81006502-153E-4217-8BC4-23033951714D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sorcerer", "sorcerer\Sorcerer_MSVC2022.vcxproj", "{81006502-153E-4217-8BC4-23033951714D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cperf", "..\cperf-2.1a\cperfMSVC70.vcxproj", "{02114D7A-E56E-4615-877A-23D26894113D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cperf", "..\cperf-2.1a\cperf_MSVC2022.vcxproj", "{02114D7A-E56E-4615-877A-23D26894113D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testcase", "..\testcase\testcaseMSVC70.vcxproj", "{ED864B60-FEE4-43A1-A0DE-7EC4B1C20D15}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testcase", "..\testcase\testcase_MSVC2022.vcxproj", "{ED864B60-FEE4-43A1-A0DE-7EC4B1C20D15}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4A000C45-8721-4389-8C73-BBDC58E1572A} = {4A000C45-8721-4389-8C73-BBDC58E1572A}
 		{2BB9DCB8-F5DD-4DBA-BED8-FE4BFDD1CB41} = {2BB9DCB8-F5DD-4DBA-BED8-FE4BFDD1CB41}
@@ -21,21 +21,21 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testcase", "..\testcase\tes
 		{B944CFD4-5F6F-4ACF-A992-D6114D5E9BD5} = {B944CFD4-5F6F-4ACF-A992-D6114D5E9BD5}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcctslib", "h\pcctslib70.vcxproj", "{B944CFD4-5F6F-4ACF-A992-D6114D5E9BD5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcctslib", "h\pcctslib_MSVC2022.vcxproj", "{B944CFD4-5F6F-4ACF-A992-D6114D5E9BD5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "support", "support\support_msvc70.vcxproj", "{4A000C45-8721-4389-8C73-BBDC58E1572A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "support", "support\support_MSVC2022.vcxproj", "{4A000C45-8721-4389-8C73-BBDC58E1572A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalcAST", "example\calcAST\CalcAST60.vcproj", "{F2AAE043-21B9-4DA3-BD4B-71FB2730E9CB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalcAST", "example\calcAST\CalcAST_MSVC2022.vcxproj", "{F2AAE043-21B9-4DA3-BD4B-71FB2730E9CB}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simple", "example\simple\simple60.vcxproj", "{78124171-4DFE-497E-B27B-A6154F90F297}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "simple", "example\simple\simple_MSVC2022.vcxproj", "{78124171-4DFE-497E-B27B-A6154F90F297}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwoParsers", "contrib\PCCTS.Example.Using.Two.Parsers\TwoParsers\TwoParsers.vcproj", "{E65843C3-14ED-48C9-9D18-C37FE24AD5B3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TwoParsers", "contrib\PCCTS.Example.Using.Two.Parsers\TwoParsers\TwoParsers_MSVC2022.vcxproj", "{E65843C3-14ED-48C9-9D18-C37FE24AD5B3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xl", "contrib\PCCTSTutorial\xl\recog1\xl.vcproj", "{9552144B-2F15-432E-A0F3-11EC61636F66}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xl", "contrib\PCCTSTutorial\xl\recog1\xl_MSVC2022.vcxproj", "{9552144B-2F15-432E-A0F3-11EC61636F66}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xl2", "contrib\PCCTSTutorial\xl\recog2\xl2.vcproj", "{2BB9DCB8-F5DD-4DBA-BED8-FE4BFDD1CB41}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xl2", "contrib\PCCTSTutorial\xl\recog2\xl2_MSVC2022.vcxproj", "{2BB9DCB8-F5DD-4DBA-BED8-FE4BFDD1CB41}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f77", "contrib\samples\f77\f77.vcxproj", "{95618971-AE11-499D-A062-5F8BB35DFA75}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f77", "contrib\samples\f77\f77_MSVC2022.vcxproj", "{95618971-AE11-499D-A062-5F8BB35DFA75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

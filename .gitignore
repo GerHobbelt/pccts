@@ -29,3 +29,22 @@
 # Executables
 *.exe
 *.app
+
+# misc MSVC
+UpgradeLog*.htm
+
+.vs/
+
+*.vsidx
+*.tlog
+*.sbr
+*.pdb
+*.idb
+*.ilk
+*.bsc
+*.log
+*.user
+
+*.FileListAbsolute.txt
+
+/testcase/Debug/*.map
