@@ -50,9 +50,9 @@ set attribsRefdFromAction = set_init; /* MR20 */
 int UsedOldStyleAttrib = 0;
 int UsedNewStyleLabel = 0;
 #ifdef __USE_PROTOS
-char *inline_set(char *);
+const char *inline_set(const char *);
 #else
-char *inline_set();
+const char *inline_set();
 #endif
 
 /* MR1	10-Apr-97  MR1  Previously unable to put right shift operator	    */

@@ -242,7 +242,7 @@ gen_hdr1( )
 	{
 		ListNode *p;
 		for (p = before_actions->next; p!=NULL; p=p->next)
-	    dumpAction( (char *)p->elem, output, 0, -1, 0, 1);
+	    dumpAction( (const char *)p->elem, output, 0, -1, 0, 1);
 	}
 }
 
@@ -279,7 +279,7 @@ AST *t;
 	{
 		ListNode *p;
 		for (p = after_actions->next; p!=NULL; p=p->next)
-			dumpAction( (char *)p->elem, output, 0, -1, 0, 1);
+			dumpAction( (const char *)p->elem, output, 0, -1, 0, 1);
 	}
 	fclose(output);
 }
@@ -887,10 +887,10 @@ AST *t;
 */
 void
 #ifdef __USE_PROTOS
-dumpAction( char *s, FILE *output, int tabs, int file, int line, int final_newline )
+dumpAction(const char *s, FILE *output, int tabs, int file, int line, int final_newline )
 #else
 dumpAction( s, output, tabs, file, line, final_newline )
-char *s;
+const char *s;
 FILE *output;
 int tabs;
 int file;

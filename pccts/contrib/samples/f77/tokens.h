@@ -1449,7 +1449,7 @@ void format_specifier(AST**_root);
 extern void format_specifier();
 #endif
 
-const extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 260 */];
+extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* 260 */];
 extern SetWordType zzerr1[zzSET_SIZE];
 extern SetWordType setwd1[zzTOKEN_COUNT];
 extern SetWordType zzerr2[zzSET_SIZE];

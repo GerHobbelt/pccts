@@ -839,7 +839,7 @@ static void buildRulePtr( void );
 static void help( void );
 static void init( void );
 static void CompleteTokenSetRefs( void );
-static void ensure_no_C_file_collisions(char *);
+static void ensure_no_C_file_collisions(const char *);
 static void CompleteContextGuards(void);
 #else
 static void buildRulePtr( );
@@ -1224,7 +1224,7 @@ help( void )
 help( )
 #endif
 {
-	Opt *p = options;
+	const Opt *p = options;
 	printf_stderr_continued( "antlr [options] f1 f2 ... fn\n");
 	while ( *(p->option) != '*' )
 	{
@@ -2321,7 +2321,8 @@ FILE *printf_stderr_file(void)
     return printf_stderr_cfgdata.output_file;
   }
   switch (printf_stderr_cfgdata.fmt_type)
-  {                         
+  {
+  default:
   case ERR_DIAG_FMT_UNKNOWN:
     /* default: "%s, line %d:" */
     return stderr;

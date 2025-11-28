@@ -144,7 +144,7 @@ genLexDescr( )
             for (p = LexActions->next; p!=NULL; p=p->next)
 		{
 /* MR1 */	fprintf(dlgFile, "<<%%%%lexaction\n");
-			dumpAction( (char *)p->elem, dlgFile, 0, -1, 0, 1 );
+			dumpAction( (const char *)p->elem, dlgFile, 0, -1, 0, 1 );
 			fprintf(dlgFile, ">>\n\n");
 		}
 	  }
@@ -157,7 +157,7 @@ genLexDescr( )
 /* MR1 */   for (p = LexPrefixActions->next; p!=NULL; p=p->next)
 /* MR1 */       {
 /* MR1 */               fprintf(dlgFile, "<<%%%%lexprefix\n");
-/* MR1 */               dumpAction( (char *)p->elem, dlgFile, 0, -1, 0, 1 );
+/* MR1 */               dumpAction( (const char *)p->elem, dlgFile, 0, -1, 0, 1 );
 /* MR1 */               fprintf(dlgFile, ">>\n\n");
 /* MR1 */       }
 /* MR1 */ }
@@ -166,7 +166,7 @@ genLexDescr( )
 /* MR1 */   for (p = LexMemberActions->next; p!=NULL; p=p->next)
 /* MR1 */       {
 /* MR1 */               fprintf(dlgFile, "<<%%%%lexmember\n");
-/* MR1 */               dumpAction( (char *)p->elem, dlgFile, 0, -1, 0, 1 );
+/* MR1 */               dumpAction( (const char *)p->elem, dlgFile, 0, -1, 0, 1 );
 /* MR1 */               fprintf(dlgFile, ">>\n\n");
 /* MR1 */       }
 /* MR1 */ }

@@ -101,7 +101,7 @@ void GenCPPClassHeader(void)
 	{
 		ListNode *p;
 		for (p = class_actions->next; p!=NULL; p=p->next)
-	    dumpAction( (char *)p->elem, output, 1, -1, 0, 1);
+	    dumpAction( (const char *)p->elem, output, 1, -1, 0, 1);
 	}
 
 	fprintf(Parser_h, "};\n");

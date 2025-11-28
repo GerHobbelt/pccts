@@ -61,11 +61,11 @@ typedef struct _Opt {
 		} Opt;
 
 #ifdef __USE_PROTOS
-static int cistrequ(char *a,char *b)
+static int cistrequ(const char *a,const char *b)
 #else
 static int cistrequ(a,b)
-  char  *a;
-  char  *b;
+  const char  *a;
+  const char  *b;
 #endif
 {
   for ( ;*a != 0 && *b != 0; a++, b++) {
@@ -271,7 +271,7 @@ char *t;
   FILE *f;
   char *buf;
   long int len;
-  char **newargv;
+  const char **newargv;
   int newargc;
   char *dst;
   char *src;
@@ -370,7 +370,7 @@ char *t;
   *dst++ = 0; /* write extra NUL sentinel at end of list */
     
   /* now merge new/old argv elems */
-  newargv = (char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
+  newargv = (const char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
   if (!newargv)
   {
     fatal("Cannot allocate response file processing buffer...");
@@ -783,7 +783,7 @@ const char **argv;
 const Opt *options;
 #endif
 {
-	Opt *p;
+	const Opt *p;
 	require(argv!=NULL, "ProcessArgs: command line NULL");
 
 	while ( argc-- > 0 )
@@ -928,7 +928,7 @@ char *fs;
 
 void
 #ifdef __USE_PROTOS
-ensure_no_C_file_collisions(char *class_c_file)
+ensure_no_C_file_collisions(const char *class_c_file)
 #else
 ensure_no_C_file_collisions(class_c_file)
 char *class_c_file;

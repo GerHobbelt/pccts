@@ -391,7 +391,7 @@ grammar()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd1, 0x10);
   }
 }
@@ -482,7 +482,7 @@ class_def()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd1, 0x40);
   }
 }
@@ -736,7 +736,7 @@ rule()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x10);
   }
 }
@@ -767,7 +767,7 @@ laction()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x20);
   }
 }
@@ -803,7 +803,7 @@ lmember()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x40);
   }
 }
@@ -839,7 +839,7 @@ lprefix()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd2, 0x80);
   }
 }
@@ -982,7 +982,7 @@ aPred()
 fail:
     zzEXIT(zztasp1);
     predicate_free(predExpr);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd3, 0x10);
   }
 }
@@ -1038,7 +1038,7 @@ predOrExpr()
 fail:
     zzEXIT(zztasp1);
     predicate_free(ORnode);  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd3, 0x20);
     return _retv;
   }
@@ -1095,7 +1095,7 @@ predAndExpr()
 fail:
     zzEXIT(zztasp1);
     predicate_free(ANDnode);  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd3, 0x40);
     return _retv;
   }
@@ -1165,7 +1165,7 @@ fail:
     zzEXIT(zztasp1);
 
     predicate_free(predExpr);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd3, 0x80);
     return _retv;
   }
@@ -1192,7 +1192,7 @@ aLexclass()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd4, 0x1);
   }
 }
@@ -1332,7 +1332,7 @@ error()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd4, 0x4);
   }
 }
@@ -1502,7 +1502,7 @@ tclass()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd4, 0x20);
   }
 }
@@ -1657,7 +1657,7 @@ token()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd5, 0x10);
   }
 }
@@ -1771,7 +1771,7 @@ set *rulesrefd ;
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd5, 0x20);
   }
 }
@@ -1897,7 +1897,7 @@ set *rulesrefd ;
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd6, 0x2);
   }
 }
@@ -1956,7 +1956,7 @@ element_label()
     return _retv;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd6, 0x4);
     return _retv;
   }
@@ -2802,7 +2802,7 @@ int use_def_MT_handler ;
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd9, 0x1);
     return _retv;
   }
@@ -2825,7 +2825,7 @@ default_exception_handler()
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd9, 0x2);
   }
 }
@@ -2973,7 +2973,7 @@ exception_group()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd9, 0x10);
     return _retv;
   }
@@ -3055,7 +3055,7 @@ exception_handler()
 fail:
     zzEXIT(zztasp1);
     CannotContinue=TRUE;  
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd9, 0x40);
     return _retv;
   }
@@ -3158,7 +3158,7 @@ enum_file(fname)
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd10, 0x8);
   }
 }
@@ -3218,7 +3218,7 @@ defines(fname)
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd10, 0x10);
   }
 }
@@ -3360,7 +3360,7 @@ enum_def(fname)
     return;
 fail:
     zzEXIT(zztasp1);
-    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
+    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
     zzresynch(setwd11, 0x2);
   }
 }
@@ -3481,11 +3481,11 @@ int tnum;
 
 static int
 #ifdef __USE_PROTOS
-match_token(char *s, char **nxt)
+match_token(const char *s, const char **nxt)
 #else
 match_token(s,nxt)
-char *s;
-char **nxt;
+const char *s;
+const char **nxt;
 #endif
 {
   if ( !(*s>='A' && *s<='Z') ) return 0;
@@ -3508,7 +3508,7 @@ match_rexpr(const char *s, const char **nxt)
 #else
 match_rexpr(s,nxt)
 const char *s;
-char **nxt;
+const char **nxt;
 #endif
 {
   if ( *s!='"' ) return 0;
@@ -3531,15 +3531,15 @@ char **nxt;
     * we pretend as if we had seen "#tokclass inlineX { A .. Z }"
     * on the input stream outside of an action.
     */
-const char *
+    const char *
 #ifdef __USE_PROTOS
     inline_set(const char *s)
 #else
     inline_set(s)
-	const char *s;
+    const char *s;
 #endif
     {
-	const char *nxt;
+    const char *nxt;
     printf_stderr_continued( "found consumeUntil( {...} )\n");
     while ( *s==' ' || *s=='\t' || *s=='\n' || *s=='\r' ) {s++;}
     if ( *s!='{' )

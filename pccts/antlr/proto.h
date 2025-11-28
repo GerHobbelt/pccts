@@ -381,7 +381,7 @@ extern void genEndBlk( Junction * );
 extern void genEndRule( Junction * );
 extern void genHdr( int );
 extern void genHdr1( int );
-extern void dumpAction( char *, FILE *, int, int, int, int );
+extern void dumpAction(const char *, FILE *, int, int, int, int );
 extern void dumpActionPlus(ActionNode*, const char *, FILE *, int, int, int, int );   /* MR21 */
 extern Entry ** newHashTable( void );
 extern Entry * hash_add( Entry **, char *, Entry * );

@@ -148,7 +148,7 @@ static int genExprSets(set *, int);
 static void genExprTree( Tree *t, int k );
 static void genExprTreeOriginal( Tree *t, int k );                  /* MR10 */
 static const char * findOuterHandlerLabel(ExceptionGroup *eg);            /* MR7 */
-static void OutLineInfo(FILE *file,int line,char *fileName);        /* MR14 */
+static void OutLineInfo(FILE *file,int line,const char *fileName);        /* MR14 */
 #else
 static char *tokenFollowSet();
 static ActionNode *findImmedAction();
@@ -836,13 +836,13 @@ genPredEntry(p,outer)
 void
 #ifdef __USE_PROTOS
 dumpPredAction(ActionNode *anode,
-                    char *s,FILE *output,int tabs,int file,int line,int final_newline)
+                    const char *s,FILE *output,int tabs,int file,int line,int final_newline)
 #else
 dumpPredAction(anode,
                     s,output,tabs,file,line,final_newline)
 
     ActionNode  *anode;
-    char        *s;
+    const char        *s;
     FILE        *output;
     int         tabs;
     int         file;
@@ -4312,11 +4312,11 @@ char * gate;                                    /* MR10 */
 */
 void
 #ifdef __USE_PROTOS
-dumpAction( char *s, FILE *output, int tabs, int file, int line,
+dumpAction(const char *s, FILE *output, int tabs, int file, int line,
 int final_newline )
 #else
 dumpAction( s, output, tabs, file, line, final_newline )
-char *s;
+const char *s;
 FILE *output; /* WARNING! 'output' and 'tabs' parameter 'hide' the global scope 'output' and 'tabs' variables!!! */
 int tabs;
 int file;
@@ -4684,18 +4684,18 @@ ExceptionGroup *eg;                                                  /* MR7 */
 #endif
 
 #ifdef __USE_PROTOS
-static void OutLineInfo(FILE *file,int line,char *fileName)
+static void OutLineInfo(FILE *file,int line,const char *fileName)
 #else
 static void OutLineInfo(file,line,fileName)
   FILE *    file;
   int       line;
-  char *    fileName;
+  const char *    fileName;
 #endif
 {
-    static  char * prevFileName=NULL;
+    static  const char * prevFileName=NULL;
     static  char * prevFileNameMS=NULL;
 
-    char *  p;
+    const char *  p;
     char *  q;
 
     if (! GenLineInfo) return;

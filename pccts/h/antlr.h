@@ -771,7 +771,7 @@ extern void zzdflthandlers();
 /* Define a parser; user should do a "#parser myname" in their grammar file */
 /*extern struct pccts_parser zzparser;*/
 
-extern const char *zztokens[];
+extern const ANTLRChar *zztokens[];
 #ifdef LL_K
 extern int zztokenLA[];
 extern zzchar_t zztextLA[][ZZLEXBUFSIZE];

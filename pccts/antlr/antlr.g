@@ -2468,11 +2468,11 @@ err(eMsg1("new token definition '%s' not allowed - only #token with name already
 <<
 static int
 #ifdef __USE_PROTOS
-match_token(char *s, char **nxt)
+match_token(const char *s, const char **nxt)
 #else
 match_token(s,nxt)
-char *s;
-char **nxt;
+const char *s;
+const char **nxt;
 #endif
 {
     if ( !(*s>='A' && *s<='Z') ) return 0;
