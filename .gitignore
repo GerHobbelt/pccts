@@ -47,4 +47,7 @@ UpgradeLog*.htm
 
 *.FileListAbsolute.txt
 
-/testcase/Debug/*.map
+*.map
+
+Debug-Unicode-32bit-x86/
+
