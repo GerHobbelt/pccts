@@ -384,7 +384,7 @@ AST *t;
 		char *str = s->rt;
 		TAB;
 		fprintf(output, "return ");
-		DumpNextNameInDef(&str, output);
+		DumpNextNameInDef(&str, output, FileStr[s->definition->file], s->definition->line);
 		fprintf(output, ";\n");
 	}
 
@@ -1184,7 +1184,7 @@ int decl_not_def;
 			fprintf(f, " %s%s(_parser, _root%s",
 					Prefix, p->text,transform?", _result":"");
 			if ( s->args!=NULL ) fprintf(f, ",");
-			DumpListOfParmNames(s->args, f);
+			DumpListOfParmNames(s->args, f, FileStr[s->definition->file], s->definition->line);
 			fprintf(f, ")\n");
 			fprintf(f, "STreeParser *_parser;\n");
 			fprintf(f, "SORAST **_root%s;\n", transform?", **_result":"");

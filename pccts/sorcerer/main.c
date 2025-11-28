@@ -1026,11 +1026,13 @@ set e;
  */
 void
 #ifdef __USE_PROTOS
-DumpListOfParmNames( char *pdecl, FILE *output )
+DumpListOfParmNames( char *pdecl, FILE *output, const char* file, int line )
 #else
-DumpListOfParmNames( pdecl, output )
+DumpListOfParmNames( pdecl, output, file, line )
 char *pdecl;
 FILE *output;
+const char* file;
+int line;
 #endif
 {
 	int firstTime = 1, done = 0;
@@ -1040,7 +1042,7 @@ FILE *output;
 	while ( !done )
 	{
 		if ( !firstTime ) putc(',', output);
-		done = DumpNextNameInDef(&pdecl, output);
+		done = DumpNextNameInDef(&pdecl, output, file, line);
 		firstTime = 0;
 	}
 }
@@ -1050,24 +1052,31 @@ FILE *output;
  */
 int
 #ifdef __USE_PROTOS
-DumpNextNameInDef( char **q, FILE *output )
+DumpNextNameInDef( char **q, FILE *output, const char* file, int line )
 #else
-DumpNextNameInDef( q, output )
+DumpNextNameInDef( q, output, file, line)
 char **q;
 FILE *output;
+const char* file;
+int line;
 #endif
 {
 	char *p = *q;		/* where did we leave off? */
 	int done=0;
 
-	while ( *p!='\0' && *p!=',' ) p++;		/* find end of decl */
-	if ( *p == '\0' ) done = 1;
+	while ( *p!='\0' && *p!=',' && *p != '=') p++;		/* find end of decl */
 	while ( !isalnum(*p) && *p!='_' ) --p;	/* scan back until valid var character */
 	while ( isalnum(*p) || *p=='_' ) --p;	/* scan back until beginning of variable */
 	p++;						/* move to start of variable */
-	while ( isalnum(*p) || *p=='_'  ) {putc(*p, output); p++;}
-	while ( *p!='\0' && *p!=',' ) p++;		/* find end of decl */
-	p++;				/* move past this parameter */
+	if (p <= *q)
+	{
+		warnFL(eMsg1("invalid parameter/return value: '%s'", *q), file, line);
+		return 1;
+	}
+	while ( isalnum(*p) || *p=='_' ) {putc(*p, output); p++;}
+	while ( *p!='\0' && *p!=',' ) p++;		/* find end of decl, skipping the optional initial value assignment expression in there */
+	if (*p == '\0') done = 1;
+	else p++;				/* move past this parameter */
 
 	*q = p;				/* record where we left off */
 	return done;
@@ -1106,7 +1115,7 @@ FILE *output;
 /* Take in a type definition (type + symbol) and print out type only */
 void
 #ifdef __USE_PROTOS
-DumpType( char *s, FILE *f, char *file, int line )
+DumpType( char *s, FILE *f, const char *file, int line )
 #else
 DumpType( s, f, file, line )
 char *s;
@@ -1115,10 +1124,16 @@ char *file;
 int line;
 #endif
 {
-	char *p, *end;
+	char *p, *end, *e;
 	require(s!=NULL, "DumpType: invalid type string");
 
 	p = &s[strlen(s)-1];		/* start at end of string and work back */
+	/* ignore the optional initial value assignment that may be in there by moving the 'e' end marker to the '=' edge: */
+	e = strchr(s, '=');
+	if (!e)
+		e = p + 1;
+	else
+		p = e;
 	/* scan back until valid variable character */
 	while ( !isalnum(*p) && *p!='_' ) --p;
 	/* scan back until beginning of variable */
@@ -1131,7 +1146,7 @@ int line;
 	end = p;					/* here is where we stop printing alnum */
 	p = s;
 	while ( p!=end ) {putc(*p, f); p++;} /* dump until just before variable */
-	while ( *p!='\0' )					 /* dump rest w/o variable */
+	while ( *p!=0 && *p !='=' )					 /* dump rest w/o variable and without the optional initial value assignment expression that follows the '=' */
 	{
 		if ( !isalnum(*p) && *p!='_' ) putc(*p, f);
 		p++;
