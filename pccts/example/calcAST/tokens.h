@@ -11,7 +11,11 @@
  *   ..\..\bin\antlr.exe -emsvc -CC -gt -gs calcex2.g -gd
  *
  */
-enum ANTLRTokenType {
+enum ANTLRTokenType
+#if defined(__cplusplus)
+    : int
+#endif
+{
 	Eof=1,
 	InvalidNumber=2,
 	Number=3,

@@ -103,7 +103,7 @@ protected:
 
 public:
 	PCCTS_AST()	{;}
-	virtual ~PCCTS_AST() {;}
+	virtual ~PCCTS_AST() = default;
 
 	/* This group must be defined for SORCERER to work correctly */
 	virtual PCCTS_AST *right() = 0;

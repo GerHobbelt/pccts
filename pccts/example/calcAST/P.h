@@ -34,7 +34,7 @@ private:
 public:
 virtual void syn(
 ANTLRAbstractToken *	tok,
-ANTLRChar *		egroup,
+const ANTLRChar *		egroup,
 SetWordType *		eset,
 ANTLRTokenType		etok,
 int			k);

@@ -91,7 +91,7 @@ ANTLRAbstractToken * NumToken::makeToken(ANTLRTokenType    tokenType,
 
 void NumToken::dumpNode(const char * s) {
 
-   char * theText;
+   const char * theText;
 
    if (s != 0) {printf("%s ",s);}
    if (getType() == Eof) {

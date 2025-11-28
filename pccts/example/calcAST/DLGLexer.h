@@ -48,16 +48,16 @@ public:
 	ANTLRTokenType nextTokenType(void);
 	void     advance(void);
 protected:
-	ANTLRTokenType act1();
-	ANTLRTokenType act2();
-	ANTLRTokenType act3();
-	ANTLRTokenType act4();
-	ANTLRTokenType act5();
-	ANTLRTokenType act6();
-	ANTLRTokenType act7();
-	ANTLRTokenType act8();
-	ANTLRTokenType act9();
-	ANTLRTokenType act10();
+	ANTLRTokenType act1(void);
+	ANTLRTokenType act2(void);
+	ANTLRTokenType act3(void);
+	ANTLRTokenType act4(void);
+	ANTLRTokenType act5(void);
+	ANTLRTokenType act6(void);
+	ANTLRTokenType act7(void);
+	ANTLRTokenType act8(void);
+	ANTLRTokenType act9(void);
+	ANTLRTokenType act10(void);
 	static DfaState st0[13];
 	static DfaState st1[13];
 	static DfaState st2[13];

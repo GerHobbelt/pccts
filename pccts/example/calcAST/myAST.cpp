@@ -50,9 +50,9 @@ AST & AST::operator = (const AST & from) {
    return *this;
 }
 
-void AST::preorder_action() {
+void AST::preorder_action(void* /*pData*/) {
 
-   ANTLRChar *		p=0;
+   const ANTLRChar *		p=0;
    ANTLRChar 		string[32];
   
    if (pToken == 0) {
@@ -70,7 +70,7 @@ void AST::preorder_action() {
 
 void AST::dumpNode(const char * s) {
 
-   ANTLRChar *		p;
+   const ANTLRChar *		p;
    ANTLRChar 		string[32];
    ANTLRToken *		qToken;
 

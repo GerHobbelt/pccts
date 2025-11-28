@@ -17,7 +17,7 @@ class AST : public NoLeakAST {
        /* copy constructor */	AST(const AST &);	   // new copy of token
        AST &			operator = (const AST &);  // new copy of token
        virtual void		dumpNode(const char * s=0);
-       virtual void		preorder_action();
+       virtual void		preorder_action(void* /*pData*/ = NULL /* MR23 */);
 
        virtual double		eval();
        double			number;

@@ -58,7 +58,7 @@ end dumping hash table
 
 /* C code produced by gperf version 2.1 (ANSI C version) */
 /*
- * Command-line: ..\cperf-2.1a\gperf -VpotTD -e@ -j1 -k1,3,4,5,7,$ -aCdgH decode_keyword -N in_reserved_keyword_set i_a_script.gperf keywords.c 
+ * Command-line: ..\pccts\bin\cperf -VpotTD -e@ -j1 -k1,3,4,5,7,$ -aCdgH decode_keyword -N in_reserved_keyword_set i_a_script.gperf keywords.c 
  */
 
 
@@ -71,7 +71,7 @@ maximum possible size of generated hash table is 398
  ***************************************************************************/
 
 
- /* starting time is 23:18:32 */
+ /* starting time is 0:5:54 */
 
 
 /***************************************************************************
@@ -589,5 +589,5 @@ end table dumping
  ***************************************************************************/
 
 
-  /* ending time is 23:18:32 */
+  /* ending time is 0:5:54 */
 

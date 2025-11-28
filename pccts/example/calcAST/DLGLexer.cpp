@@ -38,13 +38,13 @@
 #include "DLexerBase.h"
 #include "DLGLexer.h"
 
-ANTLRTokenType DLGLexer::act1()
+ANTLRTokenType DLGLexer::act1(void)
 { 
 		return Eof;
 	}
 
 
-ANTLRTokenType DLGLexer::act2()
+ANTLRTokenType DLGLexer::act2(void)
 { 
     double	d;
     char *	endptr;
@@ -56,7 +56,7 @@ ANTLRTokenType DLGLexer::act2()
 	}
 
 
-ANTLRTokenType DLGLexer::act3()
+ANTLRTokenType DLGLexer::act3(void)
 { 
     skip();
     if (*_lextext=='\t') {
@@ -69,44 +69,44 @@ ANTLRTokenType DLGLexer::act3()
 	}
 
 
-ANTLRTokenType DLGLexer::act4()
+ANTLRTokenType DLGLexer::act4(void)
 { 
     newline();set_endcol(0);  
 		return NL;
 	}
 
 
-ANTLRTokenType DLGLexer::act5()
+ANTLRTokenType DLGLexer::act5(void)
 { 
 		return (ANTLRTokenType)6;
 	}
 
 
-ANTLRTokenType DLGLexer::act6()
+ANTLRTokenType DLGLexer::act6(void)
 { 
 		return (ANTLRTokenType)7;
 	}
 
 
-ANTLRTokenType DLGLexer::act7()
+ANTLRTokenType DLGLexer::act7(void)
 { 
 		return (ANTLRTokenType)8;
 	}
 
 
-ANTLRTokenType DLGLexer::act8()
+ANTLRTokenType DLGLexer::act8(void)
 { 
 		return (ANTLRTokenType)9;
 	}
 
 
-ANTLRTokenType DLGLexer::act9()
+ANTLRTokenType DLGLexer::act9(void)
 { 
 		return (ANTLRTokenType)10;
 	}
 
 
-ANTLRTokenType DLGLexer::act10()
+ANTLRTokenType DLGLexer::act10(void)
 { 
 		return (ANTLRTokenType)11;
 	}
