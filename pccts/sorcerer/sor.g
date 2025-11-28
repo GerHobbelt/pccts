@@ -7,7 +7,7 @@
  */
 
 #header <<
-    /*  23-Sep-97   thm     Accomodate user who needs to redefine ZZLEXBUFSIZE  */
+    /*  23-Sep-97   thm     Accommodate user who needs to redefine ZZLEXBUFSIZE  */
 
 #ifndef ZZLEXBUFSIZE
 #define ZZLEXBUFSIZE	8000
@@ -146,7 +146,7 @@ FILE *f;
 	if ( found_error ) return NULL;
 
 	if ( print_guts ) {
-		printf_stderr_continued( "Internal Represenation of Tree Grammar:\n");
+		printf_stderr_continued( "Internal Representation of Tree Grammar:\n");
 		lisp(root, stderr);
 		printf_stderr_continued( "\n");
 	}
@@ -164,7 +164,7 @@ FILE *f;
 	if ( root!=NULL ) build_GLA(root);
 
 	if ( print_guts ) {
-		printf_stderr_continued( "Internal Represenation of Grammar Lookahead Automaton:\n");
+		printf_stderr_continued( "Internal Representation of Grammar Lookahead Automaton:\n");
 		dump_GLAs(root);
 		printf_stderr_continued( "\n");
 	}
@@ -748,7 +748,7 @@ token[int no_copy]
  *   BT
  *   |
  *   v
- *  root ---> sibling1 ---> ... ---> siblingn
+ *  root ---> sibling1 ---> ... ---> siblingN
  */
 tree[int no_copy]
 	:	<<Attrib label; SymEntry *p, *s; int local_no_copy=0; AST *t=NULL;>>
