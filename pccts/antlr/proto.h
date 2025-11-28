@@ -82,7 +82,7 @@ extern ListNode *ContextGuardPredicateList;     /* MR13 */
 extern ListNode *CurActionLabels;
 extern int numericActionLabel;        /* MR10 << ... $1 ... >> or << ... $1 ... >>?   */
 extern ListNode *NumericPredLabels;   /* MR10 << ... $1 ... >>?  ONLY                 */
-extern char *FileStr[];
+extern const char *FileStr[];
 extern int NumFiles;
 extern int EpToken;
 extern int WildCardToken;
@@ -382,7 +382,7 @@ extern void genEndRule( Junction * );
 extern void genHdr( int );
 extern void genHdr1( int );
 extern void dumpAction( char *, FILE *, int, int, int, int );
-extern void dumpActionPlus(ActionNode*, char *, FILE *, int, int, int, int );   /* MR21 */
+extern void dumpActionPlus(ActionNode*, const char *, FILE *, int, int, int, int );   /* MR21 */
 extern Entry ** newHashTable( void );
 extern Entry * hash_add( Entry **, char *, Entry * );
 extern Entry * hash_get( Entry **, char * );
@@ -553,7 +553,7 @@ extern int  MR_secondPredicateUnreachable                            /* MR11 */
 extern void MR_clearPredEntry(Predicate *);                          /* MR11 */
 extern void MR_orphanRules(FILE *);                                  /* MR12 */
 extern void MR_merge_contexts(Tree *);                               /* MR12 */
-extern int  ci_strequ(char *,char *);                                 /* MR12 */
+extern int  ci_strequ(const char *, const char *);                                 /* MR12 */
 extern void MR_guardPred_plainSet(ActionNode *anode,Predicate *);    /* MR12c */
 extern void MR_suppressSearchReport(void);                           /* MR12c */
 extern Predicate * MR_suppressK(Node *,Predicate *);                 /* MR13 */

@@ -84,9 +84,9 @@ set attribsRefdFromAction = set_init; /* MR20 */
 int UsedOldStyleAttrib = 0;
 int UsedNewStyleLabel = 0;
 #ifdef __USE_PROTOS
-char *inline_set(char *);
+const char *inline_set(const char *);
 #else
-char *inline_set();
+const char *inline_set();
 #endif
 
 /* MR1	10-Apr-97  MR1  Previously unable to put right shift operator	    */
@@ -2491,11 +2491,11 @@ char **nxt;
 
 static int
 #ifdef __USE_PROTOS
-match_rexpr(char *s, char **nxt)
+match_rexpr(const char *s, const char **nxt)
 #else
 match_rexpr(s,nxt)
-char *s;
-char **nxt;
+const char *s;
+const char **nxt;
 #endif
 {
     if ( *s!='"' ) return 0;
@@ -2518,15 +2518,15 @@ char **nxt;
  * we pretend as if we had seen "#tokclass inlineX { A .. Z }"
  * on the input stream outside of an action.
  */
-char *
+const char *
 #ifdef __USE_PROTOS
-inline_set(char *s)
+inline_set(const char *s)
 #else
 inline_set(s)
-char *s;
+const char *s;
 #endif
 {
-	char *nxt;
+	const char *nxt;
     printf_stderr_continued( "found consumeUntil( {...} )\n");
 	while ( *s==' ' || *s=='\t' || *s=='\n' || *s=='\r' ) {s++;}
 	if ( *s!='{' )

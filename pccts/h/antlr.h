@@ -304,7 +304,7 @@ extern int zzLexErrCount;                   /* MR11 */
 #endif
 
 #define inf_zzgettok _inf_zzgettok()
-extern void _inf_zzgettok();
+extern void _inf_zzgettok(void);
 
 #endif	/* ZZINF_LOOK */
 
@@ -538,7 +538,7 @@ extern void _inf_zzgettok();
 #endif
 
 #ifdef __USE_PROTOS
-extern int _zzsetmatch(SetWordType *, char **, char **, int *, int *, SetWordType **, SetWordType * /* MR23 */); 
+extern int _zzsetmatch(SetWordType *, const char **, const char **, int *, int *, SetWordType **, SetWordType * /* MR23 */);
 extern int _zzsetmatch_wsig(SetWordType *);
 #else
 extern int _zzsetmatch();

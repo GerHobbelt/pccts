@@ -1995,7 +1995,7 @@ Predicate *MR_predFlatten(p)
       Predicate     *gchild;
       Predicate     **tail;
       Predicate     *next;
-      char          *PRED_XXX_LIST=p->expr;
+      const char          *PRED_XXX_LIST=p->expr;
 
       require (p->down != NULL,"MR_predFlatten AND/OR no child");
 

@@ -56,11 +56,11 @@ int esetnum = 0;
    */
 void
 #ifdef __USE_PROTOS
-DumpIntAsChars( FILE *f, char *format, unsigned wd )
+DumpIntAsChars( FILE *f, const char *format, unsigned wd )
 #else
 DumpIntAsChars( f, format, wd )
 FILE *f;
-char *format;
+const char *format;
 unsigned wd;
 #endif
 {

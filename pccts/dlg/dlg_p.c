@@ -861,8 +861,8 @@ nfa_node *p;
 {
   if (p){
     f == stderr 
-    ? printf_stderr_continued("%x (%d)", p, p->node_no)
-    : fprintf(f, "%x (%d)", p, p->node_no);
+    ? printf_stderr_continued("%p (%d)", p, p->node_no)
+    : fprintf(f, "%p (%d)", p, p->node_no);
   }else{
     f == stderr 
     ? printf_stderr_continued("(nil)")
@@ -887,8 +887,8 @@ set s;
   : fprintf(f, "n = %d,", s.n);
   if (s.setword){
     f == stderr 
-    ? printf_stderr_continued( "setword = %x,   ", s.setword)
-    : fprintf(f, "setword = %x,   ", s.setword);
+    ? printf_stderr_continued( "setword = %p,   ", s.setword)
+    : fprintf(f, "setword = %p,   ", s.setword);
     /* print out all the elements in the set */
     x = set_pdq(s);
     while (*x!=nil){

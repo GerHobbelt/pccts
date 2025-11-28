@@ -61,11 +61,11 @@ int warn_ambig = FALSE;
 int gen_cpp = FALSE;
 
 #ifdef __USE_PROTOS
-static int ci_strequ(char *a,char *b)
+static int ci_strequ(const char *a, const char *b)
 #else
 static int ci_strequ(a,b)
-  char  *a;
-  char  *b;
+const char  *a;
+const char  *b;
 #endif
 {
   for ( ;*a != 0 && *b != 0; a++, b++) {
@@ -324,10 +324,10 @@ typedef void (*WildFunc)();
 #endif
 
 typedef struct {
-			char *option;
+			const char *option;
 			int  arg;
 			WildFunc process;
-			char *descr;
+			const char *descr;
 		} Opt;
 
 const Opt options[] = {

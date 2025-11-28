@@ -163,8 +163,8 @@ extern nfa_node *new_nfa_node(void);
 extern dfa_node *dfastate(set);
 extern dfa_node **nfa_to_dfa(nfa_node *);
 extern void	internal_error(const char *, const char *, int);    /* MR9 23-Sep-97 */
-extern FILE	*read_stream(char *);	/* opens file for reading */
-extern FILE	*write_stream(char *);	/* opens file for writing */
+extern FILE	*read_stream(const char *);	/* opens file for reading */
+extern FILE	*write_stream(const char *);	/* opens file for writing */
 extern void	make_nfa_model_node(void);
 extern void	make_dfa_model_node(int);
 extern char *ClassName(const char *);

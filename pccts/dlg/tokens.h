@@ -127,7 +127,7 @@ void anychar(void);
 extern void anychar();
 #endif
 
-extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 46 */];
+extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* 46 */];
 extern SetWordType zzerr1[zzSET_SIZE];
 extern SetWordType zzerr2[zzSET_SIZE];
 extern SetWordType zzerr3[zzSET_SIZE];

@@ -104,7 +104,7 @@ typedef struct _tree {
 typedef struct _Predicate {
 	struct _Predicate *down, *right;	/* these have to be first */
 	struct _Predicate *up, *left;		/* doubly-link me */
-	char *expr;
+	const char *expr;
 	Tree *tcontext;	/* used if lookahead depth of > one is needed (tree) */
 	int k;			/* lookahead depth for this tcontext */
 	set scontext[2];/* used if lookahead depth of one is needed (set) */
@@ -217,7 +217,7 @@ typedef struct _anode {
 			int line;			/* line number that action occurs on */
 #endif
 			Node *next;
-			char *action;
+			const char *action;
 			int is_predicate;	/* true if action is a <<...>>? predicate action */
 			int done;			/* don't dump if action dumped (used for predicates) */
 			int init_action;	/* is this the 1st action of 1st prod of block? */

@@ -3504,10 +3504,10 @@ char **nxt;
 
 static int
 #ifdef __USE_PROTOS
-match_rexpr(char *s, char **nxt)
+match_rexpr(const char *s, const char **nxt)
 #else
 match_rexpr(s,nxt)
-char *s;
+const char *s;
 char **nxt;
 #endif
 {
@@ -3531,15 +3531,15 @@ char **nxt;
     * we pretend as if we had seen "#tokclass inlineX { A .. Z }"
     * on the input stream outside of an action.
     */
-    char *
+const char *
 #ifdef __USE_PROTOS
-    inline_set(char *s)
+    inline_set(const char *s)
 #else
     inline_set(s)
-    char *s;
+	const char *s;
 #endif
     {
-    char *nxt;
+	const char *nxt;
     printf_stderr_continued( "found consumeUntil( {...} )\n");
     while ( *s==' ' || *s=='\t' || *s=='\n' || *s=='\r' ) {s++;}
     if ( *s!='{' )

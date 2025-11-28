@@ -74,11 +74,11 @@ extern void ProcessArgs();
 #endif
 
 #ifdef __USE_PROTOS
-int ci_strequ(char *a,char *b)
+int ci_strequ(const char *a, const char *b)
 #else
 int ci_strequ(a,b)
-  char  *a;
-  char  *b;
+const char  *a;
+const char  *b;
 #endif
 {
   for ( ;*a != 0 && *b != 0; a++, b++) {
@@ -543,7 +543,7 @@ char *t;
   *dst++ = 0; /* write extra NUL sentinel at end of list */
     
   /* now merge new/old argv elems */
-  newargv = (char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
+  newargv = (const char **)malloc(sizeof(newargv[0]) * (newargc + argc_ptr[0] + 2));
   if (!newargv)
   {
     fatal("Cannot allocate response file processing buffer...");

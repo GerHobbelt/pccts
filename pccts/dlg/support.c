@@ -95,7 +95,7 @@ int line;
 
 
 #ifdef __USE_PROTOS
-FILE *read_stream(char *name)
+FILE *read_stream(const char *name)
 #else
 FILE *read_stream(name)
 char *name;
@@ -124,7 +124,7 @@ char *name;
 }
 
 #ifdef __USE_PROTOS
-FILE *write_stream(char *name)
+FILE *write_stream(const char *name)
 #else
 FILE *write_stream(name)
 char *name;

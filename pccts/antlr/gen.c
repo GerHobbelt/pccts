@@ -46,6 +46,11 @@ static set tokensRefdInBlock;
 
 					/* T r a n s l a t i o n  T a b l e s */
 
+#ifdef _MSC_VER
+/* warning C4191: 'type cast': unsafe conversion from 'void (__cdecl *)(RuleRefNode *)' to 'void (__cdecl *)(...)' */
+#pragma warning(disable : 4191)
+#endif
+
 /* C_Trans[node type] == pointer to function that knows how to translate that node. */
 #ifdef __cplusplus
 void (*C_Trans[NumNodeTypes+1])(...) = {
@@ -142,7 +147,7 @@ static int has_guess_block_as_first_item(Junction *);
 static int genExprSets(set *, int);
 static void genExprTree( Tree *t, int k );
 static void genExprTreeOriginal( Tree *t, int k );                  /* MR10 */
-static char * findOuterHandlerLabel(ExceptionGroup *eg);            /* MR7 */
+static const char * findOuterHandlerLabel(ExceptionGroup *eg);            /* MR7 */
 static void OutLineInfo(FILE *file,int line,char *fileName);        /* MR14 */
 #else
 static char *tokenFollowSet();
@@ -156,7 +161,7 @@ static int has_guess_block_as_first_item();
 static int genExprSets();
 static void genExprTree();
 static void genExprTreeOriginal();                                  /* MR10 */
-static char * findOuterHandlerLabel();                              /* MR7 */
+static const char * findOuterHandlerLabel();                              /* MR7 */
 static void OutLineInfo();                                          /* MR14 */
 #endif
 
@@ -306,7 +311,7 @@ ExceptionGroup *eg;
 int no_default_case;
 #endif
 {
-    char    *outerLabel;                                             /* MR7 */
+	const char    *outerLabel;                                             /* MR7 */
     int     altHandler=0;                                            /* MR7 */
     int     namedHandler=0;                                          /* MR7 */
 
@@ -2092,9 +2097,9 @@ RuleRefNode *p;
 #endif
 {
 	Junction *q;
-	char *handler_id = "";
+	const char *handler_id = "";
 	RuleEntry *r, *r2;
-	char *parm = "", *exsig = "";
+	const char *parm = "", *exsig = "";
 
     int     genRuleRef_emittedGuessGuard=0;     /* MR10 */
 
@@ -2360,7 +2365,7 @@ TokNode *p;
 #endif
 {
 	RuleEntry *r;
-	char *handler_id = "";
+	const char *handler_id = "";
 	ActionNode *a;
 	char *set_name;
 	char *set_nameErrSet;
@@ -4560,7 +4565,7 @@ int max_k;
 int usePlusBlockBypass;
 #endif
 {
-    char *  handler_id="";                                           /* MR7 */
+	const char *  handler_id="";                                           /* MR7 */
     int     nilf=0;                                                  /* MR13 */
     RuleEntry *ruleEntry;                                            /* MR14 */
 
@@ -4632,9 +4637,9 @@ int usePlusBlockBypass;
 
 static                                                               /* MR7 */
 #ifdef __USE_PROTOS
-char * findOuterHandlerLabel(ExceptionGroup *eg)                     /* MR7 */
+const char * findOuterHandlerLabel(ExceptionGroup *eg)                     /* MR7 */
 #else
-char * findOuterHandlerLabel(eg)                                     /* MR7 */
+const char * findOuterHandlerLabel(eg)                                     /* MR7 */
 ExceptionGroup *eg;                                                  /* MR7 */
 #endif
 {
@@ -4760,12 +4765,12 @@ void BlockPreambleOption(q, pSymbol)
 
 void
 #ifdef __USE_PROTOS
-dumpActionPlus(ActionNode *a, char *s, FILE *output, int tabs, int file, int line,
+dumpActionPlus(ActionNode *a, const char *s, FILE *output, int tabs, int file, int line,
 int final_newline )
 #else
 dumpActionPlus(a, s, output, tabs, file, line, final_newline )
 ActionNode *a;
-char *s;
+const char *s;
 FILE *output;
 int tabs;
 int file;
