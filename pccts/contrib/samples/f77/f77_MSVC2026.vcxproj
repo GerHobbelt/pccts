@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{95618971-AE11-499D-A062-5F8BB35DFA75}</ProjectGuid>
+    <SccProjectName />
+    <SccLocalPath />
+    <ProjectName>f77</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(SolutionDir)\common-project.props" Label="SolutionWideSettings" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(SolutionDir)\common-project-Debug-Win32.props" Condition="exists('$(SolutionDir)\common-project-Debug-Win32.props')" Label="SolutionWideDebugWin32Settings" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(SolutionDir)\common-project-Release-Win32.props" Condition="exists('$(SolutionDir)\common-project-Release-Win32.props')" Label="SolutionWideReleaseWin32Settings" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(SolutionDir)\common-project-Debug-Win64.props" Condition="exists('$(SolutionDir)\common-project-Debug-Win64.props')" Label="SolutionWideDebugWin64Settings" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(SolutionDir)\common-project-Release-Win64.props" Condition="exists('$(SolutionDir)\common-project-Release-Win64.props')" Label="SolutionWideReleaseWin64Settings" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>17.0.35913.81</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\$(ConfigurationType)-$(ProjectName)\</IntDir>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\$(ConfigurationType)-$(ProjectName)\</IntDir>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <Optimization>Custom</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>false</BrowseInformation>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <DisableSpecificWarnings>;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <SDLCheck>false</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <ConformanceMode>true</ConformanceMode>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableUnitySupport>true</EnableUnitySupport>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AdditionalOptions>/bigobj /utf-8 /Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Custom</Optimization>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;../../../sorcerer/h;../../../sorcerer/lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CONSOLE;ZZCOL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+      <ProgramDatabaseFile>.\Debug/f77.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <Midl>
+      <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;../../../sorcerer/h;../../../sorcerer/lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;../../../sorcerer/h;../../../sorcerer/lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CONSOLE;ZZCOL=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>.\Release/f77.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>false</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
+    </Link>
+    <Midl>
+      <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;../../../sorcerer/h;../../../sorcerer/lib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\sorcerer\lib\astlib.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sorcerer\lib\errsupport.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sorcerer\lib\sintstack.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sorcerer\lib\sorcerer.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sorcerer\lib\sorlist.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\..\sorcerer\lib\sstack.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="bintree.cpp" />
+    <ClCompile Include="decl.c" />
+    <ClCompile Include="err.c" />
+    <ClCompile Include="expr.c" />
+    <ClCompile Include="f77.c" />
+    <ClCompile Include="f77out.c" />
+    <ClCompile Include="f77print.cpp" />
+    <ClCompile Include="f77trans.c" />
+    <ClCompile Include="io.c" />
+    <ClCompile Include="i_a_kludge.c" />
+    <ClCompile Include="myclass.cpp" />
+    <ClCompile Include="scan.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="decl.g" />
+    <None Include="expr.g" />
+    <CustomBuild Include="f77.g">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">build %(FullPath)</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bin\antlr.exe -emsvc -k 2 -glms -gh -ga -gt  f77.g expr.g decl.g io.g
+..\..\..\bin\dlg.exe -emsvc  -C2 -i -ci parser.dlg scan.c
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">err.c;f77.c;tokens.h;mode.h;decl.c;expr.c;io.c;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="f77out.sor">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bin\sorcerer -emsvc f77out.sor -proto-file f77out.h -prefix o_
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">f77out.c;f77out.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <CustomBuild Include="f77trans.sor">
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bin\sorcerer -emsvc f77trans.sor -proto-file f77trans.h -prefix x_
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">f77trans.c;f77trans.h;%(Outputs)</Outputs>
+    </CustomBuild>
+    <None Include="io.g" />
+    <None Include="readme" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="f77out.h" />
+    <ClInclude Include="f77trans.h" />
+    <ClInclude Include="lookup.h" />
+    <ClInclude Include="mode.h" />
+    <ClInclude Include="myclass.h" />
+    <ClInclude Include="stdpccts.h" />
+    <ClInclude Include="tokens.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\antlr\Antlr_MSVC2022.vcxproj">
+      <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\dlg\Dlg_MSVC2022.vcxproj">
+      <Project>{a2af3c41-6605-49b1-a484-dfec76363492}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\sorcerer\Sorcerer_MSVC2022.vcxproj">
+      <Project>{81006502-153e-4217-8bc4-23033951714d}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <Import Project="$(SolutionDir)\common-project-ultimate-override.props" Label="SolutionWideSettingsOverride" />
+</Project>

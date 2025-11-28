@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <ProjectGuid>{4A000C45-8721-4389-8C73-BBDC58E1572A}</ProjectGuid>
+    <ProjectName>support</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v145</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <UseOfMfc>false</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <Import Project="$(SolutionDir)\common-project.props" Label="SolutionWideSettings" />
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(SolutionDir)\common-project-Debug-Win32.props" Condition="exists('$(SolutionDir)\common-project-Debug-Win32.props')" Label="SolutionWideDebugWin32Settings" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(SolutionDir)\common-project-Release-Win32.props" Condition="exists('$(SolutionDir)\common-project-Release-Win32.props')" Label="SolutionWideReleaseWin32Settings" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(SolutionDir)\common-project-Debug-Win64.props" Condition="exists('$(SolutionDir)\common-project-Debug-Win64.props')" Label="SolutionWideDebugWin64Settings" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(SolutionDir)\common-project-Release-Win64.props" Condition="exists('$(SolutionDir)\common-project-Release-Win64.props')" Label="SolutionWideReleaseWin64Settings" />
+  </ImportGroup>
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>17.0.35913.81</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\$(ConfigurationType)-$(ProjectName)\</IntDir>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)bin\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\</OutDir>
+    <IntDir>$(SolutionDir)obj\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\$(ConfigurationType)-$(ProjectName)\</IntDir>
+    <CopyLocalDeploymentContent>true</CopyLocalDeploymentContent>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <Optimization>Custom</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeaderOutputFile>$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ProgramDataBaseFileName>$(IntDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <BrowseInformation>false</BrowseInformation>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <DisableSpecificWarnings>;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <LanguageStandard_C>stdclatest</LanguageStandard_C>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <SDLCheck>false</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <EnableEnhancedInstructionSet>AdvancedVectorExtensions2</EnableEnhancedInstructionSet>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <EnableFiberSafeOptimizations>true</EnableFiberSafeOptimizations>
+      <FloatingPointExceptions>false</FloatingPointExceptions>
+      <ConformanceMode>true</ConformanceMode>
+      <OmitFramePointers>true</OmitFramePointers>
+      <EnableUnitySupport>true</EnableUnitySupport>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <AdditionalOptions>/bigobj /utf-8 /Zc:__cplusplus /Zc:preprocessor %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Lib />
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Custom</Optimization>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+    <Lib />
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\h\antlr.h" />
+    <ClInclude Include="..\h\AParser.h" />
+    <ClInclude Include="..\h\ast.h" />
+    <ClInclude Include="..\h\ASTBase.h" />
+    <ClInclude Include="..\h\AToken.h" />
+    <ClInclude Include="..\h\ATokenBuffer.h" />
+    <ClInclude Include="..\h\ATokenStream.h" />
+    <ClInclude Include="..\h\ATokPtr.h" />
+    <ClInclude Include="..\h\charbuf.h" />
+    <ClInclude Include="..\h\charptr.h" />
+    <ClInclude Include="..\h\DLexerBase.h" />
+    <ClInclude Include="..\h\dlgauto.h" />
+    <ClInclude Include="..\h\dlgdef.h" />
+    <ClInclude Include="..\h\err.h" />
+    <ClInclude Include="..\h\int.h" />
+    <ClInclude Include="..\h\PBlackBox.h" />
+    <ClInclude Include="..\h\PCCTSAST.h" />
+    <ClInclude Include="..\h\pcctscfg.h" />
+    <ClInclude Include="..\h\SList.h" />
+    <ClInclude Include="rexpr\rexpr.h" />
+    <ClInclude Include="set\set.h" />
+    <ClInclude Include="sym\template.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\h\AParser.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\ast.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\ASTBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\ATokenBuffer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\ATokPtr.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\charptr.c">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\DLexer.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\DLexerBase.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\PCCTSAST.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\h\SList.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="rexpr\rexpr.c" />
+    <ClCompile Include="set\set.c" />
+    <ClCompile Include="sym\sym.c" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <Import Project="$(SolutionDir)\common-project-ultimate-override.props" Label="SolutionWideSettingsOverride" />
+</Project>
