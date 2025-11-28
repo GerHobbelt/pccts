@@ -86,7 +86,7 @@ while(FoundPointer->token != UntilNode) {						\
 if(FoundPointer->token == UntilNode) {							\
 	FoundPointer=NULL;											\
 }															\
-if(FoundPointer->left == NULL) {/*Begining of file.*/			\
+if(FoundPointer->left == NULL) {/*Beginning of file.*/			\
 	FoundPointer=NULL;											\
 }
 
@@ -3927,7 +3927,7 @@ void x_io_specifier(STreeParser *_parser, SORAST **_root)
  SORAST *  x_read_statement(STreeParser *_parser, SORAST **_root)
 {
 	SORAST *_t = *_root;
-	 SORAST *Format = NULL;
+	 SORAST *Format = NULL ;
 	if ( _t!=NULL && (_t->token==READ) ) {
 		{_SAVE; TREE_CONSTR_PTRS;
 		_MATCH(READ);
@@ -3961,7 +3961,7 @@ void x_io_specifier(STreeParser *_parser, SORAST **_root)
  SORAST *  x_write_statement(STreeParser *_parser, SORAST **_root)
 {
 	SORAST *_t = *_root;
-	 SORAST *Format = NULL;
+	 SORAST *Format = NULL ;
 	if ( _t!=NULL && (_t->token==WRITE) ) {
 		{_SAVE; TREE_CONSTR_PTRS;
 		_MATCH(WRITE);
@@ -4019,9 +4019,8 @@ void x_io_specifier(STreeParser *_parser, SORAST **_root)
  SORAST *  x_control_info(STreeParser *_parser, SORAST **_root)
 {
 	SORAST *_t = *_root;
-	 SORAST *Format = NULL;
+	 SORAST *Format = NULL ;
 	if ( _t!=NULL && (_t->token==LP) ) {
-		Format = NULL;  
 		_MATCH(LP);
 		_RIGHT;
 		if ( _t!=NULL && (_t->token==COMMA) ) {
@@ -4114,9 +4113,8 @@ void x_io_specifier(STreeParser *_parser, SORAST **_root)
  SORAST *  x_the_remainder(STreeParser *_parser, SORAST **_root)
 {
 	SORAST *_t = *_root;
-	 SORAST *Format = NULL;
+	 SORAST *Format = NULL ;
 	if ( _t!=NULL && (_t->token==COMMA) ) {
-		Format = NULL;  
 		_MATCH(COMMA);
 		_RIGHT;
 		if ( _t!=NULL && (_t->token==FMT) ) {
@@ -4249,7 +4247,7 @@ void x_unit_id(STreeParser *_parser, SORAST **_root)
  SORAST *  x_format_id(STreeParser *_parser, SORAST **_root)
 {
 	SORAST *_t = *_root;
-	 SORAST *Format = NULL;
+	 SORAST *Format = NULL ;
 	SORAST *f=NULL;
 	if ( _t!=NULL && (_t->token==STAR) ) {
 		_MATCH(STAR);
