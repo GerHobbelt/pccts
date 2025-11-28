@@ -1,14 +1,15 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36109.1 d17.14
+VisualStudioVersion = 17.14.36109.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ANTLR", "antlr\Antlr_MSVC2022.vcxproj", "{757BA219-A898-43DC-A3EF-8F4FAD77359C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Antlr", "antlr\Antlr_MSVC2022.vcxproj", "{757BA219-A898-43DC-A3EF-8F4FAD77359C}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DLG", "dlg\Dlg_MSVC2022.vcxproj", "{A2AF3C41-6605-49B1-A484-DFEC76363492}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dlg", "dlg\Dlg_MSVC2022.vcxproj", "{A2AF3C41-6605-49B1-A484-DFEC76363492}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sorcerer", "sorcerer\Sorcerer_MSVC2022.vcxproj", "{81006502-153E-4217-8BC4-23033951714D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cperf", "..\cperf-2.1a\cperf_MSVC2022.vcxproj", "{02114D7A-E56E-4615-877A-23D26894113D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gperf", "..\cperf-2.1a\cperf_MSVC2022.vcxproj", "{02114D7A-E56E-4615-877A-23D26894113D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testcase", "..\testcase\testcase_MSVC2022.vcxproj", "{ED864B60-FEE4-43A1-A0DE-7EC4B1C20D15}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -36,6 +37,18 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xl2", "contrib\PCCTSTutorial\xl\recog2\xl2_MSVC2022.vcxproj", "{2BB9DCB8-F5DD-4DBA-BED8-FE4BFDD1CB41}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "f77", "contrib\samples\f77\f77_MSVC2022.vcxproj", "{95618971-AE11-499D-A062-5F8BB35DFA75}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		common-project-Debug-Win32.props = common-project-Debug-Win32.props
+		common-project-Debug-Win64.props = common-project-Debug-Win64.props
+		common-project-Release-Win32.props = common-project-Release-Win32.props
+		common-project-Release-Win64.props = common-project-Release-Win64.props
+		common-project-ultimate-override.props = common-project-ultimate-override.props
+		common-project.props = common-project.props
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dlg_bootstrap", "dlg\Dlg_bootstrap_MSVC2022.vcxproj", "{C44F6C20-0D5E-4676-984E-0A95E8C6A0C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -87,6 +100,10 @@ Global
 		{95618971-AE11-499D-A062-5F8BB35DFA75}.Debug|x86.Build.0 = Debug|Win32
 		{95618971-AE11-499D-A062-5F8BB35DFA75}.Release|x86.ActiveCfg = Release|Win32
 		{95618971-AE11-499D-A062-5F8BB35DFA75}.Release|x86.Build.0 = Release|Win32
+		{C44F6C20-0D5E-4676-984E-0A95E8C6A0C1}.Debug|x86.ActiveCfg = Debug|Win32
+		{C44F6C20-0D5E-4676-984E-0A95E8C6A0C1}.Debug|x86.Build.0 = Debug|Win32
+		{C44F6C20-0D5E-4676-984E-0A95E8C6A0C1}.Release|x86.ActiveCfg = Release|Win32
+		{C44F6C20-0D5E-4676-984E-0A95E8C6A0C1}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

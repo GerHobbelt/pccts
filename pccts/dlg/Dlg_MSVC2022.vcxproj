@@ -116,7 +116,6 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>./Dlg.exe</OutputFile>
       <ProgramDatabaseFile>.\./Dlg.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
@@ -127,10 +126,13 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <PostBuildEvent>
-      <Message>Copy to ..\bin directory</Message>
+      <Message>Copy dlg to ..\bin directory</Message>
       <Command>mkdir ..\bin
+
 copy ..\bin\dlg.exe dlg_old.exe
-copy dlg.exe        ..\bin\.
+
+copy $(TargetPath)        ..\bin\dlg.exe
+
 </Command>
     </PostBuildEvent>
     <ResourceCompile>
@@ -151,7 +153,6 @@ copy dlg.exe        ..\bin\.
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>./Dlg.exe</OutputFile>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <ProgramDatabaseFile>.\./Dlg.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -162,10 +163,13 @@ copy dlg.exe        ..\bin\.
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <PostBuildEvent>
-      <Message>Copy to ..\bin directory</Message>
+      <Message>Copy dlg to ..\bin directory</Message>
       <Command>mkdir ..\bin
+
 copy ..\bin\dlg.exe dlg_old.exe
-copy dlg.exe        ..\bin\.
+
+copy $(TargetPath)        ..\bin\dlg.exe
+
 </Command>
     </PostBuildEvent>
     <ResourceCompile>
@@ -208,6 +212,9 @@ copy dlg.exe        ..\bin\.
   <ItemGroup>
     <ProjectReference Include="..\antlr\Antlr_MSVC2022.vcxproj">
       <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
+    </ProjectReference>
+    <ProjectReference Include="Dlg_bootstrap_MSVC2022.vcxproj">
+      <Project>{c44f6c20-0d5e-4676-984e-0a95e8c6a0c1}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

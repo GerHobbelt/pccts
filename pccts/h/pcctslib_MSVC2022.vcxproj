@@ -112,9 +112,7 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <CompileAs>Default</CompileAs>
     </ClCompile>
-    <Lib>
-      <OutputFile>pccts_debug.lib</OutputFile>
-    </Lib>
+    <Lib />
     <PostBuildEvent>
       <Message>Copy to ..\lib</Message>
       <Command>mkdir ..\lib
@@ -136,9 +134,7 @@ copy pccts_debug.lib ..\lib\pccts_debug.lib
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <CompileAs>Default</CompileAs>
     </ClCompile>
-    <Lib>
-      <OutputFile>pccts_release.lib</OutputFile>
-    </Lib>
+    <Lib />
     <PostBuildEvent>
       <Message>Copy to ..\lib</Message>
       <Command>mkdir ..\lib

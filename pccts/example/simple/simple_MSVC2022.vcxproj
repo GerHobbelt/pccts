@@ -120,7 +120,6 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <OutputFile>.\Release/simple60.exe</OutputFile>
       <ProgramDatabaseFile>.\Release/simple60.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
@@ -148,7 +147,6 @@
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <OutputFile>.\Debug/simple60.exe</OutputFile>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <ProgramDatabaseFile>.\Debug/simple60.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>

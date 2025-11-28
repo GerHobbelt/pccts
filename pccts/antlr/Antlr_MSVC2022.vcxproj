@@ -115,7 +115,6 @@
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>./Antlr.exe</OutputFile>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <ProgramDatabaseFile>.\./Antlr.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
@@ -126,10 +125,13 @@
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
     <PostBuildEvent>
-      <Message>Copy antlr to ..\bin</Message>
+      <Message>Copy antlr to ..\bin directory</Message>
       <Command>mkdir ..\bin
+
 copy ..\bin\antlr.exe antlr_old.exe
-copy antlr.exe        ..\bin\.
+
+copy $(TargetPath)        ..\bin\antlr.exe
+
 </Command>
     </PostBuildEvent>
     <ResourceCompile>
@@ -151,7 +153,6 @@ copy antlr.exe        ..\bin\.
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>./Antlr.exe</OutputFile>
       <ProgramDatabaseFile>.\./Antlr.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
@@ -164,8 +165,11 @@ copy antlr.exe        ..\bin\.
     <PostBuildEvent>
       <Message>Copy antlr to ..\bin directory</Message>
       <Command>mkdir ..\bin
+
 copy ..\bin\antlr.exe antlr_old.exe
-copy antlr.exe        ..\bin\.
+
+copy $(TargetPath)        ..\bin\antlr.exe
+
 </Command>
     </PostBuildEvent>
     <ResourceCompile>

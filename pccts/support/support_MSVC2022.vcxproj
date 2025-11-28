@@ -114,9 +114,7 @@
       <PrecompiledHeader />
       <CompileAs>Default</CompileAs>
     </ClCompile>
-    <Lib>
-      <OutputFile>.\Release\support_msvc70.lib</OutputFile>
-    </Lib>
+    <Lib />
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
@@ -133,9 +131,7 @@
       <PrecompiledHeader />
       <CompileAs>Default</CompileAs>
     </ClCompile>
-    <Lib>
-      <OutputFile>.\Debug\support_msvc70.lib</OutputFile>
-    </Lib>
+    <Lib />
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>

@@ -12,10 +12,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
-    <ProjectGuid>{E65843C3-14ED-48C9-9D18-C37FE24AD5B3}</ProjectGuid>
-    <SccProjectName />
-    <SccLocalPath />
-    <ProjectName>TwoParsers</ProjectName>
+    <ProjectGuid>{C44F6C20-0D5E-4676-984E-0A95E8C6A0C1}</ProjectGuid>
+    <ProjectName>Dlg_bootstrap</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -54,7 +52,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <_ProjectFileVersion>17.0.36717.7</_ProjectFileVersion>
+    <_ProjectFileVersion>17.0.35913.81</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)bin\$(Configuration)-$(CharacterSet)-$(PlatformArchitecture)bit-$(PlatformShortname)\</OutDir>
@@ -110,14 +108,15 @@
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <Optimization>MaxSpeed</Optimization>
       <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
-      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;../support/set;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__STDC__;LONGFILENAMES;PC;USER_ZZSYN;ZZLEXBUFSIZE=65536;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <PrecompiledHeader />
+      <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
-      <ProgramDatabaseFile>.\Release/TwoParsers.pdb</ProgramDatabaseFile>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile>.\./Dlg.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -126,26 +125,33 @@
     <Midl>
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
+    <PostBuildEvent>
+      <Message>Copy dlg_bootstrap to ..\bin directory</Message>
+      <Command>mkdir ..\bin
+copy $(TargetPath)        ..\bin\dlg.exe
+
+</Command>
+    </PostBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;../support/set;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <Optimization>Custom</Optimization>
-      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;../support/set;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>__STDC__;LONGFILENAMES;PC;USER_ZZSYN;ZZLEXBUFSIZE=65536;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <PrecompiledHeader />
       <CompileAs>Default</CompileAs>
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <ProgramDatabaseFile>.\Debug/TwoParsers.pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile>.\./Dlg.pdb</ProgramDatabaseFile>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>false</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
@@ -153,71 +159,55 @@
     <Midl>
       <TypeLibraryName>$(OutDir)$(TargetName).tlb</TypeLibraryName>
     </Midl>
+    <PostBuildEvent>
+      <Message>Copy dlg_bootstrap to ..\bin directory</Message>
+      <Command>mkdir ..\bin
+copy $(TargetPath)        ..\bin\dlg.exe
+
+</Command>
+    </PostBuildEvent>
     <ResourceCompile>
       <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <Culture>0x0409</Culture>
-      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../../../h;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../include/system-override;.;../../thirdparty/owemdjee/libassert/include;../../thirdparty/owemdjee/magic_enum/include;../../thirdparty/owemdjee/fmt/include;../../thirdparty/owemdjee/cpptrace/include;../../thirdparty/owemdjee/debugbreak;../h;../support/set;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <CustomBuild Include="PA\A.g">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generate A</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bin\antlr.exe -emsvc -CC Pa\A.g -glms  -o Pa
-..\..\..\bin\dlg.exe -emsvc -CC -C2 Pa\parser.dlg -o Pa -cl DlgA
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pa\tokens.h;Pa\DlgA.h;Pa\DlgA.cpp;Pa\A.cpp;Pa\ParserA.h;Pa\ParserA.cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generate A</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\bin\antlr.exe -emsvc -CC Pa\A.g -glms  -o Pa
-..\..\..\bin\dlg.exe -emsvc -CC -C2 Pa\parser.dlg -o Pa -cl DlgA
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pa\tokens.h;Pa\DlgA.h;Pa\DlgA.cpp;Pa\A.cpp;Pa\ParserA.h;Pa\ParserA.cpp;%(Outputs)</Outputs>
+    <ClCompile Include="..\support\set\set.c" />
+    <ClCompile Include="automata.c" />
+    <ClCompile Include="dlg_a.c" />
+    <ClCompile Include="dlg_p.c" />
+    <ClCompile Include="err.c" />
+    <ClCompile Include="main.c" />
+    <ClCompile Include="output.c" />
+    <ClCompile Include="relabel.c" />
+    <ClCompile Include="support.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="dlg_p.g">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Outputs>
     </CustomBuild>
-    <CustomBuild Include="Pb\B.g">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generate B</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\..\bin\antlr.exe -emsvc -CC Pb\B.g -glms  -o Pb
-..\..\..\bin\dlg.exe -emsvc -CC -C2 Pb\parser.dlg -o Pb -cl DlgB
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pb\tokens.h;Pb\DlgB.h;Pb\DlgB.cpp;Pb\ParserB.cpp;Pb\ParserB.h;Pb\B.cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generate B</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\..\bin\antlr.exe -emsvc -CC Pb\B.g -glms  -o Pb
-..\..\..\bin\dlg.exe -emsvc -CC -C2 Pb\parser.dlg -o Pb -cl DlgB
-</Command>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pb\tokens.h;Pb\DlgLexer.h;Pb\DlgLexer.cpp;Pb\ParserB.cpp;Pb\ParserB.h;Pb\B.cpp;%(Outputs)</Outputs>
-    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\h\AParser.cpp" />
-    <ClCompile Include="..\..\..\h\ASTBase.cpp" />
-    <ClCompile Include="..\..\..\h\ATokenBuffer.cpp" />
-    <ClCompile Include="..\..\..\h\BufFileInput.cpp" />
-    <ClCompile Include="..\..\..\h\DLexerBase.cpp" />
-    <ClCompile Include="..\..\..\h\PCCTSAST.cpp" />
-    <ClCompile Include="..\..\..\h\SList.cpp" />
-    <ClCompile Include="InvokeA.cpp" />
-    <ClCompile Include="InvokeB.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="PA\A.cpp" />
-    <ClCompile Include="PA\DlgA.cpp" />
-    <ClCompile Include="PA\ParserA.cpp" />
-    <ClCompile Include="Pb\B.cpp" />
-    <ClCompile Include="Pb\DlgB.cpp" />
-    <ClCompile Include="Pb\ParserB.cpp" />
+    <ClInclude Include="dlg.h" />
+    <ClInclude Include="mode.h" />
+    <ClInclude Include="stdpccts.h" />
+    <ClInclude Include="tokens.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\h\ATokPtrImpl.h" />
-    <ClInclude Include="PA\DlgA.h" />
-    <ClInclude Include="PA\ParserA.h" />
-    <ClInclude Include="PA\tokens.h" />
-    <ClInclude Include="Pb\DlgB.h" />
-    <ClInclude Include="Pb\ParserB.h" />
-    <ClInclude Include="Pb\tokens.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\antlr\Antlr_MSVC2022.vcxproj">
+    <ProjectReference Include="..\antlr\Antlr_MSVC2022.vcxproj">
       <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\dlg\Dlg_MSVC2022.vcxproj">
-      <Project>{a2af3c41-6605-49b1-a484-dfec76363492}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
