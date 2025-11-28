@@ -2,7 +2,7 @@
 
 Purdue Compiler-Construction Tool Set (PCCTS), a set of public domain software tools designed to facilitate the implementation of compilers and other translation systems.
 
-The canonical source is [polhode.com (maintainer: Tom Moog)](http://www.polhode.com/pccts.html); [this github repository](https://github.com/GerHobbelt/pccts) carries my own derivative (a.k.a. "fork"), which includes a few additional bugfixes and a tweak here & there.
+The canonical source is [polhode.com (maintainer: Tom Moog)](http://www.polhode.com/pccts.html); this [`GerHobbelt/pccts` github repository](https://github.com/GerHobbelt/pccts) carries my own derivative (a.k.a. "fork"), which includes a few additional bugfixes and a tweak here & there.
 
 Ger Hobbelt (a.k.a. `[i_a]`)
 
