@@ -17,7 +17,7 @@
 #include "pcctscfg.h"
 #include "pccts_stdio.h"
 
-/*  23-Sep-97   thm     Accomodate user who needs to redefine ZZLEXBUFSIZE  */
+/*  23-Sep-97   thm     Accommodate user who needs to redefine ZZLEXBUFSIZE  */
 
 #ifndef ZZLEXBUFSIZE
 #define ZZLEXBUFSIZE	8000
