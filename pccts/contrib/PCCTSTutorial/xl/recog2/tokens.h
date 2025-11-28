@@ -11,7 +11,11 @@
  *   ..\..\..\..\bin\antlr.exe -emsvc -CC -e3 -gl xl.g
  *
  */
-enum ANTLRTokenType {
+enum ANTLRTokenType
+#if defined(__cplusplus)
+    : int
+#endif
+{
 	INTLIT=5,
 	CHARLIT=6,
 	PROGRAM=8,

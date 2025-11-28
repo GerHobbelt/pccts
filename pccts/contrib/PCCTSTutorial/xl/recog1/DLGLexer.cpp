@@ -39,46 +39,46 @@
 #include "DLexerBase.h"
 #include "DLGLexer.h"
 
-ANTLRTokenType DLGLexer::act1()
+ANTLRTokenType DLGLexer::act1(void)
 { 
 		return (ANTLRTokenType)1;
 	}
 
 
-ANTLRTokenType DLGLexer::act2()
+ANTLRTokenType DLGLexer::act2(void)
 { 
     skip();  
 		return (ANTLRTokenType)2;
 	}
 
 
-ANTLRTokenType DLGLexer::act3()
+ANTLRTokenType DLGLexer::act3(void)
 { 
     skip(); newline();  
 		return (ANTLRTokenType)3;
 	}
 
 
-ANTLRTokenType DLGLexer::act4()
+ANTLRTokenType DLGLexer::act4(void)
 { 
     skip(); newline();  
 		return (ANTLRTokenType)4;
 	}
 
 
-ANTLRTokenType DLGLexer::act5()
+ANTLRTokenType DLGLexer::act5(void)
 { 
 		return INTLIT;
 	}
 
 
-ANTLRTokenType DLGLexer::act6()
+ANTLRTokenType DLGLexer::act6(void)
 { 
 		return CHARLIT;
 	}
 
 
-ANTLRTokenType DLGLexer::act7()
+ANTLRTokenType DLGLexer::act7(void)
 { 
     // start STRINGLIT
     skip();
@@ -87,313 +87,313 @@ ANTLRTokenType DLGLexer::act7()
 	}
 
 
-ANTLRTokenType DLGLexer::act8()
+ANTLRTokenType DLGLexer::act8(void)
 { 
 		return PROGRAM;
 	}
 
 
-ANTLRTokenType DLGLexer::act9()
+ANTLRTokenType DLGLexer::act9(void)
 { 
 		return BEGIN;
 	}
 
 
-ANTLRTokenType DLGLexer::act10()
+ANTLRTokenType DLGLexer::act10(void)
 { 
 		return END;
 	}
 
 
-ANTLRTokenType DLGLexer::act11()
+ANTLRTokenType DLGLexer::act11(void)
 { 
 		return VAR;
 	}
 
 
-ANTLRTokenType DLGLexer::act12()
+ANTLRTokenType DLGLexer::act12(void)
 { 
 		return CONSTANT;
 	}
 
 
-ANTLRTokenType DLGLexer::act13()
+ANTLRTokenType DLGLexer::act13(void)
 { 
 		return TYPE;
 	}
 
 
-ANTLRTokenType DLGLexer::act14()
+ANTLRTokenType DLGLexer::act14(void)
 { 
 		return RECORD;
 	}
 
 
-ANTLRTokenType DLGLexer::act15()
+ANTLRTokenType DLGLexer::act15(void)
 { 
 		return ARRAY;
 	}
 
 
-ANTLRTokenType DLGLexer::act16()
+ANTLRTokenType DLGLexer::act16(void)
 { 
 		return OF;
 	}
 
 
-ANTLRTokenType DLGLexer::act17()
+ANTLRTokenType DLGLexer::act17(void)
 { 
 		return PROCEDURE;
 	}
 
 
-ANTLRTokenType DLGLexer::act18()
+ANTLRTokenType DLGLexer::act18(void)
 { 
 		return PUT;
 	}
 
 
-ANTLRTokenType DLGLexer::act19()
+ANTLRTokenType DLGLexer::act19(void)
 { 
 		return GET;
 	}
 
 
-ANTLRTokenType DLGLexer::act20()
+ANTLRTokenType DLGLexer::act20(void)
 { 
 		return SKIPLINE;
 	}
 
 
-ANTLRTokenType DLGLexer::act21()
+ANTLRTokenType DLGLexer::act21(void)
 { 
 		return NEWLINE;
 	}
 
 
-ANTLRTokenType DLGLexer::act22()
+ANTLRTokenType DLGLexer::act22(void)
 { 
 		return EXIT;
 	}
 
 
-ANTLRTokenType DLGLexer::act23()
+ANTLRTokenType DLGLexer::act23(void)
 { 
 		return WHEN;
 	}
 
 
-ANTLRTokenType DLGLexer::act24()
+ANTLRTokenType DLGLexer::act24(void)
 { 
 		return RETURN;
 	}
 
 
-ANTLRTokenType DLGLexer::act25()
+ANTLRTokenType DLGLexer::act25(void)
 { 
 		return IF;
 	}
 
 
-ANTLRTokenType DLGLexer::act26()
+ANTLRTokenType DLGLexer::act26(void)
 { 
 		return THEN;
 	}
 
 
-ANTLRTokenType DLGLexer::act27()
+ANTLRTokenType DLGLexer::act27(void)
 { 
 		return ELSE;
 	}
 
 
-ANTLRTokenType DLGLexer::act28()
+ANTLRTokenType DLGLexer::act28(void)
 { 
 		return ELSIF;
 	}
 
 
-ANTLRTokenType DLGLexer::act29()
+ANTLRTokenType DLGLexer::act29(void)
 { 
 		return WHILE;
 	}
 
 
-ANTLRTokenType DLGLexer::act30()
+ANTLRTokenType DLGLexer::act30(void)
 { 
 		return LOOP;
 	}
 
 
-ANTLRTokenType DLGLexer::act31()
+ANTLRTokenType DLGLexer::act31(void)
 { 
 		return AND;
 	}
 
 
-ANTLRTokenType DLGLexer::act32()
+ANTLRTokenType DLGLexer::act32(void)
 { 
 		return OR;
 	}
 
 
-ANTLRTokenType DLGLexer::act33()
+ANTLRTokenType DLGLexer::act33(void)
 { 
 		return INTEGER;
 	}
 
 
-ANTLRTokenType DLGLexer::act34()
+ANTLRTokenType DLGLexer::act34(void)
 { 
 		return BOOLEAN;
 	}
 
 
-ANTLRTokenType DLGLexer::act35()
+ANTLRTokenType DLGLexer::act35(void)
 { 
 		return DOT;
 	}
 
 
-ANTLRTokenType DLGLexer::act36()
+ANTLRTokenType DLGLexer::act36(void)
 { 
 		return BECOMES;
 	}
 
 
-ANTLRTokenType DLGLexer::act37()
+ANTLRTokenType DLGLexer::act37(void)
 { 
 		return COLON;
 	}
 
 
-ANTLRTokenType DLGLexer::act38()
+ANTLRTokenType DLGLexer::act38(void)
 { 
 		return SEMI;
 	}
 
 
-ANTLRTokenType DLGLexer::act39()
+ANTLRTokenType DLGLexer::act39(void)
 { 
 		return COMMA;
 	}
 
 
-ANTLRTokenType DLGLexer::act40()
+ANTLRTokenType DLGLexer::act40(void)
 { 
 		return EQUALS;
 	}
 
 
-ANTLRTokenType DLGLexer::act41()
+ANTLRTokenType DLGLexer::act41(void)
 { 
 		return LBRACKET;
 	}
 
 
-ANTLRTokenType DLGLexer::act42()
+ANTLRTokenType DLGLexer::act42(void)
 { 
 		return RBRACKET;
 	}
 
 
-ANTLRTokenType DLGLexer::act43()
+ANTLRTokenType DLGLexer::act43(void)
 { 
 		return DOTDOT;
 	}
 
 
-ANTLRTokenType DLGLexer::act44()
+ANTLRTokenType DLGLexer::act44(void)
 { 
 		return LPAREN;
 	}
 
 
-ANTLRTokenType DLGLexer::act45()
+ANTLRTokenType DLGLexer::act45(void)
 { 
 		return RPAREN;
 	}
 
 
-ANTLRTokenType DLGLexer::act46()
+ANTLRTokenType DLGLexer::act46(void)
 { 
 		return NOT_EQUALS;
 	}
 
 
-ANTLRTokenType DLGLexer::act47()
+ANTLRTokenType DLGLexer::act47(void)
 { 
 		return LT;
 	}
 
 
-ANTLRTokenType DLGLexer::act48()
+ANTLRTokenType DLGLexer::act48(void)
 { 
 		return LTE;
 	}
 
 
-ANTLRTokenType DLGLexer::act49()
+ANTLRTokenType DLGLexer::act49(void)
 { 
 		return GT;
 	}
 
 
-ANTLRTokenType DLGLexer::act50()
+ANTLRTokenType DLGLexer::act50(void)
 { 
 		return GTE;
 	}
 
 
-ANTLRTokenType DLGLexer::act51()
+ANTLRTokenType DLGLexer::act51(void)
 { 
 		return PLUS;
 	}
 
 
-ANTLRTokenType DLGLexer::act52()
+ANTLRTokenType DLGLexer::act52(void)
 { 
 		return MINUS;
 	}
 
 
-ANTLRTokenType DLGLexer::act53()
+ANTLRTokenType DLGLexer::act53(void)
 { 
 		return TIMES;
 	}
 
 
-ANTLRTokenType DLGLexer::act54()
+ANTLRTokenType DLGLexer::act54(void)
 { 
 		return DIV;
 	}
 
 
-ANTLRTokenType DLGLexer::act55()
+ANTLRTokenType DLGLexer::act55(void)
 { 
 		return MOD;
 	}
 
 
-ANTLRTokenType DLGLexer::act56()
+ANTLRTokenType DLGLexer::act56(void)
 { 
 		return NOT;
 	}
 
 
-ANTLRTokenType DLGLexer::act57()
+ANTLRTokenType DLGLexer::act57(void)
 { 
 		return IDENT;
 	}
 
 
-ANTLRTokenType DLGLexer::act58()
+ANTLRTokenType DLGLexer::act58(void)
 { 
 		return (ANTLRTokenType)1;
 	}
 
 
-ANTLRTokenType DLGLexer::act59()
+ANTLRTokenType DLGLexer::act59(void)
 { 
 
     more();
@@ -402,7 +402,7 @@ ANTLRTokenType DLGLexer::act59()
 	}
 
 
-ANTLRTokenType DLGLexer::act60()
+ANTLRTokenType DLGLexer::act60(void)
 { 
 
     replchar('\0');
@@ -413,7 +413,7 @@ ANTLRTokenType DLGLexer::act60()
 	}
 
 
-ANTLRTokenType DLGLexer::act61()
+ANTLRTokenType DLGLexer::act61(void)
 { 
 
     replchar('\0');
@@ -422,7 +422,7 @@ ANTLRTokenType DLGLexer::act61()
 	}
 
 
-ANTLRTokenType DLGLexer::act62()
+ANTLRTokenType DLGLexer::act62(void)
 { 
     more();  
 		return (ANTLRTokenType)61;

@@ -37,38 +37,38 @@
 #include "DLexerBase.h"
 #include "DlgB.h"
 
-ANTLRTokenType DlgB::act1()
+ANTLRTokenType DlgB::act1(void)
 { 
 		return Eof;
 	}
 
 
-ANTLRTokenType DlgB::act2()
+ANTLRTokenType DlgB::act2(void)
 { 
 		return Number;
 	}
 
 
-ANTLRTokenType DlgB::act3()
+ANTLRTokenType DlgB::act3(void)
 { 
 		return Word;
 	}
 
 
-ANTLRTokenType DlgB::act4()
+ANTLRTokenType DlgB::act4(void)
 { 
     skip();   
 		return Whitespace;
 	}
 
 
-ANTLRTokenType DlgB::act5()
+ANTLRTokenType DlgB::act5(void)
 { 
 		return Other;
 	}
 
 
-ANTLRTokenType DlgB::act6()
+ANTLRTokenType DlgB::act6(void)
 { 
     newline(); skip();   
 		return Newline;

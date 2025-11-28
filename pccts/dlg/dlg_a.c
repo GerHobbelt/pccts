@@ -101,46 +101,46 @@ void  xxputc(int c) {						/* MR1 */
       }								/* MR1 */
     }  								/* MR1 */
 
-static void act1()
+static void act1(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act2()
+static void act2(void)
 { 
 		NLA = 2;
     zzskip();   
 	}
 
 
-static void act3()
+static void act3(void)
 { 
 		NLA = 3;
     zzline++; zzskip(); DAWDLE;   
 	}
 
 
-static void act4()
+static void act4(void)
 { 
 		NLA = L_EOF;
 	}
 
 
-static void act5()
+static void act5(void)
 { 
 		NLA = PER_PER;
 	}
 
 
-static void act6()
+static void act6(void)
 { 
 		NLA = NAME_PER_PER;
     p_mode_def(&zzlextext[2],lex_mode_counter++);   
 	}
 
 
-static void act7()
+static void act7(void)
 { 
 		NLA = LEXMEMBER;
     lexMember=1;					/* MR1 */
@@ -152,14 +152,14 @@ static void act7()
 	}
 
 
-static void act8()
+static void act8(void)
 { 
 		NLA = LEXACTION;
     lexAction=1;zzmode(ACT);  
 	}
 
 
-static void act9()
+static void act9(void)
 { 
 		NLA = PARSERCLASS;
     parserClass=1;				/* MR1 */
@@ -167,14 +167,14 @@ static void act9()
 	}
 
 
-static void act10()
+static void act10(void)
 { 
 		NLA = LEXPREFIX;
     lexPrefix=1;zzmode(ACT);  
 	}
 
 
-static void act11()
+static void act11(void)
 { 
 		NLA = ACTION;
     if (func_action)
@@ -185,142 +185,142 @@ static void act11()
 	}
 
 
-static void act12()
+static void act12(void)
 { 
 		NLA = GREAT_GREAT;
 	}
 
 
-static void act13()
+static void act13(void)
 { 
 		NLA = L_BRACE;
 	}
 
 
-static void act14()
+static void act14(void)
 { 
 		NLA = R_BRACE;
 	}
 
 
-static void act15()
+static void act15(void)
 { 
 		NLA = L_PAR;
 	}
 
 
-static void act16()
+static void act16(void)
 { 
 		NLA = R_PAR;
 	}
 
 
-static void act17()
+static void act17(void)
 { 
 		NLA = L_BRACK;
 	}
 
 
-static void act18()
+static void act18(void)
 { 
 		NLA = R_BRACK;
 	}
 
 
-static void act19()
+static void act19(void)
 { 
 		NLA = ZERO_MORE;
 	}
 
 
-static void act20()
+static void act20(void)
 { 
 		NLA = ONE_MORE;
 	}
 
 
-static void act21()
+static void act21(void)
 { 
 		NLA = OR;
 	}
 
 
-static void act22()
+static void act22(void)
 { 
 		NLA = RANGE;
 	}
 
 
-static void act23()
+static void act23(void)
 { 
 		NLA = NOT;
 	}
 
 
-static void act24()
+static void act24(void)
 { 
 		NLA = OCTAL_VALUE;
     {int t; sscanf(&zzlextext[1],"%o",&t); zzlextext[0] = t;}  
 	}
 
 
-static void act25()
+static void act25(void)
 { 
 		NLA = HEX_VALUE;
     {int t; sscanf(&zzlextext[3],"%x",&t); zzlextext[0] = t;}  
 	}
 
 
-static void act26()
+static void act26(void)
 { 
 		NLA = DEC_VALUE;
     {int t; sscanf(&zzlextext[1],"%d",&t); zzlextext[0] = t;}  
 	}
 
 
-static void act27()
+static void act27(void)
 { 
 		NLA = TAB;
     zzlextext[0] = '\t';  
 	}
 
 
-static void act28()
+static void act28(void)
 { 
 		NLA = NL;
     zzlextext[0] = '\n';  
 	}
 
 
-static void act29()
+static void act29(void)
 { 
 		NLA = CR;
     zzlextext[0] = '\r';  
 	}
 
 
-static void act30()
+static void act30(void)
 { 
 		NLA = BS;
     zzlextext[0] = '\b';  
 	}
 
 
-static void act31()
+static void act31(void)
 { 
 		NLA = CONTINUATION;
     zzline++; zzskip();  
 	}
 
 
-static void act32()
+static void act32(void)
 { 
 		NLA = LIT;
     zzlextext[0] = zzlextext[1];  
 	}
 
 
-static void act33()
+static void act33(void)
 { 
 		NLA = REGCHAR;
 	}
@@ -355,14 +355,14 @@ static unsigned char shift0[257] = {
 };
 
 
-static void act34()
+static void act34(void)
 { 
 		NLA = 1;
     error("unterminated action", zzline); zzmode(START);   
 	}
 
 
-static void act35()
+static void act35(void)
 { 
 		NLA = ACTION;
     if (func_action) fprintf(OUT,"}\n\n");
@@ -379,35 +379,35 @@ static void act35()
 	}
 
 
-static void act36()
+static void act36(void)
 { 
 		NLA = 34;
     xxputc(zzlextext[0]); zzskip();   
 	}
 
 
-static void act37()
+static void act37(void)
 { 
 		NLA = 35;
     xxputc('>'); zzskip();   
 	}
 
 
-static void act38()
+static void act38(void)
 { 
 		NLA = 36;
     xxputc('\\'); zzskip();   
 	}
 
 
-static void act39()
+static void act39(void)
 { 
 		NLA = 37;
     xxputc(zzlextext[0]); ++zzline; zzskip();   
 	}
 
 
-static void act40()
+static void act40(void)
 { 
 		NLA = 38;
     zzmode(ACTION_COMMENTS);			/* MR1 */
@@ -415,7 +415,7 @@ static void act40()
 	}
 
 
-static void act41()
+static void act41(void)
 { 
 		NLA = 39;
     zzmode(ACTION_CPP_COMMENTS);			/* MR1 */
@@ -423,7 +423,7 @@ static void act41()
 	}
 
 
-static void act42()
+static void act42(void)
 { 
 		NLA = 40;
     xxputc(zzlextext[0]); zzskip();   
@@ -459,13 +459,13 @@ static unsigned char shift1[257] = {
 };
 
 
-static void act43()
+static void act43(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act44()
+static void act44(void)
 { 
 		NLA = 41;
     zzmode(ACT);					/* MR1 */
@@ -473,14 +473,14 @@ static void act44()
 	}
 
 
-static void act45()
+static void act45(void)
 { 
 		NLA = 42;
     zzline++; xxputc(zzlextext[0]); zzskip();  
 	}
 
 
-static void act46()
+static void act46(void)
 { 
 		NLA = 43;
     xxputc(zzlextext[0]); zzskip();  
@@ -516,13 +516,13 @@ static unsigned char shift2[257] = {
 };
 
 
-static void act47()
+static void act47(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act48()
+static void act48(void)
 { 
 		NLA = 44;
     zzmode(ACT); zzline++;			/* MR1 */
@@ -530,7 +530,7 @@ static void act48()
 	}
 
 
-static void act49()
+static void act49(void)
 { 
 		NLA = 45;
     xxputc(zzlextext[0]); zzskip();  

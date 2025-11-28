@@ -192,9 +192,9 @@ protected:
          restoreState(st); }                            // MR9
 	virtual int guess(ANTLRParserState *);              // MR9 27-Sep-97 make virtual
 	void look(int);
-    int _match(ANTLRTokenType, ANTLRChar **, ANTLRTokenType *,
+    int _match(ANTLRTokenType, const ANTLRChar **, ANTLRTokenType *,
 			   _ANTLRTokenPtr *, SetWordType **);
-    int _setmatch(SetWordType *, ANTLRChar **, ANTLRTokenType *,
+    int _setmatch(SetWordType *, const ANTLRChar **, ANTLRTokenType *,
 			   _ANTLRTokenPtr *, SetWordType **,
 			   SetWordType * tokclassErrset /* MR23 */);
     int _match_wsig(ANTLRTokenType);

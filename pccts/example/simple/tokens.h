@@ -13,7 +13,7 @@
  */
 enum ANTLRTokenType
 #if defined(__cplusplus)
-	: int
+    : int
 #endif
 {
 	Eof=1,

@@ -160,83 +160,83 @@ void zzcr_attr(Attrib *attrib, int tok, char *tok_text) {
 #endif
 }
 
-static void act1()
+static void act1(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act2()
+static void act2(void)
 { 
 		NLA = WHITESPACE;
     zzskip();  
 	}
 
 
-static void act3()
+static void act3(void)
 { 
 		NLA = EQUAL;
 
 	}
 
 
-static void act4()
+static void act4(void)
 { 
 		NLA = POW;
 
 	}
 
 
-static void act5()
+static void act5(void)
 { 
 		NLA = STAR;
 
 	}
 
 
-static void act6()
+static void act6(void)
 { 
 		NLA = MIN;
 
 	}
 
 
-static void act7()
+static void act7(void)
 { 
 		NLA = PLU;
 
 	}
 
 
-static void act8()
+static void act8(void)
 { 
 		NLA = CONCAT;
 
 	}
 
 
-static void act9()
+static void act9(void)
 { 
 		NLA = DIV;
 
 	}
 
 
-static void act10()
+static void act10(void)
 { 
 		NLA = AMPERSAND;
 
 	}
 
 
-static void act11()
+static void act11(void)
 { 
 		NLA = COLUMN;
 
 	}
 
 
-static void act12()
+static void act12(void)
 { 
 		NLA = SEMICOLUMN;
 
@@ -245,7 +245,7 @@ static void act12()
 	}
 
 
-static void act13()
+static void act13(void)
 { 
 		NLA = LP;
 
@@ -259,7 +259,7 @@ static void act13()
 	}
 
 
-static void act14()
+static void act14(void)
 { 
 		NLA = RP;
 
@@ -273,7 +273,7 @@ static void act14()
 	}
 
 
-static void act15()
+static void act15(void)
 { 
 		NLA = COMMA;
 
@@ -287,7 +287,7 @@ static void act15()
 	}
 
 
-static void act16()
+static void act16(void)
 { 
 		NLA = EOL;
 
@@ -297,7 +297,7 @@ static void act16()
 	}
 
 
-static void act17()
+static void act17(void)
 { 
 		NLA = HOLLERITH_CONST;
 
@@ -305,98 +305,98 @@ static void act17()
 	}
 
 
-static void act18()
+static void act18(void)
 { 
 		NLA = T_FALSE;
 
 	}
 
 
-static void act19()
+static void act19(void)
 { 
 		NLA = T_TRUE;
 
 	}
 
 
-static void act20()
+static void act20(void)
 { 
 		NLA = AND;
 
 	}
 
 
-static void act21()
+static void act21(void)
 { 
 		NLA = OR;
 
 	}
 
 
-static void act22()
+static void act22(void)
 { 
 		NLA = NEQV;
 
 	}
 
 
-static void act23()
+static void act23(void)
 { 
 		NLA = EQV;
 
 	}
 
 
-static void act24()
+static void act24(void)
 { 
 		NLA = NOT;
 
 	}
 
 
-static void act25()
+static void act25(void)
 { 
 		NLA = LT;
 	}
 
 
-static void act26()
+static void act26(void)
 { 
 		NLA = LE;
 	}
 
 
-static void act27()
+static void act27(void)
 { 
 		NLA = EQ;
 	}
 
 
-static void act28()
+static void act28(void)
 { 
 		NLA = NE;
 	}
 
 
-static void act29()
+static void act29(void)
 { 
 		NLA = GT;
 	}
 
 
-static void act30()
+static void act30(void)
 { 
 		NLA = GE;
 	}
 
 
-static void act31()
+static void act31(void)
 { 
 		NLA = IS;
 	}
 
 
-static void act32()
+static void act32(void)
 { 
 		NLA = HEX_CONST;
 
@@ -417,13 +417,13 @@ static void act32()
 	}
 
 
-static void act33()
+static void act33(void)
 { 
 		NLA = BASIC_REAL;
 	}
 
 
-static void act34()
+static void act34(void)
 { 
 		NLA = 112;
 
@@ -441,13 +441,13 @@ static void act34()
 	}
 
 
-static void act35()
+static void act35(void)
 { 
 		NLA = REAL_EXPO;
 	}
 
 
-static void act36()
+static void act36(void)
 { 
 		NLA = SOME_CONSTINTEGER;
 
@@ -462,7 +462,7 @@ static void act36()
 	}
 
 
-static void act37()
+static void act37(void)
 { 
 		NLA = 119;
 
@@ -472,14 +472,14 @@ static void act37()
 	}
 
 
-static void act38()
+static void act38(void)
 { 
 		NLA = QUOTED_STRING;
     GetQuotedString();  
 	}
 
 
-static void act39()
+static void act39(void)
 { 
 		NLA = APOSTROPHY;
 
@@ -504,7 +504,7 @@ static void act39()
 	}
 
 
-static void act40()
+static void act40(void)
 { 
 		NLA = TO;
 
@@ -514,105 +514,105 @@ static void act40()
 	}
 
 
-static void act41()
+static void act41(void)
 { 
 		NLA = PAGE;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act42()
+static void act42(void)
 { 
 		NLA = SET;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act43()
+static void act43(void)
 { 
 		NLA = LIST;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act44()
+static void act44(void)
 { 
 		NLA = XREF;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act45()
+static void act45(void)
 { 
 		NLA = ERRLIST;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act46()
+static void act46(void)
 { 
 		NLA = LINEINFO;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act47()
+static void act47(void)
 { 
 		NLA = NEW;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act48()
+static void act48(void)
 { 
 		NLA = RESET;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act49()
+static void act49(void)
 { 
 		NLA = OWN;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act50()
+static void act50(void)
 { 
 		NLA = CHARS;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act51()
+static void act51(void)
 { 
 		NLA = STACK;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act52()
+static void act52(void)
 { 
 		NLA = FREE;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act53()
+static void act53(void)
 { 
 		NLA = POP;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act54()
+static void act54(void)
 { 
 		NLA = INCLUDE;
     if(keyword_context != CONTROL_IMAGE) NLA = IDENTIFIER;  
 	}
 
 
-static void act55()
+static void act55(void)
 { 
 		NLA = 137;
 
@@ -634,98 +634,98 @@ static void act55()
 	}
 
 
-static void act56()
+static void act56(void)
 { 
 		NLA = 138;
     keyword_context = NLA = IF;  
 	}
 
 
-static void act57()
+static void act57(void)
 { 
 		NLA = 139;
     keyword_context = NLA = DO;  
 	}
 
 
-static void act58()
+static void act58(void)
 { 
 		NLA = 140;
     keyword_context = NLA = GO_TO;  
 	}
 
 
-static void act59()
+static void act59(void)
 { 
 		NLA = 141;
     keyword_context = NLA = RETURN;  
 	}
 
 
-static void act60()
+static void act60(void)
 { 
 		NLA = 142;
     keyword_context = NLA = ASSIGN;  
 	}
 
 
-static void act61()
+static void act61(void)
 { 
 		NLA = 143;
     keyword_context = NLA = READ;ReadWriteProcessing();  
 	}
 
 
-static void act62()
+static void act62(void)
 { 
 		NLA = 144;
     ReadWriteProcessing();keyword_context = NLA = WRITE;  
 	}
 
 
-static void act63()
+static void act63(void)
 { 
 		NLA = 145;
     keyword_context = NLA = FIND;  
 	}
 
 
-static void act64()
+static void act64(void)
 { 
 		NLA = 146;
     zzmode(KEYWORD); keyword_context = NLA = CALL;  
 	}
 
 
-static void act65()
+static void act65(void)
 { 
 		NLA = 147;
     keyword_context = NLA = INQUIRE;  
 	}
 
 
-static void act66()
+static void act66(void)
 { 
 		NLA = 148;
     keyword_context = NLA = BACKSPACE;  
 	}
 
 
-static void act67()
+static void act67(void)
 { 
 		NLA = 149;
     keyword_context = NLA = ENDFILE;  
 	}
 
 
-static void act68()
+static void act68(void)
 { 
 		NLA = 150;
     keyword_context = NLA = REWIND;  
 	}
 
 
-static void act69()
+static void act69(void)
 { 
 		NLA = 151;
 
@@ -744,7 +744,7 @@ static void act69()
 	}
 
 
-static void act70()
+static void act70(void)
 { 
 		NLA = 152;
 
@@ -757,7 +757,7 @@ static void act70()
 	}
 
 
-static void act71()
+static void act71(void)
 { 
 		NLA = 153;
 
@@ -770,7 +770,7 @@ static void act71()
 	}
 
 
-static void act72()
+static void act72(void)
 { 
 		NLA = 154;
 
@@ -783,117 +783,117 @@ static void act72()
 	}
 
 
-static void act73()
+static void act73(void)
 { 
 		NLA = FILE_WORD;
 
 	}
 
 
-static void act74()
+static void act74(void)
 { 
 		NLA = THEN;
 	}
 
 
-static void act75()
+static void act75(void)
 { 
 		NLA = LIBPARAMETER;
 	}
 
 
-static void act76()
+static void act76(void)
 { 
 		NLA = FUNCTIONNAME;
 	}
 
 
-static void act77()
+static void act77(void)
 { 
 		NLA = KIND;
 	}
 
 
-static void act78()
+static void act78(void)
 { 
 		NLA = TITLE;
     IOStatement();  
 	}
 
 
-static void act79()
+static void act79(void)
 { 
 		NLA = FILETYPE;
 	}
 
 
-static void act80()
+static void act80(void)
 { 
 		NLA = NEWFILE;
 	}
 
 
-static void act81()
+static void act81(void)
 { 
 		NLA = MYUSE;
 	}
 
 
-static void act82()
+static void act82(void)
 { 
 		NLA = MAXRECSIZE;
 	}
 
 
-static void act83()
+static void act83(void)
 { 
 		NLA = SAVEFACTOR;
 	}
 
 
-static void act84()
+static void act84(void)
 { 
 		NLA = BLOCKSIZE;
 	}
 
 
-static void act85()
+static void act85(void)
 { 
 		NLA = SECURITYTYPE;
 	}
 
 
-static void act86()
+static void act86(void)
 { 
 		NLA = AREAS;
 	}
 
 
-static void act87()
+static void act87(void)
 { 
 		NLA = AREASIZE;
 	}
 
 
-static void act88()
+static void act88(void)
 { 
 		NLA = PROTECTION;
 	}
 
 
-static void act89()
+static void act89(void)
 { 
 		NLA = UNITS;
 	}
 
 
-static void act90()
+static void act90(void)
 { 
 		NLA = UPDATEFILE;
 	}
 
 
-static void act91()
+static void act91(void)
 { 
 		NLA = STATUS;
 
@@ -904,189 +904,189 @@ static void act91()
 	}
 
 
-static void act92()
+static void act92(void)
 { 
 		NLA = FMT;
     IOStatement();  
 	}
 
 
-static void act93()
+static void act93(void)
 { 
 		NLA = RECL;
     IOStatement();  
 	}
 
 
-static void act94()
+static void act94(void)
 { 
 		NLA = REC;
     IOStatement();  
 	}
 
 
-static void act95()
+static void act95(void)
 { 
 		NLA = END;
     IOStatement();  
 	}
 
 
-static void act96()
+static void act96(void)
 { 
 		NLA = ERR;
     IOStatement();  
 	}
 
 
-static void act97()
+static void act97(void)
 { 
 		NLA = IOSTAT;
     IOStatement();  
 	}
 
 
-static void act98()
+static void act98(void)
 { 
 		NLA = URGENT;
     IOStatement();  
 	}
 
 
-static void act99()
+static void act99(void)
 { 
 		NLA = IO_DATA;
     IOStatement();  
 	}
 
 
-static void act100()
+static void act100(void)
 { 
 		NLA = NUMBER;
     IOStatement();  
 	}
 
 
-static void act101()
+static void act101(void)
 { 
 		NLA = NEXTREC;
     IOStatement();  
 	}
 
 
-static void act102()
+static void act102(void)
 { 
 		NLA = EXIST;
     IOStatement();  
 	}
 
 
-static void act103()
+static void act103(void)
 { 
 		NLA = OPENED;
     IOStatement();  
 	}
 
 
-static void act104()
+static void act104(void)
 { 
 		NLA = NAMED;
     IOStatement();  
 	}
 
 
-static void act105()
+static void act105(void)
 { 
 		NLA = RECORD;
     IOStatement();  
 	}
 
 
-static void act106()
+static void act106(void)
 { 
 		NLA = NAME;
     IOStatement();  
 	}
 
 
-static void act107()
+static void act107(void)
 { 
 		NLA = DISP;
     IOStatement();  
 	}
 
 
-static void act108()
+static void act108(void)
 { 
 		NLA = SUBFILE;
     IOStatement();  
 	}
 
 
-static void act109()
+static void act109(void)
 { 
 		NLA = OPENTYPE;
     IOStatement();  
 	}
 
 
-static void act110()
+static void act110(void)
 { 
 		NLA = RESIDENT;
     IOStatement();  
 	}
 
 
-static void act111()
+static void act111(void)
 { 
 		NLA = ACCESS;
     IOStatement();  
 	}
 
 
-static void act112()
+static void act112(void)
 { 
 		NLA = SEQUENTIAL;
     IOStatement();  
 	}
 
 
-static void act113()
+static void act113(void)
 { 
 		NLA = DIRECT;
     IOStatement();  
 	}
 
 
-static void act114()
+static void act114(void)
 { 
 		NLA = UNFORMATTED;
     IOStatement();  
 	}
 
 
-static void act115()
+static void act115(void)
 { 
 		NLA = FORMATTED;
     IOStatement();  
 	}
 
 
-static void act116()
+static void act116(void)
 { 
 		NLA = FORM;
     IOStatement();  
 	}
 
 
-static void act117()
+static void act117(void)
 { 
 		NLA = BLANK;
     IOStatement();  
 	}
 
 
-static void act118()
+static void act118(void)
 { 
 		NLA = IDENTIFIER;
 	}
@@ -1121,20 +1121,20 @@ static unsigned char shift0[257] = {
 };
 
 
-static void act119()
+static void act119(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act120()
+static void act120(void)
 { 
 		NLA = FILEKEYWORD;
     keyword_context = FILEKEYWORD; zzmode(START);  
 	}
 
 
-static void act121()
+static void act121(void)
 { 
 		NLA = 5;
 
@@ -1180,7 +1180,7 @@ static void act121()
 	}
 
 
-static void act122()
+static void act122(void)
 { 
 		NLA = 9;
 
@@ -1191,7 +1191,7 @@ static void act122()
 	}
 
 
-static void act123()
+static void act123(void)
 { 
 		NLA = LABEL;
 
@@ -1205,7 +1205,7 @@ static void act123()
 	}
 
 
-static void act124()
+static void act124(void)
 { 
 		NLA = CONTROL_IMAGE;
 
@@ -1245,118 +1245,118 @@ static unsigned char shift1[257] = {
 };
 
 
-static void act125()
+static void act125(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act126()
+static void act126(void)
 { 
 		NLA = IF;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act127()
+static void act127(void)
 { 
 		NLA = ELSE_IF;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act128()
+static void act128(void)
 { 
 		NLA = ELSE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act129()
+static void act129(void)
 { 
 		NLA = END_IF;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act130()
+static void act130(void)
 { 
 		NLA = END;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act131()
+static void act131(void)
 { 
 		NLA = STOP;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act132()
+static void act132(void)
 { 
 		NLA = REAL;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act133()
+static void act133(void)
 { 
 		NLA = DOUBLE_PRECISION;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act134()
+static void act134(void)
 { 
 		NLA = LOGICAL;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act135()
+static void act135(void)
 { 
 		NLA = INTEGER;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act136()
+static void act136(void)
 { 
 		NLA = CHARACTER;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act137()
+static void act137(void)
 { 
 		NLA = COMPLEX;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act138()
+static void act138(void)
 { 
 		NLA = DOUBLE_COMPLEX;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act139()
+static void act139(void)
 { 
 		NLA = IMPLICIT;
     ; keyword_context = NLA;  
 	}
 
 
-static void act140()
+static void act140(void)
 { 
 		NLA = COMMON;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act141()
+static void act141(void)
 { 
 		NLA = DATA;
 
@@ -1371,91 +1371,91 @@ static void act141()
 	}
 
 
-static void act142()
+static void act142(void)
 { 
 		NLA = DO;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act143()
+static void act143(void)
 { 
 		NLA = CONTINUE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act144()
+static void act144(void)
 { 
 		NLA = CALL;
     keyword_context = NLA;  
 	}
 
 
-static void act145()
+static void act145(void)
 { 
 		NLA = SUBROUTINE;
     keyword_context = NLA;  
 	}
 
 
-static void act146()
+static void act146(void)
 { 
 		NLA = FUNCTION;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act147()
+static void act147(void)
 { 
 		NLA = GO_TO;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act148()
+static void act148(void)
 { 
 		NLA = RETURN;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act149()
+static void act149(void)
 { 
 		NLA = EXTERNAL;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act150()
+static void act150(void)
 { 
 		NLA = INTRINSIC;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act151()
+static void act151(void)
 { 
 		NLA = SAVE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act152()
+static void act152(void)
 { 
 		NLA = ENTRY;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act153()
+static void act153(void)
 { 
 		NLA = PARAMETER;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act154()
+static void act154(void)
 { 
 		NLA = FORMAT;
 
@@ -1466,119 +1466,119 @@ static void act154()
 	}
 
 
-static void act155()
+static void act155(void)
 { 
 		NLA = INQUIRE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act156()
+static void act156(void)
 { 
 		NLA = BACKSPACE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act157()
+static void act157(void)
 { 
 		NLA = ENDFILE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act158()
+static void act158(void)
 { 
 		NLA = REWIND;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act159()
+static void act159(void)
 { 
 		NLA = BLOCK_GLOBALS;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act160()
+static void act160(void)
 { 
 		NLA = EXPORT;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act161()
+static void act161(void)
 { 
 		NLA = CHANGE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act162()
+static void act162(void)
 { 
 		NLA = OPEN;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act163()
+static void act163(void)
 { 
 		NLA = CLOSE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act164()
+static void act164(void)
 { 
 		NLA = DIMENSION;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act165()
+static void act165(void)
 { 
 		NLA = EQUIVALENCE;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act166()
+static void act166(void)
 { 
 		NLA = ASSIGN;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act167()
+static void act167(void)
 { 
 		NLA = LIBRARY;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act168()
+static void act168(void)
 { 
 		NLA = WRITE;
     ReadWriteProcessing();  
 	}
 
 
-static void act169()
+static void act169(void)
 { 
 		NLA = READ;
     ReadWriteProcessing();  
 	}
 
 
-static void act170()
+static void act170(void)
 { 
 		NLA = FIND;
     zzmode(START); keyword_context = NLA;  
 	}
 
 
-static void act171()
+static void act171(void)
 { 
 		NLA = 65;
 
@@ -1588,14 +1588,14 @@ static void act171()
 	}
 
 
-static void act172()
+static void act172(void)
 { 
 		NLA = 68;
     zzskip();  
 	}
 
 
-static void act173()
+static void act173(void)
 { 
 		NLA = 69;
 
@@ -1634,13 +1634,13 @@ static unsigned char shift2[257] = {
 };
 
 
-static void act174()
+static void act174(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act175()
+static void act175(void)
 { 
 		NLA = COMMENT_LINE;
     {
@@ -1684,13 +1684,13 @@ static unsigned char shift3[257] = {
 };
 
 
-static void act176()
+static void act176(void)
 { 
 		NLA = 1;
 	}
 
 
-static void act177()
+static void act177(void)
 { 
 		NLA = 223;
 
@@ -1699,14 +1699,14 @@ static void act177()
 	}
 
 
-static void act178()
+static void act178(void)
 { 
 		NLA = 224;
     zzskip();  
 	}
 
 
-static void act179()
+static void act179(void)
 { 
 		NLA = 225;
 
@@ -1715,14 +1715,14 @@ static void act179()
 	}
 
 
-static void act180()
+static void act180(void)
 { 
 		NLA = DEC_POINT;
 
 	}
 
 
-static void act181()
+static void act181(void)
 { 
 		NLA = 227;
 
@@ -1731,171 +1731,171 @@ static void act181()
 	}
 
 
-static void act182()
+static void act182(void)
 { 
 		NLA = TR;
 
 	}
 
 
-static void act183()
+static void act183(void)
 { 
 		NLA = TL;
 
 	}
 
 
-static void act184()
+static void act184(void)
 { 
 		NLA = T;
 
 	}
 
 
-static void act185()
+static void act185(void)
 { 
 		NLA = X;
 
 	}
 
 
-static void act186()
+static void act186(void)
 { 
 		NLA = SLASH;
 
 	}
 
 
-static void act187()
+static void act187(void)
 { 
 		NLA = COLUMN;
 
 	}
 
 
-static void act188()
+static void act188(void)
 { 
 		NLA = SP;
 
 	}
 
 
-static void act189()
+static void act189(void)
 { 
 		NLA = SS;
 
 	}
 
 
-static void act190()
+static void act190(void)
 { 
 		NLA = S;
 
 	}
 
 
-static void act191()
+static void act191(void)
 { 
 		NLA = P;
 
 	}
 
 
-static void act192()
+static void act192(void)
 { 
 		NLA = BN;
 
 	}
 
 
-static void act193()
+static void act193(void)
 { 
 		NLA = BZ;
 
 	}
 
 
-static void act194()
+static void act194(void)
 { 
 		NLA = I;
 	}
 
 
-static void act195()
+static void act195(void)
 { 
 		NLA = J;
 	}
 
 
-static void act196()
+static void act196(void)
 { 
 		NLA = F;
 	}
 
 
-static void act197()
+static void act197(void)
 { 
 		NLA = E;
 	}
 
 
-static void act198()
+static void act198(void)
 { 
 		NLA = D;
 	}
 
 
-static void act199()
+static void act199(void)
 { 
 		NLA = G;
 	}
 
 
-static void act200()
+static void act200(void)
 { 
 		NLA = O;
 	}
 
 
-static void act201()
+static void act201(void)
 { 
 		NLA = L;
 	}
 
 
-static void act202()
+static void act202(void)
 { 
 		NLA = A;
 	}
 
 
-static void act203()
+static void act203(void)
 { 
 		NLA = Z;
 	}
 
 
-static void act204()
+static void act204(void)
 { 
 		NLA = U;
 	}
 
 
-static void act205()
+static void act205(void)
 { 
 		NLA = K;
     zzskip();  
 	}
 
 
-static void act206()
+static void act206(void)
 { 
 		NLA = DOLLAR_EDITING;
     zzskip();  
 	}
 
 
-static void act207()
+static void act207(void)
 { 
 		NLA = 252;
 
@@ -1909,21 +1909,21 @@ static void act207()
 	}
 
 
-static void act208()
+static void act208(void)
 { 
 		NLA = 253;
     NLA = LP; LPCount++;  
 	}
 
 
-static void act209()
+static void act209(void)
 { 
 		NLA = 254;
     NLA = RP; LPCount--; if(LPCount == 0) zzmode(START);  
 	}
 
 
-static void act210()
+static void act210(void)
 { 
 		NLA = 255;
 
@@ -1933,7 +1933,7 @@ static void act210()
 	}
 
 
-static void act211()
+static void act211(void)
 { 
 		NLA = 256;
 

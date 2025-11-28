@@ -286,7 +286,7 @@ prime_lookahead()
  * executed; the same routine can be used for both modes.
  */
 int ANTLRParser::
-_match(ANTLRTokenType _t, ANTLRChar **MissText,
+_match(ANTLRTokenType _t, const ANTLRChar **MissText,
 	   ANTLRTokenType *MissTok, _ANTLRTokenPtr *BadTok,
 	   SetWordType **MissSet)
 {
@@ -326,7 +326,7 @@ _match_wsig(ANTLRTokenType _t)
  * executed; the same routine can be used for both modes.
  */
 int ANTLRParser::
-_setmatch(SetWordType *tset, ANTLRChar **MissText,
+_setmatch(SetWordType *tset, const ANTLRChar **MissText,
 	   ANTLRTokenType *MissTok, _ANTLRTokenPtr *BadTok,
 	   SetWordType **MissSet, SetWordType *tokclassErrset)
 {

@@ -188,14 +188,22 @@ copy dlg.exe        ..\bin\.
   <ItemGroup>
     <CustomBuild Include="dlg_p.g">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building DLG Parser from ANTLR Grammar</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\bin\antlr -emsvc %(Filename).g  -gh
+..\bin\dlg -emsvc -C2 parser.dlg dlg_a.c
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">dlg_a.c;dlg_p.c;err.c;mode.h;parser.dlg;tokens.h;stdpccts.h;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building DLG Parser from ANTLR Grammar</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-      </Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\bin\antlr -emsvc %(Filename).g  -gh
+..\bin\dlg -emsvc -C2 parser.dlg dlg_a.c
+</Command>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">dlg_a.c;dlg_p.c;err.c;mode.h;parser.dlg;tokens.h;stdpccts.h;%(Outputs)</Outputs>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="dlg.h" />
+    <ClInclude Include="mode.h" />
+    <ClInclude Include="stdpccts.h" />
+    <ClInclude Include="tokens.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

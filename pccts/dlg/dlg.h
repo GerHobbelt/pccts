@@ -168,7 +168,7 @@ extern FILE	*write_stream(const char *);	/* opens file for writing */
 extern void	make_nfa_model_node(void);
 extern void	make_dfa_model_node(int);
 extern char *ClassName(const char *);
-extern char *OutMetaName(char *);
+extern const char *OutMetaName(const char *);
 extern void error(const char*, int);
 extern void warning(const char*, int);
 extern void p_top_head(FILE *out);               /* [i_a] */
@@ -217,7 +217,7 @@ extern FILE	*write_stream();	/* opens file for writing */
 extern void	make_nfa_model_node();
 extern void	make_dfa_model_node();
 extern char *ClassName();
-extern char *OutMetaName();
+extern const char *OutMetaName();
 extern void error();
 extern void warning();
 extern void p_top_head();                   /* [i_a] */

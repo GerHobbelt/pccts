@@ -208,7 +208,7 @@ genTraceOut(q)
 {
   if ( TraceGen ) {
 		if ( GenCC ) {gen1("zzTRACEOUT(\"%s\");\n", q->rname);}
-    		else gen1("zzTRACEOUT((ANTLRChar *)\"%s\");\n", q->rname);
+    		else gen1("zzTRACEOUT(\"%s\");\n", q->rname);
   }
 }
 
@@ -3597,7 +3597,7 @@ do {    /* MR10     Change recursion into iteration         */
 
 /* MR10 */	if ( TraceGen ) {
 /* MR10 */		if ( GenCC ) {gen1("zzTRACEIN(\"%s\");\n", q->rname);}
-/* MR10 */		else gen1("zzTRACEIN((ANTLRChar *)\"%s\");\n", q->rname);
+/* MR10 */		else gen1("zzTRACEIN(\"%s\");\n", q->rname);
 /* MR10 */	}
 
 /* MR7      Moved PURIFY() to after all local variables have been declared */
@@ -3720,7 +3720,7 @@ do {    /* MR10     Change recursion into iteration         */
 	    if ( GenCC )
 	    {
 		    gen1("syn(zzBadTok, %s, zzMissSet, zzMissTok, zzErrk);\n",
-			    r->egroup==NULL?"(ANTLRChar *)\"\"":r->egroup);
+			    r->egroup==NULL?"\"\"":r->egroup);
 	    }
 	    else
 	    {

@@ -13,7 +13,7 @@
  */
 enum ANTLRTokenType
 #if defined(__cplusplus)
-	: int
+    : int
 #endif
 {
 	Eof=1,
@@ -23,8 +23,7 @@ enum ANTLRTokenType
 	Other=5,
 	Newline=6,
 	DLGminToken=0,
-	DLGmaxToken=9999
-};
+	DLGmaxToken=9999};
 
 
 #define zzSET_SIZE 4

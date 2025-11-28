@@ -403,8 +403,8 @@ extern char * StripQuotes( char * );
 extern int main( int, char *[] );
 /* extern void readDescr( void ); [i_a] */
 extern FILE * NextFile( void );
-extern char * outnameX(const char *, const char *);
-extern char * outname(const char * );
+extern const char * outnameX(const char *, const char *);
+extern const char * outname(const char * );
 extern void fatalFL(const char *, const char *, int );
 extern void fatal_intern(const char *, const char *, int );
 /* extern void cleanUp( void ); [i_a] */
@@ -471,7 +471,7 @@ extern void GenParser_c_Hdr(void);
 extern void GenParser_h_Hdr(void);
 extern void GenRuleMemberDeclarationsForCC(FILE *, Junction *);
 extern int addForcedTname( char *, int );
-extern char *OutMetaName(char *);
+extern const char *OutMetaName(const char *);
 extern void OutFirstSetSymbol(Junction *q, char *);                 /* MR21 */
 extern void warnNoFL(const char *err);
 extern void warnFL(const char *err, const char *f,int l);
@@ -691,8 +691,8 @@ extern char * StripQuotes();
 extern int main();
 /* extern void readDescr(); [i_a] */
 extern FILE * NextFile();
-extern char * outnameX();
-extern char * outname();
+extern const char * outnameX();
+extern const char * outname();
 extern void fatalFL();
 extern void fatal_intern();
 /* extern void cleanUp(); [i_a] */
@@ -759,7 +759,7 @@ extern void GenParser_c_Hdr();
 extern void GenParser_h_Hdr();
 extern void GenRuleMemberDeclarationsForCC();
 extern int addForcedTname();
-extern char *OutMetaName();
+extern const char *OutMetaName();
 extern void OutFirstSetSymbol();                            /* MR21 */
 extern void warnNoFL();
 extern void warnFL();

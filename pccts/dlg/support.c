@@ -172,10 +172,10 @@ int line_no;
 }
 
 #ifdef __USE_PROTOS
-void error(char *message,int line_no)
+void error(const char *message,int line_no)
 #else
 void error(message,line_no)
-char *message;
+const char *message;
 int line_no;
 #endif
 {
@@ -200,15 +200,15 @@ int line_no;
 */
 
 #ifdef __USE_PROTOS
-char *OutMetaName(char *n)
+const char *OutMetaName(const char *n)
 #else
-char *OutMetaName(n)
-char *n;
+const char *OutMetaName(n)
+const char *n;
 #endif
 {	
     static const char *dir_sym = DirectorySymbol;
     static char newname[MaxFileName+1];
-    char *p;
+	const char *p;
 
 	/* If OutputDirectory is same as TopDirectory (platform default) then leave n alone. */
     if (strcmp(OutputDirectory, TopDirectory) == 0)

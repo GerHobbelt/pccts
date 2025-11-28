@@ -1336,7 +1336,7 @@ NextFile( )
  * Use malloc() for new string.
  */
 
-char *
+const char *
 #ifdef __USE_PROTOS
 outname(const char *fs )
 #else
@@ -1351,7 +1351,7 @@ const char *fs;
     }
 }
 
-char *
+const char *
 #ifdef __USE_PROTOS
 outnameX(const char *fs , const char *suffix)
 #else
@@ -1726,17 +1726,17 @@ CompleteTokenSetRefs()
    MR10: if OutputDirectory was changed by user (-o option)
 */
 
-char *
+const char *
 #ifdef __USE_PROTOS
-OutMetaName(char *n)
+OutMetaName(const char *n)
 #else
 OutMetaName(n)
-char *n;
+const char *n;
 #endif
 {	
     static char *dir_sym = DirectorySymbol;
     static char newname[MaxFileName+1];
-    char *p;
+	const char *p;
 
 	/* If OutputDirectory is same as TopDirectory (platform default) then leave n alone. */
     if (strcmp(OutputDirectory, TopDirectory) == 0)		/* TopDirectory is "." on Unix. */
