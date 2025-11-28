@@ -83,7 +83,7 @@ PolyParser::poly(ASTBase **_root)
 	printf("\n");
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x1);
 }
 
@@ -130,7 +130,7 @@ PolyParser::term(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x2);
 }
 
@@ -183,7 +183,7 @@ PolyParser::bigterm(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x10);
 }
 
@@ -202,7 +202,7 @@ PolyParser::coefficient(ASTBase **_root)
 	 consume();
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x20);
 }
 
@@ -221,7 +221,7 @@ PolyParser::reg(ASTBase **_root)
 	 consume();
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x40);
 }
 
@@ -240,6 +240,6 @@ PolyParser::exp(ASTBase **_root)
 	 consume();
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x80);
 }

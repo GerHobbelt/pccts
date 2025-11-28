@@ -287,7 +287,7 @@ int    level ;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd1, 0x10);
 	zzTRACEOUT((ANTLRChar *)"basicdecl");
 	}
@@ -473,7 +473,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd1, 0x80);
 	zzTRACEOUT((ANTLRChar *)"constantvalue");
 	}
@@ -2281,7 +2281,7 @@ int    token ;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd7, 0x10);
 	zzTRACEOUT((ANTLRChar *)"def");
 	}
@@ -2328,7 +2328,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd7, 0x20);
 	zzTRACEOUT((ANTLRChar *)"already_defined");
 	}
@@ -2365,7 +2365,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd7, 0x40);
 	zzTRACEOUT((ANTLRChar *)"refvar");
 	}
@@ -2400,7 +2400,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd7, 0x80);
 	zzTRACEOUT((ANTLRChar *)"refconst");
 	}
@@ -2435,7 +2435,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd8, 0x1);
 	zzTRACEOUT((ANTLRChar *)"refproc");
 	}
@@ -2462,7 +2462,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd8, 0x2);
 	zzTRACEOUT((ANTLRChar *)"ident");
 	}
@@ -2489,7 +2489,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd8, 0x4);
 	zzTRACEOUT((ANTLRChar *)"varx");
 	}
@@ -2518,7 +2518,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd8, 0x8);
 	zzTRACEOUT((ANTLRChar *)"constant");
 	}
@@ -2545,7 +2545,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd8, 0x10);
 	zzTRACEOUT((ANTLRChar *)"proc");
 	}
@@ -2572,7 +2572,7 @@ AST **_root;
 	return;
 fail:
 	zzEXIT(zztasp1);
-	zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+	zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 	zzresynch(setwd8, 0x20);
 	zzTRACEOUT((ANTLRChar *)"type");
 	}

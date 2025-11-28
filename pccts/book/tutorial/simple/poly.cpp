@@ -71,7 +71,7 @@ PolyParser::interp(void)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x1);
 }
 
@@ -95,7 +95,7 @@ PolyParser::poly(void)
 	}
 	return _retv;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x2);
 	return _retv;
 }
@@ -162,7 +162,7 @@ PolyParser::term(void)
 	}
 	return _retv;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x20);
 	return _retv;
 }
@@ -182,7 +182,7 @@ PolyParser::coefficient(void)
  consume();
 	return _retv;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x40);
 	return _retv;
 }
@@ -202,7 +202,7 @@ PolyParser::reg(void)
  consume();
 	return _retv;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x80);
 	return _retv;
 }
@@ -231,7 +231,7 @@ PolyParser::exp(void)
 	}
 	return _retv;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd2, 0x1);
 	return _retv;
 }

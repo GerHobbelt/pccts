@@ -168,7 +168,7 @@ zzsetmatch_wdfltsig(tw,tt,wf)
                     zzMissTok = $t.token_id;
                     zzFAIL(0
                           ,&zzMissSet, &zzMissText, &zzBadTok, &zzBadText, &zzErrk);
-                    zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+                    zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
 
                     /* flush all: nobody can save you now :-) */
                     zzconsumeUntilToken(SCRIPT_EOF);
@@ -200,7 +200,7 @@ zzsetmatch_wdfltsig(tw,tt,wf)
                   zzMissTok =  t.token_id;
                   zzFAIL(0
                         ,&zzMissSet, &zzMissText, &zzBadTok, &zzBadText, &zzErrk);
-                  zzsyn(zzMissText, zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk, zzBadText);
+                  zzsyn(zzMissText, zzBadTok, "", zzMissSet, zzMissTok, zzErrk, zzBadText);
       
                   /* flush all: nobody can save you now :-) */
                   zzconsumeUntilToken(SCRIPT_EOF);

@@ -56,7 +56,7 @@ PolyParser::interp(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x1);
 }
 
@@ -94,7 +94,7 @@ PolyParser::assign(ASTBase **_root)
 	walker.assign((SORASTBase **)&(*_root));  
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x2);
 }
 
@@ -128,7 +128,7 @@ PolyParser::poly(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x4);
 }
 
@@ -174,7 +174,7 @@ PolyParser::term(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x8);
 }
 
@@ -227,7 +227,7 @@ PolyParser::bigterm(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x40);
 }
 
@@ -246,7 +246,7 @@ PolyParser::coefficient(ASTBase **_root)
 	 consume();
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd1, 0x80);
 }
 
@@ -265,7 +265,7 @@ PolyParser::reg(ASTBase **_root)
 	 consume();
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd2, 0x1);
 }
 
@@ -296,6 +296,6 @@ PolyParser::exp(ASTBase **_root)
 	}
 	return;
 fail:
-	syn(zzBadTok, (ANTLRChar *)"", zzMissSet, zzMissTok, zzErrk);
+	syn(zzBadTok, "", zzMissSet, zzMissTok, zzErrk);
 	resynch(setwd2, 0x2);
 }
