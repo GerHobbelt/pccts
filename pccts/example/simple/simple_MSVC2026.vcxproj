@@ -194,7 +194,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\antlr\Antlr_MSVC2022.vcxproj">
+    <ProjectReference Include="..\..\antlr\Antlr_MSVC2026.vcxproj">
       <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
     </ProjectReference>
   </ItemGroup>

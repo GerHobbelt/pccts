@@ -464,7 +464,7 @@ void param_list(int *_retsignal);
 extern void param_list();
 #endif
 
-extern ANTLRChar *zztokens[zzTOKEN_COUNT /* 134 */];
+extern const ANTLRChar *zztokens[zzTOKEN_COUNT /* 134 */];
 extern SetWordType setwd1[zzTOKEN_COUNT];
 extern SetWordType BOOLEAN_VALUE_set[zzSET_SIZE];
 extern SetWordType BOOLEAN_VALUE_errset[zzSET_SIZE];

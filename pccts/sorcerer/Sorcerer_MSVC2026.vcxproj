@@ -221,10 +221,10 @@ copy $(TargetPath)        ..\bin\sorcerer.exe
     <ClInclude Include="tokens.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\antlr\Antlr_MSVC2022.vcxproj">
+    <ProjectReference Include="..\antlr\Antlr_MSVC2026.vcxproj">
       <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
     </ProjectReference>
-    <ProjectReference Include="..\dlg\Dlg_MSVC2022.vcxproj">
+    <ProjectReference Include="..\dlg\Dlg_MSVC2026.vcxproj">
       <Project>{a2af3c41-6605-49b1-a484-dfec76363492}</Project>
     </ProjectReference>
   </ItemGroup>

@@ -9,7 +9,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Dlg", "dlg\Dlg_MSVC2026.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Sorcerer", "sorcerer\Sorcerer_MSVC2026.vcxproj", "{81006502-153E-4217-8BC4-23033951714D}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gperf", "..\cperf-2.1a\cperf_MSVC2026.vcxproj", "{02114D7A-E56E-4615-877A-23D26894113D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cperf", "..\cperf-2.1a\cperf_MSVC2026.vcxproj", "{02114D7A-E56E-4615-877A-23D26894113D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testcase", "..\testcase\testcase_MSVC2026.vcxproj", "{ED864B60-FEE4-43A1-A0DE-7EC4B1C20D15}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -25,6 +25,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "pcctslib", "h\pcctslib_MSVC2026.vcxproj", "{B944CFD4-5F6F-4ACF-A992-D6114D5E9BD5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "support", "support\support_MSVC2026.vcxproj", "{4A000C45-8721-4389-8C73-BBDC58E1572A}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "script", "..\scripting\script_MSVC2026.vcxproj", "{88A5F49F-9229-479C-B912-7071BD8FC0D2}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CalcAST", "example\calcAST\CalcAST_MSVC2026.vcxproj", "{F2AAE043-21B9-4DA3-BD4B-71FB2730E9CB}"
 EndProject
@@ -82,6 +84,10 @@ Global
 		{4A000C45-8721-4389-8C73-BBDC58E1572A}.Debug|x86.Build.0 = Debug|Win32
 		{4A000C45-8721-4389-8C73-BBDC58E1572A}.Release|x86.ActiveCfg = Release|Win32
 		{4A000C45-8721-4389-8C73-BBDC58E1572A}.Release|x86.Build.0 = Release|Win32
+		{88A5F49F-9229-479C-B912-7071BD8FC0D2}.Debug|x86.ActiveCfg = Debug|Win32
+		{88A5F49F-9229-479C-B912-7071BD8FC0D2}.Debug|x86.Build.0 = Debug|Win32
+		{88A5F49F-9229-479C-B912-7071BD8FC0D2}.Release|x86.ActiveCfg = Release|Win32
+		{88A5F49F-9229-479C-B912-7071BD8FC0D2}.Release|x86.Build.0 = Release|Win32
 		{F2AAE043-21B9-4DA3-BD4B-71FB2730E9CB}.Debug|x86.ActiveCfg = Debug|Win32
 		{F2AAE043-21B9-4DA3-BD4B-71FB2730E9CB}.Release|x86.ActiveCfg = Release|Win32
 		{78124171-4DFE-497E-B27B-A6154F90F297}.Debug|x86.ActiveCfg = Debug|Win32

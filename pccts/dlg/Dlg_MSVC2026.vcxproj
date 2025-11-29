@@ -210,10 +210,10 @@ copy $(TargetPath)        ..\bin\dlg.exe
     <ClInclude Include="tokens.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\antlr\Antlr_MSVC2022.vcxproj">
+    <ProjectReference Include="..\antlr\Antlr_MSVC2026.vcxproj">
       <Project>{757ba219-a898-43dc-a3ef-8f4fad77359c}</Project>
     </ProjectReference>
-    <ProjectReference Include="Dlg_bootstrap_MSVC2022.vcxproj">
+    <ProjectReference Include="Dlg_bootstrap_MSVC2026.vcxproj">
       <Project>{c44f6c20-0d5e-4676-984e-0a95e8c6a0c1}</Project>
     </ProjectReference>
   </ItemGroup>

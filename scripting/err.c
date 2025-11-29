@@ -82,7 +82,7 @@
 #define ERR_H_GENERATE 1
 #include "err.h"
 
-ANTLRChar *zztokens[zzTOKEN_COUNT /* 134 */]={
+const ANTLRChar *zztokens[zzTOKEN_COUNT /* 134 */]={
 	/* 00 */	"Invalid",
 	/* 01 */	"End Of Script",
 	/* 02 */	"???",

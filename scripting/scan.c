@@ -108,315 +108,315 @@ zzerraction()
 
 
 
-static void act1()
+static void act1(void)
 { 
 		NLA = SCRIPT_EOF;
     printf("End Of Script Reached...\n");   
 	}
 
 
-static void act2()
+static void act2(void)
 { 
 		NLA = BOOLEAN_AND;
 	}
 
 
-static void act3()
+static void act3(void)
 { 
 		NLA = BOOLEAN_OR;
 	}
 
 
-static void act4()
+static void act4(void)
 { 
 		NLA = BITWISE_AND;
 	}
 
 
-static void act5()
+static void act5(void)
 { 
 		NLA = BITWISE_OR;
 	}
 
 
-static void act6()
+static void act6(void)
 { 
 		NLA = BITWISE_XOR;
 	}
 
 
-static void act7()
+static void act7(void)
 { 
 		NLA = END;
 	}
 
 
-static void act8()
+static void act8(void)
 { 
 		NLA = BEGIN;
 	}
 
 
-static void act9()
+static void act9(void)
 { 
 		NLA = ASSIGN;
 	}
 
 
-static void act10()
+static void act10(void)
 { 
 		NLA = ASSIGN_PLUS;
 	}
 
 
-static void act11()
+static void act11(void)
 { 
 		NLA = ASSIGN_MINUS;
 	}
 
 
-static void act12()
+static void act12(void)
 { 
 		NLA = ASSIGN_MULTIPLY;
 	}
 
 
-static void act13()
+static void act13(void)
 { 
 		NLA = ASSIGN_DIVIDE;
 	}
 
 
-static void act14()
+static void act14(void)
 { 
 		NLA = ASSIGN_MODULO;
 	}
 
 
-static void act15()
+static void act15(void)
 { 
 		NLA = ASSIGN_POWER;
 	}
 
 
-static void act16()
+static void act16(void)
 { 
 		NLA = ASSIGN_LSHIFT;
 	}
 
 
-static void act17()
+static void act17(void)
 { 
 		NLA = ASSIGN_RSHIFT;
 	}
 
 
-static void act18()
+static void act18(void)
 { 
 		NLA = ASSIGN_BITWISE_OR;
 	}
 
 
-static void act19()
+static void act19(void)
 { 
 		NLA = ASSIGN_BITWISE_AND;
 	}
 
 
-static void act20()
+static void act20(void)
 { 
 		NLA = ASSIGN_BITWISE_XOR;
 	}
 
 
-static void act21()
+static void act21(void)
 { 
 		NLA = ASSIGN_BOOLEAN_OR;
 	}
 
 
-static void act22()
+static void act22(void)
 { 
 		NLA = ASSIGN_BOOLEAN_AND;
 	}
 
 
-static void act23()
+static void act23(void)
 { 
 		NLA = LSHIFT;
 	}
 
 
-static void act24()
+static void act24(void)
 { 
 		NLA = RSHIFT;
 	}
 
 
-static void act25()
+static void act25(void)
 { 
 		NLA = GE;
 	}
 
 
-static void act26()
+static void act26(void)
 { 
 		NLA = GT;
 	}
 
 
-static void act27()
+static void act27(void)
 { 
 		NLA = EQ;
 	}
 
 
-static void act28()
+static void act28(void)
 { 
 		NLA = LE;
 	}
 
 
-static void act29()
+static void act29(void)
 { 
 		NLA = LT;
 	}
 
 
-static void act30()
+static void act30(void)
 { 
 		NLA = NE;
 	}
 
 
-static void act31()
+static void act31(void)
 { 
 		NLA = DIVIDE;
 	}
 
 
-static void act32()
+static void act32(void)
 { 
 		NLA = MODULO;
 	}
 
 
-static void act33()
+static void act33(void)
 { 
 		NLA = POWER;
 	}
 
 
-static void act34()
+static void act34(void)
 { 
 		NLA = BITWISE_NOT;
 	}
 
 
-static void act35()
+static void act35(void)
 { 
 		NLA = MINUS;
 	}
 
 
-static void act36()
+static void act36(void)
 { 
 		NLA = PLUS;
 	}
 
 
-static void act37()
+static void act37(void)
 { 
 		NLA = MULTIPLY;
 	}
 
 
-static void act38()
+static void act38(void)
 { 
 		NLA = BOOLEAN_NOT;
 	}
 
 
-static void act39()
+static void act39(void)
 { 
 		NLA = TRIPLE_DOT;
 	}
 
 
-static void act40()
+static void act40(void)
 { 
 		NLA = LPARENS;
 	}
 
 
-static void act41()
+static void act41(void)
 { 
 		NLA = RPARENS;
 	}
 
 
-static void act42()
+static void act42(void)
 { 
 		NLA = LBRACKET;
 	}
 
 
-static void act43()
+static void act43(void)
 { 
 		NLA = RBRACKET;
 	}
 
 
-static void act44()
+static void act44(void)
 { 
 		NLA = COMMA;
 	}
 
 
-static void act45()
+static void act45(void)
 { 
 		NLA = DOT;
 	}
 
 
-static void act46()
+static void act46(void)
 { 
 		NLA = SEMICOLON;
 	}
 
 
-static void act47()
+static void act47(void)
 { 
 		NLA = COLON;
 	}
 
 
-static void act48()
+static void act48(void)
 { 
 		NLA = INT_VALUE;
 	}
 
 
-static void act49()
+static void act49(void)
 { 
 		NLA = INT_VALUE;
 	}
 
 
-static void act50()
+static void act50(void)
 { 
 		NLA = INT_VALUE;
     /* Hex Value! */   
 	}
 
 
-static void act51()
+static void act51(void)
 { 
 		NLA = REAL_VALUE;
 	}
 
 
-static void act52()
+static void act52(void)
 { 
 		NLA = 117;
 
@@ -431,7 +431,7 @@ static void act52()
 	}
 
 
-static void act53()
+static void act53(void)
 { 
 		NLA = VARIABLE;
 
@@ -478,42 +478,42 @@ static void act53()
 	}
 
 
-static void act54()
+static void act54(void)
 { 
 		NLA = WHITESPACE;
     zzskip(); /* Ignore whitespace */  
 	}
 
 
-static void act55()
+static void act55(void)
 { 
 		NLA = NEWLINE;
     zzline++; zzskip(); /* Count lines */   
 	}
 
 
-static void act56()
+static void act56(void)
 { 
 		NLA = BOGUS21;
     zzmode(COMMENT); zzskip();   
 	}
 
 
-static void act57()
+static void act57(void)
 { 
 		NLA = BOGUS22;
     zzmode(CPPCOMMENT); zzskip();   
 	}
 
 
-static void act58()
+static void act58(void)
 { 
 		NLA = BOGUS23;
     zzmode(CPPCOMMENT); zzskip();   
 	}
 
 
-static void act59()
+static void act59(void)
 { 
 		NLA = UNKNOWN_CHAR;
     /* erroneous character! */   
@@ -549,7 +549,7 @@ static unsigned char shift0[257] = {
 };
 
 
-static void act60()
+static void act60(void)
 { 
 		NLA = SCRIPT_EOF;
 
@@ -560,7 +560,7 @@ static void act60()
 	}
 
 
-static void act61()
+static void act61(void)
 { 
 		NLA = STRING_VALUE;
 
@@ -570,77 +570,77 @@ static void act61()
 	}
 
 
-static void act62()
+static void act62(void)
 { 
 		NLA = BOGUS1;
     zzreplchar('\\'); zzmore();   
 	}
 
 
-static void act63()
+static void act63(void)
 { 
 		NLA = BOGUS2;
     zzreplchar('\"'); zzmore();   
 	}
 
 
-static void act64()
+static void act64(void)
 { 
 		NLA = BOGUS3;
     zzreplchar('\''); zzmore();   
 	}
 
 
-static void act65()
+static void act65(void)
 { 
 		NLA = BOGUS4;
     zzreplchar('\n'); zzmore();   
 	}
 
 
-static void act66()
+static void act66(void)
 { 
 		NLA = BOGUS5;
     zzreplchar('\r'); zzmore();   
 	}
 
 
-static void act67()
+static void act67(void)
 { 
 		NLA = BOGUS6;
     zzreplchar('\t'); zzmore();   
 	}
 
 
-static void act68()
+static void act68(void)
 { 
 		NLA = BOGUS7;
     zzreplchar('\v'); zzmore();   
 	}
 
 
-static void act69()
+static void act69(void)
 { 
 		NLA = BOGUS8;
     zzreplchar('\f'); zzmore();   
 	}
 
 
-static void act70()
+static void act70(void)
 { 
 		NLA = BOGUS9;
     zzreplchar('\b'); zzmore();   
 	}
 
 
-static void act71()
+static void act71(void)
 { 
 		NLA = BOGUS10;
     zzreplchar('\a'); zzmore();   
 	}
 
 
-static void act72()
+static void act72(void)
 { 
 		NLA = BOGUS11;
 
@@ -651,7 +651,7 @@ static void act72()
 	}
 
 
-static void act73()
+static void act73(void)
 { 
 		NLA = BOGUS12;
 
@@ -660,7 +660,7 @@ static void act73()
 	}
 
 
-static void act74()
+static void act74(void)
 { 
 		NLA = ERROR_INVALID_ESC_SEQ;
 
@@ -672,7 +672,7 @@ static void act74()
 	}
 
 
-static void act75()
+static void act75(void)
 { 
 		NLA = BOGUS14;
 
@@ -690,14 +690,14 @@ static void act75()
 	}
 
 
-static void act76()
+static void act76(void)
 { 
 		NLA = BOGUS15;
     zzmore();   
 	}
 
 
-static void act77()
+static void act77(void)
 { 
 		NLA = ERROR_ITS_TOKEN;
 
@@ -736,7 +736,7 @@ static unsigned char shift1[257] = {
 };
 
 
-static void act78()
+static void act78(void)
 { 
 		NLA = SCRIPT_EOF;
 
@@ -747,28 +747,28 @@ static void act78()
 	}
 
 
-static void act79()
+static void act79(void)
 { 
 		NLA = COMMENTBLOCK;
     zzmode(START); zzskip();   
 	}
 
 
-static void act80()
+static void act80(void)
 { 
 		NLA = BOGUS17;
     zzskip();   
 	}
 
 
-static void act81()
+static void act81(void)
 { 
 		NLA = BOGUS18;
     zzline++; zzskip();   
 	}
 
 
-static void act82()
+static void act82(void)
 { 
 		NLA = BOGUS19;
     zzskip();   
@@ -804,7 +804,7 @@ static unsigned char shift2[257] = {
 };
 
 
-static void act83()
+static void act83(void)
 { 
 		NLA = SCRIPT_EOF;
 
@@ -814,14 +814,14 @@ static void act83()
 	}
 
 
-static void act84()
+static void act84(void)
 { 
 		NLA = CPPCOMMENTLINE;
     zzline++; zzmode(START); zzskip();   
 	}
 
 
-static void act85()
+static void act85(void)
 { 
 		NLA = BOGUS20;
     zzskip();   
